@@ -1,0 +1,37 @@
+{
+  "name": "Bomberman",
+  "scripts": {
+    "postInstall": "grunt install_external",
+    "test": "grunt test_all",
+    "start": "node app/index.js"
+  },
+  "engines": {
+    "node": "~1.30"
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "readmeFilename": "README.md",
+  "readme": "webgame!!",
+  "version": "0.0.1",
+  "dependencies": {
+    "grunt": "*",
+    "grunt-bower-task": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-concat": "*",
+    "express": "*",
+    "ejs": "~1.0.0"
+  },
+  "devDependencies": {
+    "grunt-simple-mocha": "*",
+    "grunt-karma": "*",
+    "karma-jasmine": "*",
+    "karma-phantomjs-launcher": "*",
+    "phantomjs": "*",
+    "grunt-contrib-watch": "*",
+    "karma-ubuntu-reporter": "*",
+    "chai": "*"
+  }
+}
