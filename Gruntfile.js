@@ -39,17 +39,17 @@ module.exports = function(grunt) {
             }
         },
         copy:{
-            bootstrapFiles: {
-                files: [
-                    {
-                        expand: true,
-                        cwd:'bower_components/bootstrap/dist/css/',
-                        src: ['bootstrap-theme.css', 'bootstrap-theme.css.map', 'bootstrap.css.map'],
-                        dest: './public/external/bootstrap/',
-                        filter: 'isFile'
-                    }
-                ]
-            },
+            //bootstrapFiles: {
+            //    files: [
+            //        {
+            //            expand: true,
+            //            cwd:'bower_components/bootstrap/dist/css/',
+            //            src: ['bootstrap-theme.css', 'bootstrap-theme.css.map', 'bootstrap.css.map'],
+            //            dest: './public/external/bootstrap/',
+            //            filter: 'isFile'
+            //        }
+            //    ]
+            //},
             prod:{
                 files : [
                     {
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('default', ['test_all']);
-    grunt.registerTask('install_external', ['bower:install', 'copy:bootstrapFiles']);
+    grunt.registerTask('install_external', ['bower:install']);
 
     /*TEST*/
     grunt.registerTask('test_server_all', ['simplemocha:all']);
