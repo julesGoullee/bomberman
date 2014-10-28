@@ -1,6 +1,5 @@
 var config = require('../../config/config.js');
 var onListenStartCallbacks = [];
-var express = require('express')();
 var http = require('http');
 
 module.exports = {
