@@ -39,17 +39,6 @@ module.exports = function(grunt) {
             }
         },
         copy:{
-            //bootstrapFiles: {
-            //    files: [
-            //        {
-            //            expand: true,
-            //            cwd:'bower_components/bootstrap/dist/css/',
-            //            src: ['bootstrap-theme.css', 'bootstrap-theme.css.map', 'bootstrap.css.map'],
-            //            dest: './public/external/bootstrap/',
-            //            filter: 'isFile'
-            //        }
-            //    ]
-            //},
             prod:{
                 files : [
                     {
@@ -82,7 +71,7 @@ module.exports = function(grunt) {
                 options: {
                     reload: true
                 },
-                tasks: 'simplemocha:map'
+                tasks: 'simplemocha:all'
             }
         }
     });
