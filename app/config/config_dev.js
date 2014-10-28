@@ -1,5 +1,5 @@
 module.exports = {
-    rootPath : '/home/jules/WebstormProjects/bomberman',
+    rootPath : process.cwd(),
     port : 3000,
     domaine: 'localhost'
 };
