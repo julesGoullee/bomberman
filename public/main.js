@@ -97,53 +97,5 @@ $(document).ready(function(){
 
 // Remove context menu
     document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
-//
-//    function CreateMonsters()
-//    {
-//        // creation 10 monster
-//        for (var i = 0; i <10 ; i ++)
-//        {
-//            BABYLON.SceneLoader.ImportMesh("", "/content/scenes/", "merguns.babylon", scene, function (newMeshes) {
-//                // create a random position
-//                var pos = new BABYLON.Vector3(-Math.random() * 60, 0, Math.random() * 60);
-//                // for each mesh in my model
-//                for (var i in newMeshes) {
-//                    // set the scale of the mesh
-//                    newMeshes[i].scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
-//                    // set the position with the random position previously created
-//                    newMeshes[i].position = pos;
-//                    // set collision system on
-//                    newMeshes[i].checkCollisions = true;
-//                }
-//            });
-//        }
-//    }
-//
-//    var bullet = function () {
-//        // create the target of the ray
-//        this.target = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 1), BABYLON.Matrix.RotationYawPitchRoll(camera.rotation.y, camera.rotation.x, camera.rotation.z));
-//        this.create = function () {
-//            // create a ray with position of the camera and with the target
-//            var rayPick = new BABYLON.Ray(camera.position, new BABYLON.Vector3(this.target.x * 200, this.target.y * 200, this.target.z * 200));
-//
-//            // interation on every mesh intersecting the ray
-//            var meshFound = scene.pickWithRay(rayPick, function (item) {
-//                // if the model is a monster we return true
-//                if (item.name.indexOf("Mesh") != -1)
-//                    return true;
-//                return false;
-//            });
-//            // if meshFound is not null
-//            if (meshFound != null && meshFound.pickedPoint != null) {
-//                // look for the monster which is in the ray and remove it
-//                for (var i in scene.meshes) {
-//                    if (scene.meshes[i] == meshFound.pickedMesh) {
-//                        scene.meshes[i].dispose();
-//                        scene.meshes[i - 1].dispose();
-//                    }
-//
-//                }
-//            }
-//        };
-//    };
+
 });
