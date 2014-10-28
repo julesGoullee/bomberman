@@ -1,5 +1,6 @@
 module.exports = {
-    rootPath : '/home/jules/WebstormProjects/bomberman',
+    rootPath : '/home/jules/bomberman',
     port : 3000,
-    domaine: 'localhost'
+    domaine: 'monchezmoi.no-ip.org'
+
 };
