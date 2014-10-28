@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!--meta common-->
+    <% include meta.html %>
+
+    <!--External common-->
+    <% include external.html %>
+
+    <!--Script Module-->
+<% dependances.scripts.forEach(function(script, index) { %>
+    <script src="<%= script %>"></script>
+<% }); %>
+
+    <!--CSS Module-->
+<% dependances.css.forEach(function(css, index) { %>
+    <link rel="stylesheet" type="text/css" href="<%= css %>">
+<% }); %>
+
+</head>
+<body>
+<%- app%>
+</body>
+</html>
+
+
+
+
