@@ -5,5 +5,13 @@
         "jquery": "latest",
         "bootstrap": "latest",
         "babylonjs": "latest"
+    },
+    "exportsOverride": {
+        "bootstrap": {
+            "": ["dist/css/*.min.css","dist/css/*.css.map", "dist/js/*.min.js"]
+        },
+        "babylonjs": {
+            "": "babylon.*.js"
+        }
     }
 }
