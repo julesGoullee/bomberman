@@ -18,7 +18,7 @@ $(document).ready(function(){
 // apply the gravity on the camera
 //    camera.applyGravity = true;
 // set the move speed of the camera
-    camera.speed = 0.1;
+    camera.speed = 1;
     console.log(camera.position.toString());
 // Create a hemisphericLight
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
