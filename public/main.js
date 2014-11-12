@@ -21,24 +21,13 @@ $(document).ready(function(){
     var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(position[0], 15, position[1]), scene);
     camera.setTarget(new BABYLON.Vector3(0, 15, -65));
     camera.attachControl(canvas, false);
-    camera.checkCollisions = true;
+    //camera.checkCollisions = true;
     // create a sphere for the camera collision
     camera.ellipsoid = new BABYLON.Vector3(2,3,2);
-    camera.applyGravity = true;
-    camera.speed = 0.8;
-    // block cassable
-    BABYLON.SceneLoader.ImportMesh("", "/content/bloc/", "cubecassable.babylon", scene, function (newMeshes) {
-        // for every mesh in the model
-        for (var i in newMeshes) {
-            // set the scale of the model
-            //newMeshes[i].scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
-            // set the position of the model
-            newMeshes[i].position = new BABYLON.Vector3(26, 0, 8);
-            newMeshes[i].checkCollisions = true;
-            // set relative referential, the model will follow your camera
-            //newMeshes[i].parent = camera;
-        }
-    });
+    //camera.applyGravity = true;
+    //camera.inertia = 0.4;
+    //camera.angularSensibility = 1000;
+    camera.speed = 1;
 
     // Register a render loop to repeatedly render the scene
     engine.runRenderLoop(function () {
@@ -54,5 +43,6 @@ $(document).ready(function(){
     window.addEventListener("resize", function () {
         engine.resize();
     });
+    engine.resize();
 
 });

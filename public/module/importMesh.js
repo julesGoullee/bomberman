@@ -1,16 +1,34 @@
-function ImportMesh(url, scene, collision){
-    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", url+'.babylon', scene, function (newMeshes) {
+function ImportMesh(url, scene, colision , position, callback){
+    var meshReturn = {};
 
-        if(collision) {
+    BABYLON.SceneLoader.ImportMesh("", "/content/", url+'.babylon', scene, function (newMeshes) {
+        for (var i in newMeshes) {
+            if (newMeshes.hasOwnProperty(i)) {
+                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
+                if(position){
+                    newMeshes[i].position = new BABYLON.Vector3(0,0,0);
+                }
+                newMeshes[i].checkCollisions = colision ? false : true;
+            }
+        }
+        meshReturn.shape = newMeshes;
+    });
+
+    if(colision) {
+        BABYLON.SceneLoader.ImportMesh("", "/content/", url+'Colision.babylon', scene, function (newMeshes) {
             for (var i in newMeshes) {
                 if (newMeshes.hasOwnProperty(i)) {
                     //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
-                    // set collision system on
+                    if(position){
+                        newMeshes[i].position = new BABYLON.Vector3(0,0,0);
+                    }
                     newMeshes[i].checkCollisions = true;
+
                 }
             }
-        }
-        return newMeshes;
-    });
+            meshReturn.colision = newMeshes;
+        });
+    }
+    callback && callback(meshReturn);
 }
 

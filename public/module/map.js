@@ -5,22 +5,46 @@ function Maps(scene){
     self.longueur = 17;
     self.content = [];
 
+    function createTemporaireBlock (){
+        var blockPosition = [
+            [0,0],
+            //[-42,0],
+            //[-43,-65],
+            //[-42,20]
+        ];
+        for(var iBlock = 0 ; iBlock < blockPosition.length; iBlock++){
+            // block cassable
+            //(function() {
+                var block = blockPosition[iBlock];
+                ImportMesh("tempBlock", self.scene, true, {x : block[0], y: 0, z: block[1]});
+
+                //BABYLON.SceneLoader.ImportMesh("", "/content/", "tempBlock.babylon", self.scene, function (newMeshes) {
+                //    // for every mesh in the model
+                //    for (var i in newMeshes) {
+                //        // set the scale of the model
+                //        //newMeshes[i].scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
+                //        // set the position of the model
+                //        newMeshes[i].position = new BABYLON.Vector3);
+                //        newMeshes[i].checkCollisions = true;
+                //        // set relative referential, the model will follow your camera
+                //        //newMeshes[i].parent = camera;
+                //    }
+                //});
+            //}());
+        }
+
+    }
     self.create = function(){
-        var meshWithoutCollision = [
-            'block'
+        var meshs = [
+            //['ground', false],
+            //['tourColision', false],
+            //['permanentBlocks', true]
         ];
 
-        var meshWithCollision = [
-            'sol',
-            'cubesTransparents',
-            'tourMapTransparent'
-        ];
-        for(var iMeshCollision = 0 ; iMeshCollision < meshWithCollision.length; iMeshCollision++){
-            ImportMesh(meshWithCollision[iMeshCollision], self.scene, true);
+        for(var iMesh = 0 ; iMesh < meshs.length; iMesh++){
+            ImportMesh(meshs[iMesh][0], self.scene, meshs[iMesh][1]);
         }
-        for(var iMeshWithoutCollision = 0 ; iMeshWithoutCollision < meshWithoutCollision.length; iMeshWithoutCollision++){
-            ImportMesh(meshWithoutCollision[iMeshWithoutCollision], self.scene, false);
-        }
+        createTemporaireBlock();
     };
 
     self.getPlayers = function (){
