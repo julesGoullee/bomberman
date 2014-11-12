@@ -9,7 +9,7 @@ function Bomb (x, y){
     this.exploded = false;
     this.duration = 800;
     this.destroy = function () {
-        
+        this.exploded = true;
     }
 
 }

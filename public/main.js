@@ -133,6 +133,8 @@ $(document).ready(function(){
 //        }
 //    });
 
+
+
 // Remove context menu
     document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 
