@@ -1,24 +1,34 @@
-function Player(name, x, y){
-    this.name = name;
-    this.alive = true;
-    this.pos = {
-        x:x,
-        y:y
+"use strict";
+function Player(name, position){
+    
+    var self = this;
+    self.name = name;
+    self.type = 'player';
+    self.alive = true;
+    self.kills = 0;
+    self.listBombs = [];
+    self.position = {
+        x: position.x,
+        y: position.y
     };
-    this.powerUp = {
-        speed:0.45,
-        shoot:false,
-        bombs:1
+    self.powerUp = {
+        speed: 0.45,
+        shoot: false,
+        bombs: 1
     };
-    this.type = 'player';
-    this.setBomb = function (bomb){
-        if (this.powerUp.bombs > 0) {
-            this.powerUp.bombs -= 1;
-            if(bomb.exploded=true){
-                this.powerUp.bomb +=1;
+    
+    var init = function(){
+        self.camera = new CameraPlayer(self.position);
+    };
+
+    self.setBomb = function (bomb){
+        if (self.powerUp.bombs > 0) {
+            self.powerUp.bombs -= 1;
+            if(bomb.exploded = true) {
+                self.powerUp.bomb += 1;
             }
         }
     };
-    this.listBombs = [];
-    this.kills = 0;
+
+    init();
 }

@@ -1,3 +1,4 @@
+"use strict";
 var config = require('../../config/config.js');
 var ejs = require('ejs');
 var fs = require('fs');
@@ -9,8 +10,16 @@ function homeRoutes(app){
 
     var dependances ={
         scripts:[
-            'module/importMesh.js',
+            'module/block.js',
+            'module/bomb.js',
+            'module/player.js',
+            'module/scene.js',
             'module/map.js',
+
+            'module/camera.js',
+            'module/ligth.js',
+            'module/meshHelper.js',
+
             'main.js'
         ],
         css:[

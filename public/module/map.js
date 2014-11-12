@@ -1,48 +1,47 @@
-function Maps(scene){
+"use strict";
+function Maps(){
     var self = this;
-    self.scene = scene;
-    self.largeur = 11;
-    self.longueur = 17;
+    self.largeur = 2;
+    self.longueur = 10;
+    self.blockDim = 8;
     self.content = [];
 
     function createTemporaireBlock (){
-        var blockPosition = [
-            [0,0],
-            //[-42,0],
-            //[-43,-65],
-            //[-42,20]
-        ];
-        for(var iBlock = 0 ; iBlock < blockPosition.length; iBlock++){
+        for(var iBlockLargeur = -self.largeur/2 ; iBlockLargeur <= self.largeur/2; iBlockLargeur++){
             // block cassable
-            //(function() {
-                var block = blockPosition[iBlock];
-                ImportMesh("tempBlock", self.scene, true, {x : block[0], y: 0, z: block[1]});
+            for(var iBlockLongueur = - self.longueur/2 ; iBlockLongueur <= self.longueur/2; iBlockLongueur++){
 
-                //BABYLON.SceneLoader.ImportMesh("", "/content/", "tempBlock.babylon", self.scene, function (newMeshes) {
-                //    // for every mesh in the model
-                //    for (var i in newMeshes) {
-                //        // set the scale of the model
-                //        //newMeshes[i].scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
-                //        // set the position of the model
-                //        newMeshes[i].position = new BABYLON.Vector3);
-                //        newMeshes[i].checkCollisions = true;
-                //        // set relative referential, the model will follow your camera
-                //        //newMeshes[i].parent = camera;
-                //    }
-                //});
-            //}());
+                if(iBlockLargeur % 2 !== 0 ){
+                    var blockPosition = {
+                        x:iBlockLargeur*self.blockDim,
+                        z:iBlockLongueur*self.blockDim
+                    };
+                    var block = new Block(blockPosition);
+                    //_meshHelper.importMesh.("tempBlock", self.scene, true, {x: blockPosition.x, y: 0, z: blockPosition.z});
+                }
+                else if(iBlockLongueur% 2 === 0 ) {
+                    var blockPosition = {
+                        x:iBlockLargeur*self.blockDim,
+                        z:iBlockLongueur*self.blockDim
+                    };
+                    debugger;
+                    var block = new Block(blockPosition);
+                    //_meshHelper.importMesh("tempBlock", self.scene, true, {x: blockPosition.x, y: 0, z: blockPosition.z});
+
+                }
+            }
         }
 
     }
     self.create = function(){
         var meshs = [
-            //['ground', false],
-            //['tourColision', false],
-            //['permanentBlocks', true]
+            ['ground', false],
+            ['tourColision', false],
+            ['permanentBlocks', true]
         ];
 
         for(var iMesh = 0 ; iMesh < meshs.length; iMesh++){
-            ImportMesh(meshs[iMesh][0], self.scene, meshs[iMesh][1]);
+            _meshHelper.importMesh(meshs[iMesh][0], meshs[iMesh][1]);
         }
         createTemporaireBlock();
     };
@@ -75,8 +74,8 @@ function Maps(scene){
         var i = 0;
         for (i; i < size; i++){
             var player = players[i];
-                for (i = 0; i<player.listBombs.length; i++){
-                    tabBomb = player.listBombs[i];
+            for (i = 0; i<player.listBombs.length; i++){
+                tabBomb = player.listBombs[i];
             }
         }
         return tabBomb;
