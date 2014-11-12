@@ -13,6 +13,7 @@ function Player(name, x, y){
     this.listBomb = [];
     this.setBomb = function (bomb){
         this.listBomb.push(bomb);
+
     };
     this.kills = 0;
 }
