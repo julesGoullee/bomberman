@@ -1,3 +1,9 @@
+var playsersPosition = [
+    [50, -65],
+    [42, 72],
+    [-50, 65],
+    [-42, -72]
+];
 $(document).ready(function(){
 
 // Get the canvas element from our HTML below
@@ -7,9 +13,10 @@ $(document).ready(function(){
 // Create scene
     var scene = new BABYLON.Scene(engine);
 // Create free camera at the position 0,11,-10
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(7, 15, 10), scene);
+    var position = playsersPosition[3];
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(position[0], 15, position[1]), scene);
 // target 0,0,0
-    camera.setTarget(new BABYLON.Vector3(10, 10, 10));
+    camera.setTarget(new BABYLON.Vector3(0, 15, -65));
     camera.attachControl(canvas, false);
 // activate collision on camera
     camera.checkCollisions = true;
@@ -62,7 +69,8 @@ $(document).ready(function(){
             // set the scale of the model
             //newMeshes[i].scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
             // set the position of the model
-            newMeshes[i].position = new BABYLON.Vector3(10, 10, 10);
+            newMeshes[i].position = new BABYLON.Vector3(26, 0, 8);
+            newMeshes[i].checkCollisions = true;
             // set relative referential, the model will follow your camera
             //newMeshes[i].parent = camera;
         }
@@ -99,6 +107,6 @@ $(document).ready(function(){
 
 // Remove context menu
     document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
-    engine.resize();
+    $(window).resize();
 
 });
