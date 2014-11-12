@@ -1,20 +1,41 @@
-function Map(){
-    this.largeur = 11;
-    this.longueur = 17;
-    this.content = [];
-    this.getplayers = function (){
+function Maps(scene){
+    var self = this;
+    self.scene = scene;
+    self.largeur = 11;
+    self.longueur = 17;
+    self.content = [];
+
+    self.create = function(){
+        var meshWithoutCollision = [
+            'block'
+        ];
+
+        var meshWithCollision = [
+            'sol',
+            'cubesTransparents',
+            'tourMapTransparent'
+        ];
+        for(var iMeshCollision = 0 ; iMeshCollision < meshWithCollision.length; iMeshCollision++){
+            ImportMesh(meshWithCollision[iMeshCollision], self.scene, true);
+        }
+        for(var iMeshWithoutCollision = 0 ; iMeshWithoutCollision < meshWithoutCollision.length; iMeshWithoutCollision++){
+            ImportMesh(meshWithoutCollision[iMeshWithoutCollision], self.scene, false);
+        }
+    };
+
+    self.getPlayers = function (){
         var tabPlayer = [];
         var i = 0;
-        var size = this.content.length;
+        var size = self.content.length;
         for (i;i<size;i++){
-            if (this.content[i].type == 'player'){
-                tabPlayer = this.content[i];
+            if (self.content[i].type == 'player'){
+                tabPlayer = self.content[i];
             }
         }
         return tabPlayer;
     };
-    this.getplayerById = function (id) {
-        var players = this.getplayers();
+    self.getPlayerById = function (id) {
+        var players = self.getPlayers();
         var size = players.length;
         for (var i = 0; i < size; i++) {
             if (players[i].id == id) {
@@ -23,16 +44,17 @@ function Map(){
         }
         return false;
     };
-    this.getbombs = function () {
+    self.getBombs = function () {
         var tabBomb = [];
-        var players = this.getplayers();
+        var players = self.getPlayers();
         var size = players.length;
         var i = 0;
         for (i; i < size; i++){
             var player = players[i];
-                for (i = 0; i<listBomb.length; i++){
-                    tabBomb = this.listBomb[i];
+                for (i = 0; i<player.listBombs.length; i++){
+                    tabBomb = player.listBombs[i];
             }
         }
+        return tabBomb;
     };
 }

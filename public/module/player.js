@@ -19,5 +19,6 @@ function Player(name, x, y){
             }
         }
     };
+    this.listBombs = [];
     this.kills = 0;
 }
