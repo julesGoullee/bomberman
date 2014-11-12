@@ -77,7 +77,7 @@ $(document).ready(function(){
         // Render scene
         scene.render();
         // Show FPS rate
-        document.getElementById("fps").innerHTML = BABYLON.Tools.GetFps().toFixed();
+       // document.getElementById("fps").innerHTML = BABYLON.Tools.GetFps().toFixed();
     });
 //
 //// Watch for browser/canvas resize events
