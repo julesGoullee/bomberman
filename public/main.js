@@ -7,18 +7,18 @@ $(document).ready(function(){
 // Create scene
     var scene = new BABYLON.Scene(engine);
 // Create free camera at the position 0,11,-10
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 10, 0), scene);
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 11, -10), scene);
 // target 0,0,0
     camera.setTarget(new BABYLON.Vector3.Zero());
     camera.attachControl(canvas, false);
 // activate collision on camera
-//    camera.checkCollisions = true;
+    camera.checkCollisions = true;
 // create a sphere for the camera collision
     camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 // apply the gravity on the camera
-//    camera.applyGravity = true;
+    camera.applyGravity = true;
 // set the move speed of the camera
-    camera.speed = 1;
+    camera.speed = 0.5;
     console.log(camera.position.toString());
 // Create a hemisphericLight
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
@@ -77,7 +77,7 @@ $(document).ready(function(){
         // Render scene
         scene.render();
         // Show FPS rate
-       // document.getElementById("fps").innerHTML = BABYLON.Tools.GetFps().toFixed();
+        document.getElementById("fps").innerHTML = BABYLON.Tools.GetFps().toFixed();
     });
 //
 //// Watch for browser/canvas resize events
