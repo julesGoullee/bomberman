@@ -42,7 +42,7 @@ $(document).ready(function(){
 //
 //
 // Load and import a mesh from babylon file
-    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "map.babylon", scene, function (newMeshes) {
+    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "sol.babylon", scene, function (newMeshes) {
 
         // for every mesh in the model
         for(var i in newMeshes)
@@ -55,7 +55,32 @@ $(document).ready(function(){
             }
         }
     });
+    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "block.babylon", scene, function (newMeshes) {
 
+        // for every mesh in the model
+        for(var i in newMeshes)
+        {
+            if(newMeshes.hasOwnProperty(i)) {
+                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
+
+                // set collision system on
+                newMeshes[i].checkCollisions = true;
+            }
+        }
+    });
+    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "cubesTransparents.babylon", scene, function (newMeshes) {
+
+        // for every mesh in the model
+        for(var i in newMeshes)
+        {
+            if(newMeshes.hasOwnProperty(i)) {
+                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
+
+                // set collision system on
+                newMeshes[i].checkCollisions = true;
+            }
+        }
+    });
 //    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/", "Colt.babylon", scene, function (newMeshes) {
 //        // for every mesh in the model
 //        for (var i in newMeshes) {
