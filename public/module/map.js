@@ -22,5 +22,17 @@ function Map(){
             }
         }
         return false;
-    }
+    };
+    this.getbombs = function () {
+        var tabBomb = [];
+        var players = this.getplayers();
+        var size = players.length;
+        var i = 0;
+        for (i; i < size; i++){
+            var player = players[i];
+                for (i = 0; i<listBomb.length; i++){
+                    tabBomb = this.listBomb[i];
+            }
+        }
+    };
 }
