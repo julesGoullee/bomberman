@@ -9,6 +9,8 @@ function homeRoutes(app){
 
     var dependances ={
         scripts:[
+            'module/importMesh.js',
+            'main.js'
         ],
         css:[
             'css/style.css'

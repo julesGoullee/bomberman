@@ -7,7 +7,7 @@ $(document).ready(function(){
 // Create scene
     var scene = new BABYLON.Scene(engine);
 // Create free camera at the position 0,11,-10
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(7, 15, 0), scene);
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(7, 15, 10), scene);
 // target 0,0,0
     camera.setTarget(new BABYLON.Vector3(10, 10, 10));
     camera.attachControl(canvas, false);
@@ -18,8 +18,7 @@ $(document).ready(function(){
 // apply the gravity on the camera
     camera.applyGravity = true;
 // set the move speed of the camera
-    camera.speed = 0.5;
-    console.log(camera.position.toString());
+    camera.speed = 0.8;
 // Create a hemisphericLight
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
 //// set the light intensity
@@ -42,69 +41,32 @@ $(document).ready(function(){
 //
 //
 // Load and import a mesh from babylon file
-    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "sol.babylon", scene, function (newMeshes) {
+    var meshWithoutCollision = [
+        'block'
+    ];
 
+    var meshWithCollision = [
+        'sol',
+        'cubesTransparents',
+        'tourMapTransparent'
+    ];
+    for(var iMeshCollision = 0 ; iMeshCollision < meshWithCollision.length; iMeshCollision++){
+        ImportMesh(meshWithCollision[iMeshCollision],scene, true);
+    }
+    for(var iMeshWithoutCollision = 0 ; iMeshWithoutCollision < meshWithoutCollision.length; iMeshWithoutCollision++){
+        ImportMesh(meshWithoutCollision[iMeshWithoutCollision],scene, false);
+    }
+    BABYLON.SceneLoader.ImportMesh("", "/content/bloc/", "cubecassable.babylon", scene, function (newMeshes) {
         // for every mesh in the model
-        for(var i in newMeshes)
-        {
-            if(newMeshes.hasOwnProperty(i)) {
-                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
-
-                // set collision system on
-                newMeshes[i].checkCollisions = true;
-            }
+        for (var i in newMeshes) {
+            // set the scale of the model
+            //newMeshes[i].scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
+            // set the position of the model
+            newMeshes[i].position = new BABYLON.Vector3(10, 10, 10);
+            // set relative referential, the model will follow your camera
+            //newMeshes[i].parent = camera;
         }
     });
-    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "block.babylon", scene, function (newMeshes) {
-
-        // for every mesh in the model
-        for(var i in newMeshes)
-        {
-            if(newMeshes.hasOwnProperty(i)) {
-                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
-
-                // set collision system on
-                //newMeshes[i].checkCollisions = true;
-            }
-        }
-    });
-    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "cubesTransparents.babylon", scene, function (newMeshes) {
-
-        // for every mesh in the model
-        for(var i in newMeshes)
-        {
-            if(newMeshes.hasOwnProperty(i)) {
-                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
-
-                // set collision system on
-                newMeshes[i].checkCollisions = true;
-            }
-        }
-    });
-    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/map/", "tourMapTransparent.babylon", scene, function (newMeshes) {
-
-        // for every mesh in the model
-        for(var i in newMeshes)
-        {
-            if(newMeshes.hasOwnProperty(i)) {
-                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
-
-                // set collision system on
-                newMeshes[i].checkCollisions = true;
-            }
-        }
-    });
-//    BABYLON.SceneLoader.ImportMesh("", "/content/scenes/", "Colt.babylon", scene, function (newMeshes) {
-//        // for every mesh in the model
-//        for (var i in newMeshes) {
-//            // set the scale of the model
-//            newMeshes[i].scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
-//            // set the position of the model
-//            newMeshes[i].position = new BABYLON.Vector3(0.42, -0.53, 1.1);
-//            // set relative referential, the model will follow your camera
-//            newMeshes[i].parent = camera;
-//        }
-//    });
 //// call methode
 //    CreateMonsters();
 //
@@ -115,7 +77,7 @@ $(document).ready(function(){
         // Render scene
         scene.render();
         // Show FPS rate
-        document.getElementById("fps").innerHTML = BABYLON.Tools.GetFps().toFixed();
+        document.getElementById("fps").innerHTML = BABYLON.Tools.GetFps().toFixed()+ " position: " + camera.position.toString();
     });
 //
 //// Watch for browser/canvas resize events
@@ -133,7 +95,10 @@ $(document).ready(function(){
 //        }
 //    });
 
+
+
 // Remove context menu
     document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+    engine.resize();
 
 });
