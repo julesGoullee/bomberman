@@ -13,16 +13,14 @@ function Map(){
         }
         return tabPlayer;
     };
-    this.getplayerById = function (id){
+    this.getplayerById = function (id) {
         var players = this.getplayers();
         var size = players.length;
-        for (var i = 0;i<size;i++){
-            if (players[i].id == id){
+        for (var i = 0; i < size; i++) {
+            if (players[i].id == id) {
                 return players[i];
             }
-            else {
-
-            }
         }
-    };
+        return false;
+    }
 }
