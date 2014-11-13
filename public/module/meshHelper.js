@@ -1,10 +1,26 @@
 "use strict";
 function MeshHelper(){
     var self = this;
+    var importLoading = false;
+    var importStack = [];
     self.importMesh = function (url, colision , position, callback){
         /* Optional : colision, position,callback*/
-        var meshReturn = {};
+        importStack.push({
+            url : url,
+            colision :colision ,
+            position: position,
+            callback:callback
+        });
+        if(!importLoading){
+            importMesh(url, colision , position, callback);
+        }
+    };
 
+    var importMesh = function(url, colision , position, callback){
+        //debugger;
+
+        importLoading = true;
+        var meshReturn = {};
         BABYLON.SceneLoader.ImportMesh("", "/content/", url+'.babylon', _scene, function (newMeshes) {
             for (var i in newMeshes) {
                 if (newMeshes.hasOwnProperty(i)) {
@@ -13,29 +29,47 @@ function MeshHelper(){
                         newMeshes[i].position = new BABYLON.Vector3(position.x, position.y, position.z);
                     }
                     newMeshes[i].checkCollisions = colision ? false : true;
+
                 }
             }
             meshReturn.shape = newMeshes;
+
+            //if(colision) {
+            //    console.log(url,_scene);
+            //    BABYLON.SceneLoader.ImportMesh("", "/content/", url+'Colision.babylon', _scene, function (newMeshes) {
+            //        for (var i in newMeshes) {
+            //            if (newMeshes.hasOwnProperty(i)) {
+            //                //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
+            //                if(position){
+            //                    newMeshes[i].position = new BABYLON.Vector3(position.x, position.y, position.z);
+            //                }
+            //                newMeshes[i].checkCollisions = true;
+            //
+            //            }
+            //        }
+            //        meshReturn.colision = newMeshes;
+            //            end();
+            //    });
+            //}
+            //else{
+                end();
+            //}
+            function end(){
+                //debugger;
+                callback && callback(meshReturn);
+                importStack.shift();
+                if(importStack.length > 0){
+                    importMesh(importStack[0].url, importStack[0].colision , importStack[0].position, importStack[0].callback );
+                }else{
+                    importLoading = false;
+                }
+            }
         });
 
-        if(colision) {
-            BABYLON.SceneLoader.ImportMesh("", "/content/", url+'Colision.babylon', _scene, function (newMeshes) {
-                for (var i in newMeshes) {
-                    if (newMeshes.hasOwnProperty(i)) {
-                        //newMeshes[i].scaling = new BABYLON.Vector3(0.2,0.2,0.1);
-                        if(position){
-                            newMeshes[i].position = new BABYLON.Vector3(position.x, position.y, position.z);
-                        }
-                        newMeshes[i].checkCollisions = true;
 
-                    }
-                }
-                meshReturn.colision = newMeshes;
-            });
-        }
-        callback && callback(meshReturn);
+
     };
 
-    self.tempBlockMesh = self.importMesh("tempBlock", _scene, true);
+    //self.tempBlockMesh = self.importMesh("tempBlock", true);
     //self.tempBlockMesh.visibility = false;
 }

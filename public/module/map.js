@@ -1,8 +1,8 @@
 "use strict";
 function Maps(){
     var self = this;
-    self.largeur = 2;
-    self.longueur = 10;
+    self.largeur = 10;
+    self.longueur = 16;
     self.blockDim = 8;
     self.content = [];
 
@@ -24,7 +24,6 @@ function Maps(){
                         x:iBlockLargeur*self.blockDim,
                         z:iBlockLongueur*self.blockDim
                     };
-                    debugger;
                     var block = new Block(blockPosition);
                     //_meshHelper.importMesh("tempBlock", self.scene, true, {x: blockPosition.x, y: 0, z: blockPosition.z});
 
