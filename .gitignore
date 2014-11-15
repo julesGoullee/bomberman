@@ -1,4 +1,5 @@
 node_modules/
 bower_components/
 .idea/
-public/external/
+public/external/bootstrap/
+public/external/jquery/
