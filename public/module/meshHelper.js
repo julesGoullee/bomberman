@@ -76,9 +76,13 @@ function MeshHelper(){
             importStack.push(callback);
         }
     };
-    self.importMesh("tempBlock", false, false, function(mesh){
-        self.tempBlockMesh = mesh.shape[0];
-        self.tempBlockMesh.visibility = false;
+
+    self.importMesh("tempBlock", true, false, function(mesh){
+        self.tempBlockMesh = mesh;
+        //self.tempBlockMesh.shape[0].position = {x: 0, y: 0, z: 0};
+        //self.tempBlockMesh.colision[0].position = {x: 0, y: 0, z: 0};
+        self.tempBlockMesh.shape[0].visibility = false;
+        self.tempBlockMesh.colision[0].visibility = false;
         for(var i = 0; i < importStack.length; i++){
                 importStack[i](self.tempBlockMesh);
         }

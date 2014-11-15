@@ -7,6 +7,7 @@ function Maps(){
     self.content = [];
 
     function createTemporaireBlock (){
+        //var block = new Block({x:0 , z:0});
         for(var iBlockLargeur = -self.largeur/2 ; iBlockLargeur <= self.largeur/2; iBlockLargeur++){
             // block cassable
             for(var iBlockLongueur = - self.longueur/2 ; iBlockLongueur <= self.longueur/2; iBlockLongueur++){
@@ -35,7 +36,7 @@ function Maps(){
     self.create = function(){
         var meshs = [
             ['ground', false],
-            ['tourColision', false],
+            //['tour', true],
             ['permanentBlocks', true]
         ];
 
