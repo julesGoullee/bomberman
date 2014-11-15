@@ -1,7 +1,7 @@
 "use strict";
 function CameraPlayer (position){
     //var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(position[0], 15, position[1]), scene);
-    var camera = new BABYLON.DeviceOrientationCamera("camera1", new BABYLON.Vector3(-46, 127, -70), _scene);
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(-46, 127, -70), _scene);
     camera.setTarget(new BABYLON.Vector3(0, 15, -65));
     camera.attachControl(_canvas, false);
     //camera.checkCollisions = true;
@@ -11,6 +11,11 @@ function CameraPlayer (position){
     //camera.inertia = 0.4;
     //camera.angularSensibility = 1000;
     camera.speed = 1;
+    var originCamera = _scene.activeCamera;
+    _scene.activeCamera = null;
+    _scene.activeCameras = [];
+    _scene.autoClear = true;
+    BABYLON.OculusOrientedCamera.BuildOculusStereoCamera(     _scene,     "Oculus",     originCamera.minZ,     originCamera.maxZ,     originCamera.position,     { yaw: 3, pitch: 0, roll: 0 });
 
     //_canvas.addEventListener("click", function(evt) {
     //    _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
