@@ -1,20 +1,36 @@
 "use strict";
-function Block(position){
+
+function Block ( game, position ) {
+
     var self = this;
+
     self.position = position;
-    var init = function(){
-         _meshHelper.importTempMesh(function(mesh){
-             self.mesh = mesh.shape[0].clone();
-             //self.mesh.visibility = true;
-             self.mesh.position = {x: self.position.x, y: 0, z: self.position.z};
 
-             self.meshColision = mesh.colision[0].clone();
-             //self.meshColision.visibility = true;
-             self.meshColision.position = {x: self.position.x, y: 0, z: self.position.z};
+    self.game = game;
 
-         });
+    self.meshs = {
+
+        colision : function() {
+            var meshTempColision = self.game.assets["tempBlockColision"][0].clone();
+
+            meshTempColision.isVisible = true;
+
+            meshTempColision.checkCollisions = true;
+
+            meshTempColision.position = {
+                x: self.position.x,
+                y: 0, z: self.position.z
+            };
+
+            return meshTempColision;
+        }(),
+
+        shape : function () {
+            var meshTemp = self.game.assets["tempBlock"][0].clone();
+
+            meshTemp.isVisible = true;
+
+            meshTemp.position = {x: self.position.x, y: 0, z: self.position.z};
+        }()
     };
-
-    init()
-
 }

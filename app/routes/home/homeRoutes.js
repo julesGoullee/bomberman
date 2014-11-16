@@ -1,45 +1,55 @@
 "use strict";
-var config = require('../../config/config.js');
-var ejs = require('ejs');
-var fs = require('fs');
+
+var config = require( "../../config/config" );
+
+var ejs = require( "ejs" );
+
+var fs = require( "fs" );
 
 function homeRoutes(app){
-    var appFile = fs.readFileSync(config.rootPath + '/app/routes/home/home.html').toString();
 
-    var appRended = ejs.render(appFile,{} );
+    var appFile = fs.readFileSync( config.rootPath + "/app/routes/home/home.html" ).toString();
 
-    var dependances ={
+    var appRended = ejs.render( appFile, {} );
+
+    var dependances = {
         scripts:[
-            'module/block.js',
-            'module/bomb.js',
-            'module/player.js',
-            'module/scene.js',
-            'module/map.js',
+            "external/jquery/jquery",
+            "external/bootstrap/bootstrap.min",
+            "external/babylonjs/babylon.1.10.0",
 
-            'module/camera.js',
-            'module/ligth.js',
-            'module/meshHelper.js',
-
-            'main.js'
+            "module/block",
+            "module/bomb",
+            "module/player",
+            "module/scene",
+            "module/map",
+            "module/myPlayer",
+            "main"
         ],
         css:[
-            'css/style.css'
+            "/external/bootstrap/bootstrap.min",
+            "/external/bootstrap/bootstrap-theme.min",
+
+            "css/style"
         ]
     };
 
-    function commonResponseGetPost(res){
-        res.render('static/commonPartial/index.html', {dependances: dependances, app : appRended, title: 'Bomberman'});
+    function commonResponseGetPost( res ) {
+
+        res.render( "static/commonPartial/index.html", { dependances: dependances, app: appRended, title: "Bomberman" } );
     }
 
-    app.post('/',function(req,res){
-        commonResponseGetPost(res);
+    app.post("/",function( req, res ) {
+
+        commonResponseGetPost( res );
     });
 
-    app.get('/',function(req,res){
-        commonResponseGetPost(res);
+    app.get("/",function( req, res ){
+
+        commonResponseGetPost( res );
     });
 }
 
-module.exports = function(app){
-    homeRoutes(app);
+module.exports = function( app ) {
+    homeRoutes( app );
 };

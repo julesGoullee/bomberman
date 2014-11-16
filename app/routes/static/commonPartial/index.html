@@ -5,17 +5,14 @@
     <!--meta common-->
     <% include meta.html %>
 
-    <!--External common-->
-    <% include external.html %>
-
     <!--Script Module-->
 <% dependances.scripts.forEach(function(script, index) { %>
-    <script src="<%= script %>"></script>
+    <script src="<%= script %>.js"></script>
 <% }); %>
 
     <!--CSS Module-->
 <% dependances.css.forEach(function(css, index) { %>
-    <link rel="stylesheet" type="text/css" href="<%= css %>">
+    <link rel="stylesheet" type="text/css" href="<%= css %>.css">
 <% }); %>
 
 </head>

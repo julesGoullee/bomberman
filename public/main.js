@@ -1,41 +1,152 @@
 "use strict";
-var _scene;
-var _canvas;
-var _engine;
-var _meshHelper;
-$(document).ready(function(){
-    _canvas = document.getElementById("renderCanvas");
-    _engine = new BABYLON.Engine(_canvas, true);
-    _scene = new BABYLON.Scene(_engine);
 
-    var playsersPosition = [
-        [50, -65],
-        [42, 72],
-        [-50, 65],
-        [-42, -72]
+function Game ( canvasId ) {
+
+    var self = this;
+
+    var canvas = document.getElementById( canvasId ) ;
+
+    var engine = new BABYLON.Engine( canvas, true );
+
+    var meshPreload = [
+        'ground',
+        'permanentBlocks',
+        'permanentBlocksColision',
+        'tempBlock',
+        'tempBlockColision',
+        'tour',
+        'tourColision'
     ];
 
-    _meshHelper = new MeshHelper();
+    self.scene = self._initScene( engine );
 
-    var maps = new Maps(_scene);
-    var ligth = new Light();
-    maps.create();
-    // Player
-    var position = playsersPosition[3];
-    var player = new Player('myPlayer', position);
+    self.loader =  new BABYLON.AssetsManager( this.scene );
 
-    _engine.runRenderLoop(function () {
-        // Create octree
-        _scene.createOrUpdateSelectionOctree();
-        // Render scene
-        _scene.render();
+    self.assets = {};
 
-        /*DEBUG*/
-        document.getElementById("debug").innerHTML = "fps : " + BABYLON.Tools.GetFps().toFixed() + " Position: " + player.camera.position.toString();
-    });
+    self.pointerLocked = false;
 
-    // Watch for browser/canvas resize events
-    window.addEventListener("resize", function () {
-        _engine.resize();
-    });
-});
+    for ( var iMesh = 0 ; iMesh < meshPreload.length ; iMesh++ ) {
+
+        var currentMeshs = this.loader.addMeshTask( meshPreload[iMesh], "", "/content/", meshPreload[iMesh] + ".babylon" );
+
+        currentMeshs.onSuccess = function( task ) {
+
+            self._initMesh(task);
+        };
+    }
+
+    self.loader.onFinish = function (tasks) {
+
+        // Player and arena creation when the loading is finished
+        var playsersSpawnPoint = [
+            [50, -65],
+            [42, 72],
+            [-50, 65],
+            [-42, -72]
+        ];
+
+        var spawnPoint = playsersSpawnPoint[3];
+
+        var myPlayer = new MyPlayer(self, 'myPlayer' , spawnPoint);
+
+        var map = new Maps(self);
+
+        map.create();
+
+        self._initPointerLock();
+
+        engine.runRenderLoop( function () {
+
+            self.scene.render();
+
+            document.getElementById( "debug" ).innerHTML = "fps : " + BABYLON.Tools.GetFps().toFixed() + " Position: " + myPlayer.camera.position.toString();
+        });
+
+    };
+
+    self.loader.load();
+
+
+    window.addEventListener( "resize", function () {
+
+        engine && engine.resize();
+    },false);
+
+}
+
+Game.prototype = {
+
+    _initScene : function( engine ) {
+
+        var scene = new BABYLON.Scene( engine );
+
+        //light
+        var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
+
+        light.intensity = 0.7;
+
+        return scene;
+    },
+
+    _initMesh : function( task ) {
+
+        this.assets[task.name] = task.loadedMeshes;
+
+        for ( var i=0 ; i<task.loadedMeshes.length ; i++ ){
+
+            var mesh = task.loadedMeshes[i];
+
+            mesh.checkCollisions = false;
+
+            mesh.isVisible = false;
+        }
+    },
+
+    _initPointerLock : function() {
+
+        var self = this;
+
+        // Request pointer lock
+        var canvas = self.scene.getEngine().getRenderingCanvas();
+
+        var cameraPlayer = self.scene.getCameraByID("cameraPlayer");
+
+        canvas.addEventListener("click", function(event) {
+
+            canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
+
+            if (canvas.requestPointerLock) {
+
+                canvas.requestPointerLock();
+            }
+        }, false);
+
+        var pointerlockchange = function (event) {
+
+            self.pointerLocked = (document.mozPointerLockElement === canvas || document.webkitPointerLockElement === canvas || document.msPointerLockElement === canvas || document.pointerLockElement === canvas);
+
+            if ( !self.pointerLocked ) {
+
+                cameraPlayer.detachControl(canvas);
+            } else {
+
+                cameraPlayer.attachControl(canvas);
+            }
+        };
+
+        document.addEventListener("pointerlockchange", pointerlockchange, false);
+
+        document.addEventListener("mspointerlockchange", pointerlockchange, false);
+
+        document.addEventListener("mozpointerlockchange", pointerlockchange, false);
+
+        document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
+    }
+};
+
+document.addEventListener( "DOMContentLoaded", function () {
+
+    new Game( "renderCanvas" );
+
+}, false);

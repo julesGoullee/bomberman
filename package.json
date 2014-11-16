@@ -16,13 +16,13 @@
   "readme": "webgame!!",
   "version": "0.0.1",
   "dependencies": {
+    "ejs": "~1.0.0",
+    "express": "^4.10.1",
     "grunt": "*",
     "grunt-bower-task": "*",
-    "grunt-contrib-copy": "*",
-    "grunt-contrib-uglify": "*",
     "grunt-contrib-concat": "*",
-    "express": "*",
-    "ejs": "~1.0.0"
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-uglify": "*"
   },
   "devDependencies": {
     "grunt-simple-mocha": "*",

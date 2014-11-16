@@ -1,13 +1,13 @@
 /*global require, module*/
-'use strict';
-var config = require('./app/config/config.js');
+"use strict";
+var config = require("./app/config/config.js");
 
 module.exports = function(grunt) {
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-simple-mocha');
-    grunt.loadNpmTasks('grunt-bower-task');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks("grunt-karma");
+    grunt.loadNpmTasks("grunt-simple-mocha");
+    grunt.loadNpmTasks("grunt-bower-task");
+    grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-contrib-copy");
 
     grunt.initConfig({
         simplemocha: {
@@ -15,43 +15,48 @@ module.exports = function(grunt) {
                 options: {
                     timeout: 3000,
                     ignoreLeaks: true,
-                    reporter:'progress',
-                    ui: 'bdd'
+                    reporter: "progress",
+                    ui: "bdd"
                 },
-                src: config.rootPath + '/app/module/**/*.js'
+                src: config.rootPath + "/app/module/**/*.js"
             }
         },
         karma: {
-            game: {
-                basePath: 'public',
-                frameworks: ['jasmine'],
+            autoRun: {
+                basePath: "public",
+                frameworks: ["jasmine"],
                 options:{
                     files: [
                         //external
-                        'external/angular-mocks/*.js',
-                        //common
-                        'main.js'
+                        "external/jquery/*.js",
+                        "external/bootstrap/*.js",
+                        //MOCK
+                        "test/mock.js",
+                        //modules
+                        "module/**/test/*.js",
+                        "module/**/*.js"
                     ]
                 },
-                reporters: ['dots', 'ubuntu'],
+                // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+                reporters: ["dots", "ubuntu"],
                 autoWatch: true,
-                browsers: ['PhantomJS']
+                browsers: ["PhantomJS"]
             }
         },
         copy:{
             prod:{
                 files : [
                     {
-                        src: 'app/config/config_prod.js',
-                        dest: 'app/config/config.js'
+                        src: "app/config/config_prod.js",
+                        dest: "app/config/config.js"
                     }
                 ]
             },
             dev:{
                 files : [
                     {
-                        src: 'app/config/config_dev.js',
-                        dest: 'app/config/config.js'
+                        src: "app/config/config_dev.js",
+                        dest: "app/config/config.js"
                     }
                 ]
             }
@@ -59,34 +64,34 @@ module.exports = function(grunt) {
         bower: {
             install: {
                 options: {
-                    targetDir: './public/external/',
+                    targetDir: "./public/external/",
                     cleanTargetDir: false,
                     cleanBowerDir: false
                 }
             }
         },
         watch: {
-            configFiles: {
-                files: [config.rootPath + '/app/**/*.js', config.rootPath + '/Gruntfile.js'],
+            mochaTest: {
+                files: ["app/**/*.js", "Gruntfile.js"],
                 options: {
                     reload: true
                 },
-                tasks: 'simplemocha:all'
+                tasks: "simplemocha:all"
             }
         }
     });
 
-    grunt.registerTask('default', ['test_all']);
-    grunt.registerTask('install_external', ['bower:install']);
+    grunt.registerTask("default", ["test_all"]);
+    grunt.registerTask("install_external", ["bower:install"]);
 
     /*TEST*/
-    grunt.registerTask('test_server_all', ['simplemocha:all']);
-    grunt.registerTask('test_client_all', ['simplemocha:all']);
-    grunt.registerTask('test_all', ['karma:all','simplemocha:all']);
+    grunt.registerTask("test_server", ["simplemocha:all", "watch:mochaTest"]);
+    grunt.registerTask("test_client", ["karma:autoRun"]);
+    grunt.registerTask("test_all", ["karma:all","simplemocha:all"]);
 
     /*CONFIG*/
-    grunt.registerTask('config_dev', ['copy:dev']);
-    grunt.registerTask('config_prod', ['copy:prod']);
+    grunt.registerTask("config_dev", ["copy:dev"]);
+    grunt.registerTask("config_prod", ["copy:prod"]);
 };
 
 
