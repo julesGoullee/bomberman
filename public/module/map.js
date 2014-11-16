@@ -145,7 +145,7 @@ Maps.prototype = {
 
                 if ( iBlockLargeur % 2 !== 0 ){
 
-                    this.content.push( new Block( this.game, blockPosition ) );
+                    //this.content.push( new Block( this.game, blockPosition ) );
                 }
                 else if ( iBlockLongueur % 2 === 0 ) {
 

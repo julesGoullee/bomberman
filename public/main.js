@@ -36,7 +36,7 @@ function Game ( canvasId ) {
         };
     }
 
-    self.loader.onFinish = function (tasks) {
+    self.loader.onFinish = function() {
 
         // Player and arena creation when the loading is finished
         var playsersSpawnPoint = [
@@ -48,9 +48,9 @@ function Game ( canvasId ) {
 
         var spawnPoint = playsersSpawnPoint[3];
 
-        var myPlayer = new MyPlayer(self, 'myPlayer' , spawnPoint);
+        var myPlayer = new MyPlayer( self, 'myPlayer' , spawnPoint );
 
-        var map = new Maps(self);
+        var map = new Maps( self );
 
         map.create();
 
@@ -84,7 +84,7 @@ Game.prototype = {
         //light
         var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
 
-        light.intensity = 0.7;
+        light.intensity = 0.5;
 
         return scene;
     },
@@ -112,7 +112,7 @@ Game.prototype = {
 
         var cameraPlayer = self.scene.getCameraByID("cameraPlayer");
 
-        canvas.addEventListener("click", function(event) {
+        canvas.addEventListener("click", function() {
 
             canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
 
@@ -122,7 +122,7 @@ Game.prototype = {
             }
         }, false);
 
-        var pointerlockchange = function (event) {
+        var pointerlockchange = function () {
 
             self.pointerLocked = (document.mozPointerLockElement === canvas || document.webkitPointerLockElement === canvas || document.msPointerLockElement === canvas || document.pointerLockElement === canvas);
 
