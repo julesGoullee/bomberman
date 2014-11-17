@@ -13,6 +13,7 @@ function homeRoutes(app){
     var appRended = ejs.render( appFile, {} );
 
     var dependances = {
+
         scripts:[
             "external/jquery/jquery",
             "external/bootstrap/bootstrap.min",
@@ -21,9 +22,9 @@ function homeRoutes(app){
             "module/block",
             "module/bomb",
             "module/player",
-            "module/scene",
             "module/map",
             "module/myPlayer",
+            "module/game",
             "main"
         ],
         css:[
@@ -51,5 +52,6 @@ function homeRoutes(app){
 }
 
 module.exports = function( app ) {
+
     homeRoutes( app );
 };

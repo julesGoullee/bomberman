@@ -1,24 +1,31 @@
 "use strict";
 
-function Bomb (x, y){
+function Bomb ( x, y ) {
 
-    this.power = 1;
+    var self = this;
 
-    this.pos = {
+
+    /*PUBLIC METHODS*/
+
+    self.power = 1;
+
+    self.pos = {
         x: x,
         y: y
     };
 
-    this.type = "bombs";
+    self.type = "bombs";
 
-    this.countdown = 2000;
+    self.countdown = 2000;
 
-    this.exploded = false;
+    self.exploded = false;
 
-    this.duration = 800;
+    self.duration = 800;
 
-    this.destroy = function () {
+    self.destroy = function () {
 
-        this.exploded = true;
-    }
+        self.exploded = true;
+    };
+
+    /*PRIVATE METHODS*/
 }

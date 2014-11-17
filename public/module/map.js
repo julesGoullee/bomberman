@@ -4,19 +4,19 @@ function Maps ( game ) {
 
     var self = this;
 
-    self.nbLine = 10;
+    var nbLine = 10;
 
-    self.nbCol = 16;
+    var nbCol = 16;
 
-    self.blockDim = 8;
+    var content = [];
 
-    self.content = [];
+    var blockDim = 8.2;
+
+    var assets = game.assets;
 
     self.meshGround = [];
 
-    self.game = game;
-
-    self.meshs = [
+    self.meshsData = [
         {
             name: "ground",
 
@@ -24,6 +24,7 @@ function Maps ( game ) {
         },
         {
             name: "permanentBlocks",
+
             colisionCase: true
         },
         {
@@ -33,16 +34,19 @@ function Maps ( game ) {
         }
     ];
 
+
+    /*PUBLIC METHODS*/
+
     self.create = function() {
 
-        for ( var iMesh = 0 ; iMesh < self.meshs.length ; iMesh++ ) {
+        for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
 
-            if ( self.game.assets[self.meshs[iMesh].name] === undefined ) {
+            if ( assets[self.meshsData[iMesh].name] === undefined ) {
 
                 throw new Error( "Mesh is not preload" );
             }
 
-            var mesh = self.game.assets[self.meshs[iMesh].name][0];
+            var mesh = assets[self.meshsData[iMesh].name][0];
 
             mesh.checkCollisions = false;
 
@@ -50,9 +54,9 @@ function Maps ( game ) {
 
             self.meshGround.push( mesh );
 
-            if ( self.meshs[iMesh].colisionCase ) {
+            if ( self.meshsData[iMesh].colisionCase ) {
 
-                var  meshColision = self.game.assets[self.meshs[ iMesh].name + "Colision" ][0];
+                var  meshColision = assets[self.meshsData[ iMesh].name + "Colision" ][0];
 
                 meshColision.isVisible = true;
 
@@ -66,7 +70,7 @@ function Maps ( game ) {
             }
         }
 
-        self.createTemporaireBlock();
+        createTemporaireBlock();
     };
 
     self.getPlayers = function() {
@@ -75,13 +79,13 @@ function Maps ( game ) {
 
         var i = 0;
 
-        var size = self.content.length;
+        var size = content.length;
 
         for ( i; i < size; i++ ) {
 
-            if ( self.content[i].type == "player" ) {
+            if ( content[i].type == "player" ) {
 
-                tabPlayer = self.content[i];
+                tabPlayer = content[i];
             }
         }
         return tabPlayer;
@@ -125,35 +129,35 @@ function Maps ( game ) {
         }
         return tabBomb;
     };
-}
 
-Maps.prototype = {
 
-    createTemporaireBlock : function(){
+    /*PRIVATE METHODS*/
+
+    function createTemporaireBlock (){
         //var block = new Block({x:0 , z:0});
 
-        for ( var iBlockLargeur = -this.nbLine / 2 ; iBlockLargeur <= this.nbLine / 2 ; iBlockLargeur++ ) {
+        for ( var iBlockLargeur = -nbLine / 2 ; iBlockLargeur <= nbLine / 2 ; iBlockLargeur++ ) {
 
-            for ( var iBlockLongueur = - this.nbCol / 2 ; iBlockLongueur <= this.nbCol / 2 ; iBlockLongueur++ ) {
+            for ( var iBlockLongueur = - nbCol / 2 ; iBlockLongueur <= nbCol / 2 ; iBlockLongueur++ ) {
 
                 var blockPosition = {
 
-                    x: iBlockLargeur * this.blockDim,
+                    x: iBlockLargeur * blockDim,
 
-                    z: iBlockLongueur * this.blockDim
+                    z: iBlockLongueur * blockDim
                 };
 
                 if ( iBlockLargeur % 2 !== 0 ){
 
-                    //this.content.push( new Block( this.game, blockPosition ) );
+                    //content.push( new Block( game, blockPosition ) );
                 }
                 else if ( iBlockLongueur % 2 === 0 ) {
 
-                    this.content.push( new Block( this.game, blockPosition ) );
+                    content.push( new Block( assets, blockPosition ) );
                 }
             }
-            //console.log(this.content.length);
+            //console.log(content.length);
 
         }
     }
-};
+}

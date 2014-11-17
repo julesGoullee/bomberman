@@ -5,6 +5,8 @@ var gameMock = {
         "ground" : [{}],
         "permanentBlocks": [{}],
         "permanentBlocksColision": [{}],
+        "tour": [{}],
+        "tourColision": [{}],
         "tempBlock": [{
             clone : function (){
                 return {};

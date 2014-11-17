@@ -1,55 +1,54 @@
+"use strict";
+
 function MyPlayer ( game, name, spawnPoint ) {
 
     var self = this;
 
-    self.scene = game.scene;
-
-    self.game = game;
+    var scene = game.scene;
 
     //player speed
-    self.speed = 1;
+    var speed = 1;
 
     //player inertia
-    self.inertia = 0.9;
+    var inertia = 0.9;
 
     //player angular inertia
-    self.angularInertia = 0;
+    var angularInertia = 0;
 
     //mouse sensibility (lower the better sensible)
-    self.angularSensibility = 3000;
+    var angularSensibility = 3000;
 
 
+    /*PUBLIC METHODS*/
 
-    //player
     self.player = new Player( name, spawnPoint );
 
     // player camera
-    self.camera = self._initCamera();
+    self.camera = initCamera();
 
-    self.scene.activeCameras.push( self.camera );
+    scene.activeCameras.push( self.camera );
 
-    self.scene.activeCamera = self.camera;
+    scene.activeCamera = self.camera;
 
-}
 
-MyPlayer.prototype = {
+    /*PRIVATE METHODS*/
 
-    _initCamera : function() {
+    function initCamera(){
 
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
             //new BABYLON.Vector3(-46, 127, -70),
             new BABYLON.Vector3(0, 60, 0),
-            this.scene
+            scene
         );
 
-        //var cam = new BABYLON.FreeCamera(
-        //    'camera",
-        //    new BABYLON.Vector3(this.position.x,this.position.y,this.position.z),
-        //    this.scene
+        //var camera = new BABYLON.FreeCamera(
+        //    "cameraPlayer",
+        //    new BABYLON.Vector3( self.player.position.x, self.player.position.y, self.player.position.z ),
+        //    scene
         //);
 
-        camera.attachControl( this.scene.getEngine().getRenderingCanvas() );
+        camera.attachControl( scene.getEngine().getRenderingCanvas() );
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
@@ -64,20 +63,21 @@ MyPlayer.prototype = {
         camera.keysRight = [68]; // D
 
 
-        camera.inertia = this.inertia;
+        camera.inertia = inertia;
 
-        camera.speed = this.speed;
+        camera.speed = speed;
 
-        camera.applyGravity = true;
+        //camera.applyGravity = true;
 
-        camera.checkCollisions = true;
+        //camera.checkCollisions = true;
 
-        camera.angularSensibility = this.angularSensibility;
+        camera.angularSensibility = angularSensibility;
 
-        //cam.angularInertia = this.angularInertia;
+        //cam.angularInertia = angularInertia;
 
         //cam.layerMask = 2;
 
         return camera;
     }
-};
+}
+

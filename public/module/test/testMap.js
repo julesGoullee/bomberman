@@ -12,7 +12,7 @@ describe( "Maps", function() {
 
         it("Peut importer un mesh sans son calque de colision", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "ground",
 
@@ -28,7 +28,7 @@ describe( "Maps", function() {
 
         it("Peut importer un mesh avec son calque de colision", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "permanentBlocks",
 
@@ -44,7 +44,7 @@ describe( "Maps", function() {
 
         it("Peut importer deux mesh sans calque", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "ground",
 
@@ -65,7 +65,7 @@ describe( "Maps", function() {
 
         it("Peut lever une erreur si mesh n'est pas preload", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "meshNonLoad",
 
@@ -78,7 +78,7 @@ describe( "Maps", function() {
 
         it("Peut rendre visible le mesh", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "permanentBlocks",
 
@@ -93,7 +93,7 @@ describe( "Maps", function() {
 
         it("Peut rendre visible le calque du mesh", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "permanentBlocks",
 
@@ -108,7 +108,7 @@ describe( "Maps", function() {
 
         it("Peut checkCollisions si mesh sans calque", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "permanentBlocks",
 
@@ -123,7 +123,7 @@ describe( "Maps", function() {
 
         it("Peut checkCollisions le calque du mesh", function () {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "permanentBlocks",
 
@@ -149,7 +149,7 @@ describe( "Maps", function() {
 
         beforeEach( function() {
 
-            maps.meshs = [
+            maps.meshsData = [
                 {
                     name: "ground",
                     colisionCase: false

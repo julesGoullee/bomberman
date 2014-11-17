@@ -4,6 +4,9 @@ function Player ( name, spawnPoint ) {
 
     var self = this;
 
+
+    /*PUBLIC METHODS*/
+
     self.name = name;
 
     self.type = "player";
@@ -40,4 +43,5 @@ function Player ( name, spawnPoint ) {
     };
 
 
+    /*PRIVATE METHODS*/
 }
