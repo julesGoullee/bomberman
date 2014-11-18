@@ -14,6 +14,8 @@ function Maps ( game ) {
 
     var assets = game.assets;
 
+    /*PUBLIC METHODS*/
+
     self.meshGround = [];
 
     self.meshsData = [
@@ -33,9 +35,6 @@ function Maps ( game ) {
             colisionCase: true
         }
     ];
-
-
-    /*PUBLIC METHODS*/
 
     self.create = function() {
 
@@ -70,7 +69,7 @@ function Maps ( game ) {
             }
         }
 
-        createTemporaireBlock();
+        //createTemporaireBlock();
     };
 
     self.getPlayers = function() {

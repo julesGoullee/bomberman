@@ -67,9 +67,9 @@ function MyPlayer ( game, name, spawnPoint ) {
 
         camera.speed = speed;
 
-        //camera.applyGravity = true;
+        camera.applyGravity = true;
 
-        //camera.checkCollisions = true;
+        camera.checkCollisions = true;
 
         camera.angularSensibility = angularSensibility;
 

@@ -28,8 +28,8 @@ function homeRoutes(app){
             "main"
         ],
         css:[
-            "/external/bootstrap/bootstrap.min",
-            "/external/bootstrap/bootstrap-theme.min",
+            "external/bootstrap/bootstrap.min",
+            "external/bootstrap/bootstrap-theme.min",
 
             "css/style"
         ]
@@ -40,7 +40,7 @@ function homeRoutes(app){
         res.render( "static/commonPartial/index.html", { dependances: dependances, app: appRended, title: "Bomberman" } );
     }
 
-    app.post("/",function( req, res ) {
+    app.post( "/" ,function( req, res ) {
 
         commonResponseGetPost( res );
     });

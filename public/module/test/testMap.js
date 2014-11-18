@@ -170,4 +170,5 @@ describe( "Maps", function() {
 
     });
 
+    //TODO TEST getPlayerById, getBombs
 });
