@@ -35,18 +35,18 @@ function MyPlayer ( game, name, spawnPoint ) {
 
     function initCamera(){
 
-        var camera = new BABYLON.FreeCamera(
-            "cameraPlayer",
-            //new BABYLON.Vector3(-46, 127, -70),
-            new BABYLON.Vector3(0, 60, 0),
-            scene
-        );
-
         //var camera = new BABYLON.FreeCamera(
         //    "cameraPlayer",
-        //    new BABYLON.Vector3( self.player.position.x, self.player.position.y, self.player.position.z ),
+        //    //new BABYLON.Vector3(-46, 127, -70),
+        //    new BABYLON.Vector3(0, 60, 0),
         //    scene
         //);
+
+        var camera = new BABYLON.FreeCamera(
+            "cameraPlayer",
+            new BABYLON.Vector3( self.player.position.x, self.player.position.y, self.player.position.z ),
+            scene
+        );
 
         camera.attachControl( scene.getEngine().getRenderingCanvas() );
 
@@ -67,9 +67,9 @@ function MyPlayer ( game, name, spawnPoint ) {
 
         camera.speed = speed;
 
-        camera.applyGravity = true;
-
-        camera.checkCollisions = true;
+        //camera.applyGravity = true;
+        //
+        //camera.checkCollisions = true;
 
         camera.angularSensibility = angularSensibility;
 

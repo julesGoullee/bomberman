@@ -10,7 +10,7 @@ function Maps ( game ) {
 
     var content = [];
 
-    var blockDim = 8.2;
+    var blockDim = 8;
 
     var assets = game.assets;
 
@@ -69,7 +69,7 @@ function Maps ( game ) {
             }
         }
 
-        //createTemporaireBlock();
+        createTemporaireBlock();
     };
 
     self.getPlayers = function() {
@@ -148,7 +148,7 @@ function Maps ( game ) {
 
                 if ( iBlockLargeur % 2 !== 0 ){
 
-                    //content.push( new Block( game, blockPosition ) );
+                    content.push( new Block( assets, blockPosition ) );
                 }
                 else if ( iBlockLongueur % 2 === 0 ) {
 
