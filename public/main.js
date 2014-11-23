@@ -2,6 +2,6 @@
 
 document.addEventListener( "DOMContentLoaded", function () {
 
-    new Game( "renderCanvas").init();
+    new Game( "renderCanvas" ).init();
 
 }, false);

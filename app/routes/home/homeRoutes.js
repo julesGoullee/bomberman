@@ -1,12 +1,10 @@
 "use strict";
 
 var config = require( "../../config/config" );
-
 var ejs = require( "ejs" );
-
 var fs = require( "fs" );
 
-function homeRoutes(app){
+function homeRoutes( app ){
 
     var appFile = fs.readFileSync( config.rootPath + "/app/routes/home/home.html" ).toString();
 
@@ -45,7 +43,7 @@ function homeRoutes(app){
         commonResponseGetPost( res );
     });
 
-    app.get("/",function( req, res ){
+    app.get( "/",function( req, res ){
 
         commonResponseGetPost( res );
     });

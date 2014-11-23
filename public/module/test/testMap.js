@@ -10,7 +10,7 @@ describe( "Maps", function() {
 
     describe( "Create & import mesh", function() {
 
-        it("Peut importer un mesh sans son calque de colision", function () {
+        it( "Peut importer un mesh sans son calque de colision", function () {
 
             maps.meshsData = [
                 {
@@ -26,7 +26,7 @@ describe( "Maps", function() {
             expect( maps.meshGround.length ).toEqual( 1 );
         });
 
-        it("Peut importer un mesh avec son calque de colision", function () {
+        it( "Peut importer un mesh avec son calque de colision", function () {
 
             maps.meshsData = [
                 {
@@ -42,7 +42,7 @@ describe( "Maps", function() {
             expect( maps.meshGround.length ).toEqual( 2 );
         });
 
-        it("Peut importer deux mesh sans calque", function () {
+        it( "Peut importer deux mesh sans calque", function () {
 
             maps.meshsData = [
                 {
@@ -63,7 +63,7 @@ describe( "Maps", function() {
             expect( maps.meshGround.length ).toEqual( 2 );
         });
 
-        it("Peut lever une erreur si mesh n'est pas preload", function () {
+        it( "Peut lever une erreur si mesh n'est pas preload", function () {
 
             maps.meshsData = [
                 {
@@ -76,7 +76,7 @@ describe( "Maps", function() {
             expect( maps.create ).toThrow( Error( "Mesh is not preload" ) );
         });
 
-        it("Peut rendre visible le mesh", function () {
+        it( "Peut rendre visible le mesh", function () {
 
             maps.meshsData = [
                 {
@@ -91,7 +91,7 @@ describe( "Maps", function() {
             expect( maps.meshGround[0].isVisible ).toBe( true );
         });
 
-        it("Peut rendre visible le calque du mesh", function () {
+        it( "Peut rendre visible le calque du mesh", function () {
 
             maps.meshsData = [
                 {
@@ -106,7 +106,7 @@ describe( "Maps", function() {
             expect( maps.meshGround[1].isVisible ).toBe( true );
         });
 
-        it("Peut checkCollisions si mesh sans calque", function () {
+        it( "Peut checkCollisions si mesh sans calque", function () {
 
             maps.meshsData = [
                 {
@@ -121,7 +121,7 @@ describe( "Maps", function() {
             expect (maps.meshGround[0].checkCollisions ).toBe( true );
         });
 
-        it("Peut checkCollisions le calque du mesh", function () {
+        it( "Peut checkCollisions le calque du mesh", function () {
 
             maps.meshsData = [
                 {

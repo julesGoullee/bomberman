@@ -35,7 +35,7 @@ function Game ( canvasId ) {
 
             currentMeshs.onSuccess = function( task ) {
 
-                initMesh(task);
+                initMesh( task );
             };
         }
 
@@ -77,7 +77,7 @@ function Game ( canvasId ) {
     window.addEventListener( "resize", function () {
 
         engine && engine.resize();
-    },false);
+    }, false);
 
     function initScene ( engine ) {
 
@@ -95,7 +95,7 @@ function Game ( canvasId ) {
 
         self.assets[task.name] = task.loadedMeshes;
 
-        for ( var i=0 ; i<task.loadedMeshes.length ; i++ ){
+        for ( var i=0 ; i < task.loadedMeshes.length ; i++ ) {
 
             var mesh = task.loadedMeshes[i];
 
@@ -117,7 +117,7 @@ function Game ( canvasId ) {
 
             canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
 
-            if (canvas.requestPointerLock) {
+            if ( canvas.requestPointerLock ) {
 
                 canvas.requestPointerLock();
             }
@@ -125,21 +125,21 @@ function Game ( canvasId ) {
 
         var pointerlockchange = function () {
 
-            pointerLocked = (document.mozPointerLockElement === canvas || document.webkitPointerLockElement === canvas || document.msPointerLockElement === canvas || document.pointerLockElement === canvas);
+            pointerLocked = document.mozPointerLockElement === canvas || document.webkitPointerLockElement === canvas || document.msPointerLockElement === canvas || document.pointerLockElement === canvas;
 
             if ( !pointerLocked ) {
 
-                cameraPlayer.detachControl(canvas);
+                cameraPlayer.detachControl( canvas );
             } else {
 
-                cameraPlayer.attachControl(canvas);
+                cameraPlayer.attachControl( canvas );
             }
         };
 
-        document.addEventListener("pointerlockchange", pointerlockchange, false);
-        document.addEventListener("mspointerlockchange", pointerlockchange, false);
-        document.addEventListener("mozpointerlockchange", pointerlockchange, false);
-        document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
+        document.addEventListener( "pointerlockchange", pointerlockchange, false );
+        document.addEventListener( "mspointerlockchange", pointerlockchange, false );
+        document.addEventListener( "mozpointerlockchange", pointerlockchange, false );
+        document.addEventListener( "webkitpointerlockchange", pointerlockchange, false );
     }
 
 }

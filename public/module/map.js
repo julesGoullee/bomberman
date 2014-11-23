@@ -98,9 +98,9 @@ function Maps ( game ) {
 
         var size = players.length;
 
-        for ( var i = 0; i < size; i++) {
+        for ( var i = 0; i < size; i++ ) {
 
-            if (players[i].id == id) {
+            if ( players[i].id == id ) {
 
                 return players[i];
             }
@@ -119,15 +119,16 @@ function Maps ( game ) {
 
         var i = 0;
 
-        for ( i; i < size; i++){
+        for ( i; i < size; i++ ) {
 
             var player = players[i];
 
-            for ( i = 0; i < player.listBombs.length; i++){
+            for ( i = 0; i < player.listBombs.length; i++ ){
 
                 tabBomb = player.listBombs[i];
             }
         }
+
         return tabBomb;
     };
 
@@ -135,30 +136,30 @@ function Maps ( game ) {
     /*PRIVATE METHODS*/
 
     function createTemporaireBlock (){
-        //var block = new Block({x:0 , z:0});
+        var block = new Block( assets, { x: 0, z: 0 } );
 
-        for ( var iBlockLargeur = -nbLine / 2 ; iBlockLargeur <= nbLine / 2 ; iBlockLargeur++ ) {
-
-            for ( var iBlockLongueur = - nbCol / 2 ; iBlockLongueur <= nbCol / 2 ; iBlockLongueur++ ) {
-
-                var blockPosition = {
-
-                    x: iBlockLargeur * blockDim,
-
-                    z: iBlockLongueur * blockDim
-                };
-
-                if ( iBlockLargeur % 2 !== 0 ){
-
-                    content.push( new Block( assets, blockPosition ) );
-                }
-                else if ( iBlockLongueur % 2 === 0 ) {
-
-                    content.push( new Block( assets, blockPosition ) );
-                }
-            }
-            //console.log(content.length);
-
-        }
+        //for ( var iBlockLargeur = -nbLine / 2 ; iBlockLargeur <= nbLine / 2 ; iBlockLargeur++ ) {
+        //
+        //    for ( var iBlockLongueur = - nbCol / 2 ; iBlockLongueur <= nbCol / 2 ; iBlockLongueur++ ) {
+        //
+        //        var blockPosition = {
+        //
+        //            x: iBlockLargeur * blockDim,
+        //
+        //            z: iBlockLongueur * blockDim
+        //        };
+        //
+        //        if ( iBlockLargeur % 2 !== 0 ){
+        //
+        //            content.push( new Block( assets, blockPosition ) );
+        //        }
+        //        else if ( iBlockLongueur % 2 === 0 ) {
+        //
+        //            content.push( new Block( assets, blockPosition ) );
+        //        }
+        //    }
+        //    //console.log( content.length );
+        //
+        //}
     }
 }

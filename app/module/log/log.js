@@ -1,14 +1,16 @@
-var config = require('../../config/config.js');
-var server = require(config.rootPath + '/app/module/server/server.js');
+var config = require( "../../config/config.js" );
+
+var server = require( config.rootPath + "/app/module/server/server.js" );
 
 function log(app){
 
     //Dev log TODO
     server.onListenStart(function(){
-        console.log("server listen on 3000 ...");
+
+        console.log( "server listen on 3000 ..." );
     });
 
-    app.use(function(req, res, next){
+    app.use(function( req, res, next ){
 //        console.log(req.method, req.url);
         next();
     });
@@ -16,7 +18,8 @@ function log(app){
 }
 
 module.exports ={
-    start : function(app){
-        log(app);
+    start : function( app ){
+
+        log( app );
     }
 };
