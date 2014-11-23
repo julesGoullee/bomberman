@@ -36,8 +36,6 @@ function Maps ( game ) {
         }
     ];
 
-
-
     self.create = function() {
 
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
@@ -47,13 +45,13 @@ function Maps ( game ) {
                 throw new Error( "Mesh is not preload" );
             }
 
-            //var mesh = assets[self.meshsData[iMesh].name][0];
-            //
-            //mesh.checkCollisions = false;
-            //
-            //mesh.isVisible = true;
-            //
-            //self.meshGround.push( mesh );
+            var mesh = assets[self.meshsData[iMesh].name][0];
+
+            mesh.checkCollisions = false;
+
+            mesh.isVisible = true;
+
+            self.meshGround.push( mesh );
 
             if ( self.meshsData[iMesh].colisionCase ) {
 
