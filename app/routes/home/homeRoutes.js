@@ -15,8 +15,11 @@ function homeRoutes( app ){
         scripts:[
             "external/jquery/jquery",
             "external/bootstrap/bootstrap.min",
-            "external/babylonjs/babylon.1.10.0",
 
+            "external/babylonjs/babylon.1.10.0",
+            "socketIo/socket.io",
+
+            // ftc utilitaire
             "module/utils",
 
             //debug

@@ -1,6 +1,7 @@
 var config = require( "../../config/config.js" );
 var onListenStartCallbacks = [];
 var http = require( "http" );
+var io = require('socket.io')(http);
 
 module.exports = {
 
