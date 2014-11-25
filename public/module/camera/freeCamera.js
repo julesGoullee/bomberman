@@ -4,11 +4,11 @@ function FreeCamera(game) {
 
     var self = this;
 
-    var scene = game.scene;
+    var _scene = game.scene;
 
-    var speed = 1;
+    var _speed = 1;
 
-    var inertia = 0.9;
+    var _inertia = 0.9;
 
     //mouse sensibility (lower the better sensible)
     var angularSensibility = 3000;
@@ -18,9 +18,9 @@ function FreeCamera(game) {
 
     self.camera = initCamera();
 
-    //scene.activeCameras.push( self.camera );
+    //_scene.activeCameras.push( self.camera );
 
-    //scene.activeCamera = self.camera;
+    //_scene.activeCamera = self.camera;
 
 
     /*PRIVATE METHODS*/
@@ -30,7 +30,7 @@ function FreeCamera(game) {
         var camera = new BABYLON.FreeCamera(
             "cameraFree",
             new BABYLON.Vector3(0, 60, 0),
-            scene
+            _scene
         );
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
@@ -46,9 +46,9 @@ function FreeCamera(game) {
         camera.keysRight = [68]; // D
 
 
-        camera.inertia = inertia;
+        camera.inertia = _inertia;
 
-        camera.speed = speed;
+        camera.speed = _speed;
 
         camera.angularSensibility = angularSensibility;
 

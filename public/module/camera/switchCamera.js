@@ -1,7 +1,7 @@
 "use strict";
 
 function switchCamera (scene) {
-    $( "body" ).append( "<button class='btn' id='switchCamera'>Changer de vue (actual : camera <span>scene.activeCamera.id</span>)</button>" );
+    $( "body" ).append( "<button class='btn' id='switchCamera'>Changer de vue (actual : camera <span>" + scene.activeCamera.id + "</span>)</button>" );
 
     $( "#switchCamera" ).click(function() {
 

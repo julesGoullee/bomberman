@@ -4,15 +4,15 @@ function Maps( game ) {
 
     var self = this;
 
-    var nbLine = 10;
+    var _nbLine = 10;
 
-    var nbCol = 16;
+    var _nbCol = 16;
 
-    var content = [];
+    var _content = [];
 
-    var blockDim = 8;
+    var _blockDim = 8;
 
-    var assets = game.assets;
+    var _assets = game.assets;
 
     /*PUBLIC METHODS*/
 
@@ -47,13 +47,13 @@ function Maps( game ) {
 
         var i = 0;
 
-        var size = content.length;
+        var size = _content.length;
 
         for ( i; i < size; i++ ) {
 
-            if ( content[i].type == "player" ) {
+            if ( _content[i].type == "player" ) {
 
-                tabPlayer = content[i];
+                tabPlayer = _content[i];
             }
         }
         return tabPlayer;
@@ -105,12 +105,12 @@ function Maps( game ) {
     function createGroundAndPermanentBlock() {
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
 
-            if ( assets[self.meshsData[iMesh].name] === undefined ) {
+            if ( _assets[self.meshsData[iMesh].name] === undefined ) {
 
                 throw new Error( "Mesh is not preload" );
             }
 
-            var mesh = assets[self.meshsData[iMesh].name][0];
+            var mesh = _assets[self.meshsData[iMesh].name][0];
 
             mesh.checkCollisions = false;
 
@@ -120,7 +120,7 @@ function Maps( game ) {
 
             if ( self.meshsData[iMesh].colisionCase ) {
 
-                var  meshColision = assets[self.meshsData[ iMesh].name + "Colision" ][0];
+                var  meshColision = _assets[self.meshsData[ iMesh].name + "Colision" ][0];
 
                 meshColision.isVisible = true;
 
@@ -138,27 +138,27 @@ function Maps( game ) {
     function createTemporaireBlock (){
         //var block = new Block( assets, { x: 0, z: 0 } );
 
-        for ( var iBlockLargeur = -nbLine / 2 ; iBlockLargeur <= nbLine / 2 ; iBlockLargeur++ ) {
+        for ( var iBlockLargeur = -_nbLine / 2 ; iBlockLargeur <= _nbLine / 2 ; iBlockLargeur++ ) {
 
-            for ( var iBlockLongueur = - nbCol / 2 ; iBlockLongueur <= nbCol / 2 ; iBlockLongueur++ ) {
+            for ( var iBlockLongueur = - _nbCol / 2 ; iBlockLongueur <= _nbCol / 2 ; iBlockLongueur++ ) {
 
                 var blockPosition = {
 
-                    x: iBlockLargeur * blockDim,
+                    x: iBlockLargeur * _blockDim,
 
-                    z: iBlockLongueur * blockDim
+                    z: iBlockLongueur * _blockDim
                 };
 
                 if ( iBlockLargeur % 2 !== 0 ){
 
-                    content.push( new Block( assets, blockPosition ) );
+                    _content.push( new Block( _assets, blockPosition ) );
                 }
                 else if ( iBlockLongueur % 2 === 0 ) {
 
-                    content.push( new Block( assets, blockPosition ) );
+                    _content.push( new Block( _assets, blockPosition ) );
                 }
             }
-            //console.log( content.length );
+            //console.log( _content.length );
 
         }
     }

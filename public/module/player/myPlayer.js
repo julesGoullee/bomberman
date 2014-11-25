@@ -4,16 +4,16 @@ function MyPlayer( game, name, spawnPoint, assets ) {
 
     var self = this;
 
-    var scene = game.scene;
+    var _scene = game.scene;
 
     //player speed
-    var speed = 1;
+    var _speed = 1;
 
     //player inertia
-    var inertia = 0.9;
+    var _inertia = 0.9;
 
     //player angular inertia
-    var angularInertia = 0;
+    var _angularInertia = 0;
 
     //mouse sensibility (lower the better sensible)
     var angularSensibility = 3000;
@@ -31,7 +31,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
 
     //scene.activeCameras.push( self.camera );
 
-    scene.activeCamera = self.camera;
+    _scene.activeCamera = self.camera;
 
 
     /*PRIVATE METHODS*/
@@ -41,7 +41,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
             new BABYLON.Vector3( spawnPoint[0], 7 ,spawnPoint[1] ),
-            scene
+            _scene
         );
 
         //var camera = new BABYLON.FreeCamera(
@@ -50,7 +50,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
         //    scene
         //);
 
-        camera.attachControl( scene.getEngine().getRenderingCanvas() );
+        camera.attachControl( _scene.getEngine().getRenderingCanvas() );
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
@@ -65,9 +65,9 @@ function MyPlayer( game, name, spawnPoint, assets ) {
         camera.keysRight = [68]; // D
 
 
-        camera.inertia = inertia;
+        camera.inertia = _inertia;
 
-        camera.speed = speed;
+        camera.speed = _speed;
 
         camera.applyGravity = true;
 

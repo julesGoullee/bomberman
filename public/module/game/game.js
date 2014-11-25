@@ -4,11 +4,11 @@ function Game ( canvasId ) {
 
     var self = this;
 
-    var canvas = document.getElementById( canvasId ) ;
+    var _canvas = document.getElementById( canvasId ) ;
 
-    var engine = new BABYLON.Engine( canvas, true );
+    var _engine = new BABYLON.Engine( _canvas, true );
 
-    var meshPreload = [
+    var _meshPreload = [
         "ground",
         "permanentBlocks",
         "permanentBlocksColision",
@@ -18,7 +18,7 @@ function Game ( canvasId ) {
         "tourColision"
     ];
 
-    var loader;
+    var _loader;
 
 
     /*PUBLIC METHODS*/
@@ -36,21 +36,22 @@ function Game ( canvasId ) {
 
         self.assets["spherePlayer"] = [sphereMock];
 
-        loader = new BABYLON.AssetsManager( self.scene );
+        _loader = new BABYLON.AssetsManager( self.scene );
 
-        for ( var iMesh = 0 ; iMesh < meshPreload.length ; iMesh++ ) {
+        _loader.useDefaultLoadingScreen = true;//todo creer un loader qui attend les webSockets
 
-            var currentMeshs = loader.addMeshTask( meshPreload[iMesh], "", "/content/", meshPreload[iMesh] + ".babylon" );
+        for ( var iMesh = 0 ; iMesh < _meshPreload.length ; iMesh++ ) {
+
+            var currentMeshs = _loader.addMeshTask( _meshPreload[iMesh], "", "/content/", _meshPreload[iMesh] + ".babylon" );
 
             currentMeshs.onSuccess = function( task ) {
 
                 initMesh( task );
             };
         }
+        _loader.load();
 
-        loader.load();
-
-        loader.onFinish = function() {
+        _loader.onFinish = function() {
 
             // Player and arena creation when the loading is finished
             var playsersSpawnPoint = [
@@ -74,7 +75,7 @@ function Game ( canvasId ) {
 
             initPointerLock();
 
-            engine.runRenderLoop( function () {
+            _engine.runRenderLoop( function () {
 
                 self.scene.render();
                 //todo ameliorer le debug des positions
@@ -89,12 +90,12 @@ function Game ( canvasId ) {
 
     window.addEventListener( "resize", function () {
 
-        engine && engine.resize();
+        _engine && _engine.resize();
     }, false);
 
     function initScene () {
 
-        var scene = new BABYLON.Scene( engine );
+        var scene = new BABYLON.Scene( _engine );
 
         //light
         var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
@@ -122,27 +123,27 @@ function Game ( canvasId ) {
         var pointerLocked = false;
 
         // Request pointer lock
-        canvas.addEventListener("click", function() {
+        _canvas.addEventListener("click", function() {
 
-            canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
+            _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
 
-            if ( canvas.requestPointerLock ) {
+            if ( _canvas.requestPointerLock ) {
 
-                canvas.requestPointerLock();
+                _canvas.requestPointerLock();
             }
         }, false);
 
         var pointerlockchange = function () {
             var cameraActive = self.scene.activeCamera;
 
-            pointerLocked = document.mozPointerLockElement === canvas || document.webkitPointerLockElement === canvas || document.msPointerLockElement === canvas || document.pointerLockElement === canvas;
+            pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
 
             if ( !pointerLocked ) {
 
-                cameraActive.detachControl( canvas );
+                cameraActive.detachControl( _canvas );
             } else {
 
-                cameraActive.attachControl( canvas );
+                cameraActive.attachControl( _canvas );
             }
         };
 
