@@ -1,6 +1,6 @@
 "use strict";
 
-function Player ( name, spawnPoint, scene ) {
+function Player ( name, spawnPoint, assets ) {
 
     var self = this;
 
@@ -48,7 +48,7 @@ function Player ( name, spawnPoint, scene ) {
     }
 
     function createMesh() {
-        self.mesh = BABYLON.Mesh.CreateSphere("player2", 16, 4, scene);
+        self.mesh = assets["spherePlayer"][0].clone();
     }
     init();
 }

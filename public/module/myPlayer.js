@@ -1,6 +1,6 @@
 "use strict";
 
-function MyPlayer( game, name, spawnPoint ) {
+function MyPlayer( game, name, spawnPoint, assets ) {
 
     var self = this;
 
@@ -21,7 +21,7 @@ function MyPlayer( game, name, spawnPoint ) {
 
     /*PUBLIC METHODS*/
 
-    self.player = new Player( name, spawnPoint, scene );
+    self.player = new Player( name, spawnPoint, assets );
 
     // player camera
     self.camera = initCamera();

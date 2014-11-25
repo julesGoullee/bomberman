@@ -6,7 +6,7 @@ describe( "Bombe" ,function() {
 
     beforeEach( function() {
 
-        player = new Player( "testPlayer", spawnPoint);
+        player = new Player( "testPlayer", spawnPoint, gameMock.assets );
         bombe = new Bombe( player, player.position);
     });
 

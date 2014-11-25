@@ -16,8 +16,11 @@ var gameMock = {
             clone : function (){
                 return {};
             }
+        }],
+        "spherePlayer" :[{//todo a remplacer par le mesh
+            clone : function (){
+                return {};
+            }
         }]
     }
 };
-
-var Block = function(){};

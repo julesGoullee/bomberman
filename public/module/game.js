@@ -27,6 +27,8 @@ function Game( canvasId ) {
     self.assets = {};
 
     self.init = function(){
+        self.assets["spherePlayer"] = BABYLON.Mesh.CreateSphere("player2", 16, 4, self.scene);//todo a remplacer par le mesh
+
         loader = new BABYLON.AssetsManager( self.scene );
 
         for ( var iMesh = 0 ; iMesh < meshPreload.length ; iMesh++ ) {
@@ -53,7 +55,7 @@ function Game( canvasId ) {
 
             var spawnPoint = playsersSpawnPoint[3];
 
-            var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint );
+            var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets );
 
             var freeCamera = new FreeCamera(self);
 

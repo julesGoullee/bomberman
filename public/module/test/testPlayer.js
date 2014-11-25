@@ -1,6 +1,6 @@
 "use strict";
 
-describe( "User", function() {
+describe( "Player", function() {
 
     var player;
 
@@ -8,7 +8,7 @@ describe( "User", function() {
 
     beforeEach( function() {
 
-        player = new Player( "testPlayer", spawnPoint );
+        player = new Player( "testPlayer", spawnPoint , gameMock.assets );
     });
 
     it( "Peut creer un player a la bonne position", function() {
