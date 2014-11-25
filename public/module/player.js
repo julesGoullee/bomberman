@@ -4,8 +4,9 @@ function Player ( name, spawnPoint ) {
 
     var self = this;
 
-
     /*PUBLIC METHODS*/
+
+    self.id = utils.guid();
 
     self.name = name;
 
@@ -26,22 +27,20 @@ function Player ( name, spawnPoint ) {
     self.powerUp = {
         speed: 0.45,
         shoot: false,
-        bombs: 1
+        bombs: 2
     };
 
     self.setBomb = function ( bomb ){
 
-        if ( self.powerUp.bombs > 0 ) {
+        if ( self.listBombs.length < self.powerUp.bombs ) {
 
-            self.powerUp.bombs -= 1;
-
-            if ( bomb.exploded = true ) {
-
-                self.powerUp.bomb += 1;
-            }
+            self.listBombs.push( bomb );
+            return true;
         }
+        return false;
     };
 
+    //TODO getBombeById
 
     /*PRIVATE METHODS*/
 }

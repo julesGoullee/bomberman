@@ -1,19 +1,14 @@
 "use strict";
 
-function MyPlayer( game, name, spawnPoint ) {
+function FreeCamera(game) {
 
     var self = this;
 
     var scene = game.scene;
 
-    //player speed
     var speed = 1;
 
-    //player inertia
     var inertia = 0.9;
-
-    //player angular inertia
-    var angularInertia = 0;
 
     //mouse sensibility (lower the better sensible)
     var angularSensibility = 3000;
@@ -21,33 +16,41 @@ function MyPlayer( game, name, spawnPoint ) {
 
     /*PUBLIC METHODS*/
 
-    self.player = new Player( name, spawnPoint );
-
-    // player camera
     self.camera = initCamera();
 
     //scene.activeCameras.push( self.camera );
 
-    scene.activeCamera = self.camera;
+    //scene.activeCamera = self.camera;
 
 
     /*PRIVATE METHODS*/
 
     function initCamera() {
 
+        $( "body" ).append( "<button class='btn' id='switchCamera'>Changer de vue (actual : camera <span>Player</span>)</button>" );
+
+        $( "#switchCamera" ).click(function() {
+
+            var activeCamera = scene.activeCamera;
+
+            if ( activeCamera.id === "cameraPlayer" ) {
+
+                $(this).find( "span" ).text( "Free" );
+
+                scene.activeCamera = self.camera;
+            }else{
+
+                $(this).find( "span" ).text( "Player" );
+
+                scene.activeCamera = scene.getCameraByID( "cameraPlayer" );
+            }
+        });
+
         var camera = new BABYLON.FreeCamera(
-            "cameraPlayer",
-            new BABYLON.Vector3( spawnPoint[0], 3.5 ,spawnPoint[1] ),
+            "freeCamera",
+            new BABYLON.Vector3(0, 60, 0),
             scene
         );
-
-        //var camera = new BABYLON.FreeCamera(
-        //    "cameraPlayer",
-        //    new BABYLON.Vector3( self.player.position.x, self.player.position.y, self.player.position.z ),
-        //    scene
-        //);
-
-        camera.attachControl( scene.getEngine().getRenderingCanvas() );
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
@@ -66,15 +69,7 @@ function MyPlayer( game, name, spawnPoint ) {
 
         camera.speed = speed;
 
-        camera.applyGravity = true;
-
-        camera.checkCollisions = true;
-
         camera.angularSensibility = angularSensibility;
-
-        //cam.angularInertia = angularInertia;
-
-        //cam.layerMask = 2;
 
         return camera;
     }

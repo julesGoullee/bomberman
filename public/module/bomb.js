@@ -1,18 +1,13 @@
 "use strict";
 
-function Bomb ( x, y ) {
-
+function Bombe ( owner, position ) {
     var self = this;
-
 
     /*PUBLIC METHODS*/
 
-    self.power = 1;
+    self.id = utils.guid();
 
-    self.pos = {
-        x: x,
-        y: y
-    };
+    self.power = 1;
 
     self.type = "bombs";
 
@@ -21,6 +16,14 @@ function Bomb ( x, y ) {
     self.exploded = false;
 
     self.duration = 800;
+
+    self.owner = owner;
+
+    self.position = {
+        x: position.x,
+        y: 0,
+        z: position.z
+    };
 
     self.destroy = function () {
 

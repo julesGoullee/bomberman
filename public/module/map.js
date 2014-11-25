@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps ( game ) {
+function Maps( game ) {
 
     var self = this;
 
@@ -24,11 +24,11 @@ function Maps ( game ) {
 
             colisionCase: false
         },
-        {
-            name: "permanentBlocks",
-
-            colisionCase: true
-        },
+        //{
+        //    name: "permanentBlocks",
+        //
+        //    colisionCase: true
+        //},
         {
             name: "tour",
 
@@ -37,39 +37,8 @@ function Maps ( game ) {
     ];
 
     self.create = function() {
-
-        for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
-
-            if ( assets[self.meshsData[iMesh].name] === undefined ) {
-
-                throw new Error( "Mesh is not preload" );
-            }
-
-            var mesh = assets[self.meshsData[iMesh].name][0];
-
-            mesh.checkCollisions = false;
-
-            mesh.isVisible = true;
-
-            self.meshGround.push( mesh );
-
-            if ( self.meshsData[iMesh].colisionCase ) {
-
-                var  meshColision = assets[self.meshsData[ iMesh].name + "Colision" ][0];
-
-                meshColision.isVisible = true;
-
-                meshColision.checkCollisions = true;
-
-                self.meshGround.push( meshColision );
-            }
-
-            else {
-                //mesh.checkCollisions = true;
-            }
-        }
-
-        createTemporaireBlock();
+        createGroundAndPermanentBlock();
+        //createTemporaireBlock();
     };
 
     self.getPlayers = function() {
@@ -132,6 +101,39 @@ function Maps ( game ) {
 
 
     /*PRIVATE METHODS*/
+
+    function createGroundAndPermanentBlock() {
+        for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
+
+            if ( assets[self.meshsData[iMesh].name] === undefined ) {
+
+                throw new Error( "Mesh is not preload" );
+            }
+
+            var mesh = assets[self.meshsData[iMesh].name][0];
+
+            mesh.checkCollisions = false;
+
+            mesh.isVisible = true;
+
+            self.meshGround.push( mesh );
+
+            if ( self.meshsData[iMesh].colisionCase ) {
+
+                var  meshColision = assets[self.meshsData[ iMesh].name + "Colision" ][0];
+
+                meshColision.isVisible = true;
+
+                meshColision.checkCollisions = true;
+
+                self.meshGround.push( meshColision );
+            }
+
+            else {
+                mesh.checkCollisions = true;
+            }
+        }
+    }
 
     function createTemporaireBlock (){
         //var block = new Block( assets, { x: 0, z: 0 } );

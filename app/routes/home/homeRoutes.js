@@ -17,11 +17,14 @@ function homeRoutes( app ){
             "external/bootstrap/bootstrap.min",
             "external/babylonjs/babylon.1.10.0",
 
+            "module/utils",
+
             "module/block",
             "module/bomb",
             "module/player",
             "module/map",
             "module/myPlayer",
+            "module/freeCamera",
             "module/game",
             "main"
         ],
