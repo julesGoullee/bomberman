@@ -13,8 +13,6 @@ describe( "Block" , function() {
 
     it( "Peu creer un block ayant un shape et un block temp", function() {
 
-        block.create();
-
         expect(block.meshs.shape).not.toBeUndefined();
 
         expect(block.meshs.colisionBlock).not.toBeUndefined();

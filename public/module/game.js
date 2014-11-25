@@ -48,7 +48,7 @@ function Game( canvasId ) {
                 [50, -65],
                 [42, 72],
                 [-50, 65],
-                [-42, -72]
+                [-38, -77]
             ];
 
             var spawnPoint = playsersSpawnPoint[3];
@@ -56,6 +56,8 @@ function Game( canvasId ) {
             var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint );
 
             var freeCamera = new FreeCamera(self);
+
+            switchCamera(self.scene);
 
             var map = new Maps( self );
 

@@ -27,27 +27,8 @@ function FreeCamera(game) {
 
     function initCamera() {
 
-        $( "body" ).append( "<button class='btn' id='switchCamera'>Changer de vue (actual : camera <span>Player</span>)</button>" );
-
-        $( "#switchCamera" ).click(function() {
-
-            var activeCamera = scene.activeCamera;
-
-            if ( activeCamera.id === "cameraPlayer" ) {
-
-                $(this).find( "span" ).text( "Free" );
-
-                scene.activeCamera = self.camera;
-            }else{
-
-                $(this).find( "span" ).text( "Player" );
-
-                scene.activeCamera = scene.getCameraByID( "cameraPlayer" );
-            }
-        });
-
         var camera = new BABYLON.FreeCamera(
-            "freeCamera",
+            "cameraFree",
             new BABYLON.Vector3(0, 60, 0),
             scene
         );

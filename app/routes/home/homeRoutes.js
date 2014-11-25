@@ -19,12 +19,15 @@ function homeRoutes( app ){
 
             "module/utils",
 
+            //debug
+            "module/freeCamera",
+            "module/switchCamera",
+
             "module/block",
             "module/bomb",
             "module/player",
             "module/map",
             "module/myPlayer",
-            "module/freeCamera",
             "module/game",
             "main"
         ],

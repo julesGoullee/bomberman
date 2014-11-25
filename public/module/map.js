@@ -24,11 +24,11 @@ function Maps( game ) {
 
             colisionCase: false
         },
-        //{
-        //    name: "permanentBlocks",
-        //
-        //    colisionCase: true
-        //},
+        {
+            name: "permanentBlocks",
+
+            colisionCase: true
+        },
         {
             name: "tour",
 

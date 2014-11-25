@@ -1,6 +1,6 @@
 "use strict";
 
-function Player ( name, spawnPoint ) {
+function Player ( name, spawnPoint, scene ) {
 
     var self = this;
 
@@ -43,4 +43,12 @@ function Player ( name, spawnPoint ) {
     //TODO getBombeById
 
     /*PRIVATE METHODS*/
+    function init() {
+        createMesh();
+    }
+
+    function createMesh() {
+        self.mesh = BABYLON.Mesh.CreateSphere("player2", 16, 4, scene);
+    }
+    init();
 }

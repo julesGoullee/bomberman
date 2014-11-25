@@ -21,10 +21,13 @@ function MyPlayer( game, name, spawnPoint ) {
 
     /*PUBLIC METHODS*/
 
-    self.player = new Player( name, spawnPoint );
+    self.player = new Player( name, spawnPoint, scene );
 
     // player camera
     self.camera = initCamera();
+
+    // attache camera to player mesh
+    self.player.mesh.parent = self.camera;
 
     //scene.activeCameras.push( self.camera );
 
@@ -37,7 +40,7 @@ function MyPlayer( game, name, spawnPoint ) {
 
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
-            new BABYLON.Vector3( spawnPoint[0], 3.5 ,spawnPoint[1] ),
+            new BABYLON.Vector3( spawnPoint[0], 7 ,spawnPoint[1] ),
             scene
         );
 
