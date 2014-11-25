@@ -17,21 +17,20 @@ function homeRoutes( app ){
             "external/bootstrap/bootstrap.min",
 
             "external/babylonjs/babylon.1.10.0",
-            "socketIo/socket.io",
+            "external/socketIo/socket.io",
 
             // ftc utilitaire
-            "module/utils",
+            "module/utils/utils",
 
-            //debug
-            "module/freeCamera",
-            "module/switchCamera",
 
-            "module/block",
-            "module/bomb",
-            "module/player",
-            "module/map",
-            "module/myPlayer",
-            "module/game",
+            "module/block/block",
+            "module/bomb/bomb",
+            "module/camera/freeCamera",
+            "module/camera/switchCamera",
+            "module/game/game",
+            "module/map/map",
+            "module/player/player",
+            "module/player/myPlayer",
             "main"
         ],
         css:[

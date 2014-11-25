@@ -1,6 +1,6 @@
 "use strict";
 
-function Game( canvasId ) {
+function Game ( canvasId ) {
 
     var self = this;
 
@@ -20,6 +20,7 @@ function Game( canvasId ) {
 
     var loader;
 
+
     /*PUBLIC METHODS*/
 
     self.scene = initScene();
@@ -27,7 +28,13 @@ function Game( canvasId ) {
     self.assets = {};
 
     self.init = function(){
-        self.assets["spherePlayer"] = BABYLON.Mesh.CreateSphere("player2", 16, 4, self.scene);//todo a remplacer par le mesh
+
+        //todo a remplacer par le mesh
+        var sphereMock = BABYLON.Mesh.CreateSphere( "player2", 16, 4, self.scene );
+
+        sphereMock.isVisible = false;
+
+        self.assets["spherePlayer"] = [sphereMock];
 
         loader = new BABYLON.AssetsManager( self.scene );
 
