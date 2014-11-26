@@ -192,7 +192,7 @@ describe( "Maps", function() {
 
         maps.addObject( block );
 
-        expect( maps.getPlayers().length ).toEqual(1);
+        expect( maps.getPlayers().length ).toEqual( 1 );
 
     });
 
