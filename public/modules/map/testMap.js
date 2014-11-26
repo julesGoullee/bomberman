@@ -170,5 +170,29 @@ describe( "Maps", function() {
 
     });
 
-    //TODO TEST getPlayers, getPlayerById, getBombs
+    //TODO TEST addObject,getPlayers, getPlayerById, getBombs
+
+    it( "Peut ajouter et recuperer player", function () {
+
+        var player = new Player( "testPlayer", [0,0], gameMock.assets);
+
+        maps.addObject( player );
+
+        expect(maps.getPlayers().length).toEqual(1);
+
+    });
+
+    it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
+
+        var player = new Player( "testPlayer", [0,0], gameMock.assets);
+
+        var block = new Block( gameMock.assets, { x: 0, z: 0 } );
+
+        maps.addObject( player );
+
+        maps.addObject( block );
+
+        expect( maps.getPlayers().length).toEqual(1);
+
+    });
 });

@@ -41,6 +41,12 @@ function Maps( game ) {
         //createTemporaireBlock();
     };
 
+    self.addObject = function( player ) {
+
+        _content.push( player );
+
+    };
+
     self.getPlayers = function() {
 
         var tabPlayer = [];
@@ -53,7 +59,7 @@ function Maps( game ) {
 
             if ( _content[i].type == "player" ) {
 
-                tabPlayer = _content[i];
+                tabPlayer.push(_content[i]);
             }
         }
         return tabPlayer;
