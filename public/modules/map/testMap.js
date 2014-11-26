@@ -206,4 +206,69 @@ describe( "Maps", function() {
 
     });
 
+    it( "Peut récupérer la bombe d'un player", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        player.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 1 );
+
+    });
+
+    it( "Peut récupérer deux bombes d'un player", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        player.setBomb();
+
+        player.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 2 );
+
+    });
+
+    it( "Peut récupérer les bombes de deux players", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+
+        var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        maps.addObject( player2 );
+
+        player.setBomb();
+
+        player2.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 2 );
+
+    });
+
+    it( "Peut récupérer deux bombes de deux players", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+        var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        maps.addObject( player2 );
+
+        player.setBomb();
+
+        player.setBomb();
+
+        player2.setBomb();
+
+        player2.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 4 );
+
+    });
+
 });

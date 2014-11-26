@@ -93,14 +93,15 @@ function Maps( game ) {
         var size = players.length;
 
         var i = 0;
+        var j = 0;
 
         for ( i; i < size; i++ ) {
 
             var player = players[i];
 
-            for ( i = 0; i < player.listBombs.length; i++ ){
+            for ( j= 0 ; j < player.listBombs.length; j++ ){
 
-                tabBomb = player.listBombs[i];
+                tabBomb.push( player.listBombs[j] );
             }
         }
 
