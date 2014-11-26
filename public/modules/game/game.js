@@ -15,6 +15,8 @@ function Game ( canvasId ) {
         "tempBlock",
         "tempBlockColision",
         "tour",
+        "bomb",
+        "persoTest",
         "tourColision"
     ];
 
@@ -32,20 +34,20 @@ function Game ( canvasId ) {
 
         //todo a remplacer par le mesh
 
-        //player
-        var spherePlayerMock = BABYLON.Mesh.CreateSphere( "playerSphere", 16, 4, self.scene );
-        spherePlayerMock.isVisible = false;
+        ////player
+        //var spherePlayerMock = BABYLON.Mesh.CreateSphere( "playerSphere", 16, 4, self.scene );
+        //spherePlayerMock.isVisible = false;
+        //
+        ////bombe
+        //var sphereBombeMock = BABYLON.Mesh.CreateSphere( "bombeSphere", 16, 5, self.scene );
+        //var materialBombeSphere = new BABYLON.StandardMaterial("textureBombe", self.scene);
+        //materialBombeSphere.diffuseColor = new BABYLON.Color3(1.0, 0.2, 0.7);
+        //materialBombeSphere.emissiveColor = new BABYLON.Color3(1, .2, .7);
+        //sphereBombeMock.material = materialBombeSphere;
+        //sphereBombeMock.isVisible = false;
 
-        //bombe
-        var sphereBombeMock = BABYLON.Mesh.CreateSphere( "bombeSphere", 16, 5, self.scene );
-        var materialBombeSphere = new BABYLON.StandardMaterial("textureBombe", self.scene);
-        materialBombeSphere.diffuseColor = new BABYLON.Color3(1.0, 0.2, 0.7);
-        materialBombeSphere.emissiveColor = new BABYLON.Color3(1, .2, .7);
-        sphereBombeMock.material = materialBombeSphere;
-        sphereBombeMock.isVisible = false;
-
-        self.assets["spherePlayer"] = [spherePlayerMock];
-        self.assets["sphereBombe"] = [sphereBombeMock];
+        //self.assets["spherePlayer"] = [spherePlayerMock];
+        //self.assets["sphereBombe"] = [sphereBombeMock];
 
         _loader = new BABYLON.AssetsManager( self.scene );
 
