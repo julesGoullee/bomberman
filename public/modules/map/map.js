@@ -38,7 +38,9 @@ function Maps( game ) {
 
     self.create = function() {
         createGroundAndPermanentBlock();
-        //createTemporaireBlock();
+        createTemporaireBlock();
+
+
     };
 
     self.addObject = function( player ) {
@@ -159,15 +161,25 @@ function Maps( game ) {
 
                 if ( iBlockLargeur % 2 !== 0 ){
 
-                    _content.push( new Block( _assets, blockPosition ) );
+                   if ( (iBlockLargeur !== -5 || iBlockLongueur !== -8) && (iBlockLargeur !== 5 || iBlockLongueur !== -8) && (iBlockLargeur !== -5 || iBlockLongueur !== 8) && (iBlockLargeur !== 5 || iBlockLongueur !== 8) && (iBlockLargeur !== -5 || iBlockLongueur !== -7) && (iBlockLargeur !== 5 || iBlockLongueur !== -7) && (iBlockLargeur !== -5 || iBlockLongueur !== 7) && (iBlockLargeur !== 5 || iBlockLongueur !== 7) && (iBlockLargeur !== -4 || iBlockLongueur !== -8) && (iBlockLargeur !== 4 || iBlockLongueur !== -8) && (iBlockLargeur !== -4 || iBlockLongueur !== 8) && (iBlockLargeur !== 4 || iBlockLongueur !== 8)) {
+
+                        _content.push( new Block( _assets, blockPosition ) );
+                    }
+
+
+                    //_content.push( new Block( _assets, blockPosition ) );
                 }
                 else if ( iBlockLongueur % 2 === 0 ) {
 
-                    _content.push( new Block( _assets, blockPosition ) );
+                   if ((iBlockLargeur !== -5 || iBlockLongueur !== -8) && (iBlockLargeur !== 5 || iBlockLongueur !== -8) && (iBlockLargeur !== -5 || iBlockLongueur !== 8) && (iBlockLargeur !== 5 || iBlockLongueur !== 8) && (iBlockLargeur !== -5 || iBlockLongueur !== -7) && (iBlockLargeur !== 5 || iBlockLongueur !== -7) && (iBlockLargeur !== -5 || iBlockLongueur !== 7) && (iBlockLargeur !== 5 || iBlockLongueur !== 7) && (iBlockLargeur !== -4 || iBlockLongueur !== -8) && (iBlockLargeur !== 4 || iBlockLongueur !== -8) && (iBlockLargeur !== -4 || iBlockLongueur !== 8) && (iBlockLargeur !== 4 || iBlockLongueur !== 8)  ) {
+
+                        _content.push( new Block( _assets, blockPosition ) );
+                   }
+
+                    //_content.push( new Block( _assets, blockPosition ) );
                 }
             }
             //console.log( _content.length );
-
         }
     }
 }
