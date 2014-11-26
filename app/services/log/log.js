@@ -1,6 +1,8 @@
+"use strict";
+
 var config = require( "../../config/config.js" );
 
-var server = require( config.rootPath + "/app/module/server/server.js" );
+var server = require( config.rootPath + "/app/services/server/server.js" );
 
 function log(app){
 

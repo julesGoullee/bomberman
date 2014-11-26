@@ -30,7 +30,7 @@ function Game ( canvasId ) {
     self.init = function(){
 
         //todo a remplacer par le mesh
-        var sphereMock = BABYLON.Mesh.CreateSphere( "player2", 16, 4, self.scene );
+        var sphereMock = BABYLON.Mesh.CreateSphere( "playerSphere", 16, 4, self.scene );
 
         sphereMock.isVisible = false;
 
@@ -52,6 +52,8 @@ function Game ( canvasId ) {
         _loader.load();
 
         _loader.onFinish = function() {
+
+            var connector = new Connector();
 
             // Player and arena creation when the loading is finished
             var playsersSpawnPoint = [

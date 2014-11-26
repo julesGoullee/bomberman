@@ -13,24 +13,25 @@ function homeRoutes( app ){
     var dependances = {
 
         scripts:[
+            "socket.io/socket.io",
+
             "external/jquery/jquery",
             "external/bootstrap/bootstrap.min",
-
             "external/babylonjs/babylon.1.10.0",
-            "external/socketIo/socket.io",
 
             // ftc utilitaire
-            "module/utils/utils",
+            "modules/utils/utils",
 
-
-            "module/block/block",
-            "module/bomb/bomb",
-            "module/camera/freeCamera",
-            "module/camera/switchCamera",
-            "module/game/game",
-            "module/map/map",
-            "module/player/player",
-            "module/player/myPlayer",
+            //modules
+            "modules/block/block",
+            "modules/bomb/bomb",
+            "modules/camera/freeCamera",
+            "modules/camera/switchCamera",
+            "modules/connector/connector",
+            "modules/game/game",
+            "modules/map/map",
+            "modules/player/player",
+            "modules/player/myPlayer",
             "main"
         ],
         css:[

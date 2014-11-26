@@ -1,7 +1,9 @@
+"use strict";
+
 var config = require( "../../config/config.js" );
 var onListenStartCallbacks = [];
 var http = require( "http" );
-var io = require('socket.io')(http);
+var io = require( "socket.io" );
 
 module.exports = {
 
@@ -19,6 +21,8 @@ module.exports = {
 
         httpServer.listen( config.port, function () {
 
+            io = io( httpServer );
+
             for ( var callback in onListenStartCallbacks ) {
 
                 if ( onListenStartCallbacks.hasOwnProperty( callback ) ) {
@@ -28,8 +32,11 @@ module.exports = {
             }
         });
     },
-    onListenStart : function(callback){
+    onListenStart : function( callback ) {
 
         onListenStartCallbacks.push(callback);
+    },
+    getSocketIo : function() {
+        return io;
     }
 };

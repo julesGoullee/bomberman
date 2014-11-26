@@ -7,7 +7,7 @@ var config = require( "../../config/config.js" );
 function staticRoutes( app ) {
     
     var rootPathPublic = path.join( config.rootPath, "/public" );
-    
+
     app.use( express.static( rootPathPublic ) );
 }
 
