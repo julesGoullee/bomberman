@@ -51,5 +51,6 @@ function Player ( name, spawnPoint, assets ) {
         self.mesh = assets["spherePlayer"][0].clone();
         self.mesh.isVisible = true;
     }
+
     init();
 }

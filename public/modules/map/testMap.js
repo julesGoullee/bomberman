@@ -156,7 +156,7 @@ describe( "Maps", function() {
                 }
             ];
         });
-
+        //TODO generattion des block temp
         //it("Peut importer un mesh sans son calque de colision", function () {
         //
         //    maps.nbCol = 2;

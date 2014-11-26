@@ -136,6 +136,8 @@ function Maps( game ) {
     }
 
     function createTemporaireBlock (){
+
+        //TODO retirer 3 block dans les coins
         //var block = new Block( assets, { x: 0, z: 0 } );
 
         for ( var iBlockLargeur = -_nbLine / 2 ; iBlockLargeur <= _nbLine / 2 ; iBlockLargeur++ ) {

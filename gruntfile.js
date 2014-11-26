@@ -38,7 +38,8 @@ module.exports = function(grunt) {
                     ]
                 },
                 // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-                reporters: ["dots", "ubuntu"],
+                //reporters: ["dots", "ubuntu"],
+                reporters: ["dots"],
                 autoWatch: true,
                 browsers: ["PhantomJS"]
             }
