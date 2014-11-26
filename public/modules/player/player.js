@@ -29,9 +29,7 @@ function Player ( name, spawnPoint, assets ) {
         shoot: false,
         bombs: 2
     };
-
-
-    //TODO getBombeById
+    
 
     /*PRIVATE METHODS*/
 

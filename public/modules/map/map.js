@@ -92,7 +92,7 @@ function Maps( game ) {
             return position;
         }
 
-        var bomb = new Bombe( player, {
+        var bomb = new Bombe ( player, {
             x: roundPosition( player.position.x ),
             z: roundPosition( player.position.z )
         }, _assets);
@@ -100,6 +100,7 @@ function Maps( game ) {
         if ( player.listBombs.length < player.powerUp.bombs ) {
 
             player.listBombs.push( bomb );
+
             return true;
         }
         return false;
@@ -129,6 +130,20 @@ function Maps( game ) {
         return tabBomb;
     };
 
+    self.getBombsById = function ( id )
+    {
+        var bombs = self.getBombs();
+
+        var size = bombs.length;
+
+        for ( var i = 0; i < size; i++ ) {
+
+            if ( bombs[i].id == id ) {
+
+                return bombs[i];
+            }
+        }
+    }
 
     /*PRIVATE METHODS*/
 
