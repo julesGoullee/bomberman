@@ -44,11 +44,6 @@ function Player ( name, spawnPoint, assets ) {
         return false;
     };
 
-    self.onKeyBombPress = function() {
-        self.setBomb();
-
-    };
-
     //TODO getBombeById
 
     /*PRIVATE METHODS*/
