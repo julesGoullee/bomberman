@@ -36,7 +36,7 @@ function Bombe ( owner, position, assets ) {
     }
 
     function createMesh () {
-        self.mesh = assets["sphereBombe"][0].clone();
+        self.mesh = assets["bomb"][0].clone();
         self.mesh.position = self.position;
         self.mesh.isVisible = true;
     }
