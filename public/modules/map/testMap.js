@@ -170,7 +170,7 @@ describe( "Maps", function() {
 
     });
 
-    //TODO TEST addObject,getPlayers, getPlayerById, getBombs
+    //TODO TEST getBombs
 
     it( "Peut ajouter et recuperer player", function () {
 
@@ -178,13 +178,13 @@ describe( "Maps", function() {
 
         maps.addObject( player );
 
-        expect(maps.getPlayers().length).toEqual(1);
+        expect(maps.getPlayers().length ).toEqual( 1 );
 
     });
 
     it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
 
-        var player = new Player( "testPlayer", [0,0], gameMock.assets);
+        var player = new Player( "testPlayer", [0,0], gameMock.assets );
 
         var block = new Block( gameMock.assets, { x: 0, z: 0 } );
 
@@ -192,7 +192,18 @@ describe( "Maps", function() {
 
         maps.addObject( block );
 
-        expect( maps.getPlayers().length).toEqual(1);
+        expect( maps.getPlayers().length ).toEqual(1);
 
     });
+
+    it( "Peut ajouter un player avec son ID", function () {
+
+        var player = new Player( "testPlayer", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        expect( maps.getPlayerById( player.id )).toEqual( player );
+
+    });
+
 });
