@@ -17,7 +17,7 @@ var gameMock = {
                 return {};
             }
         }],
-        "persoTest" :[{//todo a remplacer par le mesh
+        "spherePlayer" :[{//todo a remplacer par le mesh
             clone : function (){
                 return {};
             }
