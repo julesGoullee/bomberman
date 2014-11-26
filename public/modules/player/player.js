@@ -31,7 +31,10 @@ function Player ( name, spawnPoint, assets ) {
     };
 
     self.setBomb = function () {
-        var bomb = new Bombe( self, { x:0, z:0 }, assets);
+        var bomb = new Bombe( self, {
+            x: self.position.x,
+            z: self.position.z
+        }, assets);
 
         if ( self.listBombs.length < self.powerUp.bombs ) {
 
@@ -41,12 +44,17 @@ function Player ( name, spawnPoint, assets ) {
         return false;
     };
 
+    self.onKeyBombPress = function() {
+        self.setBomb();
+
+    };
+
     //TODO getBombeById
 
     /*PRIVATE METHODS*/
+
     function init() {
         createMesh();
-        //self.setBomb();
     }
 
     function createMesh() {

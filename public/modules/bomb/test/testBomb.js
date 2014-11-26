@@ -11,12 +11,13 @@ describe( "Bombe" ,function() {
     });
 
     it( "Peut creer une bombe a la bonne position", function() {
+
         var expectPosition = {
             x: spawnPoint[0],
             y: 2.5,
             z: spawnPoint[1]
         };
 
-        expect(expectPosition).toEqual(bombe.position);
+        expect( expectPosition ).toEqual( bombe.position );
     });
 });

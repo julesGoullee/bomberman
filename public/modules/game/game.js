@@ -77,6 +77,8 @@ function Game ( canvasId ) {
 
             var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets );
 
+            listenSpaceDown( myPlayer.onKeyBombPress );
+
             var freeCamera = new FreeCamera(self);
 
             switchCamera(self.scene);
@@ -135,7 +137,7 @@ function Game ( canvasId ) {
         var pointerLocked = false;
 
         // Request pointer lock
-        _canvas.addEventListener("click", function() {
+        _canvas.addEventListener( "click", function() {
 
             _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
 
@@ -163,6 +165,16 @@ function Game ( canvasId ) {
         document.addEventListener( "mspointerlockchange", pointerlockchange, false );
         document.addEventListener( "mozpointerlockchange", pointerlockchange, false );
         document.addEventListener( "webkitpointerlockchange", pointerlockchange, false );
+    }
+
+    function listenSpaceDown( callback ){
+        _canvas.addEventListener( "keydown", function( e ) {
+
+            if( e.which === "32" ) {
+                callback();
+            }
+
+        }, false);
     }
 
 }

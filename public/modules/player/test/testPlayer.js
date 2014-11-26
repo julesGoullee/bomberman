@@ -24,7 +24,6 @@ describe( "Player", function() {
 
     it( "Peut ajouter une bombe", function() {
 
-
         player.setBomb( );
 
         expect( player.listBombs.length ).toEqual( 1 );
@@ -46,5 +45,19 @@ describe( "Player", function() {
         expect( player.listBombs.length ).toEqual( 2 );
     });
 
-    it( "")
+    it( "Peut poser une bombe", function () {
+
+        player.setBomb();
+
+        expect( player.listBombs.length ).toEqual( 1 );
+    });
+
+    it( "Peut poser une bombe a la position du player", function () {
+
+        player.setBomb();
+
+        expect( player.listBombs[0].position.x ).toEqual( player.position.x );
+        expect( player.listBombs[0].position.z ).toEqual( player.position.z );
+    });
+
 });
