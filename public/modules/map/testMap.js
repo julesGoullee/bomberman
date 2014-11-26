@@ -4,8 +4,13 @@ describe( "Maps", function() {
 
     var maps;
 
+    var player;
+
+    var spawnPoint = [50, -65];
+
     beforeEach( function() {
         maps = new Maps(gameMock);
+        player = new Player( "testPlayer", spawnPoint , gameMock.assets );
     });
 
     describe( "Create & import mesh", function() {
@@ -242,7 +247,7 @@ describe( "Maps", function() {
 
         maps.addObject( player2 );
 
-        player.setBomb();
+        maps.setBomb( player );
 
         player2.setBomb();
 
@@ -259,9 +264,9 @@ describe( "Maps", function() {
 
         maps.addObject( player2 );
 
-        player.setBomb();
+        maps.setBomb( player );
 
-        player.setBomb();
+        maps.setBomb( player );
 
         player2.setBomb();
 
@@ -270,5 +275,27 @@ describe( "Maps", function() {
         expect( maps.getBombs().length).toEqual( 4 );
 
     });
+
+    it( "Peut poser une bombe a la position du player", function () {
+
+        maps.setBomb( player );
+
+        expect( player.listBombs[0].position.x ).toEqual( player.position.x );
+        expect( player.listBombs[0].position.z ).toEqual( player.position.z );
+    });
+
+    //it( "Peut poser une bombe a la position arrondie au dessus du player", function () {
+    //
+    //    player.position.x = 46.456345;
+    //
+    //    player.position.z = -63.557235;
+    //
+    //    maps.setBomb( player );
+    //
+    //    Math.round( Math.round(46.456345) / 8) * 8
+    //
+    //    expect( player.listBombs[0].position.x ).toEqual( 48 );
+    //    expect( player.listBombs[0].position.z ).toEqual( -64 );
+    //});
 
 });

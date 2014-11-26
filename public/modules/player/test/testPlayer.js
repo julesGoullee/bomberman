@@ -2,11 +2,15 @@
 
 describe( "Player", function() {
 
+    var maps;
+
     var player;
 
     var spawnPoint = [50, -65];
 
     beforeEach( function() {
+
+        maps = new Maps(gameMock);
 
         player = new Player( "testPlayer", spawnPoint , gameMock.assets );
     });
@@ -24,7 +28,7 @@ describe( "Player", function() {
 
     it( "Peut ajouter une bombe", function() {
 
-        player.setBomb( );
+        maps.setBomb( player );
 
         expect( player.listBombs.length ).toEqual( 1 );
     });
@@ -35,12 +39,12 @@ describe( "Player", function() {
 
         for ( var i = 0; i < nbBombeMax; i++ ) {
 
-            expect( player.setBomb() ).toEqual( true );
+            expect( maps.setBomb( player ) ).toEqual( true );
         }
 
         expect( player.listBombs.length ).toEqual( 2 );
 
-        expect( player.setBomb() ).toEqual( false );
+        expect( maps.setBomb( player ) ).toEqual( false );
 
         expect( player.listBombs.length ).toEqual( 2 );
     });

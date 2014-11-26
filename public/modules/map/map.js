@@ -85,6 +85,26 @@ function Maps( game ) {
         return false;
     };
 
+    self.setBomb = function ( player ) {
+
+        function roundPosition( position ) {
+            var newPosition = parseInt(position, 10) - parseInt(position, 10) % _blockDim;
+            return position;
+        }
+
+        var bomb = new Bombe( player, {
+            x: roundPosition( player.position.x ),
+            z: roundPosition( player.position.z )
+        }, _assets);
+
+        if ( player.listBombs.length < player.powerUp.bombs ) {
+
+            player.listBombs.push( bomb );
+            return true;
+        }
+        return false;
+    };
+
     self.getBombs = function () {
 
         var tabBomb = [];
