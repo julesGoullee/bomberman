@@ -51,14 +51,14 @@ describe( "Player", function() {
 
     it( "Peut poser une bombe", function () {
 
-        player.setBomb();
+        maps.setBomb( player );
 
         expect( player.listBombs.length ).toEqual( 1 );
     });
 
     it( "Peut poser une bombe a la position du player", function () {
 
-        player.setBomb();
+        maps.setBomb( player );
 
         expect( player.listBombs[0].position.x ).toEqual( player.position.x );
         expect( player.listBombs[0].position.z ).toEqual( player.position.z );
