@@ -37,8 +37,11 @@ function Maps( game ) {
     ];
 
     self.create = function() {
+
         createGroundAndPermanentBlock();
+
         //createTemporaireBlock();
+
     };
 
     self.addObject = function( player ) {
@@ -91,14 +94,15 @@ function Maps( game ) {
         var size = players.length;
 
         var i = 0;
+        var j = 0;
 
         for ( i; i < size; i++ ) {
 
             var player = players[i];
 
-            for ( i = 0; i < player.listBombs.length; i++ ){
+            for ( j= 0 ; j < player.listBombs.length; j++ ){
 
-                tabBomb = player.listBombs[i];
+                tabBomb.push( player.listBombs[j] );
             }
         }
 
@@ -159,15 +163,25 @@ function Maps( game ) {
 
                 if ( iBlockLargeur % 2 !== 0 ){
 
-                    _content.push( new Block( _assets, blockPosition ) );
+                   if ( (iBlockLargeur !== -5 || iBlockLongueur !== -8) && (iBlockLargeur !== 5 || iBlockLongueur !== -8) && (iBlockLargeur !== -5 || iBlockLongueur !== 8) && (iBlockLargeur !== 5 || iBlockLongueur !== 8) && (iBlockLargeur !== -5 || iBlockLongueur !== -7) && (iBlockLargeur !== 5 || iBlockLongueur !== -7) && (iBlockLargeur !== -5 || iBlockLongueur !== 7) && (iBlockLargeur !== 5 || iBlockLongueur !== 7) && (iBlockLargeur !== -4 || iBlockLongueur !== -8) && (iBlockLargeur !== 4 || iBlockLongueur !== -8) && (iBlockLargeur !== -4 || iBlockLongueur !== 8) && (iBlockLargeur !== 4 || iBlockLongueur !== 8)) {
+
+                        _content.push( new Block( _assets, blockPosition ) );
+                    }
+
+
+                    //_content.push( new Block( _assets, blockPosition ) );
                 }
                 else if ( iBlockLongueur % 2 === 0 ) {
 
-                    _content.push( new Block( _assets, blockPosition ) );
+                   if ((iBlockLargeur !== -5 || iBlockLongueur !== -8) && (iBlockLargeur !== 5 || iBlockLongueur !== -8) && (iBlockLargeur !== -5 || iBlockLongueur !== 8) && (iBlockLargeur !== 5 || iBlockLongueur !== 8) && (iBlockLargeur !== -5 || iBlockLongueur !== -7) && (iBlockLargeur !== 5 || iBlockLongueur !== -7) && (iBlockLargeur !== -5 || iBlockLongueur !== 7) && (iBlockLargeur !== 5 || iBlockLongueur !== 7) && (iBlockLargeur !== -4 || iBlockLongueur !== -8) && (iBlockLargeur !== 4 || iBlockLongueur !== -8) && (iBlockLargeur !== -4 || iBlockLongueur !== 8) && (iBlockLargeur !== 4 || iBlockLongueur !== 8)  ) {
+
+                        _content.push( new Block( _assets, blockPosition ) );
+                   }
+
+                    //_content.push( new Block( _assets, blockPosition ) );
                 }
             }
             //console.log( _content.length );
-
         }
     }
 }

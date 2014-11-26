@@ -20,6 +20,7 @@ function Game ( canvasId ) {
 
     var _loader;
 
+    var _pointerLocked = false;
 
     /*PUBLIC METHODS*/
 
@@ -30,11 +31,21 @@ function Game ( canvasId ) {
     self.init = function(){
 
         //todo a remplacer par le mesh
-        var sphereMock = BABYLON.Mesh.CreateSphere( "playerSphere", 16, 4, self.scene );
 
-        sphereMock.isVisible = false;
+        //player
+        var spherePlayerMock = BABYLON.Mesh.CreateSphere( "playerSphere", 16, 4, self.scene );
+        spherePlayerMock.isVisible = false;
 
-        self.assets["spherePlayer"] = [sphereMock];
+        //bombe
+        var sphereBombeMock = BABYLON.Mesh.CreateSphere( "bombeSphere", 16, 5, self.scene );
+        var materialBombeSphere = new BABYLON.StandardMaterial("textureBombe", self.scene);
+        materialBombeSphere.diffuseColor = new BABYLON.Color3(1.0, 0.2, 0.7);
+        materialBombeSphere.emissiveColor = new BABYLON.Color3(1, .2, .7);
+        sphereBombeMock.material = materialBombeSphere;
+        sphereBombeMock.isVisible = false;
+
+        self.assets["spherePlayer"] = [spherePlayerMock];
+        self.assets["sphereBombe"] = [sphereBombeMock];
 
         _loader = new BABYLON.AssetsManager( self.scene );
 
@@ -66,6 +77,8 @@ function Game ( canvasId ) {
             var spawnPoint = playsersSpawnPoint[3];
 
             var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets );
+
+            listenSpaceDown( myPlayer.player.setBomb );
 
             var freeCamera = new FreeCamera(self);
 
@@ -122,10 +135,9 @@ function Game ( canvasId ) {
     }
 
     function initPointerLock() {
-        var pointerLocked = false;
 
         // Request pointer lock
-        _canvas.addEventListener("click", function() {
+        _canvas.addEventListener( "click", function() {
 
             _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
 
@@ -138,9 +150,9 @@ function Game ( canvasId ) {
         var pointerlockchange = function () {
             var cameraActive = self.scene.activeCamera;
 
-            pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
+            _pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
 
-            if ( !pointerLocked ) {
+            if ( !_pointerLocked ) {
 
                 cameraActive.detachControl( _canvas );
             } else {
@@ -153,6 +165,15 @@ function Game ( canvasId ) {
         document.addEventListener( "mspointerlockchange", pointerlockchange, false );
         document.addEventListener( "mozpointerlockchange", pointerlockchange, false );
         document.addEventListener( "webkitpointerlockchange", pointerlockchange, false );
+    }
+
+    function listenSpaceDown( callback ){
+        document.addEventListener( "keydown", function( e ) {
+            if( _pointerLocked && e.which === 32){
+                callback();
+            }
+
+        }, false);
     }
 
 }

@@ -29,6 +29,8 @@ function MyPlayer( game, name, spawnPoint, assets ) {
     // attache camera to player mesh
     self.player.mesh.parent = self.camera;
 
+    self.player.position = self.camera.position;
+
     //scene.activeCameras.push( self.camera );
 
     _scene.activeCamera = self.camera;

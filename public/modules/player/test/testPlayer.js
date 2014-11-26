@@ -24,9 +24,7 @@ describe( "Player", function() {
 
     it( "Peut ajouter une bombe", function() {
 
-        var bombe = new Bombe( player, player.position );
-
-        player.setBomb( bombe );
+        player.setBomb( );
 
         expect( player.listBombs.length ).toEqual( 1 );
     });
@@ -37,15 +35,29 @@ describe( "Player", function() {
 
         for ( var i = 0; i < nbBombeMax; i++ ) {
 
-            var bombePlayer = new Bombe( player, [0, i] );
-            expect( player.setBomb( bombePlayer ) ).toEqual( true );
+            expect( player.setBomb() ).toEqual( true );
         }
 
         expect( player.listBombs.length ).toEqual( 2 );
 
-        expect( player.setBomb( new Bombe( player, [1, 1] ) )).toEqual( false );
+        expect( player.setBomb() ).toEqual( false );
 
         expect( player.listBombs.length ).toEqual( 2 );
+    });
+
+    it( "Peut poser une bombe", function () {
+
+        player.setBomb();
+
+        expect( player.listBombs.length ).toEqual( 1 );
+    });
+
+    it( "Peut poser une bombe a la position du player", function () {
+
+        player.setBomb();
+
+        expect( player.listBombs[0].position.x ).toEqual( player.position.x );
+        expect( player.listBombs[0].position.z ).toEqual( player.position.z );
     });
 
 });

@@ -170,7 +170,7 @@ describe( "Maps", function() {
 
     });
 
-    //TODO TEST addObject,getPlayers, getPlayerById, getBombs
+    //TODO TEST getBombs
 
     it( "Peut ajouter et recuperer player", function () {
 
@@ -178,13 +178,13 @@ describe( "Maps", function() {
 
         maps.addObject( player );
 
-        expect(maps.getPlayers().length).toEqual(1);
+        expect(maps.getPlayers().length ).toEqual( 1 );
 
     });
 
     it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
 
-        var player = new Player( "testPlayer", [0,0], gameMock.assets);
+        var player = new Player( "testPlayer", [0,0], gameMock.assets );
 
         var block = new Block( gameMock.assets, { x: 0, z: 0 } );
 
@@ -192,7 +192,83 @@ describe( "Maps", function() {
 
         maps.addObject( block );
 
-        expect( maps.getPlayers().length).toEqual(1);
+        expect( maps.getPlayers().length ).toEqual( 1  );
 
     });
+
+    it( "Peut ajouter un player avec son ID", function () {
+
+        var player = new Player( "testPlayer", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        expect( maps.getPlayerById( player.id )).toEqual( player );
+
+    });
+
+    it( "Peut récupérer la bombe d'un player", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        player.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 1 );
+
+    });
+
+    it( "Peut récupérer deux bombes d'un player", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        player.setBomb();
+
+        player.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 2 );
+
+    });
+
+    it( "Peut récupérer les bombes de deux players", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+
+        var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        maps.addObject( player2 );
+
+        player.setBomb();
+
+        player2.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 2 );
+
+    });
+
+    it( "Peut récupérer deux bombes de deux players", function () {
+
+        var player = new Player( "testPlayer1", [0, 0], gameMock.assets );
+        var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+
+        maps.addObject( player );
+
+        maps.addObject( player2 );
+
+        player.setBomb();
+
+        player.setBomb();
+
+        player2.setBomb();
+
+        player2.setBomb();
+
+        expect( maps.getBombs().length).toEqual( 4 );
+
+    });
+
 });

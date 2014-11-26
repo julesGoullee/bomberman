@@ -9,7 +9,7 @@ function Room() {
 
     self.players = [];
 
-    self.addPlayer = function() {
+    self.addPlayer = function( socket ) {
 
     };
 }
