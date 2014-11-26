@@ -17,12 +17,12 @@ var gameMock = {
                 return {};
             }
         }],
-        "spherePlayer" :[{//todo a remplacer par le mesh
+        "persoTest" :[{//todo a remplacer par le mesh
             clone : function (){
                 return {};
             }
         }],
-        "sphereBombe" :[{//todo a remplacer par le mesh
+        "bomb" :[{//todo a remplacer par le mesh
             clone : function (){
                 return {};
             }
