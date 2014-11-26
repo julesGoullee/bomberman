@@ -78,13 +78,15 @@ function Game ( canvasId ) {
 
             var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets );
 
-            listenSpaceDown( myPlayer.player.setBomb );
 
             var freeCamera = new FreeCamera(self);
 
             switchCamera(self.scene);
 
             var map = new Maps( self );
+
+            listenSpaceDown( map.setBomb, myPlayer.player );
+
 
             map.create();
 
@@ -167,10 +169,10 @@ function Game ( canvasId ) {
         document.addEventListener( "webkitpointerlockchange", pointerlockchange, false );
     }
 
-    function listenSpaceDown( callback ){
+    function listenSpaceDown( callback, player ){
         document.addEventListener( "keydown", function( e ) {
             if( _pointerLocked && e.which === 32){
-                callback();
+                callback(player);
             }
 
         }, false);
