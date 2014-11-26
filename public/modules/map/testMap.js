@@ -262,6 +262,16 @@ describe( "Maps", function() {
 
     });
 
+    it ( "Peut récupérer une bombe avec son ID", function () {
+
+        maps.addObject( player );
+
+        maps.setBomb( player );
+
+        expect ( maps.getBombsById( player.listBombs[0].id )).toEqual( player.listBombs[0] );
+
+    });
+
     //it( "Peut poser une bombe a la position du player", function () {
     //
     //    maps.setBomb( player );
