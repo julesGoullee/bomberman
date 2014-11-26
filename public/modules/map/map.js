@@ -37,9 +37,10 @@ function Maps( game ) {
     ];
 
     self.create = function() {
-        createGroundAndPermanentBlock();
-        createTemporaireBlock();
 
+        createGroundAndPermanentBlock();
+
+        //createTemporaireBlock();
 
     };
 
