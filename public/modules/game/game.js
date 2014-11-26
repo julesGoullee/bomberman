@@ -20,6 +20,7 @@ function Game ( canvasId ) {
 
     var _loader;
 
+    var _pointerLocked = false;
 
     /*PUBLIC METHODS*/
 
@@ -77,7 +78,7 @@ function Game ( canvasId ) {
 
             var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets );
 
-            listenSpaceDown( myPlayer.onKeyBombPress );
+            listenSpaceDown( myPlayer.player.setBomb );
 
             var freeCamera = new FreeCamera(self);
 
@@ -134,7 +135,6 @@ function Game ( canvasId ) {
     }
 
     function initPointerLock() {
-        var pointerLocked = false;
 
         // Request pointer lock
         _canvas.addEventListener( "click", function() {
@@ -150,9 +150,9 @@ function Game ( canvasId ) {
         var pointerlockchange = function () {
             var cameraActive = self.scene.activeCamera;
 
-            pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
+            _pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
 
-            if ( !pointerLocked ) {
+            if ( !_pointerLocked ) {
 
                 cameraActive.detachControl( _canvas );
             } else {
@@ -168,9 +168,8 @@ function Game ( canvasId ) {
     }
 
     function listenSpaceDown( callback ){
-        _canvas.addEventListener( "keydown", function( e ) {
-
-            if( e.which === "32" ) {
+        document.addEventListener( "keydown", function( e ) {
+            if( _pointerLocked && e.which === 32){
                 callback();
             }
 
