@@ -1,6 +1,6 @@
 "use strict";
 
-function Bombe ( owner, position ) {
+function Bombe ( owner, position, assets ) {
     var self = this;
 
     /*PUBLIC METHODS*/
@@ -21,7 +21,7 @@ function Bombe ( owner, position ) {
 
     self.position = {
         x: position.x,
-        y: 0,
+        y: 2.5,
         z: position.z
     };
 
@@ -31,4 +31,15 @@ function Bombe ( owner, position ) {
     };
 
     /*PRIVATE METHODS*/
+    function init() {
+        createMesh();
+    }
+
+    function createMesh () {
+        self.mesh = assets["sphereBombe"][0].clone();
+        self.mesh.position = self.position;
+        self.mesh.isVisible = true;
+    }
+
+    init();
 }
