@@ -88,8 +88,10 @@ function Maps( game ) {
     self.setBomb = function ( player ) {
 
         function roundPosition( position ) {
-            var newPosition = parseInt(position, 10) - parseInt(position, 10) % _blockDim;
-            return position;
+
+            var newPosition = Math.round( Math.round(position) / _blockDim ) *  _blockDim;
+
+            return newPosition;
         }
 
         var bomb = new Bombe ( player, {
@@ -130,8 +132,8 @@ function Maps( game ) {
         return tabBomb;
     };
 
-    self.getBombsById = function ( id )
-    {
+    self.getBombsById = function ( id ) {
+
         var bombs = self.getBombs();
 
         var size = bombs.length;
@@ -143,7 +145,7 @@ function Maps( game ) {
                 return bombs[i];
             }
         }
-    }
+    };
 
     /*PRIVATE METHODS*/
 

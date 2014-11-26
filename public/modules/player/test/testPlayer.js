@@ -6,7 +6,7 @@ describe( "Player", function() {
 
     var player;
 
-    var spawnPoint = [50, -65];
+    var spawnPoint = [48, -64];
 
     beforeEach( function() {
 

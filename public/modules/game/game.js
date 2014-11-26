@@ -125,7 +125,7 @@ function Game ( canvasId ) {
     }
 
     function initMesh ( task ) {
-
+        debugger;
         self.assets[task.name] = task.loadedMeshes;
 
         for ( var i=0 ; i < task.loadedMeshes.length ; i++ ) {
