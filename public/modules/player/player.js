@@ -30,19 +30,6 @@ function Player ( name, spawnPoint, assets ) {
         bombs: 2
     };
 
-    self.setBomb = function () {
-        var bomb = new Bombe( self, {
-            x: self.position.x,
-            z: self.position.z
-        }, assets);
-
-        if ( self.listBombs.length < self.powerUp.bombs ) {
-
-            self.listBombs.push( bomb );
-            return true;
-        }
-        return false;
-    };
 
     //TODO getBombeById
 
