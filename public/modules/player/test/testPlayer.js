@@ -19,7 +19,7 @@ describe( "Player", function() {
 
         var expectPosition = {
             x: spawnPoint[0],
-            y: 0,
+            y: 4.5,
             z: spawnPoint[1]
         };
 

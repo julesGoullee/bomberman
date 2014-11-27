@@ -14,7 +14,7 @@ describe( "Bombe" ,function() {
 
         var expectPosition = {
             x: spawnPoint[0],
-            y: 2.5,
+            y: 4,
             z: spawnPoint[1]
         };
 

@@ -19,9 +19,9 @@ function Player ( name, spawnPoint, assets ) {
     self.listBombs = [];
 
     self.position = {
-        x: -10,
-        y: 11.5,
-        z: 0
+        x: spawnPoint[0],
+        y: 4.5,
+        z: spawnPoint[1]
     };
 
     self.powerUp = {
