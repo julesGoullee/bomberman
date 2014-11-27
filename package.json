@@ -33,8 +33,8 @@
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
     "karma-ubuntu-reporter": "*",
-    "karma-growl-reporter": "^0.1.1",
-    "growly": "^0.1.1",
+    "karma-growl-reporter": "*",
+    "growly": "*",
     "phantomjs": "*"
   }
 }
