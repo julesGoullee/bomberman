@@ -25,13 +25,15 @@
     "grunt-contrib-uglify": "*"
   },
   "devDependencies": {
-    "grunt-simple-mocha": "*",
+    "chai": "*",
+    "grunt-contrib-watch": "*",
     "grunt-karma": "*",
+    "grunt-simple-mocha": "*",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
-    "phantomjs": "*",
-    "grunt-contrib-watch": "*",
     "karma-ubuntu-reporter": "*",
-    "chai": "*"
+    "karma-growl-reporter": "^0.1.1",
+    "growly": "^0.1.1",
+    "phantomjs": "*"
   }
 }
