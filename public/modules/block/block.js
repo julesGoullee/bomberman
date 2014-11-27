@@ -33,11 +33,7 @@ function Block ( assets, position ) {
 
         meshTemp.checkCollisions = false;
 
-        meshTemp.position = {
-            x: self.position.x,
-            y: 0,
-            z: self.position.z
-        };
+        meshTemp.position =  self.position;
 
         self.meshs.shape = meshTemp;
 

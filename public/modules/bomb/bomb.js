@@ -21,7 +21,7 @@ function Bombe ( owner, position, assets ) {
 
     self.position = {
         x: position.x,
-        y: 2.5,
+        y: 4,
         z: position.z
     };
 

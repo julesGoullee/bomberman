@@ -16,7 +16,7 @@ function Game ( canvasId ) {
         "tempBlockColision",
         "tour",
         "bomb",
-        //"persoTest",
+        "personnage",
         "tourColision"
     ];
 
@@ -97,6 +97,9 @@ function Game ( canvasId ) {
             _engine.runRenderLoop( function () {
 
                 self.scene.render();
+
+                myPlayer.renderMyPlayer();
+
                 //todo ameliorer le debug des positions
                 document.getElementById( "debug" ).innerHTML = "fps : " + BABYLON.Tools.GetFps().toFixed() + " Position camera Player: " + myPlayer.camera.position.toString();
             });
@@ -125,7 +128,6 @@ function Game ( canvasId ) {
     }
 
     function initMesh ( task ) {
-        debugger;
         self.assets[task.name] = task.loadedMeshes;
 
         for ( var i=0 ; i < task.loadedMeshes.length ; i++ ) {
@@ -150,7 +152,7 @@ function Game ( canvasId ) {
                 _canvas.requestPointerLock();
             }
         }, false);
-
+ 
         var pointerlockchange = function () {
             var cameraActive = self.scene.activeCamera;
 

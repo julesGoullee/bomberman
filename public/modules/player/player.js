@@ -19,9 +19,9 @@ function Player ( name, spawnPoint, assets ) {
     self.listBombs = [];
 
     self.position = {
-        x: spawnPoint[0],
-        y: 0,
-        z: spawnPoint[1]
+        x: -10,
+        y: 11.5,
+        z: 0
     };
 
     self.powerUp = {
@@ -38,8 +38,9 @@ function Player ( name, spawnPoint, assets ) {
     }
 
     function createMesh() {
-        self.mesh = assets["spherePlayer"][0].clone();
+        self.mesh = assets["personnage"][0].clone();
         self.mesh.isVisible = true;
+        self.mesh.position = self.position;
     }
 
     init();

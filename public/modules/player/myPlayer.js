@@ -35,6 +35,10 @@ function MyPlayer( game, name, spawnPoint, assets ) {
 
     _scene.activeCamera = self.camera;
 
+    self.renderMyPlayer = function() {
+        //self.player.mesh.position.x = self.camera.position.x -10;
+        //self.player.mesh.position.z = self.camera.position.z;
+    };
 
     /*PRIVATE METHODS*/
 
@@ -56,7 +60,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
-        camera.ellipsoid = new BABYLON.Vector3( 2, 3.5, 2 );
+        camera.ellipsoid = new BABYLON.Vector3( 3, 3.5, 3 );
 
         camera.keysUp = [90]; // Z
 
