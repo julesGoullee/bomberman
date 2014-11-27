@@ -1,5 +1,4 @@
 {
 	"version" : 1,
-	"enableSceneOffline" : true,
-	"enableTexturesOffline" : true
-}
+	"enableSceneOffline" : false,
+	"enableTexturesOffline" : false}

@@ -1,12 +1,10 @@
 "use strict";
 
 var config = require( "../../config/config" );
-
 var ejs = require( "ejs" );
-
 var fs = require( "fs" );
 
-function homeRoutes(app){
+function homeRoutes( app ){
 
     var appFile = fs.readFileSync( config.rootPath + "/app/routes/home/home.html" ).toString();
 
@@ -15,16 +13,25 @@ function homeRoutes(app){
     var dependances = {
 
         scripts:[
+            "socket.io/socket.io",
+
             "external/jquery/jquery",
             "external/bootstrap/bootstrap.min",
             "external/babylonjs/babylon.1.10.0",
 
-            "module/block",
-            "module/bomb",
-            "module/player",
-            "module/map",
-            "module/myPlayer",
-            "module/game",
+            // ftc utilitaire
+            "modules/utils/utils",
+
+            //modules
+            "modules/block/block",
+            "modules/bomb/bomb",
+            "modules/camera/freeCamera",
+            "modules/camera/switchCamera",
+            "modules/connector/connector",
+            "modules/game/game",
+            "modules/map/map",
+            "modules/player/player",
+            "modules/player/myPlayer",
             "main"
         ],
         css:[
@@ -45,7 +52,7 @@ function homeRoutes(app){
         commonResponseGetPost( res );
     });
 
-    app.get("/",function( req, res ){
+    app.get( "/",function( req, res ){
 
         commonResponseGetPost( res );
     });

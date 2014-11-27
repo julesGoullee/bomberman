@@ -18,7 +18,7 @@ module.exports = function(grunt) {
                     reporter: "progress",
                     ui: "bdd"
                 },
-                src: config.rootPath + "/app/module/**/*.js"
+                src: config.rootPath + "/app/modules/**/*.js"
             }
         },
         karma: {
@@ -31,14 +31,15 @@ module.exports = function(grunt) {
                         "external/jquery/*.js",
                         "external/bootstrap/*.js",
                         //MOCK
-                        "module/test/mock.js",
+                        "modules/test/mock.js",
                         //modules
-                        "module/**/test/*.js",
-                        "module/**/*.js"
+                        "modules/**/test/*.js",
+                        "modules/**/*.js"
                     ]
                 },
                 // available reporters: https://npmjs.org/browse/keyword/karma-reporter
                 reporters: ["dots", "ubuntu"],
+                //reporters: ["dots"],
                 autoWatch: true,
                 browsers: ["PhantomJS"]
             }

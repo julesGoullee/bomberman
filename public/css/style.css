@@ -11,16 +11,17 @@ html, body {
     height: 100%;
 }
 
-#cross{
-    position:absolute;
-    left:calc(50% - 20px);
-    top:calc(50% - 20px);
-}
-
 /*DEBUG*/
 #debug {
     position: absolute;
     left: 0;
     top: 2px;
     color: white;
+}
+
+#switchCamera{
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    font-size: 11px;
 }
