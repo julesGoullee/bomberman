@@ -1,8 +1,10 @@
-require bower : "npm install -g bower"
-require grunt : "npm install -g grunt-cli"
+##DEPENDENCES:
+require nodeJS : http://nodejs.org/
+[optional][windows only] require growl for toast notify test : http://www.growlforwindows.com/
+require grunt : npm install -g grunt-cli
 
-INSTALL (require Root privilege): ----------> "npm install",
-RUN POST INSTALL: -------------------
--------> "npm run postInstall"
+##INSTALL:
+Npm library externe (require Root privilege on linux): ----------> npm install,
+Bower lib && config: --------------------------> npm run postInstall
 
-http://www.growlforwindows.com/gfw/default.aspx
+
