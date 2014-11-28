@@ -13,9 +13,9 @@ describe( "Bombe" ,function() {
     it( "Peut creer une bombe a la bonne position", function() {
 
         var expectPosition = {
-            x: spawnPoint[0],
-            y: 4,
-            z: spawnPoint[1]
+            x: spawnPoint[0] +10,//todo decalage player
+            y: 3,
+            z: spawnPoint[1] + 2.5//todo decalage bombe
         };
 
         expect( expectPosition ).toEqual( bombe.position );

@@ -199,7 +199,7 @@ describe( "Maps", function() {
 
         maps.addObject( player );
 
-        expect( maps.getPlayerById( player.id )).toEqual( player );
+        expect( maps.getPlayerById( player.id ) ).toEqual( player );
 
     });
 
@@ -212,7 +212,7 @@ describe( "Maps", function() {
 
             maps.setBomb( player );
 
-            expect( maps.getBombs().length).toEqual( 1 );
+            expect( maps.getBombs().length ).toEqual( 1 );
 
         });
 
@@ -240,7 +240,7 @@ describe( "Maps", function() {
 
             maps.setBomb( player2 );
 
-            expect( maps.getBombs().length).toEqual( 2 );
+            expect( maps.getBombs().length ).toEqual( 2 );
 
         });
 
@@ -277,8 +277,8 @@ describe( "Maps", function() {
 
             maps.setBomb( player );
 
-            expect( player.listBombs[0].position.x ).toEqual( player.position.x );
-            expect( player.listBombs[0].position.z ).toEqual( player.position.z );
+            expect( player.listBombs[0].position.x ).toEqual( player.position.x + 10/*todo decalage player*/ );
+            expect( player.listBombs[0].position.z ).toEqual( player.position.z + 2.5 );
         });
 
         it( "Peut poser une bombe a la position arrondie au dessus du player", function () {
@@ -289,8 +289,8 @@ describe( "Maps", function() {
 
             maps.setBomb( player );
 
-            expect( player.listBombs[0].position.x ).toEqual( 32 );
-            expect( player.listBombs[0].position.z ).toEqual( -16 );
+            expect( player.listBombs[0].position.x ).toEqual( 32 + 10/*todo decalage player*/ );
+            expect( player.listBombs[0].position.z - 2.5 ).toEqual( -16 );
         });
 
         it( "Peut poser une bombe a la position arrondie en dessous du player", function () {
@@ -301,8 +301,8 @@ describe( "Maps", function() {
 
             maps.setBomb( player );
 
-            expect( player.listBombs[0].position.x ).toEqual( 24 );
-            expect( player.listBombs[0].position.z ).toEqual( -8 );
+            expect( player.listBombs[0].position.x ).toEqual( 24 + 10/*todo decalage player*/ );
+            expect( player.listBombs[0].position.z - 2.5 ).toEqual( -8 );
         });
 
     });

@@ -27,17 +27,15 @@ function MyPlayer( game, name, spawnPoint, assets ) {
     self.camera = initCamera();
 
     // attache camera to player mesh
-    self.player.mesh.parent = self.camera;
-
-    self.player.position = self.camera.position;
-
+    //self.player.meshs.shape.parent = self.camera;
     //scene.activeCameras.push( self.camera );
 
     _scene.activeCamera = self.camera;
+    self.camera.noRotationConstraint = true;
 
     self.renderMyPlayer = function() {
-        //self.player.mesh.position.x = self.camera.position.x -10;
-        //self.player.mesh.position.z = self.camera.position.z;
+        self.player.meshs.shape.position.x = self.camera.position.x -10;
+        self.player.meshs.shape.position.z = self.camera.position.z;
     };
 
     /*PRIVATE METHODS*/

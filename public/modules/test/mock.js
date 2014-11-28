@@ -17,12 +17,17 @@ var gameMock = {
                 return {};
             }
         }],
-        "personnage" :[{//todo a remplacer par le mesh
+        "personnage" :[{
             clone : function (){
                 return {};
             }
         }],
-        "bomb" :[{//todo a remplacer par le mesh
+        "bomb" :[{
+            clone : function (){
+                return {};
+            }
+        }],
+        "bombColision" :[{
             clone : function (){
                 return {};
             }

@@ -15,11 +15,11 @@ describe( "Player", function() {
         player = new Player( "testPlayer", spawnPoint , gameMock.assets );
     });
 
-    it( "Peut creer un player a la bonne position", function() {
+    it( "Peut créer un player a la bonne position", function() {
 
         var expectPosition = {
             x: spawnPoint[0],
-            y: 4.5,
+            y: 11.5,
             z: spawnPoint[1]
         };
 
@@ -42,11 +42,11 @@ describe( "Player", function() {
             expect( maps.setBomb( player ) ).toEqual( true );
         }
 
-        expect( player.listBombs.length ).toEqual( 2 );
+        expect( player.listBombs.length ).toEqual( nbBombeMax );
 
         expect( maps.setBomb( player ) ).toEqual( false );
 
-        expect( player.listBombs.length ).toEqual( 2 );
+        expect( player.listBombs.length ).toEqual( nbBombeMax );
     });
 
     it( "Peut poser une bombe", function () {
@@ -60,8 +60,8 @@ describe( "Player", function() {
 
         maps.setBomb( player );
 
-        expect( player.listBombs[0].position.x ).toEqual( player.position.x );
-        expect( player.listBombs[0].position.z ).toEqual( player.position.z );
+        expect( player.listBombs[0].position.x ).toEqual( player.position.x + 10/*todo decalage player*/);
+        expect( player.listBombs[0].position.z ).toEqual( player.position.z + 2.5/*todo decalage player*/);
     });
 
 });

@@ -6,11 +6,7 @@ function Block ( assets, position ) {
 
     /*PUBLIC METHODS*/
 
-    self.position = {
-        x: position.x,
-        y: 0,
-        z: position.z
-    };
+    self.position = { x: 0, y: 0, z: 0 };
 
     self.meshs = {};
 
@@ -33,9 +29,15 @@ function Block ( assets, position ) {
 
         meshTemp.checkCollisions = false;
 
-        meshTemp.position =  self.position;
+        meshTemp.position =  {
+            x: position.x,
+            y: 0,
+            z: position.z
+        };
 
         self.meshs.shape = meshTemp;
+
+        self.position = meshTemp.position;
 
     }
 
@@ -48,9 +50,9 @@ function Block ( assets, position ) {
         meshTempColision.checkCollisions = true;
 
         meshTempColision.position = {
-            x: self.position.x,
+            x: position.x,
             y: 0,
-            z: self.position.z
+            z: position.z
         };
 
         self.meshs.colisionBlock = meshTempColision;

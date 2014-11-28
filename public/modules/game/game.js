@@ -16,6 +16,7 @@ function Game ( canvasId ) {
         "tempBlockColision",
         "tour",
         "bomb",
+        "bombColision",
         "personnage",
         "tourColision"
     ];

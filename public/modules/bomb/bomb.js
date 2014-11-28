@@ -1,6 +1,9 @@
 "use strict";
 
 function Bombe ( owner, position, assets ) {
+
+    position.x += 10; //todo decalage du player
+
     var self = this;
 
     /*PUBLIC METHODS*/
@@ -19,11 +22,9 @@ function Bombe ( owner, position, assets ) {
 
     self.owner = owner;
 
-    self.position = {
-        x: position.x,
-        y: 4,
-        z: position.z
-    };
+    self.position = { x: 0, y: 0, z: 0 };
+
+    self.meshs = {};
 
     self.destroy = function () {
 
@@ -32,13 +33,57 @@ function Bombe ( owner, position, assets ) {
 
     /*PRIVATE METHODS*/
     function init() {
+
+        createMeshColision();
+
         createMesh();
     }
 
     function createMesh () {
-        self.mesh = assets["bomb"][0].clone();
-        self.mesh.position = self.position;
-        self.mesh.isVisible = true;
+
+        if ( assets["bomb"] === undefined ) {
+
+            throw new Error( "Mesh bomb is not preload" );
+        }
+
+        var meshBomb =  assets["bomb"][0].clone();
+
+        meshBomb.position =  {
+            x: position.x,
+            y: 3,
+            z: position.z + 2.5
+        };
+
+        meshBomb.isVisible = true;
+
+        meshBomb.checkCollisions = false;
+
+        self.meshs.shape = meshBomb;
+
+        self.position = meshBomb.position;
+
+    }
+
+    function createMeshColision() {
+
+        if ( assets["bombColision"] === undefined ) {
+
+            throw new Error( "Mesh bombColision is not preload" );
+        }
+
+        var meshBombColision = assets["bombColision"][0].clone();
+
+        meshBombColision.position = {
+            x: position.x,
+            y: 3,
+            z: position.z
+        };
+
+        meshBombColision.isVisible = true;
+
+        meshBombColision.checkCollisions = true;
+
+        self.meshs.colisionBlock = meshBombColision;
     }
 
     init();
