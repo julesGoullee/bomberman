@@ -36,6 +36,11 @@ function MyPlayer( game, name, spawnPoint, assets ) {
     self.renderMyPlayer = function() {
         self.player.meshs.shape.position.x = self.camera.position.x -10;
         self.player.meshs.shape.position.z = self.camera.position.z;
+        self.player.mesh.position.x = self.camera.position.x;
+        self.player.mesh.position.z = self.camera.position.z + 9;
+        //self.player.mesh.rotate(BABYLON.Axis.Z, self.camera.rotation.z + Math.PI/2, BABYLON.Space.LOCAL);
+
+
     };
 
     /*PRIVATE METHODS*/
@@ -58,7 +63,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
-        camera.ellipsoid = new BABYLON.Vector3( 3, 3.5, 3 );
+        camera.ellipsoid = new BABYLON.Vector3( 2.5, 3.5, 2.5 );
 
         camera.keysUp = [90]; // Z
 

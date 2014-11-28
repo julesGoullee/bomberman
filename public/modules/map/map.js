@@ -40,7 +40,7 @@ function Maps( game ) {
 
         createGroundAndPermanentBlock();
 
-        //createTemporaireBlock();
+        createTemporaireBlock();
 
     };
 
