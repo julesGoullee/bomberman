@@ -40,8 +40,9 @@ function Maps( assets, blockDim ) {
 
         createGroundAndPermanentBlock();
 
-        //createTemporaireBlock();
-
+        if(cfg.showBlockTemp) {
+            createTemporaireBlock();
+        }
     };
 
     self.addObject = function ( player ) {
@@ -167,7 +168,7 @@ function Maps( assets, blockDim ) {
 
                 var  meshColision = _assets[self.meshsData[ iMesh].name + "Colision" ][0];
 
-                meshColision.isVisible = true;
+                meshColision.isVisible = cfg.showBlockColision;
 
                 meshColision.checkCollisions = true;
 

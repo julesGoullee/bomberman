@@ -21,6 +21,7 @@ function homeRoutes( app ){
 
             // ftc utilitaire
             "modules/utils/utils",
+            "modules/config/config",
 
             //modules
             "modules/preloader/preloader",

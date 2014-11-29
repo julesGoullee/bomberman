@@ -52,7 +52,7 @@ function Bombe ( owner, position, assets ) {
         meshBomb.position =  {
             x: position.x,
             y: 3,
-            z: position.z
+            z: position.z + 2.5//todo erreur de position
         };
 
         meshBomb.isVisible = true;
@@ -78,7 +78,7 @@ function Bombe ( owner, position, assets ) {
             z: position.z
         };
 
-        meshBombColision.isVisible = true;
+        meshBombColision.isVisible = cfg.showBlockColision ;
 
         //meshBombColision.checkCollisions = true;
 

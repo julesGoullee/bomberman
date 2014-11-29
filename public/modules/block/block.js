@@ -45,7 +45,7 @@ function Block ( assets, position ) {
 
         var meshTempColision = assets["tempBlockColision"][0].clone();
 
-        meshTempColision.isVisible = true;
+        meshTempColision.isVisible = cfg.showBlockColision;
 
         meshTempColision.checkCollisions = true;
 
