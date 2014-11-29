@@ -59,7 +59,7 @@ function Game ( canvasId ) {
 
             map.create();
 
-            var keyBinder = new Keybinder();
+            var keyBinder = new KeyBinder();
 
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
@@ -148,7 +148,7 @@ function Game ( canvasId ) {
             var cameraActive = self.scene.activeCamera;
 
             _pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
-            console.log(_pointerLocked);
+
             if ( !_pointerLocked ) {
 
                 cameraActive.detachControl( _canvas );

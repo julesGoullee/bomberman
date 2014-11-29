@@ -2,6 +2,8 @@
 
 describe( "Maps", function() {
 
+    cfg.showBlockColision = true;
+
     var maps;
 
     var player;
@@ -338,4 +340,5 @@ describe( "Maps", function() {
 
     });
 
+    //x:-32, z:-64
 });

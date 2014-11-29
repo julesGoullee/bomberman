@@ -40,4 +40,18 @@ describe( "Player", function() {
         expect( player.roundPosition() ).toEqual( expectedPosition );
     });
 
+    it( "Peut recuperer la position arrondie au dessus", function () {
+
+        player.position.x = 28.456345;
+
+        player.position.z = -13.557235;
+
+        var expectedPosition = {
+            x: 32,
+            z: -16
+        };
+
+        expect( player.roundPosition() ).toEqual( expectedPosition );
+    });
+
 });

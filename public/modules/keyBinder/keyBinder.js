@@ -1,6 +1,6 @@
 "use strict";
 
-function Keybinder(){
+function KeyBinder(){
 
     var self = this;
 

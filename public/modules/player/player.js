@@ -49,6 +49,11 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         return self.listBombs.length < self.powerUp.bombs ;
     };
 
+    self.addBomb = function ( bomb ) {
+
+        self.listBombs.push( bomb );
+    };
+
     /*PRIVATE METHODS*/
 
     function init() {

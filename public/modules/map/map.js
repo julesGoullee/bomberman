@@ -92,7 +92,7 @@ function Maps( assets, blockDim ) {
 
         if ( player.shouldSetBomb() ) {
 
-            player.listBombs.push( bomb );
+            player.addBomb( bomb );
 
             return true;
         }
