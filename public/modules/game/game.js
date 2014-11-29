@@ -25,6 +25,15 @@ function Game ( canvasId ) {
 
     var _blockDim = 8;
 
+    //todo coté serv
+    var playsersSpawnPoint = [
+        [50, -65],
+        [42, 72],
+        [-50, 65],
+        [-38, -77]
+    ];
+
+
     /*PUBLIC METHODS*/
 
     self.scene = initScene();
@@ -39,26 +48,33 @@ function Game ( canvasId ) {
         preloader.onFinish( function(){
 
             // Player and arena creation when the loading is finished
-            var playsersSpawnPoint = [
-                [50, -65],
-                [42, 72],
-                [-50, 65],
-                [-38, -77]
-            ];
 
             var spawnPoint = playsersSpawnPoint[3];
 
-            var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets, _blockDim );
+            var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , spawnPoint, self.assets, _blockDim );
 
             var freeCamera = new FreeCamera(self);
 
-            switchCamera(self.scene);
-
             var map = new Maps( self.assets, _blockDim );
 
-            listenSpaceDown( map.setBomb, myPlayer.player );
-
             map.create();
+
+            var keyBinder = new Keybinder();
+
+            var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
+
+            cameraSwitcher.showSwitchButton();
+
+            keyBinder.onSetBomb( function() {
+
+                if ( _pointerLocked ) {
+
+                    map.setBomb( myPlayer.player );
+                }
+            });
+
+
+            keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
             initPointerLock();
 
@@ -95,6 +111,23 @@ function Game ( canvasId ) {
 
         light.intensity = 0.8;
 
+        //skybox
+        var skybox = BABYLON.Mesh.CreateBox( "skyBox", 500.0, scene );
+
+        var skyboxMaterial = new BABYLON.StandardMaterial( "skyBox", scene );
+
+        skyboxMaterial.backFaceCulling = false;
+
+        skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture( "content/skybox/skybox", scene );
+
+        skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+
+        skyboxMaterial.diffuseColor = new BABYLON.Color3( 0, 0, 0 );
+
+        skyboxMaterial.specularColor = new BABYLON.Color3( 0, 0, 0 );
+
+        skybox.material = skyboxMaterial;
+
         return scene;
     }
 
@@ -115,10 +148,11 @@ function Game ( canvasId ) {
             var cameraActive = self.scene.activeCamera;
 
             _pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
-
+            console.log(_pointerLocked);
             if ( !_pointerLocked ) {
 
                 cameraActive.detachControl( _canvas );
+
             } else {
 
                 cameraActive.attachControl( _canvas );

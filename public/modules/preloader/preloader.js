@@ -30,7 +30,6 @@ function Preloader ( scene, meshList, assets ) {
 
         _loader.onFinish = function(){
             for ( var i = 0 ; i < _onFinishCallbacks.length ; i++ ){
-
                 _onFinishCallbacks[i]();
             }
         };
@@ -55,13 +54,17 @@ function Preloader ( scene, meshList, assets ) {
         }
 
         for ( var iMesh = 0 ; iMesh < meshList.length ; iMesh++ ) {
-
             var currentMeshs = _loader.addMeshTask( meshList[iMesh], "", "/content/", meshList[iMesh] + ".babylon" );
 
             currentMeshs.onSuccess = function( task ) {
 
                 initMesh( task );
             };
+
+            currentMeshs.onError = function ( task ){
+
+                throw new Error( "Mesh " + task.name + " as error on preloading." );
+            }
         }
     }
 

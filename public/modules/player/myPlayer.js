@@ -1,10 +1,10 @@
 "use strict";
 
-function MyPlayer( game, name, spawnPoint, assets ) {
+function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
     var self = this;
 
-    var _scene = game.scene;
+    var _scene = scene;
 
     //player speed
     var _speed = 1;
@@ -21,7 +21,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
 
     /*PUBLIC METHODS*/
 
-    self.player = new Player( name, spawnPoint, assets );
+    self.player = new Player( name, spawnPoint, assets, blockDim );
 
     // player camera
     self.camera = initCamera();
@@ -51,13 +51,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
             _scene
         );
 
-        //var camera = new BABYLON.FreeCamera(
-        //    "cameraPlayer",
-        //    new BABYLON.Vector3( self.player.position.x, self.player.position.y, self.player.position.z ),
-        //    scene
-        //);
-
-        camera.attachControl( _scene.getEngine().getRenderingCanvas() );
+        //camera.attachControl( _scene.getEngine().getRenderingCanvas(), true );
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
@@ -70,7 +64,6 @@ function MyPlayer( game, name, spawnPoint, assets ) {
         camera.keysDown = [83]; // S
 
         camera.keysRight = [68]; // D
-
 
         camera.inertia = _inertia;
 

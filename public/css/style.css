@@ -19,7 +19,7 @@ html, body {
     color: white;
 }
 
-#switchCamera{
+#switchCameraButton{
     position: absolute;
     top: 40px;
     left: 10px;

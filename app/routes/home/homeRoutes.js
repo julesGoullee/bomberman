@@ -24,10 +24,11 @@ function homeRoutes( app ){
 
             //modules
             "modules/preloader/preloader",
+            "modules/keyBinder/keyBinder",
             "modules/block/block",
             "modules/bomb/bomb",
             "modules/camera/freeCamera",
-            "modules/camera/switchCamera",
+            "modules/camera/CameraSwitcher",
             "modules/connector/connector",
             "modules/game/game",
             "modules/map/map",

@@ -52,7 +52,7 @@ function Bombe ( owner, position, assets ) {
         meshBomb.position =  {
             x: position.x,
             y: 3,
-            z: position.z + 2.5
+            z: position.z
         };
 
         meshBomb.isVisible = true;
