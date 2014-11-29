@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps( game ) {
+function Maps( assets, blockDim ) {
 
     var self = this;
 
@@ -10,9 +10,9 @@ function Maps( game ) {
 
     var _content = [];
 
-    var _blockDim = 8;
+    var _blockDim = blockDim;
 
-    var _assets = game.assets;
+    var _assets = assets;
 
     /*PUBLIC METHODS*/
 
@@ -36,7 +36,7 @@ function Maps( game ) {
         }
     ];
 
-    self.create = function() {
+    self.create = function () {
 
         createGroundAndPermanentBlock();
 
@@ -44,13 +44,13 @@ function Maps( game ) {
 
     };
 
-    self.addObject = function( player ) {
+    self.addObject = function ( player ) {
 
         _content.push( player );
 
     };
 
-    self.getPlayers = function() {
+    self.getPlayers = function () {
 
         var tabPlayer = [];
 
@@ -87,24 +87,15 @@ function Maps( game ) {
 
     self.setBomb = function ( player ) {
 
-        function roundPosition( position ) {
+        var bomb = new Bombe ( player, player.roundPosition() , _assets);
 
-            var newPosition = Math.round( Math.round(position) / _blockDim ) *  _blockDim;
-
-            return newPosition;
-        }
-
-        var bomb = new Bombe ( player, {
-            x: roundPosition( player.position.x ),
-            z: roundPosition( player.position.z )
-        }, _assets);
-
-        if ( player.listBombs.length < player.powerUp.bombs ) {
+        if ( player.shouldSetBomb() ) {
 
             player.listBombs.push( bomb );
 
             return true;
         }
+
         return false;
     };
 
@@ -130,6 +121,13 @@ function Maps( game ) {
         }
 
         return tabBomb;
+    };
+
+    self.getBombsByPlayerId = function ( playerId ) {
+
+        var player = self.getPlayerById( playerId );
+
+        return player.listBombs;
     };
 
     self.getBombsById = function ( id ) {
@@ -204,7 +202,6 @@ function Maps( game ) {
 
                         _content.push( new Block( _assets, blockPosition ) );
                     }
-
 
                     //_content.push( new Block( _assets, blockPosition ) );
                 }

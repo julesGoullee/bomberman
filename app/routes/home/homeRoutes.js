@@ -23,6 +23,7 @@ function homeRoutes( app ){
             "modules/utils/utils",
 
             //modules
+            "modules/preloader/preloader",
             "modules/block/block",
             "modules/bomb/bomb",
             "modules/camera/freeCamera",

@@ -32,5 +32,6 @@ var gameMock = {
                 return {};
             }
         }]
-    }
+    },
+    blockDim: 8
 };

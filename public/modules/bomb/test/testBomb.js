@@ -6,16 +6,17 @@ describe( "Bombe" ,function() {
 
     beforeEach( function() {
 
-        player = new Player( "testPlayer", spawnPoint, gameMock.assets );
-        bombe = new Bombe( player, player.position,  gameMock.assets);
+        player = new Player( "testPlayer", spawnPoint, gameMock.assets, gameMock.blockDim );
+
+        bombe = new Bombe( player, player.position,  gameMock.assets, gameMock.blockDim );
     });
 
     it( "Peut creer une bombe a la bonne position", function() {
 
         var expectPosition = {
-            x: spawnPoint[0] +10,//todo decalage player
-            y: 3,
-            z: spawnPoint[1] + 2.5//todo decalage bombe
+            x: spawnPoint[0],
+            y: 0,
+            z: spawnPoint[1]
         };
 
         expect( expectPosition ).toEqual( bombe.position );
