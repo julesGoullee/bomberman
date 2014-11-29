@@ -6,8 +6,9 @@ describe( "Bombe" ,function() {
 
     beforeEach( function() {
 
-        player = new Player( "testPlayer", spawnPoint, gameMock.assets );
-        bombe = new Bombe( player, player.position,  gameMock.assets);
+        player = new Player( "testPlayer", spawnPoint, gameMock.assets, gameMock.blockDim );
+
+        bombe = new Bombe( player, player.position,  gameMock.assets, gameMock.blockDim );
     });
 
     it( "Peut creer une bombe a la bonne position", function() {

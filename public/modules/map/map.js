@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps( game ) {
+function Maps( assets, blockDim ) {
 
     var self = this;
 
@@ -10,9 +10,9 @@ function Maps( game ) {
 
     var _content = [];
 
-    var _blockDim = 8;
+    var _blockDim = blockDim;
 
-    var _assets = game.assets;
+    var _assets = assets;
 
     /*PUBLIC METHODS*/
 
@@ -87,22 +87,15 @@ function Maps( game ) {
 
     self.setBomb = function ( player ) {
 
-        function roundPosition( position ) {
+        var bomb = new Bombe ( player, player.roundPosition() , _assets);
 
-            return Math.round( Math.round(position) / _blockDim ) *  _blockDim;
-        }
-
-        var bomb = new Bombe ( player, {
-            x: roundPosition( player.position.x ),
-            z: roundPosition( player.position.z )
-        }, _assets);
-
-        if ( player.listBombs.length < player.powerUp.bombs ) {
+        if ( player.shouldSetBomb() ) {
 
             player.listBombs.push( bomb );
 
             return true;
         }
+
         return false;
     };
 

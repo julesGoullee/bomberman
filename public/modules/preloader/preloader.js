@@ -46,6 +46,8 @@ function Preloader ( scene, meshList, assets ) {
 
                 var mesh = task.loadedMeshes[i];
 
+                mesh.useOctreeForCollisions = true;
+
                 mesh.checkCollisions = false;
 
                 mesh.isVisible = false;

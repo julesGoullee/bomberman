@@ -31,9 +31,11 @@ function MyPlayer( game, name, spawnPoint, assets ) {
     //scene.activeCameras.push( self.camera );
 
     _scene.activeCamera = self.camera;
-    self.camera.noRotationConstraint = true;
+
+    self.camera.noRotationConstraint = false;
 
     self.renderMyPlayer = function() {
+
         self.player.meshs.shape.position.x = self.camera.position.x;
         self.player.meshs.shape.position.z = self.camera.position.z;
         //self.player.mesh.rotate(BABYLON.Axis.Z, self.camera.rotation.z + Math.PI/2, BABYLON.Space.LOCAL);

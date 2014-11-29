@@ -1,8 +1,10 @@
 "use strict";
 
-function Player ( name, spawnPoint, assets ) {
+function Player ( name, spawnPoint, assets, blockDim ) {
 
     var self = this;
+
+    var _blockDim = blockDim;
 
     /*PUBLIC METHODS*/
 
@@ -27,7 +29,25 @@ function Player ( name, spawnPoint, assets ) {
         shoot: false,
         bombs: 2
     };
-    
+
+    self.roundPosition = function () {
+
+        function roundValue ( value ) {
+
+            return Math.round( Math.round( value ) / _blockDim ) *  _blockDim;
+
+        }
+
+        return {
+            x: roundValue( self.position.x ),
+            z: roundValue( self.position.z )
+        }
+    };
+
+    self.shouldSetBomb = function () {
+
+        return self.listBombs.length < self.powerUp.bombs ;
+    };
 
     /*PRIVATE METHODS*/
 

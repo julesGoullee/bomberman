@@ -10,9 +10,9 @@ describe( "Player", function() {
 
     beforeEach( function() {
 
-        maps = new Maps(gameMock);
+        maps = new Maps( gameMock.assets, gameMock.blockDim );
 
-        player = new Player( "testPlayer", spawnPoint , gameMock.assets );
+        player = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
     });
 
     it( "Peut créer un player a la bonne position", function() {
@@ -23,45 +23,21 @@ describe( "Player", function() {
             z: spawnPoint[1]
         };
 
-        expect(expectPosition).toEqual( player.position );
+        expect( expectPosition ).toEqual( player.position );
     });
 
-    it( "Peut ajouter une bombe", function() {
+    it( "Peut recuperer la position arrondie en dessus", function () {
 
-        maps.setBomb( player );
+        player.position.x = 26.456345;
 
-        expect( player.listBombs.length ).toEqual( 1 );
-    });
+        player.position.z = -10.557235;
 
-    it( "Ne peut depasser le nombre de bombe maximun", function() {
+        var expectedPosition = {
+            x: 24,
+            z: -8
+        };
 
-        var nbBombeMax = player.powerUp.bombs;
-
-        for ( var i = 0; i < nbBombeMax; i++ ) {
-
-            expect( maps.setBomb( player ) ).toEqual( true );
-        }
-
-        expect( player.listBombs.length ).toEqual( nbBombeMax );
-
-        expect( maps.setBomb( player ) ).toEqual( false );
-
-        expect( player.listBombs.length ).toEqual( nbBombeMax );
-    });
-
-    it( "Peut poser une bombe", function () {
-
-        maps.setBomb( player );
-
-        expect( player.listBombs.length ).toEqual( 1 );
-    });
-
-    it( "Peut poser une bombe a la position du player", function () {
-
-        maps.setBomb( player );
-
-        expect( player.listBombs[0].position.x ).toEqual( player.position.x );
-        expect( player.listBombs[0].position.z ).toEqual( player.position.z );
+        expect( player.roundPosition() ).toEqual( expectedPosition );
     });
 
 });

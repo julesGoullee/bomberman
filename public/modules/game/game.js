@@ -23,6 +23,8 @@ function Game ( canvasId ) {
 
     var _pointerLocked = false;
 
+    var _blockDim = 8;
+
     /*PUBLIC METHODS*/
 
     self.scene = initScene();
@@ -46,13 +48,13 @@ function Game ( canvasId ) {
 
             var spawnPoint = playsersSpawnPoint[3];
 
-            var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets );
+            var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets, _blockDim );
 
             var freeCamera = new FreeCamera(self);
 
             switchCamera(self.scene);
 
-            var map = new Maps( self );
+            var map = new Maps( self.assets, _blockDim );
 
             listenSpaceDown( map.setBomb, myPlayer.player );
 
@@ -85,6 +87,8 @@ function Game ( canvasId ) {
     function initScene () {
 
         var scene = new BABYLON.Scene( _engine );
+
+        scene.collisionsEnabled = true;
 
         //light
         var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
