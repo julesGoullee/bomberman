@@ -154,12 +154,7 @@ describe( "Maps", function() {
 
         beforeEach( function() {
 
-            maps.meshsData = [
-                {
-                    name: "ground",
-                    colisionCase: false
-                }
-            ];
+
         });
         //TODO generattion des block temp
         //it("Peut importer un mesh sans son calque de colision", function () {
@@ -175,35 +170,39 @@ describe( "Maps", function() {
 
     });
 
-    it( "Peut ajouter et recuperer player", function () {
+    describe( "Player methods", function () {
 
-        maps.addObject( player );
+        it( "Peut ajouter et recuperer player", function () {
 
-        expect(maps.getPlayers().length ).toEqual( 1 );
+            maps.addObject( player );
+
+            expect(maps.getPlayers().length ).toEqual( 1 );
+
+        });
+
+        it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
+
+            var block = new Block( gameMock.assets, { x: 0, z: 0 } );
+
+            maps.addObject( player );
+
+            maps.addObject( block );
+
+            expect( maps.getPlayers().length ).toEqual( 1 );
+
+        });
+
+        it( "Peut recuperer un player avec son ID", function () {
+
+            maps.addObject( player );
+
+            expect( maps.getPlayerById( player.id ) ).toEqual( player );
+
+        });
 
     });
 
-    it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
-
-        var block = new Block( gameMock.assets, { x: 0, z: 0 } );
-
-        maps.addObject( player );
-
-        maps.addObject( block );
-
-        expect( maps.getPlayers().length ).toEqual( 1 );
-
-    });
-
-    it( "Peut ajouter un player avec son ID", function () {
-
-        maps.addObject( player );
-
-        expect( maps.getPlayerById( player.id ) ).toEqual( player );
-
-    });
-
-    describe( "Bombe", function() {
+    describe( "Bombs methods", function () {
 
         it( "Peut récupérer la bombe d'un player", function () {
 
@@ -277,8 +276,8 @@ describe( "Maps", function() {
 
             maps.setBomb( player );
 
-            expect( player.listBombs[0].position.x ).toEqual( player.position.x + 10/*todo decalage player*/ );
-            expect( player.listBombs[0].position.z ).toEqual( player.position.z + 2.5 );
+            expect( player.listBombs[0].position.x ).toEqual( player.position.x);
+            expect( player.listBombs[0].position.z ).toEqual( player.position.z);
         });
 
         it( "Peut poser une bombe a la position arrondie au dessus du player", function () {
@@ -289,8 +288,8 @@ describe( "Maps", function() {
 
             maps.setBomb( player );
 
-            expect( player.listBombs[0].position.x ).toEqual( 32 + 10/*todo decalage player*/ );
-            expect( player.listBombs[0].position.z - 2.5 ).toEqual( -16 );
+            expect( player.listBombs[0].position.x ).toEqual( 32 );
+            expect( player.listBombs[0].position.z).toEqual( -16 );
         });
 
         it( "Peut poser une bombe a la position arrondie en dessous du player", function () {
@@ -301,11 +300,10 @@ describe( "Maps", function() {
 
             maps.setBomb( player );
 
-            expect( player.listBombs[0].position.x ).toEqual( 24 + 10/*todo decalage player*/ );
-            expect( player.listBombs[0].position.z - 2.5 ).toEqual( -8 );
+            expect( player.listBombs[0].position.x ).toEqual( 24 );
+            expect( player.listBombs[0].position.z ).toEqual( -8 );
         });
 
     });
-
 
 });

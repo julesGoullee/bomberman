@@ -36,21 +36,21 @@ function Maps( game ) {
         }
     ];
 
-    self.create = function() {
+    self.create = function () {
 
         createGroundAndPermanentBlock();
 
-        createTemporaireBlock();
+        //createTemporaireBlock();
 
     };
 
-    self.addObject = function( player ) {
+    self.addObject = function ( player ) {
 
         _content.push( player );
 
     };
 
-    self.getPlayers = function() {
+    self.getPlayers = function () {
 
         var tabPlayer = [];
 
@@ -89,9 +89,7 @@ function Maps( game ) {
 
         function roundPosition( position ) {
 
-            var newPosition = Math.round( Math.round(position) / _blockDim ) *  _blockDim;
-
-            return newPosition;
+            return Math.round( Math.round(position) / _blockDim ) *  _blockDim;
         }
 
         var bomb = new Bombe ( player, {
@@ -130,6 +128,13 @@ function Maps( game ) {
         }
 
         return tabBomb;
+    };
+
+    self.getBombsByPlayerId = function ( playerId ) {
+
+        var player = self.getPlayerById( playerId );
+
+        return player.listBombs;
     };
 
     self.getBombsById = function ( id ) {
@@ -204,7 +209,6 @@ function Maps( game ) {
 
                         _content.push( new Block( _assets, blockPosition ) );
                     }
-
 
                     //_content.push( new Block( _assets, blockPosition ) );
                 }

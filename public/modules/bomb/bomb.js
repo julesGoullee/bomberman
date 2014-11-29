@@ -2,9 +2,8 @@
 
 function Bombe ( owner, position, assets ) {
 
-    position.x += 10; //todo decalage du player
-
     var self = this;
+
 
     /*PUBLIC METHODS*/
 
@@ -31,7 +30,9 @@ function Bombe ( owner, position, assets ) {
         self.exploded = true;
     };
 
+
     /*PRIVATE METHODS*/
+
     function init() {
 
         createMeshColision();
@@ -60,8 +61,6 @@ function Bombe ( owner, position, assets ) {
 
         self.meshs.shape = meshBomb;
 
-        self.position = meshBomb.position;
-
     }
 
     function createMeshColision() {
@@ -75,15 +74,18 @@ function Bombe ( owner, position, assets ) {
 
         meshBombColision.position = {
             x: position.x,
-            y: 3,
+            y: 0,
             z: position.z
         };
 
         meshBombColision.isVisible = true;
 
-        meshBombColision.checkCollisions = true;
+        //meshBombColision.checkCollisions = true;
 
         self.meshs.colisionBlock = meshBombColision;
+
+        self.position = meshBombColision.position;
+
     }
 
     init();

@@ -60,8 +60,8 @@ describe( "Player", function() {
 
         maps.setBomb( player );
 
-        expect( player.listBombs[0].position.x ).toEqual( player.position.x + 10/*todo decalage player*/);
-        expect( player.listBombs[0].position.z ).toEqual( player.position.z + 2.5/*todo decalage player*/);
+        expect( player.listBombs[0].position.x ).toEqual( player.position.x );
+        expect( player.listBombs[0].position.z ).toEqual( player.position.z );
     });
 
 });

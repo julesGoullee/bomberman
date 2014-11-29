@@ -13,7 +13,7 @@ function MyPlayer( game, name, spawnPoint, assets ) {
     var _inertia = 0.9;
 
     //player angular inertia
-    var _angularInertia = 0;
+    //var _angularInertia = 0;
 
     //mouse sensibility (lower the better sensible)
     var angularSensibility = 3000;
@@ -34,13 +34,9 @@ function MyPlayer( game, name, spawnPoint, assets ) {
     self.camera.noRotationConstraint = true;
 
     self.renderMyPlayer = function() {
-        self.player.meshs.shape.position.x = self.camera.position.x -10;
+        self.player.meshs.shape.position.x = self.camera.position.x;
         self.player.meshs.shape.position.z = self.camera.position.z;
-        self.player.mesh.position.x = self.camera.position.x;
-        self.player.mesh.position.z = self.camera.position.z + 9;
         //self.player.mesh.rotate(BABYLON.Axis.Z, self.camera.rotation.z + Math.PI/2, BABYLON.Space.LOCAL);
-
-
     };
 
     /*PRIVATE METHODS*/

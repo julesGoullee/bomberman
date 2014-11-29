@@ -21,8 +21,6 @@ function Game ( canvasId ) {
         "tourColision"
     ];
 
-    var _loader;
-
     var _pointerLocked = false;
 
     /*PUBLIC METHODS*/
@@ -31,43 +29,12 @@ function Game ( canvasId ) {
 
     self.assets = {};
 
-    self.init = function(){
+    self.init = function () {
+        var connector = new Connector();
 
-        //todo a remplacer par le mesh
+        var preloader = new Preloader( self.scene, _meshPreload, self.assets);
 
-        //player
-        var spherePlayerMock = BABYLON.Mesh.CreateSphere( "spherePlayer", 16, 4, self.scene );
-        spherePlayerMock.isVisible = false;
-
-        ////bombe
-        //var sphereBombeMock = BABYLON.Mesh.CreateSphere( "bombeSphere", 16, 5, self.scene );
-        //var materialBombeSphere = new BABYLON.StandardMaterial("textureBombe", self.scene);
-        //materialBombeSphere.diffuseColor = new BABYLON.Color3(1.0, 0.2, 0.7);
-        //materialBombeSphere.emissiveColor = new BABYLON.Color3(1, .2, .7);
-        //sphereBombeMock.material = materialBombeSphere;
-        //sphereBombeMock.isVisible = false;
-
-        self.assets["spherePlayer"] = [spherePlayerMock];
-        //self.assets["sphereBombe"] = [sphereBombeMock];
-
-        _loader = new BABYLON.AssetsManager( self.scene );
-
-        _loader.useDefaultLoadingScreen = true;//todo creer un loader qui attend les webSockets
-
-        for ( var iMesh = 0 ; iMesh < _meshPreload.length ; iMesh++ ) {
-
-            var currentMeshs = _loader.addMeshTask( _meshPreload[iMesh], "", "/content/", _meshPreload[iMesh] + ".babylon" );
-
-            currentMeshs.onSuccess = function( task ) {
-
-                initMesh( task );
-            };
-        }
-        _loader.load();
-
-        _loader.onFinish = function() {
-
-            var connector = new Connector();
+        preloader.onFinish( function(){
 
             // Player and arena creation when the loading is finished
             var playsersSpawnPoint = [
@@ -81,7 +48,6 @@ function Game ( canvasId ) {
 
             var myPlayer = new MyPlayer( self, "myPlayer" , spawnPoint, self.assets );
 
-
             var freeCamera = new FreeCamera(self);
 
             switchCamera(self.scene);
@@ -89,7 +55,6 @@ function Game ( canvasId ) {
             var map = new Maps( self );
 
             listenSpaceDown( map.setBomb, myPlayer.player );
-
 
             map.create();
 
@@ -105,7 +70,8 @@ function Game ( canvasId ) {
                 document.getElementById( "debug" ).innerHTML = "fps : " + BABYLON.Tools.GetFps().toFixed() + " Position camera Player: " + myPlayer.camera.position.toString();
             });
 
-        };
+        });
+
     };
 
 
@@ -126,19 +92,6 @@ function Game ( canvasId ) {
         light.intensity = 0.8;
 
         return scene;
-    }
-
-    function initMesh ( task ) {
-        self.assets[task.name] = task.loadedMeshes;
-
-        for ( var i=0 ; i < task.loadedMeshes.length ; i++ ) {
-
-            var mesh = task.loadedMeshes[i];
-
-            mesh.checkCollisions = false;
-
-            mesh.isVisible = false;
-        }
     }
 
     function initPointerLock() {
@@ -176,10 +129,16 @@ function Game ( canvasId ) {
 
     function listenSpaceDown( callback, player ){
         document.addEventListener( "keydown", function( e ) {
-            if( _pointerLocked && e.which === 32){
-                callback(player);
-            }
+            switch(e.which){
+                case 32 :
+                    if( _pointerLocked){
+                        callback(player);
+                    }
+                    break;
 
+                default:
+                    break;
+            }
         }, false);
     }
 
