@@ -4,9 +4,9 @@ function Maps( assets, blockDim ) {
 
     var self = this;
 
-    var _nbLine = 10;
+    var _colLength = 10;
 
-    var _nbCol = 16;
+    var _lineLength = 16;
 
     var _content = [];
 
@@ -14,7 +14,7 @@ function Maps( assets, blockDim ) {
 
     var _assets = assets;
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS//
 
     self.meshGround = [];
 
@@ -51,6 +51,8 @@ function Maps( assets, blockDim ) {
 
     };
 
+
+    //Players
     self.getPlayers = function () {
 
         var tabPlayer = [];
@@ -86,6 +88,8 @@ function Maps( assets, blockDim ) {
         return false;
     };
 
+
+    //Bombs
     self.setBomb = function ( player ) {
 
         var bomb = new Bombe ( player, player.roundPosition() , _assets);
@@ -93,6 +97,8 @@ function Maps( assets, blockDim ) {
         if ( player.shouldSetBomb() ) {
 
             player.addBomb( bomb );
+
+
 
             return true;
         }
@@ -146,7 +152,27 @@ function Maps( assets, blockDim ) {
         }
     };
 
-    /*PRIVATE METHODS*/
+
+    //Blocks
+    self.getBlocks = function () {
+
+        var tabBlocks = [];
+
+        var i = 0;
+
+        var size = _content.length;
+
+        for ( i; i < size; i++ ) {
+
+            if ( _content[i].type == "block" ) {
+
+                tabBlocks.push(_content[i]);
+            }
+        }
+        return tabBlocks;
+    };
+
+    //PRIVATE METHODS//
 
     function createGroundAndPermanentBlock() {
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
@@ -186,9 +212,9 @@ function Maps( assets, blockDim ) {
         //TODO retirer 3 block dans les coins
         //var block = new Block( assets, { x: 0, z: 0 } );
 
-        for ( var iBlockLargeur = -_nbLine / 2 ; iBlockLargeur <= _nbLine / 2 ; iBlockLargeur++ ) {
+        for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
 
-            for ( var iBlockLongueur = - _nbCol / 2 ; iBlockLongueur <= _nbCol / 2 ; iBlockLongueur++ ) {
+            for ( var iBlockLongueur = - _lineLength / 2 ; iBlockLongueur <= _lineLength / 2 ; iBlockLongueur++ ) {
 
                 var blockPosition = {
 

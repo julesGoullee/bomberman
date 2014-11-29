@@ -112,7 +112,7 @@ function Game ( canvasId ) {
         light.intensity = 0.8;
 
         //skybox
-        var skybox = BABYLON.Mesh.CreateBox( "skyBox", 500.0, scene );
+        var skybox = BABYLON.Mesh.CreateBox( "skyBox", 200.0, scene );
 
         var skyboxMaterial = new BABYLON.StandardMaterial( "skyBox", scene );
 

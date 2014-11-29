@@ -4,7 +4,12 @@ function Block ( assets, position ) {
 
     var self = this;
 
+
     /*PUBLIC METHODS*/
+
+    self.id = utils.guid();
+
+    self.type = "block";
 
     self.position = { x: 0, y: 0, z: 0 };
 

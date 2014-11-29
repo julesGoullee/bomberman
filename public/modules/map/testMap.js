@@ -158,17 +158,13 @@ describe( "Maps", function() {
 
 
         });
-        //TODO generattion des block temp
-        //it("Peut importer un mesh sans son calque de colision", function () {
-        //
-        //    maps.nbCol = 2;
-        //
-        //    maps.nbLine = 4;
-        //
-        //    maps.create();
-        //
-        //    expect(maps.content.length).toEqual(1);
-        //});
+
+        it( "Peut remplir la map de block en laissant les angles sans block temp", function () {
+
+            maps.create();
+
+            expect(maps.getBlocks().length).toEqual(135);
+        });
 
     });
 

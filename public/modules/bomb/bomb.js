@@ -4,6 +4,7 @@ function Bombe ( owner, position, assets ) {
 
     var self = this;
 
+    var _explodedCallback = [];
 
     /*PUBLIC METHODS*/
 
@@ -13,7 +14,7 @@ function Bombe ( owner, position, assets ) {
 
     self.type = "bombs";
 
-    self.countdown = 2000;
+    self.countDown = 2000;
 
     self.exploded = false;
 
@@ -30,6 +31,9 @@ function Bombe ( owner, position, assets ) {
         self.exploded = true;
     };
 
+    self.onExploded = function ( callback ) {
+        _explodedCallback.push( callback );
+    };
 
     /*PRIVATE METHODS*/
 
@@ -38,6 +42,12 @@ function Bombe ( owner, position, assets ) {
         createMeshColision();
 
         createMesh();
+
+        setTimeout( function() {
+
+            self.destroy();
+
+        }, self.countDown );
     }
 
     function createMesh () {

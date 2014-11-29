@@ -12,7 +12,7 @@ function CameraSwitcher ( scene , canvas ) {
 
     self.showSwitchButton = function () {
 
-        $( "body" ).append( "<button class='btn' id='switchCameraButton'>Changer de vue (actual : camera <span>" + _scene.activeCamera.id + "</span>)</button>" );
+        $( "body" ).append( "<button class='btn' id='switchCameraButton'>Change view or press key C (actual : camera <span>" + _scene.activeCamera.id + "</span>)</button>" );
 
         $( "#switchCameraButton" ).click( function() {
 
