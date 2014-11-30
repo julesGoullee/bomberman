@@ -32,6 +32,8 @@ module.exports = function(grunt) {
                         "external/bootstrap/*.js",
                         //MOCK
                         "modules/test/mock.js",
+                        //config
+                        "modules/config/config.js",
                         //modules
                         "modules/**/test/*.js",
                         "modules/**/*.js"
