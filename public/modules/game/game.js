@@ -27,10 +27,10 @@ function Game ( canvasId ) {
 
     //todo coté serv
     var playsersSpawnPoint = [
-        [50, -65],
-        [42, 72],
-        [-50, 65],
-        [-38, -77]
+        [50, -64.5],
+        [39.1, 77],
+        [-53, 64.5],
+        [-39.1, -77]
     ];
 
 
@@ -49,7 +49,7 @@ function Game ( canvasId ) {
 
             // Player and arena creation when the loading is finished
 
-            var spawnPoint = playsersSpawnPoint[3];
+            var spawnPoint = playsersSpawnPoint[1];
 
             var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , spawnPoint, self.assets, _blockDim );
 
@@ -112,7 +112,8 @@ function Game ( canvasId ) {
         light.intensity = 0.8;
 
         //skybox
-        var skybox = BABYLON.Mesh.CreateBox( "skyBox", 200.0, scene );
+        var skybox = BABYLON.Mesh.CreateBox( "skyBox", 1000.0, scene );
+        skybox.position = new BABYLON.Vector3(0, 100, 0);
 
         var skyboxMaterial = new BABYLON.StandardMaterial( "skyBox", scene );
 

@@ -10,11 +10,11 @@ function Bombe ( owner, position, assets ) {
 
     self.id = utils.guid();
 
-    self.power = 1;
+    self.power = 2;
 
     self.type = "bombs";
 
-    self.countDown = 2000;
+    self.countDown = cfg.bombCountDown;
 
     self.exploded = false;
 
@@ -28,10 +28,21 @@ function Bombe ( owner, position, assets ) {
 
     self.destroy = function () {
 
+        for ( var i = 0; i < _explodedCallback.length; i++ ) {
+
+            _explodedCallback[i](self);
+
+        }
+
         self.exploded = true;
+
+        self.meshs.shape.dispose();
+
+        self.meshs.colisionBlock.dispose();
     };
 
     self.onExploded = function ( callback ) {
+
         _explodedCallback.push( callback );
     };
 

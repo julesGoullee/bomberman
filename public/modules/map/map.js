@@ -92,13 +92,20 @@ function Maps( assets, blockDim ) {
     //Bombs
     self.setBomb = function ( player ) {
 
-        var bomb = new Bombe ( player, player.roundPosition() , _assets);
 
         if ( player.shouldSetBomb() ) {
+            //TODO CHECK SI DEJA UNE BOMBE A CETTE CASE
+            var bomb = new Bombe ( player, player.roundPosition() , _assets);
 
             player.addBomb( bomb );
 
+            bomb.onExploded( function() {
 
+                player.delBombById( bomb.id );
+
+                explosion( bomb );
+
+            });
 
             return true;
         }
@@ -164,17 +171,56 @@ function Maps( assets, blockDim ) {
 
         for ( i; i < size; i++ ) {
 
-            if ( _content[i].type == "block" ) {
+            if ( _content[i].type === "block" ) {
 
-                tabBlocks.push(_content[i]);
+                tabBlocks.push( _content[i] );
             }
         }
         return tabBlocks;
     };
 
+    self.getBlocksByPosition = function ( position ) {
+
+        var blocks = self.getBlocks();
+
+        for ( var i = 0; i < blocks.length ; i++ ) {
+
+            var block = blocks[i];
+
+            if ( block.position.x === position.x && block.position.z === position.z ) {
+
+                return block;
+            }
+        }
+
+        return false;
+
+    };
+
+    self.getBlockById = function () {
+        //TODO
+    };
+
+    self.delBlockById = function ( blockId ) {
+
+        for ( var i = 0; i < _content.length; i++ ) {
+
+            if( _content[i].type === "block" &&  _content[i].id === blockId ) {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     //PRIVATE METHODS//
 
-    function createGroundAndPermanentBlock() {
+    function createGroundAndPermanentBlock () {
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
 
             if ( _assets[self.meshsData[iMesh].name] === undefined ) {
@@ -209,9 +255,7 @@ function Maps( assets, blockDim ) {
 
     function createTemporaireBlock (){
 
-        //TODO retirer 3 block dans les coins
-        //var block = new Block( assets, { x: 0, z: 0 } );
-
+        //TODO a amélioré
         for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
 
             for ( var iBlockLongueur = - _lineLength / 2 ; iBlockLongueur <= _lineLength / 2 ; iBlockLongueur++ ) {
@@ -230,7 +274,6 @@ function Maps( assets, blockDim ) {
                         _content.push( new Block( _assets, blockPosition ) );
                     }
 
-                    //_content.push( new Block( _assets, blockPosition ) );
                 }
                 else if ( iBlockLongueur % 2 === 0 ) {
 
@@ -239,10 +282,109 @@ function Maps( assets, blockDim ) {
                         _content.push( new Block( _assets, blockPosition ) );
                    }
 
-                    //_content.push( new Block( _assets, blockPosition ) );
                 }
             }
-            //console.log( _content.length );
         }
+    }
+
+    function explosion ( bomb ) {
+        //TODO ERROR CHECK SI BLOCK PERMANENT
+        var caseAffectedByBomb = [];
+
+        var blockInCurrentCase;
+
+        /*TODO peut être amélioré car parcours les cases ou il y a des blocks permanent*/
+
+        // parcours les cases X superieur la position de la bombe
+        for ( var xPlus = bomb.position.x; xPlus <= bomb.position.x + ( bomb.power * _blockDim )  ; xPlus += 8 ) {
+
+            if( xPlus <= _colLength * _blockDim){
+
+                blockInCurrentCase = self.getBlocksByPosition( { x: xPlus, z : bomb.position.z });
+
+                if ( blockInCurrentCase ) {
+
+                    caseAffectedByBomb.push( blockInCurrentCase );
+
+                    break;
+                }
+
+            } else {
+
+                break;
+            }
+
+        }
+
+        // parcours les cases z superieur la position de la bombe
+        for ( var zPlus = bomb.position.z; zPlus <= bomb.position.z + ( bomb.power * _blockDim )  ; zPlus += 8 ) {
+
+            if( zPlus <= _lineLength * _blockDim){
+
+                blockInCurrentCase = self.getBlocksByPosition( { x: bomb.position.x , z : zPlus });
+
+                if ( blockInCurrentCase ) {
+
+                    caseAffectedByBomb.push( blockInCurrentCase );
+
+                    break;
+                }
+
+            } else {
+
+                break;
+            }
+
+        }
+
+        // parcours les cases x inférieur la position de la bombe
+        for ( var xMoins = bomb.position.x; xMoins >= bomb.position.x - ( bomb.power * _blockDim )  ; xMoins -= 8 ) {
+
+            if( xMoins >= -_colLength * _blockDim){
+
+                blockInCurrentCase = self.getBlocksByPosition( { x: xMoins, z : bomb.position.z });
+
+                if ( blockInCurrentCase ) {
+
+                    caseAffectedByBomb.push( blockInCurrentCase );
+
+                    break;
+                }
+
+            } else {
+
+                break;
+            }
+
+        }
+
+        // parcours les cases z inférieur la position de la bombe
+        for ( var zMoins = bomb.position.z; zMoins >= bomb.position.z - ( bomb.power * _blockDim )  ; zMoins -= 8 ) {
+
+            if( zMoins >= -_lineLength * _blockDim){
+
+                blockInCurrentCase = self.getBlocksByPosition( { x: bomb.position.x, z: zMoins });
+
+                if ( blockInCurrentCase ) {
+
+                    caseAffectedByBomb.push( blockInCurrentCase );
+
+                    break;
+                }
+
+            } else {
+
+                break;
+            }
+
+        }
+
+
+        // parcours les cases toucher par la bombe pour les suprimmées
+        for ( var i = 0; i < caseAffectedByBomb.length; i++ ) {
+
+            self.delBlockById( caseAffectedByBomb[i].id );
+        }
+
     }
 }

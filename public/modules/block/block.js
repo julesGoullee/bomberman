@@ -15,8 +15,13 @@ function Block ( assets, position ) {
 
     self.meshs = {};
 
+    self.destroy = function () {
 
-    //TODO destroy
+        self.meshs.shape.dispose();
+
+        self.meshs.colisionBlock.dispose();
+    };
+
     /*PRIVATE METHODS*/
      function init() {
 

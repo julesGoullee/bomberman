@@ -14,6 +14,7 @@ describe( "Bombe" ,function() {
     });
 
     afterEach(function() {
+
         jasmine.clock().uninstall();
     });
 
@@ -32,6 +33,6 @@ describe( "Bombe" ,function() {
 
         jasmine.clock().tick( bombe.countDown );
 
-        expect( bombe.exploded).toEqual( true );
+        expect( bombe.exploded ).toEqual( true );
     });
 });

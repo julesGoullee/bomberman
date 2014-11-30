@@ -2,15 +2,11 @@
 
 describe( "Player", function() {
 
-    var maps;
-
     var player;
 
     var spawnPoint = [48, -64];
 
     beforeEach( function() {
-
-        maps = new Maps( gameMock.assets, gameMock.blockDim );
 
         player = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
     });
@@ -52,6 +48,86 @@ describe( "Player", function() {
         };
 
         expect( player.roundPosition() ).toEqual( expectedPosition );
+    });
+
+    describe( "Bombe", function () {
+
+        var bomb;
+
+        beforeEach( function () {
+
+            jasmine.clock().install();
+
+            bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
+        });
+
+        it( "Peut ajouter une bombe", function () {
+
+            player.addBomb( bomb );
+
+            expect( player.listBombs.length ).toEqual( 1 );
+        });
+
+        it( "Peut poser une bombe a la position du player", function () {
+
+            player.addBomb( bomb );
+
+            expect( player.listBombs[0].position.x ).toEqual( player.position.x);
+            expect( player.listBombs[0].position.z ).toEqual( player.position.z);
+        });
+
+        it( "Peut poser une bombe a la position arrondie au dessus du player", function () {
+
+            player.position.x = 28.456345;
+
+            player.position.z = -13.557235;
+
+            bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
+
+            player.addBomb( bomb );
+
+            expect( player.listBombs[0].position.x ).toEqual( 32 );
+            expect( player.listBombs[0].position.z).toEqual( -16 );
+        });
+
+        it( "Peut poser une bombe a la position arrondie en dessous du player", function () {
+
+            player.position.x = 26.456345;
+
+            player.position.z = -10.557235;
+
+            bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
+
+
+            player.addBomb( bomb );
+
+            expect( player.listBombs[0].position.x ).toEqual( 24 );
+            expect( player.listBombs[0].position.z ).toEqual( -8 );
+        });
+
+        it( "Peut dire quand le nombre de bombe max est atteind", function() {
+
+            var nbBombeMax = player.powerUp.bombs;
+
+            for ( var i = 0; i < nbBombeMax; i++ ) {
+                player.addBomb( bomb );
+            }
+
+            expect( player.listBombs.length ).toEqual( nbBombeMax );
+
+            expect( player.shouldSetBomb() ).toEqual( false );
+
+        });
+
+        it( "Peut détruire une bombe", function () {
+
+            player.addBomb( bomb );
+
+            player.delBombById( bomb.id );
+
+            expect( player.listBombs.length ).toEqual( 0 );
+        });
+
     });
 
 });

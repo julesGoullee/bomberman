@@ -9,12 +9,12 @@ var gameMock = {
         "tourColision": [{}],
         "tempBlock": [{
             clone : function (){
-                return {};
+                return { dispose : function (){} };
             }
         }],
         "tempBlockColision": [{
             clone : function (){
-                return {};
+                return { dispose : function (){} };
             }
         }],
         "personnage" :[{
@@ -24,12 +24,12 @@ var gameMock = {
         }],
         "bomb" :[{
             clone : function (){
-                return {};
+                return { dispose : function (){} };
             }
         }],
         "bombColision" :[{
             clone : function (){
-                return {};
+                return { dispose : function (){} };
             }
         }]
     },

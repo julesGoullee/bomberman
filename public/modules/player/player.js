@@ -54,6 +54,21 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         self.listBombs.push( bomb );
     };
 
+    self.delBombById = function ( Bombid ) {
+
+        for ( var i = 0; i < self.listBombs.length ; i++ ) {
+
+            if ( self.listBombs[i].id === Bombid ) {
+
+                self.listBombs.splice( i, 1 );
+
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     /*PRIVATE METHODS*/
 
     function init() {

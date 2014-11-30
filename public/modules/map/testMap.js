@@ -4,6 +4,8 @@ describe( "Maps", function() {
 
     cfg.showBlockColision = true;
 
+    cfg.showBlockTemp = true;
+
     var maps;
 
     var player;
@@ -11,7 +13,9 @@ describe( "Maps", function() {
     var spawnPoint = [48, -64];
 
     beforeEach( function() {
+
         maps = new Maps( gameMock.assets, gameMock.blockDim );
+
         player = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
     });
 
@@ -152,18 +156,32 @@ describe( "Maps", function() {
         });
     });
 
-    describe( "Generate tempBlock", function() {
+    describe( "Temps blocks methods", function() {
 
-        beforeEach( function() {
+        beforeEach( function () {
 
+            maps.create();
 
         });
 
         it( "Peut remplir la map de block en laissant les angles sans block temp", function () {
 
-            maps.create();
-
             expect(maps.getBlocks().length).toEqual(135);
+        });
+
+        it( "Peut recuperer un block par sa position", function () {
+
+            var position = { x: -24, y: 0, z: -64 };
+
+            expect( maps.getBlocksByPosition( position ).position ).toEqual( position );
+        });
+
+        it( "Peut suprimmer un block par son id", function () {
+
+            var block = maps.getBlocksByPosition( { x: -24, y: 0, z: -64 } );
+
+            expect( maps.delBlockById( block.id )).toEqual( true );
+
         });
 
     });
@@ -205,7 +223,6 @@ describe( "Maps", function() {
         describe( "Get", function () {
 
             it( "Peut récupérer la bombe d'un player", function () {
-
 
                 maps.addObject( player );
 
@@ -275,45 +292,6 @@ describe( "Maps", function() {
 
         describe( "Set", function () {
 
-            it( "Peut ajouter une bombe", function() {
-
-                maps.setBomb( player );
-
-                expect( player.listBombs.length ).toEqual( 1 );
-            });
-
-            it( "Peut poser une bombe a la position du player", function () {
-
-                maps.setBomb( player );
-
-                expect( player.listBombs[0].position.x ).toEqual( player.position.x);
-                expect( player.listBombs[0].position.z ).toEqual( player.position.z);
-            });
-
-            it( "Peut poser une bombe a la position arrondie au dessus du player", function () {
-
-                player.position.x = 28.456345;
-
-                player.position.z = -13.557235;
-
-                maps.setBomb( player );
-
-                expect( player.listBombs[0].position.x ).toEqual( 32 );
-                expect( player.listBombs[0].position.z).toEqual( -16 );
-            });
-
-            it( "Peut poser une bombe a la position arrondie en dessous du player", function () {
-
-                player.position.x = 26.456345;
-
-                player.position.z = -10.557235;
-
-                maps.setBomb( player );
-
-                expect( player.listBombs[0].position.x ).toEqual( 24 );
-                expect( player.listBombs[0].position.z ).toEqual( -8 );
-            });
-
             it( "Ne peut depasser le nombre de bombe maximun", function() {
 
                 var nbBombeMax = player.powerUp.bombs;
@@ -332,6 +310,141 @@ describe( "Maps", function() {
                 expect( player.listBombs.length ).toEqual( nbBombeMax );
             });
 
+        });
+
+        describe( "Destroy", function () {
+
+            beforeEach( function() {
+
+                maps.create();
+
+                jasmine.clock().install();
+            });
+
+            afterEach(function() {
+
+                jasmine.clock().uninstall();
+            });
+
+            it( "Peut detruire les blocks en position superieur a la bombe lors de l'explosion", function () {
+
+                player.position.x = -40;
+
+                player.position.z = -64;
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                var positionExpectedAffected = [
+                    {
+                        x: -24,
+                        z: -64
+                    },
+                    {
+                        x: -40,
+                        z: -48
+                    }
+                ];
+
+                var positionNotExpectedAffected = [
+                    {
+                        x: -16,
+                        z: -64
+                    },
+                    {
+                        x: -40,
+                        z: -40
+                    },
+                    {
+                        x: -24,
+                        z: -48
+                    }
+                ];
+
+
+                for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
+
+                    expect( maps.getBlocksByPosition( positionExpectedAffected[i] )).not.toEqual( false );
+                }
+
+                for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
+
+                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[k] )).not.toEqual( false );
+                }
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
+                    expect( maps.getBlocksByPosition( positionExpectedAffected[j] )).toEqual( false );
+                }
+
+                for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
+
+                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[l] )).not.toEqual( false );
+                }
+
+            });
+
+            it( "Peut detruire les blocks en position inférieur a la bombe lors de l'explosion", function () {
+
+                player.position.x = 40;
+
+                player.position.z = 64;
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                var positionExpectedAffected = [
+                    {
+                        x: 24,
+                        z: 64
+                    },
+                    {
+                        x: 40,
+                        z: 48
+                    }
+                ];
+
+                var positionNotExpectedAffected = [
+                    {
+                        x: 16,
+                        z: 64
+                    },
+                    {
+                        x: 40,
+                        z: 40
+                    },
+                    {
+                        x: 24,
+                        z: 48
+                    }
+                ];
+
+
+                for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
+
+                    expect( maps.getBlocksByPosition( positionExpectedAffected[i] )).not.toEqual( false );
+                }
+
+                for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
+
+                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[k] )).not.toEqual( false );
+                }
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
+                    expect( maps.getBlocksByPosition( positionExpectedAffected[j] )).toEqual( false );
+                }
+
+                for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
+
+                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[l] )).not.toEqual( false );
+                }
+
+            });
         });
 
     });
