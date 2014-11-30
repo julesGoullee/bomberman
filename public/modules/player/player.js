@@ -6,7 +6,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
     var _blockDim = blockDim;
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS//
 
     self.id = utils.guid();
 
@@ -69,7 +69,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         return false;
     };
 
-    /*PRIVATE METHODS*/
+    //PRIVATE METHODS//
 
     function init() {
         createMesh();
@@ -88,7 +88,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
         meshPlayer.position = {
             x: spawnPoint[0],
-            y: 11.5,
+            y: 0,
             z: spawnPoint[1]
         };
 

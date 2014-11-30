@@ -7,7 +7,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     var _scene = scene;
 
     //player speed
-    var _speed = 1;
+    var _speed = 0.8;
 
     //player inertia
     var _inertia = 0.9;
@@ -16,7 +16,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     //var _angularInertia = 0;
 
     //mouse sensibility (lower the better sensible)
-    var angularSensibility = 3000;
+    var angularSensibility = 4000;
 
 
     /*PUBLIC METHODS*/
@@ -47,7 +47,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
-            new BABYLON.Vector3( spawnPoint[0], 7 ,spawnPoint[1] ),
+            new BABYLON.Vector3( spawnPoint[0], 8 ,spawnPoint[1] ),
             _scene
         );
 
@@ -55,7 +55,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
-        camera.ellipsoid = new BABYLON.Vector3( 2.5, 3.5, 2.5 );
+        camera.ellipsoid = new BABYLON.Vector3( 2.5, 4, 2.5 );
 
         camera.keysUp = [90]; // Z
 
