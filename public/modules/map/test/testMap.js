@@ -448,6 +448,4 @@ describe( "Maps", function() {
         });
 
     });
-
-    //x:-32, z:-64
 });
