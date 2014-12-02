@@ -98,7 +98,6 @@ describe( "Player", function() {
 
             bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
 
-
             player.addBomb( bomb );
 
             expect( player.listBombs[0].position.x ).toEqual( 24 );

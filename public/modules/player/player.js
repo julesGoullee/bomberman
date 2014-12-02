@@ -88,7 +88,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
         meshPlayer.position = {
             x: spawnPoint[0],
-            y: 0,
+            y: 11.5,
             z: spawnPoint[1]
         };
 

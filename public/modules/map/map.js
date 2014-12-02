@@ -141,7 +141,7 @@ function Maps( assets, blockDim ) {
 
         var player = self.getPlayerById( playerId );
 
-        return player.listBombs;
+        return player && player.listBombs? player.listBombs : null;
     };
 
     self.getBombsById = function ( id ) {
@@ -157,6 +157,8 @@ function Maps( assets, blockDim ) {
                 return bombs[i];
             }
         }
+
+        return null;
     };
 
 
@@ -176,6 +178,7 @@ function Maps( assets, blockDim ) {
                 tabBlocks.push( _content[i] );
             }
         }
+
         return tabBlocks;
     };
 
@@ -193,7 +196,7 @@ function Maps( assets, blockDim ) {
             }
         }
 
-        return false;
+        return null;
 
     };
 
@@ -281,6 +284,9 @@ function Maps( assets, blockDim ) {
 
                         _content.push( new Block( _assets, blockPosition ) );
                    }
+
+                }
+                else {
 
                 }
             }

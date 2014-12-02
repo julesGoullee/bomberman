@@ -1,5 +1,4 @@
 "use strict";
-
 function Game ( canvasId ) {
 
     var self = this;
@@ -165,20 +164,4 @@ function Game ( canvasId ) {
         document.addEventListener( "mozpointerlockchange", pointerlockchange, false );
         document.addEventListener( "webkitpointerlockchange", pointerlockchange, false );
     }
-
-    function listenSpaceDown( callback, player ){
-        document.addEventListener( "keydown", function( e ) {
-            switch(e.which){
-                case 32 :
-                    if( _pointerLocked){
-                        callback(player);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }, false);
-    }
-
 }
