@@ -373,7 +373,6 @@ function Maps( assets, blockDim ) {
             return false;
         }
 
-        //TODO a amélioré
         for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
 
             for ( var iBlockLongueur = - _lineLength / 2 ; iBlockLongueur <= _lineLength / 2 ; iBlockLongueur++ ) {
@@ -396,13 +395,12 @@ function Maps( assets, blockDim ) {
     }
 
     function explosion ( bomb ) {
-        //TODO ERROR CHECK SI BLOCK PERMANENT
+
         var caseAffectedByBomb = [];
 
         var blockInCurrentCase;
 
         var currentPosition;
-        /*TODO peut être amélioré car parcours les cases ou il y a des blocks permanent*/
 
         // parcours les cases X superieur la position de la bombe
         for ( var xPlus = bomb.position.x; xPlus <= bomb.position.x + ( bomb.power * _blockDim )  ; xPlus += 8 ) {
