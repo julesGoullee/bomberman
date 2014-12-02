@@ -38,7 +38,7 @@ function Maps( assets, blockDim ) {
 
     self.create = function () {
 
-        createGroundAndPermanentBlock();
+        createGroundMeshs();
 
         if(cfg.showBlockTemp) {
             createTemporaireBlock();
@@ -85,7 +85,7 @@ function Maps( assets, blockDim ) {
             }
         }
 
-        return false;
+        return null;
     };
 
 
@@ -223,7 +223,7 @@ function Maps( assets, blockDim ) {
 
     //PRIVATE METHODS//
 
-    function createGroundAndPermanentBlock () {
+    function createGroundMeshs () {
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
 
             if ( _assets[self.meshsData[iMesh].name] === undefined ) {
