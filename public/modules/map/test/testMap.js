@@ -446,53 +446,53 @@ describe( "Maps", function() {
 
             });
 
-            //it( "Peux stopper une explosion si il y a un block permanent", function () {
-            //
-            //    player.position.x = 32;
-            //
-            //    player.position.z = 64;
-            //
-            //    maps.addObject( player );
-            //
-            //    maps.setBomb( player );
-            //
-            //    var positionExpectedAffected = [
-            //        {
-            //            x: 24,
-            //            z: 64
-            //        }
-            //    ];
-            //
-            //    var positionNotExpectedAffected = [
-            //        {
-            //            x: 32,
-            //            z: 48
-            //        }
-            //    ];
-            //
-            //
-            //    for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
-            //
-            //        expect( maps.getBlocksByPosition( positionExpectedAffected[i] )).not.toEqual( null );
-            //    }
-            //
-            //    for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
-            //
-            //        expect( maps.getBlocksByPosition( positionNotExpectedAffected[k] )).not.toEqual( null );
-            //    }
-            //
-            //    jasmine.clock().tick( cfg.bombCountDown );
-            //
-            //    for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
-            //        expect( maps.getBlocksByPosition( positionExpectedAffected[j] )).toEqual( null );
-            //    }
-            //
-            //    for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
-            //
-            //        expect( maps.getBlocksByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
-            //    }
-            //
-            //});
+            it( "Peux stopper une explosion si il y a un block permanent", function () {
+
+                player.position.x = 32;
+
+                player.position.z = 64;
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                var positionExpectedAffected = [
+                    {
+                        x: 24,
+                        z: 64
+                    }
+                ];
+
+                var positionNotExpectedAffected = [
+                    {
+                        x: 32,
+                        z: 48
+                    }
+                ];
+
+
+                for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
+
+                    expect( maps.getBlocksByPosition( positionExpectedAffected[i] )).not.toEqual( null );
+                }
+
+                for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
+
+                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[k] )).not.toEqual( null );
+                }
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
+                    expect( maps.getBlocksByPosition( positionExpectedAffected[j] )).toEqual( null );
+                }
+
+                for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
+
+                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
+                }
+
+            });
         });
 
     });

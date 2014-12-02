@@ -8,7 +8,11 @@ function Maps( assets, blockDim ) {
 
     var _lineLength = 16;
 
+    var _positionMustFree = [];
+
     var _content = [];
+
+    var _blocksPermanent = [];
 
     var _blockDim = blockDim;
 
@@ -40,7 +44,12 @@ function Maps( assets, blockDim ) {
 
         createGroundMeshs();
 
-        if(cfg.showBlockTemp) {
+        createPositionMustFree();
+
+        createPermanentBlock();
+
+        if ( cfg.showBlockTemp) {
+
             createTemporaireBlock();
         }
     };
@@ -223,6 +232,65 @@ function Maps( assets, blockDim ) {
 
     //PRIVATE METHODS//
 
+    function createPositionMustFree (){
+
+        _positionMustFree = [
+            // pour les 4 angles la maps
+            // angle 1
+            {
+                x: _colLength * blockDim / 2,
+                z: _lineLength * blockDim / 2
+            },
+            {
+                x: ( _colLength * blockDim / 2 ) - blockDim,
+                z: ( _lineLength * blockDim / 2 )
+            },
+            {
+                x: ( _colLength * blockDim / 2 ),
+                z: ( _lineLength * blockDim / 2 ) - blockDim
+            },
+            //angle 2
+            {
+                x: -_colLength * blockDim / 2,
+                z: -_lineLength * blockDim / 2
+            },
+            {
+                x: ( -_colLength * blockDim / 2 ) + blockDim,
+                z: ( -_lineLength * blockDim / 2 )
+            },
+            {
+                x: ( -_colLength * blockDim / 2 ),
+                z: ( -_lineLength * blockDim / 2 ) + blockDim
+            },
+            // angle 3
+            {
+                x: -_colLength * blockDim / 2,
+                z: _lineLength * blockDim / 2
+            },
+            {
+                x: ( -_colLength * blockDim / 2 ) + blockDim,
+                z: ( _lineLength * blockDim / 2 )
+            },
+            {
+                x: ( -_colLength * blockDim / 2 ),
+                z: ( _lineLength * blockDim / 2 ) - blockDim
+            },
+            //angle 4
+            {
+                x: _colLength * blockDim / 2,
+                z: -_lineLength * blockDim / 2
+            },
+            {
+                x: ( _colLength * blockDim / 2 ) - blockDim,
+                z: ( -_lineLength * blockDim / 2 )
+            },
+            {
+                x: ( _colLength * blockDim / 2 ),
+                z: ( -_lineLength * blockDim / 2 ) + blockDim
+            }
+        ];
+    }
+
     function createGroundMeshs () {
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
 
@@ -256,7 +324,54 @@ function Maps( assets, blockDim ) {
         }
     }
 
+    function createPermanentBlock(){
+
+        for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
+
+            for ( var iBlockLongueur = - _lineLength / 2 ; iBlockLongueur <= _lineLength / 2 ; iBlockLongueur++ ) {
+
+                if ( iBlockLargeur % 2 === 0 ) {
+
+                    if ( iBlockLongueur % 2 !== 0 ) {
+
+                        _blocksPermanent.push({
+
+                            x: iBlockLargeur * _blockDim,
+
+                            z: iBlockLongueur * _blockDim
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    function positionHavePermBlock ( position ){
+        for ( var i = 0; i < _blocksPermanent.length; i++ ) {
+
+            if(_blocksPermanent[i].x === position.x && _blocksPermanent[i].z === position.z ) {
+
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     function createTemporaireBlock (){
+
+        function thisPositionMustBeFree ( position ) {
+
+            for ( var i = 0; i < _positionMustFree.length; i++ ) {
+
+                if(_positionMustFree[i].x === position.x && _positionMustFree[i].z === position.z ) {
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         //TODO a amélioré
         for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
@@ -270,25 +385,12 @@ function Maps( assets, blockDim ) {
                     z: iBlockLongueur * _blockDim
                 };
 
-                if ( iBlockLargeur % 2 !== 0 ){
+                if ( !positionHavePermBlock( blockPosition ) && !thisPositionMustBeFree( blockPosition ) ) {
 
-                   if ( (iBlockLargeur !== -5 || iBlockLongueur !== -8) && (iBlockLargeur !== 5 || iBlockLongueur !== -8) && (iBlockLargeur !== -5 || iBlockLongueur !== 8) && (iBlockLargeur !== 5 || iBlockLongueur !== 8) && (iBlockLargeur !== -5 || iBlockLongueur !== -7) && (iBlockLargeur !== 5 || iBlockLongueur !== -7) && (iBlockLargeur !== -5 || iBlockLongueur !== 7) && (iBlockLargeur !== 5 || iBlockLongueur !== 7) && (iBlockLargeur !== -4 || iBlockLongueur !== -8) && (iBlockLargeur !== 4 || iBlockLongueur !== -8) && (iBlockLargeur !== -4 || iBlockLongueur !== 8) && (iBlockLargeur !== 4 || iBlockLongueur !== 8)) {
-
-                        _content.push( new Block( _assets, blockPosition ) );
-                    }
-
+                    _content.push( new Block( _assets, blockPosition ) );
                 }
-                else if ( iBlockLongueur % 2 === 0 ) {
 
-                   if ((iBlockLargeur !== -5 || iBlockLongueur !== -8) && (iBlockLargeur !== 5 || iBlockLongueur !== -8) && (iBlockLargeur !== -5 || iBlockLongueur !== 8) && (iBlockLargeur !== 5 || iBlockLongueur !== 8) && (iBlockLargeur !== -5 || iBlockLongueur !== -7) && (iBlockLargeur !== 5 || iBlockLongueur !== -7) && (iBlockLargeur !== -5 || iBlockLongueur !== 7) && (iBlockLargeur !== 5 || iBlockLongueur !== 7) && (iBlockLargeur !== -4 || iBlockLongueur !== -8) && (iBlockLargeur !== 4 || iBlockLongueur !== -8) && (iBlockLargeur !== -4 || iBlockLongueur !== 8) && (iBlockLargeur !== 4 || iBlockLongueur !== 8)  ) {
 
-                        _content.push( new Block( _assets, blockPosition ) );
-                   }
-
-                }
-                else {
-
-                }
             }
         }
     }
@@ -299,14 +401,17 @@ function Maps( assets, blockDim ) {
 
         var blockInCurrentCase;
 
+        var currentPosition;
         /*TODO peut être amélioré car parcours les cases ou il y a des blocks permanent*/
 
         // parcours les cases X superieur la position de la bombe
         for ( var xPlus = bomb.position.x; xPlus <= bomb.position.x + ( bomb.power * _blockDim )  ; xPlus += 8 ) {
 
-            if( xPlus <= _colLength * _blockDim){
+            currentPosition = { x: xPlus, z : bomb.position.z };
 
-                blockInCurrentCase = self.getBlocksByPosition( { x: xPlus, z : bomb.position.z });
+            if( xPlus <= _colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+
+                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
 
                 if ( blockInCurrentCase ) {
 
@@ -325,9 +430,11 @@ function Maps( assets, blockDim ) {
         // parcours les cases z superieur la position de la bombe
         for ( var zPlus = bomb.position.z; zPlus <= bomb.position.z + ( bomb.power * _blockDim )  ; zPlus += 8 ) {
 
-            if( zPlus <= _lineLength * _blockDim){
+            currentPosition = { x: bomb.position.x , z : zPlus };
 
-                blockInCurrentCase = self.getBlocksByPosition( { x: bomb.position.x , z : zPlus });
+            if( zPlus <= _lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+
+                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
 
                 if ( blockInCurrentCase ) {
 
@@ -346,9 +453,11 @@ function Maps( assets, blockDim ) {
         // parcours les cases x inférieur la position de la bombe
         for ( var xMoins = bomb.position.x; xMoins >= bomb.position.x - ( bomb.power * _blockDim )  ; xMoins -= 8 ) {
 
-            if( xMoins >= -_colLength * _blockDim){
+            currentPosition = { x: xMoins, z : bomb.position.z };
 
-                blockInCurrentCase = self.getBlocksByPosition( { x: xMoins, z : bomb.position.z });
+            if( xMoins >= -_colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+
+                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
 
                 if ( blockInCurrentCase ) {
 
@@ -367,9 +476,11 @@ function Maps( assets, blockDim ) {
         // parcours les cases z inférieur la position de la bombe
         for ( var zMoins = bomb.position.z; zMoins >= bomb.position.z - ( bomb.power * _blockDim )  ; zMoins -= 8 ) {
 
-            if( zMoins >= -_lineLength * _blockDim){
+            currentPosition = { x: bomb.position.x, z: zMoins };
 
-                blockInCurrentCase = self.getBlocksByPosition( { x: bomb.position.x, z: zMoins });
+            if( zMoins >= -_lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+
+                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
 
                 if ( blockInCurrentCase ) {
 
