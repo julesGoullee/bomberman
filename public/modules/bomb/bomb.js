@@ -100,10 +100,26 @@ function Bombe ( owner, position, assets, scene) {
         };
 
         meshBombColision.isVisible = cfg.showBlockColision ;
-
+        //meshBombColision.actionManager = new BABYLON.ActionManager(scene);
+        //meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+        //    { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: self.owner.meshs.shape },
+        //    function(){
+        //        console.log('enter');
+        //        //meshBombColision, "checkCollisions", true
+        //    }
+        //));
+        //meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+        //    { trigger: BABYLON.ActionManager.OnIntersectionExitTrigger, parameter: self.owner.meshs.colisionBlock },
+        //    function(){
+        //        console.log('exter');
+        //        meshBombColision.checkCollisions = true;
+        //    }
+        //));
         //scene.registerBeforeRender( function(){
-        //   if(meshBombColision.intersectsMesh( self.owner.meshs.colisionBlock) ){
-        //       console.log('ok');
+        //
+        //   if(meshBombColision.intersectsMesh( self.owner.meshs.colisionBlock ) ){
+        //       console.log('OK');
+        //       return false;
         //   }
         //   console.log('naa');
         //

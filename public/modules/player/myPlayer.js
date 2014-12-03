@@ -26,7 +26,8 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     // player camera
     self.camera = initCamera();
 
-    self.player.meshs.colisionBlock = self.camera.ellipsoid;
+    self.player.meshs.colisionBlock = self.player.meshs.shape;
+
     // attache camera to player mesh
     //self.player.meshs.shape.parent = self.camera;
     //scene.activeCameras.push( self.camera );
