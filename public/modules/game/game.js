@@ -54,7 +54,7 @@ function Game ( canvasId ) {
 
             var freeCamera = new FreeCamera(self);
 
-            var map = new Maps( self.assets, _blockDim );
+            var map = new Maps( self.assets, _blockDim , self.scene);
 
             map.create();
 

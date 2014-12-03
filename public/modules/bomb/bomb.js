@@ -1,6 +1,6 @@
 "use strict";
 
-function Bombe ( owner, position, assets ) {
+function Bombe ( owner, position, assets, scene) {
 
     var self = this;
 
@@ -101,6 +101,13 @@ function Bombe ( owner, position, assets ) {
 
         meshBombColision.isVisible = cfg.showBlockColision ;
 
+        //scene.registerBeforeRender( function(){
+        //   if(meshBombColision.intersectsMesh( self.owner.meshs.colisionBlock) ){
+        //       console.log('ok');
+        //   }
+        //   console.log('naa');
+        //
+        //});
         //meshBombColision.checkCollisions = true;
 
         self.meshs.colisionBlock = meshBombColision;

@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps( assets, blockDim ) {
+function Maps( assets, blockDim, scene ) {
 
     var self = this;
 
@@ -104,7 +104,7 @@ function Maps( assets, blockDim ) {
 
         if ( player.shouldSetBomb() ) {
             //TODO CHECK SI DEJA UNE BOMBE A CETTE CASE
-            var bomb = new Bombe ( player, player.roundPosition() , _assets);
+            var bomb = new Bombe ( player, player.roundPosition() , _assets, scene);
 
             player.addBomb( bomb );
 
