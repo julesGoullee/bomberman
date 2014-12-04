@@ -71,19 +71,19 @@ function Bombe ( owner, position, assets, scene) {
         var meshBomb =  assets["bomb"][0].clone();
         //meshBomb.scaling = { x:0.3, y: 0.3, z:0.3};
 
-        meshBomb.position = new BABYLON.Vector3(position.x, 5, position.z);
+        meshBomb.position = new BABYLON.Vector3(position.x, 10, position.z);
 
         meshBomb.isVisible = true;
 
         meshBomb.checkCollisions = false;
 
         meshBomb.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 10 });
-        for ( var i = 0; i < 100 ; i++ ) {
+        for ( var i = 0; i < 500 ; i++ ) {
             (function() {
                 var a = assets["animBombTest"][i].clone();
                 a.isVisible = true;
-                //a.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 100 });
-                scene.beginAnimation(a, 0, 100, false, 0.1, function () {
+                scene.beginAnimation(a, 0, 100, false, 0.2, function () {
+                    //a.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 100 });
                     a.dispose();
                 });
             })();
