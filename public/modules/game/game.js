@@ -15,6 +15,7 @@ function Game ( canvasId ) {
         "tempBlockColision",
         "tour",
         "bomb",
+        "animBombTest",
         "bombColision",
         "personnage",
         "tourColision"
@@ -103,7 +104,7 @@ function Game ( canvasId ) {
 
         var scene = new BABYLON.Scene( _engine );
         scene.enablePhysics();
-        scene.setGravity(new BABYLON.Vector3(0, -10, 0));
+        scene.setGravity(new BABYLON.Vector3(0, -50, 0));
         scene.collisionsEnabled = true;
 
         //light

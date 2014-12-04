@@ -84,7 +84,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
         var meshPlayer = assets["personnage"][0].clone();
 
-        //meshPlayer.isVisible = false;
+        meshPlayer.isVisible = true;
 
         meshPlayer.position = {
             x: 0,
