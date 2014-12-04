@@ -34,8 +34,8 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
     self.renderMyPlayer = function() {
 
-        self.player.meshs.shape.position.x = self.camera.position.x;
-        self.player.meshs.shape.position.z = self.camera.position.z;
+        //self.player.meshs.shape.position.x = self.camera.position.x;
+        //self.player.meshs.shape.position.z = self.camera.position.z;
     };
 
     //PRIVATE METHODS//
