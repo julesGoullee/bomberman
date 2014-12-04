@@ -87,9 +87,9 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         meshPlayer.isVisible = true;
 
         meshPlayer.position = {
-            x: spawnPoint[0],
-            y: 11.5,
-            z: spawnPoint[1]
+            x: 0,
+            y: 0,
+            z: 0
         };
 
         self.meshs.shape = meshPlayer;

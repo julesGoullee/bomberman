@@ -2,6 +2,8 @@
 
 function Bombe ( owner, position, assets, scene) {
 
+    position.x = 0;
+    position.z = 0;
     var self = this;
 
     var _explodedCallback = [];
