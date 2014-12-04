@@ -19,18 +19,14 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     var angularSensibility = 4000;
 
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS//
 
     self.player = new Player( name, spawnPoint, assets, blockDim );
 
     // player camera
     self.camera = initCamera();
 
-    self.player.meshs.colisionBlock = self.player.meshs.shape;
-
-    // attache camera to player mesh
-    //self.player.meshs.shape.parent = self.camera;
-    //scene.activeCameras.push( self.camera );
+    //self.player.meshs.colisionBlock = self.camera.mesh;
 
     _scene.activeCamera = self.camera;
 
@@ -40,10 +36,9 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         self.player.meshs.shape.position.x = self.camera.position.x;
         self.player.meshs.shape.position.z = self.camera.position.z;
-        //self.player.mesh.rotate(BABYLON.Axis.Z, self.camera.rotation.z + Math.PI/2, BABYLON.Space.LOCAL);
     };
 
-    /*PRIVATE METHODS*/
+    //PRIVATE METHODS//
 
     function initCamera() {
 
@@ -58,6 +53,8 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
 
         camera.ellipsoid = new BABYLON.Vector3( 2.5, 4, 2.5 );
+
+        //camera.ellipsoidOffset = new BABYLON.Vector3( 2.5, 4, 0 );
 
         camera.keysUp = [90]; // Z
 

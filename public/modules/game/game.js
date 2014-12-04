@@ -102,7 +102,8 @@ function Game ( canvasId ) {
     function initScene () {
 
         var scene = new BABYLON.Scene( _engine );
-
+        scene.enablePhysics();
+        scene.setGravity(new BABYLON.Vector3(0, -10, 0));
         scene.collisionsEnabled = true;
 
         //light

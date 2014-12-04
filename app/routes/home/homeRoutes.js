@@ -17,6 +17,7 @@ function homeRoutes( app ){
 
             "external/jquery/jquery",
             "external/bootstrap/bootstrap.min",
+            "external/babylonjs/oimo",
             "external/babylonjs/babylon.1.10.0",
 
             // ftc utilitaire

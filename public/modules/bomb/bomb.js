@@ -69,16 +69,15 @@ function Bombe ( owner, position, assets, scene) {
         }
 
         var meshBomb =  assets["bomb"][0].clone();
+        //meshBomb.scaling = { x:0.3, y: 0.3, z:0.3};
 
-        meshBomb.position =  {
-            x: position.x,
-            y: 3,
-            z: position.z + 2.5//todo erreur de position
-        };
+        meshBomb.position = new BABYLON.Vector3(position.x, 5, position.z + 2.5);
 
         meshBomb.isVisible = true;
 
         meshBomb.checkCollisions = false;
+
+        meshBomb.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 2 });
 
         self.meshs.shape = meshBomb;
 
@@ -92,7 +91,6 @@ function Bombe ( owner, position, assets, scene) {
         }
 
         var meshBombColision = assets["bombColision"][0].clone();
-
         meshBombColision.position = {
             x: position.x,
             y: 0,
@@ -100,21 +98,21 @@ function Bombe ( owner, position, assets, scene) {
         };
 
         meshBombColision.isVisible = cfg.showBlockColision ;
-        //meshBombColision.actionManager = new BABYLON.ActionManager(scene);
-        //meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        //    { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: self.owner.meshs.shape },
-        //    function(){
-        //        console.log('enter');
-        //        //meshBombColision, "checkCollisions", true
-        //    }
-        //));
-        //meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        //    { trigger: BABYLON.ActionManager.OnIntersectionExitTrigger, parameter: self.owner.meshs.colisionBlock },
-        //    function(){
-        //        console.log('exter');
-        //        meshBombColision.checkCollisions = true;
-        //    }
-        //));
+        meshBombColision.actionManager = new BABYLON.ActionManager(scene);
+        meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: self.owner.meshs.colisionBlock },
+            function(){
+                console.log('enter');
+                //meshBombColision, "checkCollisions", true
+            }
+        ));
+        meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            { trigger: BABYLON.ActionManager.OnIntersectionExitTrigger, parameter: self.owner.meshs.colisionBlock },
+            function(){
+                console.log('exter');
+                //meshBombColision.checkCollisions = true;
+            }
+        ));
         //scene.registerBeforeRender( function(){
         //
         //   if(meshBombColision.intersectsMesh( self.owner.meshs.colisionBlock ) ){
