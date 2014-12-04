@@ -78,15 +78,18 @@ function Bombe ( owner, position, assets, scene) {
         meshBomb.checkCollisions = false;
 
         meshBomb.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 10 });
+        function anim (a){
+            scene.beginAnimation(a, 0, 90, false, 1, function () {
+                //a.dispose();
+                a.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 10 });
+
+            });
+        }
         for ( var i = 0; i < 500 ; i++ ) {
-            (function() {
                 var a = assets["animBombTest"][i].clone();
+                anim(a);
                 a.isVisible = true;
-                scene.beginAnimation(a, 0, 100, false, 0.2, function () {
-                    //a.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 100 });
-                    a.dispose();
-                });
-            })();
+
 
         }
         //scene.beginAnimation(meshBomb.skeleton, 0, 100, true, 1.0);
