@@ -73,7 +73,7 @@ function Bombe ( owner, position, assets, scene) {
         var meshBomb =  assets["bomb"][0].clone();
         //meshBomb.scaling = { x:0.3, y: 0.3, z:0.3};
 
-        meshBomb.position = new BABYLON.Vector3(position.x, 5, position.z + 2.5);
+        meshBomb.position = new BABYLON.Vector3(position.x, 0, position.z);
 
         meshBomb.isVisible = true;
 
