@@ -28,7 +28,8 @@ function Game ( canvasId ) {
     //todo coté serv
     var playsersSpawnPoint = [
         [50, -64.5],
-        [39.1, 77],
+        [0, 0],
+        //[39.1, 77],
         [-53, 64.5],
         [-39.1, -77]
     ];
