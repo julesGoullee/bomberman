@@ -41,8 +41,7 @@ function Maps( assets, blockDim, scene ) {
     ];
 
     self.create = function () {
-
-        _assets["ground"][0].setPhysicsState({ impostor: BABYLON.PhysicsEngine.PlaneImpostor, mass:0, friction: 0.5, restitution: 1 });
+        //_assets["ground"][0].setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false});
 
         createGroundMeshs();
 

@@ -7,13 +7,13 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     var _scene = scene;
 
     //player speed
-    var _speed = 0.8;
+    var _speed = 0.5;
 
     //player inertia
     var _inertia = 0.9;
 
     //player angular inertia
-    //var _angularInertia = 0;
+    var _angularInertia = 0;
 
     //mouse sensibility (lower the better sensible)
     var angularSensibility = 4000;
@@ -23,39 +23,27 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
     self.player = new Player( name, spawnPoint, assets, blockDim );
 
-    // player camera
-    self.camera = initCamera();
-    self.player.meshs.shape.parent= self.camera;
-    //self.player.meshs.colisionBlock = self.camera.mesh;
 
-    _scene.activeCamera = self.camera;
-
-    self.camera.noRotationConstraint = false;
-    self.player.meshs.shape.translate(BABYLON.Axis.Y, 0, BABYLON.Space.WORLD);
-    self.player.meshs.shape.translate(BABYLON.Axis.Z, 2, BABYLON.Space.LOCAL);
-
-    self.renderMyPlayer = function() {
-        self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.X,-self.camera.rotation.x);
-        self.player.meshs.shape.rotate(BABYLON.Axis.Y, Math.PI, BABYLON.Space.WORLD);
-    };
 
     //PRIVATE METHODS//
+    function init(){
+        cameraPlayerAttach();
+    }
 
     function initCamera() {
 
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
-            new BABYLON.Vector3( spawnPoint[0], 12 ,spawnPoint[1] ),
+            new BABYLON.Vector3( spawnPoint[0], 13 ,spawnPoint[1] ),
             _scene
         );
 
-        //camera.attachControl( _scene.getEngine().getRenderingCanvas(), true );
 
-        camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
+        camera.setTarget( new BABYLON.Vector3( 0, 6.5, -65 ) );
 
-        camera.ellipsoid = new BABYLON.Vector3( 2.5, 6, 2.5 );
+        camera.ellipsoid = new BABYLON.Vector3( 2.5, 6.5, 2.5 );
 
-        camera.ellipsoidOffset = new BABYLON.Vector3( 2.5, 4, 0 );
+        //camera.ellipsoidOffset = new BABYLON.Vector3( 0,0, 0);
 
         camera.keysUp = [90]; // Z
 
@@ -75,11 +63,34 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         camera.angularSensibility = angularSensibility;
 
-        //cam.angularInertia = angularInertia;
-
-        //cam.layerMask = 2;
+        camera.angularInertia = _angularInertia;
 
         return camera;
     }
+
+    function cameraPlayerAttach(){
+        // player camera
+        self.camera = initCamera();
+        self.camera.rotation.x = 1;
+        self.player.position = self.camera.position;
+        _scene.activeCamera = self.camera;
+        self.camera.noRotationConstraint = false;
+        //self.player.meshs.shape.translate(BABYLON.Axis.X, 10, BABYLON.Space.LOCAL);
+        self.player.meshs.shape.rotationQuaternion = null;
+
+        self.renderMyPlayer = function() {
+            if(self.camera.rotation.x <  -0.5){
+                self.camera.rotation.x = -0.5;
+            }
+            if(self.camera.rotation.x > 1.2){
+                self.camera.rotation.x = 1.2;
+            }
+            self.player.meshs.shape.position.x = self.camera.position.x  + Math.PI/4;
+            self.player.meshs.shape.position.z = self.camera.position.z;
+            self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Y, self.camera.rotation.y+ Math.PI);
+        };
+    }
+
+    init();
 }
 
