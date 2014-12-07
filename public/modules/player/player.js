@@ -31,7 +31,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
     };
 
     self.roundPosition = function () {
-
+debugger;
         function roundValue ( value ) {
 
             return Math.round( Math.round( value ) / _blockDim ) *  _blockDim;

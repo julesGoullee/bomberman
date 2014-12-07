@@ -14,12 +14,10 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
     var angularSensibility = 5000;
 
-    self.spawnPoint = spawnPoint;
-
 
     //PUBLIC METHODS//
 
-    self.player = new Player( name, self.spawnPoint, assets, blockDim );
+    self.player = new Player( name, spawnPoint, assets, blockDim );
 
     self.renderMyPlayer = function() {
 
@@ -43,6 +41,16 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
         self.player.meshs.shape.position.z = self.camera.position.z;
     };
 
+    self.restoreInit = function () {
+
+        self.camera.position.x = spawnPoint[0];
+
+        self.camera.position.z = spawnPoint[1];
+
+        self.camera.setTarget(new BABYLON.Vector3(0, 6.5, -65));
+
+    };
+
     //PRIVATE METHODS//
     function init(){
 
@@ -57,7 +65,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
-            new BABYLON.Vector3( self.spawnPoint[0], 13 , self.spawnPoint[1] ),
+            new BABYLON.Vector3( spawnPoint[0], 13 , spawnPoint[1] ),
             _scene
         );
 
