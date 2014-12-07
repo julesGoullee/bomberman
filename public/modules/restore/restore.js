@@ -4,7 +4,16 @@ function Restore ( map, myPlayer ) {
 
     var self = this;
 
-    var _restartPlayerPosition = false;
+    var _restartConfig = {
+        player: {
+            position: false,
+            detruireBombe : false
+        },
+        map: {
+            block: false
+        }
+
+    };
     //PUBLIC METHODS//
 
     self.showRestartButton = function () {
@@ -15,13 +24,23 @@ function Restore ( map, myPlayer ) {
                     "<span class='caret'></span>" +
                 "</button>" +
                 "<ul class='dropdown-menu dropdown-menu-right' role='menu'>" +
-                    "<li>" +
-                        "<div class='checkbox text-center' >" +
-                            "<button type='button' class='btn btn-xs btn-default' >" +
-                                "<label>" +
-                                "<input type='checkbox' id='restartPlayerPosition'><span>Player position</span>" +
-                                "</label>" +
-                            "</button>"+
+                    "<li class='list-group-item'>" +
+                        "<span class='label list-group-item active'>Player</span>"+
+                        "<div class='checkbox list-group-item' >" +
+                            "<label>" +
+                                "<input type='checkbox' id='restartPlayerPosition'>Position" +
+                            "</label>" +
+                            "<label>" +
+                            "<input type='checkbox' id='restartPlayerPosition'>alive" +
+                            "</label>" +
+                        "</div>" +
+                    "</li>" +
+                    "<li class='list-group-item'>" +
+                        "<span class='label label-default list-group-item active'>Map</span>"+
+                        "<div class='checkbox list-group-item' >" +
+                            "<label>" +
+                                "<input type='checkbox' id=''><span>Block</span>" +
+                            "</label>" +
                         "</div>" +
                     "</li>" +
                 "</ul>" +
@@ -36,7 +55,7 @@ function Restore ( map, myPlayer ) {
 
         $( "#restartButton" ).click( function() {
 
-            _restartPlayerPosition = $( "#restartPlayerPosition" ).prop( "checked" );
+            _restartConfig.player.position = $( "#restartPlayerPosition" ).prop( "checked" );
 
             self.run();
         });
@@ -44,7 +63,7 @@ function Restore ( map, myPlayer ) {
 
     self.run = function () {
 
-        if ( _restartPlayerPosition ) {
+        if ( _restartConfig.player.position ) {
             myPlayer.restoreInit();
 
             //todo restorer les params du player ( bombe, kill, alive speed..) &

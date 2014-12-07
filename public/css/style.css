@@ -32,3 +32,8 @@ html, body {
     right: 10px;
     font-size: 11px;
 }
+
+#restartDropDown .list-group-item {
+    padding-top : 6px;
+    padding-bottom: 6px;
+}
