@@ -5,7 +5,7 @@ function Block ( assets, position ) {
     var self = this;
 
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS//
 
     self.id = utils.guid();
 
@@ -22,7 +22,9 @@ function Block ( assets, position ) {
         self.meshs.colisionBlock.dispose();
     };
 
-    /*PRIVATE METHODS*/
+
+    //PRIVATE METHODS//
+
      function init() {
 
         createMeshColision();

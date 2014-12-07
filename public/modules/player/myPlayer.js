@@ -6,27 +6,45 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
     var _scene = scene;
 
-    //player speed
-    var _speed = 0.5;
+    var _speed = 1;
 
-    //player inertia
     var _inertia = 0.9;
 
-    //player angular inertia
     var _angularInertia = 0;
 
-    //mouse sensibility (lower the better sensible)
-    var angularSensibility = 4000;
+    var angularSensibility = 5000;
 
 
     //PUBLIC METHODS//
 
     self.player = new Player( name, spawnPoint, assets, blockDim );
 
+    self.renderMyPlayer = function() {
 
+        if ( self.camera.rotation.x <  -0.5 ) {
+
+            self.camera.rotation.x = -0.5;
+        }
+
+        if ( self.camera.rotation.x > 1.4 ) {
+
+            self.camera.rotation.x = 1.4;
+        }
+
+        self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI );
+
+        self.player.meshs.shape.position.x = self.camera.position.x;
+
+        self.player.meshs.shape.position.z = self.camera.position.z;
+    };
 
     //PRIVATE METHODS//
     function init(){
+
+        self.camera = initCamera();
+
+        _scene.activeCamera = self.camera;
+
         cameraPlayerAttach();
     }
 
@@ -65,30 +83,24 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         camera.angularInertia = _angularInertia;
 
+        camera.rotation.x = 1;
+
+        camera.noRotationConstraint = false;
+
         return camera;
     }
 
     function cameraPlayerAttach(){
-        // player camera
-        self.camera = initCamera();
-        self.camera.rotation.x = 1;
+
         self.player.position = self.camera.position;
-        _scene.activeCamera = self.camera;
-        self.camera.noRotationConstraint = false;
-        //self.player.meshs.shape.translate(BABYLON.Axis.X, 10, BABYLON.Space.LOCAL);
+
+        var pivot = BABYLON.Matrix.Translation( 0,0 ,2.5 );
+
+        self.player.meshs.shape.setPivotMatrix( pivot );
+
         self.player.meshs.shape.rotationQuaternion = null;
 
-        self.renderMyPlayer = function() {
-            if(self.camera.rotation.x <  -0.5){
-                self.camera.rotation.x = -0.5;
-            }
-            if(self.camera.rotation.x > 1.2){
-                self.camera.rotation.x = 1.2;
-            }
-            self.player.meshs.shape.position.x = self.camera.position.x  + Math.PI/4;
-            self.player.meshs.shape.position.z = self.camera.position.z;
-            self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Y, self.camera.rotation.y+ Math.PI);
-        };
+
     }
 
     init();

@@ -1,6 +1,7 @@
 "use strict";
 
 var gameMock = {
+
     assets : {
         "ground" : [{}],
         "permanentBlocks": [{}],

@@ -15,7 +15,7 @@ function Game ( canvasId ) {
         "tempBlockColision",
         "tour",
         "bomb",
-        "animBombTest",
+        //"animBombTest",
         "bombColision",
         "personnage",
         "tourColision"
@@ -28,43 +28,47 @@ function Game ( canvasId ) {
     //todo coté serv
     var playsersSpawnPoint = [
         [50, -64.5],
-        [0, 0],
+        [36, -63],//todo perso trop grand
         //[39.1, 77],
         [-53, 64.5],
         [-39.1, -77]
     ];
 
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS//
 
     self.scene = initScene();
 
     self.assets = {};
 
     self.init = function () {
-        var connector = new Connector();
 
         var preloader = new Preloader( self.scene, _meshPreload, self.assets);
 
         preloader.onFinish( function(){
 
-            // Player and arena creation when the loading is finished
-
             var spawnPoint = playsersSpawnPoint[1];
+
+            // Creation du game
+
+            //var connector = new Connector();
 
             var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , spawnPoint, self.assets, _blockDim );
 
-            var freeCamera = new FreeCamera(self);
-
             var map = new Maps( self.assets, _blockDim , self.scene);
 
-            map.create();
-
             var keyBinder = new KeyBinder();
+
+            var freeCamera = new FreeCamera(self);
 
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
             cameraSwitcher.showSwitchButton();
+
+            keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
+
+
+            map.create();
 
             keyBinder.onSetBomb( function() {
 
@@ -73,9 +77,6 @@ function Game ( canvasId ) {
                     map.setBomb( myPlayer.player );
                 }
             });
-
-
-            keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
             initPointerLock();
 
@@ -94,7 +95,7 @@ function Game ( canvasId ) {
     };
 
 
-    /*PRIVATE METHODS*/
+    //PRIVATE METHODS//
 
     window.addEventListener( "resize", function () {
 
@@ -103,32 +104,43 @@ function Game ( canvasId ) {
 
     function initScene () {
 
+        function enableLight(){
+            //light
+            var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
+
+            light.intensity = 0.8;
+        }
+
+        function enableSkybox(){
+
+            var skybox = BABYLON.Mesh.CreateBox( "skyBox", 1000.0, scene );
+
+            skybox.position = new BABYLON.Vector3( 0, 100, 0 );
+
+            var skyboxMaterial = new BABYLON.StandardMaterial( "skyBox", scene );
+
+            skyboxMaterial.backFaceCulling = false;
+
+            skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture( "content/skybox/skybox", scene );
+
+            skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+
+            skyboxMaterial.diffuseColor = new BABYLON.Color3( 0, 0, 0 );
+
+            skyboxMaterial.specularColor = new BABYLON.Color3( 0, 0, 0 );
+
+            skybox.material = skyboxMaterial;
+        }
+
         var scene = new BABYLON.Scene( _engine );
+
         //scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
+
         scene.collisionsEnabled = true;
 
-        //light
-        var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
+        enableLight();
 
-        light.intensity = 0.8;
-
-        //skybox
-        var skybox = BABYLON.Mesh.CreateBox( "skyBox", 1000.0, scene );
-        skybox.position = new BABYLON.Vector3(0, 100, 0);
-
-        var skyboxMaterial = new BABYLON.StandardMaterial( "skyBox", scene );
-
-        skyboxMaterial.backFaceCulling = false;
-
-        skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture( "content/skybox/skybox", scene );
-
-        skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-
-        skyboxMaterial.diffuseColor = new BABYLON.Color3( 0, 0, 0 );
-
-        skyboxMaterial.specularColor = new BABYLON.Color3( 0, 0, 0 );
-
-        skybox.material = skyboxMaterial;
+        enableSkybox();
 
         return scene;
     }

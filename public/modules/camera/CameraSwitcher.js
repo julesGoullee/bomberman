@@ -8,7 +8,8 @@ function CameraSwitcher ( scene , canvas ) {
 
     var _canvas = canvas;
 
-    /*PUBLIC METHODS*/
+
+    //PUBLIC METHODS//
 
     self.showSwitchButton = function () {
 
@@ -38,7 +39,6 @@ function CameraSwitcher ( scene , canvas ) {
 
             _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
         }
-
 
         _scene.activeCamera.attachControl( _canvas );
 

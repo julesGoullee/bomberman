@@ -6,7 +6,7 @@ function Bombe ( owner, position, assets, scene) {
 
     var _explodedCallback = [];
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS//
 
     self.id = utils.guid();
 
@@ -34,6 +34,8 @@ function Bombe ( owner, position, assets, scene) {
 
         }
 
+        //launchExplosion();
+
         self.exploded = true;
 
         self.meshs.shape.dispose();
@@ -46,7 +48,7 @@ function Bombe ( owner, position, assets, scene) {
         _explodedCallback.push( callback );
     };
 
-    /*PRIVATE METHODS*/
+    //PRIVATE METHODS//
 
     function init() {
 
@@ -78,24 +80,6 @@ function Bombe ( owner, position, assets, scene) {
 
         //meshBomb.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor,move:true, mass:1, friction:0.5, restitution:0.5});
 
-        //function animExplosion (partMeshExplosion){
-        //
-        //    scene.beginAnimation(partMeshExplosion, 0, 44, false, 0.1, function () {
-        //        //partMeshExplosion.dispose();
-        //        partMeshExplosion.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 10 });
-        //
-        //    });
-        //}
-        //
-        //for ( var i = 0; i < 500 ; i++ ) {
-        //        var partMeshExplosion = assets["animBombTest"][i].clone();
-        //        //a.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
-        //        animExplosion(partMeshExplosion);
-        //        partMeshExplosion.isVisible = true;
-        //
-        //
-        //}
-        //scene.beginAnimation(meshBomb.skeleton, 0, 100, true, 1.0);
         self.meshs.shape = meshBomb;
     }
 
@@ -107,6 +91,7 @@ function Bombe ( owner, position, assets, scene) {
         }
 
         var meshBombColision = assets["bombColision"][0].clone();
+
         meshBombColision.position = {
             x: position.x,
             y: 0,
@@ -144,6 +129,29 @@ function Bombe ( owner, position, assets, scene) {
         self.position = meshBombColision.position;
 
     }
+
+    var launchExplosion = function (){
+        if ( assets["animBombTest"] === undefined ) {
+
+            throw new Error( "Mesh animBombTest is not preload" );
+        }
+
+        function animExplosion (partMeshExplosion){
+
+            scene.beginAnimation(partMeshExplosion, 0, 44, false, 0.1, function () {
+                //partMeshExplosion.dispose();
+                //partMeshExplosion.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 10 });
+
+            });
+        }
+
+        for ( var i = 0; i < 500 ; i++ ) {
+            var partMeshExplosion = assets["animBombTest"][i].clone();
+            //a.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
+            animExplosion(partMeshExplosion);
+            partMeshExplosion.isVisible = true;
+        }
+    };
 
     init();
 }
