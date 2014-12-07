@@ -37,7 +37,7 @@ var gameMock = {
     blockDim: 8
 };
 
-utils.onMeshsExitIntersect = function( meshToActivate, meshCollide ){
+utils.onMeshsExitIntersect = function( meshToActivate ){
 
     meshToActivate.checkCollisions = true;
 };

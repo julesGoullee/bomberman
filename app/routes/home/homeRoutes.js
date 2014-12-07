@@ -27,6 +27,7 @@ function homeRoutes( app ){
             //modules
             "modules/preloader/preloader",
             "modules/keyBinder/keyBinder",
+            "modules/restore/restore",
             "modules/block/block",
             "modules/bomb/bomb",
             "modules/camera/freeCamera",

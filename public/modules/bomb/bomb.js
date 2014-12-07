@@ -100,9 +100,7 @@ function Bombe ( owner, position, assets, scene) {
 
         meshBombColision.isVisible = cfg.showBlockColision ;
 
-        meshBombColision.checkCollisions = false;
-
-        utils.onMeshsExitIntersect( meshBombColision, self.owner.meshs.colisionBlock );
+        utils.onMeshsExitIntersect( meshBombColision, self.owner.meshs.colisionBlock, scene );
 
         self.meshs.colisionBlock = meshBombColision;
 

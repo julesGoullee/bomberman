@@ -61,6 +61,10 @@ function Game ( canvasId ) {
 
             var freeCamera = new FreeCamera(self);
 
+            var restore = new Restore( map, myPlayer );
+
+            restore.showRestartButton();
+
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
             cameraSwitcher.showSwitchButton();

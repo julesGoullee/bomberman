@@ -98,6 +98,13 @@ function Maps( assets, blockDim, scene ) {
         return null;
     };
 
+    self.delPlayerById = function ( id ) {
+        //todo
+    };
+
+    self.delPlayers = function( ){
+        //todo
+    };
 
     //Bombs
     self.setBomb = function ( player ) {
@@ -151,7 +158,7 @@ function Maps( assets, blockDim, scene ) {
 
         var player = self.getPlayerById( playerId );
 
-        return player && player.listBombs? player.listBombs : null;
+        return player && player.listBombs ? player.listBombs : null;
     };
 
     self.getBombsById = function ( id ) {
