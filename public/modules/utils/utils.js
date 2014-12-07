@@ -28,5 +28,17 @@ var utils = {
         }
 
         return clone;
+    },
+    onMeshsExitIntersect: function( meshToActivate, meshCollide, scene) {
+
+        meshToActivate.actionManager = new BABYLON.ActionManager( scene );
+
+        meshToActivate.actionManager.registerAction( new BABYLON.ExecuteCodeAction(
+            { trigger: BABYLON.ActionManager.OnIntersectionExitTrigger, parameter: meshCollide },
+            function(){
+                meshToActivate.checkCollisions = true;
+            }
+        ));
+
     }
 };

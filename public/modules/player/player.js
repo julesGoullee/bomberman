@@ -73,6 +73,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
     function init() {
         createMesh();
+        createMeshColision();
     }
 
     function createMesh() {
@@ -95,6 +96,23 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         self.meshs.shape = meshPlayer;
 
         self.position = meshPlayer.position;
+    }
+
+    function createMeshColision() {
+
+        var meshTempColision = assets["tempBlockColision"][0].clone();
+
+        meshTempColision.isVisible = cfg.showBlockColision;
+
+        meshTempColision.checkCollisions = false;
+
+        meshTempColision.position = {
+            x: spawnPoint[0],
+            y: 0,
+            z: spawnPoint[1]
+        };
+
+        self.meshs.colisionBlock = meshTempColision;
     }
 
     init();

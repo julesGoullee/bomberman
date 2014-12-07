@@ -99,46 +99,27 @@ function Bombe ( owner, position, assets, scene) {
         };
 
         meshBombColision.isVisible = cfg.showBlockColision ;
-        //meshBombColision.actionManager = new BABYLON.ActionManager(scene);
-        //meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        //    { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: self.owner.meshs.colisionBlock },
-        //    function(){
-        //        console.log('enter');
-        //        //meshBombColision, "checkCollisions", true
-        //    }
-        //));
-        //meshBombColision.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        //    { trigger: BABYLON.ActionManager.OnIntersectionExitTrigger, parameter: self.owner.meshs.colisionBlock },
-        //    function(){
-        //        console.log('exter');
-        //        //meshBombColision.checkCollisions = true;
-        //    }
-        //));
-        //scene.registerBeforeRender( function(){
-        //
-        //   if(meshBombColision.intersectsMesh( self.owner.meshs.colisionBlock ) ){
-        //       console.log('OK');
-        //       return false;
-        //   }
-        //   console.log('naa');
-        //
-        //});
-        //meshBombColision.checkCollisions = true;
+
+        meshBombColision.checkCollisions = false;
+
+        utils.onMeshsExitIntersect( meshBombColision, self.owner.meshs.colisionBlock );
 
         self.meshs.colisionBlock = meshBombColision;
+
         self.position = meshBombColision.position;
 
     }
 
     var launchExplosion = function (){
+
         if ( assets["animBombTest"] === undefined ) {
 
             throw new Error( "Mesh animBombTest is not preload" );
         }
 
-        function animExplosion (partMeshExplosion){
+        function animExplosion( partMeshExplosion ){
 
-            scene.beginAnimation(partMeshExplosion, 0, 44, false, 0.1, function () {
+            scene.beginAnimation( partMeshExplosion, 0, 44, false, 0.1, function () {
                 //partMeshExplosion.dispose();
                 //partMeshExplosion.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor, mass: 10 });
 

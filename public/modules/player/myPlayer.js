@@ -32,9 +32,12 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
         }
 
         self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI );
+        self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI );
 
+        self.player.meshs.colisionBlock.position.x = self.camera.position.x;
         self.player.meshs.shape.position.x = self.camera.position.x;
 
+        self.player.meshs.colisionBlock.position.z = self.camera.position.z;
         self.player.meshs.shape.position.z = self.camera.position.z;
     };
 
@@ -61,7 +64,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         camera.ellipsoid = new BABYLON.Vector3( 2.5, 6.5, 2.5 );
 
-        //camera.ellipsoidOffset = new BABYLON.Vector3( 0,0, 0);
+        camera.ellipsoidOffset = new BABYLON.Vector3( 0,6, 0);
 
         camera.keysUp = [90]; // Z
 
@@ -96,8 +99,10 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         var pivot = BABYLON.Matrix.Translation( 0,0 ,2.5 );
 
+        self.player.meshs.colisionBlock.setPivotMatrix( pivot );
         self.player.meshs.shape.setPivotMatrix( pivot );
 
+        self.player.meshs.colisionBlock.rotationQuaternion = null;
         self.player.meshs.shape.rotationQuaternion = null;
 
 
