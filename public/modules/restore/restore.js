@@ -7,7 +7,7 @@ function Restore ( map, myPlayer ) {
     var _restartConfig = {
         player: {
             position: false,
-            detruireBombe : false
+            destroyBombe : false
         },
         map: {
             block: false
@@ -31,7 +31,13 @@ function Restore ( map, myPlayer ) {
                                 "<input type='checkbox' id='restartPlayerPosition'>Position" +
                             "</label>" +
                             "<label>" +
-                            "<input type='checkbox' id='restartPlayerPosition'>alive" +
+                                "<input type='checkbox' id='restartPlayerBombe'>Bombe" +
+                            "</label>" +
+                            "<label>" +
+                                "<input type='checkbox' id='restartPlayerKill'>Kill" +
+                            "</label>" +
+                            "<label>" +
+                                "<input type='checkbox' id='restartPlayerAlive'>Alive" +
                             "</label>" +
                         "</div>" +
                     "</li>" +
@@ -56,21 +62,21 @@ function Restore ( map, myPlayer ) {
         $( "#restartButton" ).click( function() {
 
             _restartConfig.player.position = $( "#restartPlayerPosition" ).prop( "checked" );
+            _restartConfig.player.destroyBombe = $( "#restartPlayerBombe" ).prop( "checked" );
 
             self.run();
         });
     };
 
     self.run = function () {
+        if ( _restartConfig.player.position  || _restartConfig.player.destroyBombe ) {
 
-        if ( _restartConfig.player.position ) {
-            myPlayer.restoreInit();
-
-            //todo restorer les params du player ( bombe, kill, alive speed..) &
-            //todo map (  block, player...)
-            //todo que faire des bombes deja posé ?
-
+            myPlayer.restoreInit( _restartConfig.player.position, _restartConfig.player.destroyBombe );
         }
+
+        //todo restorer les params du player ( bombe, kill, alive speed..) &
+        //todo map (  block, player...)
+        //todo que faire des bombes deja posé ?
     };
 
 }

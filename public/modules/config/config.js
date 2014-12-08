@@ -1,6 +1,6 @@
 "use strict";
 var cfg = {
-    showBlockColision : true,
-    showBlockTemp : false,
-    bombCountDown : 8000
+    showBlockColision : false,
+    showBlockTemp : true,
+    bombCountDown : 2000
 };

@@ -37,3 +37,7 @@ html, body {
     padding-top : 6px;
     padding-bottom: 6px;
 }
+
+#restartDropDown .list-group-item label{
+    display: block;
+}
