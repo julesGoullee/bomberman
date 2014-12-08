@@ -34,7 +34,7 @@ function Bombe ( owner, position, assets, scene) {
 
         }
 
-        //launchExplosion();
+        launchExplosion();
 
         self.exploded = true;
 
