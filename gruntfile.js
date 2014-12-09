@@ -91,11 +91,11 @@ module.exports = function(grunt) {
                     },
                     {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
-                        dest: "app/public/external/fonts/glyphicons-halflings-regular.ttf"
+                        dest: "app/public/fonts/glyphicons-halflings-regular.ttf"
                     },
                     {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff",
-                        dest: "app/public/external/fonts/glyphicons-halflings-regular.woff"
+                        dest: "app/public/fonts/glyphicons-halflings-regular.woff"
                     }
 
                 ]
