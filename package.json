@@ -3,7 +3,7 @@
   "scripts": {
     "postInstall": "grunt install_external",
     "test": "grunt test_all",
-    "start": "node app/index.js"
+    "start": "node app/server/index.js"
   },
   "engines": {
     "node": "~1.30"
