@@ -5,21 +5,21 @@
     "jquery": "latest",
     "bootstrap": "latest",
     "babylonjs": "latest",
-    "animate.css": "~3.2.0",
-    "bootstrap-growl": "~1.1.0"
+    "animate.css": "~3.2.0"
   },
   "exportsOverride": {
     "bootstrap": {
-      "css": [
+      "": [
+        "dist/css/*.min.css",
         "dist/css/*.css.map",
-        "dist/css/*.css"
-      ],
-      "js": [
-        "dist/js/*.js"
-      ],
-      "fonts": [
+        "dist/js/*.min.js",
         "dist/fonts/*.ttf",
         "dist/fonts/*.woff"
+      ]
+    },
+    "animate.css": {
+      "": [
+        "animate.min.css"
       ]
     },
     "babylonjs": {

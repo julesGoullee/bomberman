@@ -1,6 +1,5 @@
-/*global require, module*/
 "use strict";
-var config = require("./app/config/config.js");
+var config = require("./app/server/config/config.js");
 
 module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-karma");
@@ -23,7 +22,7 @@ module.exports = function(grunt) {
         },
         karma: {
             autoRun: {
-                basePath: "public",
+                basePath: "app/public",
                 frameworks: ["jasmine"],
                 options:{
                     files: [
@@ -70,7 +69,7 @@ module.exports = function(grunt) {
         bower: {
             install: {
                 options: {
-                    targetDir: "./public/external/",
+                    targetDir: "app/public/external/",
                     cleanTargetDir: false,
                     cleanBowerDir: false
                 }
