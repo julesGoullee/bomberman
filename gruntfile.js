@@ -2,6 +2,7 @@
 var config = require("./app/server/config/config.js");
 
 module.exports = function(grunt) {
+
     grunt.loadNpmTasks("grunt-karma");
     grunt.loadNpmTasks("grunt-simple-mocha");
     grunt.loadNpmTasks("grunt-bower-task");
@@ -49,7 +50,7 @@ module.exports = function(grunt) {
             }
         },
         copy:{
-            prod:{
+            confProd:{
                 files : [
                     {
                         src: "config/prod/config_prod.js",
@@ -57,21 +58,98 @@ module.exports = function(grunt) {
                     }
                 ]
             },
-            dev:{
+            confDev:{
                 files : [
                     {
                         src: "config/dev/config_dev.js",
                         dest: "app/server/config/config.js"
                     }
                 ]
+            },
+            bowerProd:{
+
+                files : [
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.min.css",
+                        dest: "app/public/external/bootstrap.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap-theme.min.css",
+                        dest: "app/public/external/bootstrap-theme.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.min.js",
+                        dest: "app/public/external/bootstrap.js"
+                    },
+                    {
+                        src: "bower_components/bootstrap-growl/jquery.bootstrap-growl.min.js",
+                        dest: "app/public/external/jquery.bootstrap-growl.js"
+                    },
+                    {
+                        src: "bower_components/jquery/dist/jquery.min.js",
+                        dest: "app/public/external/jquery.js"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
+                        dest: "app/public/external/fonts/glyphicons-halflings-regular.ttf"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff",
+                        dest: "app/public/external/fonts/glyphicons-halflings-regular.woff"
+                    }
+
+                ]
+            },
+            bowerDev:{
+                files : [
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.css",
+                        dest: "app/public/external/bootstrap.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.css.map",
+                        dest: "app/public/external/bootstrap.css.map"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap-theme.css.map",
+                        dest: "app/public/external/bootstrap-theme.css.map"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap-theme.css",
+                        dest: "app/public/external/bootstrap-theme.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.js",
+                        dest: "app/public/external/bootstrap.js"
+                    },
+                    {
+                        src: "bower_components/bootstrap-growl/jquery.bootstrap-growl.js",
+                        dest: "app/public/external/jquery.bootstrap-growl.js"
+                    },
+                    {
+                        src: "bower_components/jquery/dist/jquery.js",
+                        dest: "app/public/external/jquery.js"
+                    },
+                    {
+                        src: "bower_components/jquery/dist/jquery.js.map",
+                        dest: "app/public/external/jquery.js.map"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
+                        dest: "app/public/external/fonts/glyphicons-halflings-regular.ttf"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff",
+                        dest: "app/public/external/fonts/glyphicons-halflings-regular.woff"
+                    }
+
+                ]
             }
         },
         bower: {
             install: {
                 options: {
-                    targetDir: "app/public/external/",
-                    cleanTargetDir: false,
-                    cleanBowerDir: false
+                    copy:false
                 }
             }
         },
@@ -92,11 +170,15 @@ module.exports = function(grunt) {
     //TEST//
     grunt.registerTask("test_server", ["simplemocha:all", "watch:mochaTest"]);
     grunt.registerTask("test_client", ["karma:autoRun"]);
+
     grunt.registerTask("test_all", ["karma:all","simplemocha:all"]);
 
     //CONFIG//
-    grunt.registerTask("config_dev", ["copy:dev"]);
-    grunt.registerTask("config_prod", ["copy:prod"]);
+    grunt.registerTask("config_dev", ["copy:confDev", "copy:bowerDev"]);
+    grunt.registerTask("config_prod", ["copy:confProd", "copy:bowerProd"]);
+
+    grunt.registerTask("prod", ["install_external", "config_prod", "copy:bowerProd"]);
+
 };
 
 

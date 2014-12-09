@@ -5,29 +5,5 @@
     "jquery": "latest",
     "bootstrap": "latest",
     "bootstrap-growl": "latest"
-  },
-  "exportsOverride": {
-    "bootstrap": {
-      "": [
-        "dist/css/bootstrap.css.map",
-        "dist/css/bootstrap.css",
-        "dist/css/bootstrap-theme.css.map",
-        "dist/css/bootstrap-theme.css",
-        "dist/js/bootstrap.js",
-        "dist/fonts/*.ttf",
-        "dist/fonts/*.woff"
-      ]
-    },
-    "bootstrap-growl": {
-      "": [
-        "jquery.bootstrap-growl.js"
-      ]
-    },
-    "jquery": {
-      "": [
-        "dist/jquery.js",
-        "dist/jquery.min.map"
-      ]
-    }
   }
 }
