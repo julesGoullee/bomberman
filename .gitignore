@@ -1,5 +1,5 @@
 .idea/
 node_modules/
 bower_components/
-app/public/external/
 !app/public/external/babylonjs/
+app/public/external/
