@@ -52,16 +52,16 @@ module.exports = function(grunt) {
             prod:{
                 files : [
                     {
-                        src: "app/config/config_prod.js",
-                        dest: "app/config/config.js"
+                        src: "config/prod/config_prod.js",
+                        dest: "app/server/config/config.js"
                     }
                 ]
             },
             dev:{
                 files : [
                     {
-                        src: "app/config/config_dev.js",
-                        dest: "app/config/config.js"
+                        src: "config/dev/config_dev.js",
+                        dest: "app/server/config/config.js"
                     }
                 ]
             }
@@ -89,12 +89,12 @@ module.exports = function(grunt) {
     grunt.registerTask("default", ["test_all"]);
     grunt.registerTask("install_external", ["bower:install"]);
 
-    /*TEST*/
+    //TEST//
     grunt.registerTask("test_server", ["simplemocha:all", "watch:mochaTest"]);
     grunt.registerTask("test_client", ["karma:autoRun"]);
     grunt.registerTask("test_all", ["karma:all","simplemocha:all"]);
 
-    /*CONFIG*/
+    //CONFIG//
     grunt.registerTask("config_dev", ["copy:dev"]);
     grunt.registerTask("config_prod", ["copy:prod"]);
 };

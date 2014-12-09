@@ -15,10 +15,10 @@ function homeRoutes( app ){
         scripts:[
             "socket.io/socket.io",
             "external/jquery/jquery",
-            "external/bootstrap/bootstrap.min",
-            "external/bootstrap.growl/bootstrap-growl",
+            "external/bootstrap/bootstrap",
+            "external/bootstrap-growl/jquery.bootstrap-growl",
             "external/babylonjs/oimo",
-            "external/babylonjs/babylon.1.10.0",
+            "external/babylonjs/babylon",
 
             // ftc utilitaire
             "modules/utils/utils",
@@ -41,9 +41,8 @@ function homeRoutes( app ){
             "main"
         ],
         css:[
-            "external/bootstrap/bootstrap.min",
-            "external/bootstrap/bootstrap-theme.min",
-            "external/animate.css/animate",
+            "external/bootstrap/bootstrap",
+            "external/bootstrap/bootstrap-theme",
 
             "css/style"
         ]

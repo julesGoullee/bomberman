@@ -1,5 +1,5 @@
 module.exports = {
-    rootPath : process.cwd(),
+    rootPath : "",
     port : 3000,
     domaine: "localhost"
 };

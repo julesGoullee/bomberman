@@ -1,6 +1,5 @@
 module.exports = {
-    rootPath : process.cwd(),
-    port : 3000,
+    rootPath : "",
+    port : 80,
     domaine: "monchezmoi.no-ip.org"
-
 };

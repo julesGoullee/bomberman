@@ -42,10 +42,11 @@ html, body {
     display: block;
 }
 
-.notifierContainer{
+.bootstrap-growl{
     padding: 5px 10px;
+    text-align: center;
 }
 
-.notiferMessage{
-    padding: 10px;
-}
+/*.notiferMessage{*/
+    /*padding: 10px;*/
+/*}*/
