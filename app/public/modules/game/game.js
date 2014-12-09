@@ -73,6 +73,7 @@ function Game ( canvasId ) {
 
             keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
+            keyBinder.onRestore( restore.run );
 
             map.create();
 

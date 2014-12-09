@@ -20,7 +20,7 @@ function Restore ( notifier, map, myPlayer ) {
     self.showRestartButton = function () {
 
         var restoreDropDown = "<div class='btn-group dropdown' id='restartDropDown'>" +
-                "<button type='button' class='btn btn-default' id='restartButton'>Restart</button>" +
+                "<button type='button' class='btn btn-default' id='restartButton'>Restart or press key R</button>" +
                 "<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='true'>" +
                     "<span class='caret'></span>" +
                 "</button>" +
@@ -62,14 +62,14 @@ function Restore ( notifier, map, myPlayer ) {
 
         $( "#restartButton" ).click( function() {
 
-            _restartConfig.player.position = $( "#restartPlayerPosition" ).prop( "checked" );
-            _restartConfig.player.destroyBombs = $( "#restartPlayerBombe" ).prop( "checked" );
-
             self.run();
         });
     };
 
     self.run = function () {
+
+        _restartConfig.player.position = $( "#restartPlayerPosition" ).prop( "checked" );
+        _restartConfig.player.destroyBombs = $( "#restartPlayerBombe" ).prop( "checked" );
 
         if ( _restartConfig.player.position ) {
 

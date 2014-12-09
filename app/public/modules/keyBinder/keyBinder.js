@@ -8,6 +8,8 @@ function KeyBinder(){
 
     var _callbackCameraSwitch = [];
 
+    var _callbackRestore = [];
+
     /*PUBLIC METHODS*/
 
     self.onSetBomb = function ( callback ) {
@@ -16,7 +18,13 @@ function KeyBinder(){
     };
 
     self.onSwitchCamera = function ( callback ) {
+
         _callbackCameraSwitch.push( callback );
+    };
+
+    self.onRestore = function( callback ) {
+
+        _callbackRestore.push( callback );
     };
 
 
@@ -50,6 +58,9 @@ function KeyBinder(){
 
                     launchCallbackEvent( _callbackCameraSwitch );
                     break;
+
+                case 82:
+                    launchCallbackEvent( _callbackRestore );
             }
 
         }, false);
