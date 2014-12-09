@@ -165,7 +165,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask("default", ["test_all"]);
-    grunt.registerTask("install_external", ["bower:install"]);
 
     //TEST//
     grunt.registerTask("test_server", ["simplemocha:all", "watch:mochaTest"]);
@@ -177,7 +176,10 @@ module.exports = function(grunt) {
     grunt.registerTask("config_dev", ["copy:confDev", "copy:bowerDev"]);
     grunt.registerTask("config_prod", ["copy:confProd", "copy:bowerProd"]);
 
-    grunt.registerTask("prod", ["install_external", "config_prod", "copy:bowerProd"]);
+
+    //INSTALLATION
+    grunt.registerTask("dev", ["bower:install", "config_dev"]);
+    grunt.registerTask("prod", ["bower:install", "config_prod"]);
 
 };
 
