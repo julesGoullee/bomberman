@@ -178,8 +178,8 @@ module.exports = function(grunt) {
 
 
     //INSTALLATION
-    grunt.registerTask("dev", ["bower:install", "config_dev"]);
-    grunt.registerTask("prod", ["bower:install", "config_prod"]);
+    grunt.registerTask("installDev", ["bower:install", "config_dev"]);
+    grunt.registerTask("installProd", ["bower:install", "config_prod"]);
 
 };
 

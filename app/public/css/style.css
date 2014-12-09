@@ -47,6 +47,6 @@ html, body {
     text-align: center;
 }
 
-/*.notiferMessage{*/
-    /*padding: 10px;*/
-/*}*/
+.messNotifier{
+    padding-left: 5px;
+}
