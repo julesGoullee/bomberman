@@ -14,11 +14,11 @@ function homeRoutes( app ){
 
         scripts:[
             "socket.io/socket.io",
-            "external/jquery/jquery",
-            "external/bootstrap/bootstrap",
-            "external/bootstrap-growl/jquery.bootstrap-growl",
-            "external/babylonjs/oimo",
-            "external/babylonjs/babylon",
+            "external/jquery",
+            "external/bootstrap",
+            "external/jquery.bootstrap-growl",
+            "external/oimo",
+            "external/babylon",
 
             // ftc utilitaire
             "modules/utils/utils",
@@ -41,8 +41,8 @@ function homeRoutes( app ){
             "main"
         ],
         css:[
-            "external/bootstrap/bootstrap",
-            "external/bootstrap/bootstrap-theme",
+            "external/bootstrap",
+            "external/bootstrap-theme",
 
             "css/style"
         ]
