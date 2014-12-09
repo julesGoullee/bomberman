@@ -78,7 +78,7 @@ module.exports = function(grunt) {
                         dest: "app/public/external/bootstrap-theme.css"
                     },
                     {
-                        src: "bower_components/bootstrap/dist/css/bootstrap.min.js",
+                        src: "bower_components/bootstrap/dist/js/bootstrap.min.js",
                         dest: "app/public/external/bootstrap.js"
                     },
                     {
@@ -119,7 +119,7 @@ module.exports = function(grunt) {
                         dest: "app/public/external/bootstrap-theme.css"
                     },
                     {
-                        src: "bower_components/bootstrap/dist/css/bootstrap.js",
+                        src: "bower_components/bootstrap/dist/js/bootstrap.js",
                         dest: "app/public/external/bootstrap.js"
                     },
                     {

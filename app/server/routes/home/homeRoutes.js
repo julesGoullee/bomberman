@@ -17,7 +17,7 @@ function homeRoutes( app ){
             "external/jquery",
             "external/bootstrap",
             "external/jquery.bootstrap-growl",
-            "external/oimo",
+            "external/babylonjs/oimo",
             "external/babylonjs/babylon",
 
             // ftc utilitaire
