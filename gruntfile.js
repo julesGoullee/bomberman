@@ -28,8 +28,8 @@ module.exports = function(grunt) {
                 options:{
                     files: [
                         //external
-                        "external/jquery/*.js",
-                        "external/bootstrap/*.js",
+                        "external/jquery.js",
+                        "external/bootstrap.js",
                         //utils
                         "modules/utils/*.js",
                         //MOCK

@@ -495,7 +495,19 @@ describe( "Maps", function() {
 
             });
 
-            it( "Peut annulé l'explosion des bombes", function () {
+            it( "Peut annulé l'explosion d'une bombe d'un joueur", function () {
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                maps.delBombs();
+
+                expect( maps.getBombs().length ).toEqual( 0 );
+
+            });
+
+            it( "Peut annulé l'explosion de plusieur bombs d'un joueur", function () {
 
                 maps.addObject( player );
 
@@ -508,6 +520,29 @@ describe( "Maps", function() {
                 expect( maps.getBombs().length ).toEqual( 0 );
 
             });
+
+            it( "Peut annulé l'explosion de plusieur joueurs", function () {
+
+                var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+
+                maps.addObject( player );
+
+                maps.addObject( player2 );
+
+                maps.setBomb( player );
+
+                maps.setBomb( player );
+
+                maps.setBomb( player2 );
+                maps.setBomb( player2 );
+
+
+                maps.delBombs();
+
+                expect( maps.getBombs().length ).toEqual( 0 );
+
+            });
+
         });
 
     });
