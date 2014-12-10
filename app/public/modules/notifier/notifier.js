@@ -15,7 +15,7 @@ function Notifier () {
 
     self.showMessage = function ( message ) {
 
-        $.bootstrapGrowl("<span class='glyphicon glyphicon-repeat' aria-hidden='true'></span><span class='messNotifier'>" + message + "</span>", growlConf);
+        $.bootstrapGrowl("<span class='glyphicon glyphicon-repeat' aria-hidden='true'></span><span class='messNotifier'>" + message + "hhhh</span>", growlConf);
 
     };
 
