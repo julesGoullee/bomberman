@@ -67,14 +67,14 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
-            new BABYLON.Vector3( spawnPoint[0], 13 , spawnPoint[1] ),
+            new BABYLON.Vector3( spawnPoint[0], 8 , spawnPoint[1] ),
             _scene
         );
 
 
-        camera.setTarget( new BABYLON.Vector3( 0, 6.5, -65 ) );
+        camera.setTarget( new BABYLON.Vector3( 0, 4, -65 ) );
 
-        camera.ellipsoid = new BABYLON.Vector3( 2.5, 6.5, 2.5 );
+        camera.ellipsoid = new BABYLON.Vector3( 2.5, 4, 2.5 );
 
         camera.ellipsoidOffset = new BABYLON.Vector3( 0,6, 0);
 
@@ -109,10 +109,10 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
         self.player.position = self.camera.position;
 
-        var pivot = BABYLON.Matrix.Translation( 0,0 ,2.5 );
+        //var pivot = BABYLON.Matrix.Translation( 0,0 ,2.5 );
 
-        self.player.meshs.colisionBlock.setPivotMatrix( pivot );
-        self.player.meshs.shape.setPivotMatrix( pivot );
+        //self.player.meshs.colisionBlock.setPivotMatrix( pivot );
+        //self.player.meshs.shape.setPivotMatrix( pivot );
 
         self.player.meshs.colisionBlock.rotationQuaternion = null;
         self.player.meshs.shape.rotationQuaternion = null;
