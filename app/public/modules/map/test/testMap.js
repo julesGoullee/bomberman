@@ -17,6 +17,7 @@ describe( "Maps", function() {
         maps = new Maps( gameMock.assets, gameMock.blockDim );
 
         player = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+
     });
 
     describe( "Create & import mesh", function() {
@@ -238,6 +239,8 @@ describe( "Maps", function() {
 
                 maps.setBomb( player );
 
+                player.position.x = 16;
+
                 maps.setBomb( player );
 
                 expect( maps.getBombs().length ).toEqual( 2 );
@@ -261,7 +264,7 @@ describe( "Maps", function() {
             });
 
             it( "Peut récupérer deux bombes de deux players", function () {
-                var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+                var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets, gameMock.blockDim );
 
                 maps.addObject( player );
 
@@ -269,9 +272,12 @@ describe( "Maps", function() {
 
                 maps.setBomb( player );
 
-                maps.setBomb( player );
-
                 maps.setBomb( player2 );
+
+                player.position.x = 40;
+                player2.position.x = 8;
+
+                maps.setBomb( player );
 
                 maps.setBomb( player2 );
 
@@ -309,6 +315,16 @@ describe( "Maps", function() {
                 expect( player.shouldSetBomb() ).toEqual( false );
 
                 expect( player.listBombs.length ).toEqual( nbBombeMax );
+            });
+
+            it( "Une bombe est présente à la position", function () {
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                expect( maps.hasBombByPosition( player.roundPosition() )).toEqual( true );
+
             });
 
         });

@@ -102,17 +102,17 @@ function Maps( assets, blockDim, scene ) {
         //todo delPlayerById
     };
 
-    self.delPlayers = function ( ) {
+    self.delPlayers = function ( )  {
         //todo delPlayers
     };
 
     //Bombs
     self.setBomb = function ( player ) {
 
+        if ( player.shouldSetBomb() && !self.hasBombByPosition( player.roundPosition() ) ) {
 
-        if ( player.shouldSetBomb() ) {
-            //TODO CHECK SI DEJA UNE BOMBE A CETTE CASE
             var bomb = new Bombe ( player, player.roundPosition() , _assets, scene);
+
 
             player.addBomb( bomb );
 
@@ -186,6 +186,24 @@ function Maps( assets, blockDim, scene ) {
 
             players[i].delBombs();
         }
+    };
+
+    self.hasBombByPosition = function( position ) {
+
+        var tabBombs = self.getBombs();
+
+        var test = 0;
+
+       for ( var i = 0; i<tabBombs.length; i++ ) {
+
+           if (position.z === tabBombs[i].position.z && position.x === tabBombs[i].position.x) {
+
+               return true;
+
+           }
+       }
+
+        return false;
     };
 
 
