@@ -185,6 +185,49 @@ describe( "Maps", function() {
 
         });
 
+        it( "Peut supprimer un block par sa position", function () {
+
+            var block = maps.getBlocksByPosition( { x: -24, y: 0, z: -64 } );
+
+            expect( maps.delBlocksByPosition( { x: -24, y: 0, z: -64 } )).toEqual( true );
+
+            expect( maps.getBlocksByPosition( block.position )).toEqual( null );
+
+        });
+
+        it ( "Peut supprimer un bloc et le restaurer", function () {
+
+            var block = maps.getBlocksByPosition( { x: -24, y: 0, z: -64 } );
+
+            expect( maps.delBlocksByPosition( { x: -24, y: 0, z: -64 } )).toEqual( true );
+
+            expect( maps.getBlocksByPosition( block.position )).toEqual( null );
+
+            expect( maps.getBlocks().length).toEqual( 134 );
+
+            maps.restoreBlock();
+
+            expect( maps.getBlocks().length).toEqual( 135 );
+
+        });
+
+        it ( "Peut supprimer plusieurs blocs et les restaurer", function () {
+
+            expect( maps.delBlocksByPosition( {x: -24, y: 0, z: -64} )).toEqual ( true );
+
+            expect( maps.delBlocksByPosition( {x: -16, y: 0, z: -64} )).toEqual ( true );
+
+            expect( maps.delBlocksByPosition( {x: -8, y: 0, z: -64} )).toEqual ( true );
+
+            expect( maps.getBlocks().length).toEqual( 132 );
+
+
+            maps.restoreBlock();
+
+            expect( maps.getBlocks().length).toEqual( 135 );
+
+        });
+
     });
 
     describe( "Player methods", function () {

@@ -277,7 +277,7 @@ function Maps( assets, blockDim, scene ) {
 
     self.delBlockById = function ( blockId ) {
 
-        for ( var i = 0; i < _content.length; i++ ) {
+        for ( var i = _content.length -1; i >= 0; i-- ) {
 
             if( _content[i].type === "block" &&  _content[i].id === blockId ) {
 
@@ -289,8 +289,50 @@ function Maps( assets, blockDim, scene ) {
             }
         }
 
+        return null;
+    };
+
+    self.restoreBlock = function ( ) {
+
+        delTempBlock();
+
+        createTemporaireBlock();
+    };
+
+    self.delBlocksByPosition = function ( position ) {
+
+        for ( var i = 0;  i < _content.length; i++ ) {
+            if ( _content[i].type === "block" && _content[i].position.x === position.x && _content[i].position.z === position.z) {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+
+                return true;
+            }
+        }
+
+        return null;
+    };
+
+    self.delPlayerById = function ( playerId ) {
+
+        for ( var i = 0; i < _content.length; i++ ) {
+
+            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+
+                return true;
+            }
+        }
+
         return false;
     };
+
+
 
     //PRIVATE METHODS//
 
@@ -604,5 +646,18 @@ function Maps( assets, blockDim, scene ) {
 
         }
 
+    }
+
+    function delTempBlock () {
+
+        for ( var i = _content.length -1; i >= 0; i-- ) {
+
+            if( _content[i].type === "block") {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+            }
+        }
     }
 }
