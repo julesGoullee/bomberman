@@ -98,8 +98,21 @@ function Maps( assets, blockDim, scene ) {
         return null;
     };
 
-    self.delPlayerById = function ( id ) {
-        //todo delPlayerById
+    self.delPlayerById = function ( playerId ) {
+
+        for ( var i = 0; i < _content.length; i++ ) {
+
+            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+
+                return true;
+            }
+        }
+
+        return false;
     };
 
     self.delPlayers = function ( )  {
@@ -111,7 +124,7 @@ function Maps( assets, blockDim, scene ) {
         var players = self.getPlayers();
 
         for ( var i = 0; i < players.length; i++ ){
-            if ( players[i].position.x === position.x && players[i].position.z === position.z ) {
+            if ( players[i].roundPosition().x === position.x && players[i].roundPosition().z === position.z ) {
                 return players[i];
             }
         }
@@ -267,23 +280,6 @@ function Maps( assets, blockDim, scene ) {
         for ( var i = 0; i < _content.length; i++ ) {
 
             if( _content[i].type === "block" &&  _content[i].id === blockId ) {
-
-                _content[i].destroy();
-
-                _content.splice( i, 1 );
-
-                return true;
-            }
-        }
-
-        return false;
-    };
-
-    self.delPlayerById = function ( playerId ) {
-
-        for ( var i = 0; i < _content.length; i++ ) {
-
-            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
 
                 _content[i].destroy();
 
@@ -577,13 +573,11 @@ function Maps( assets, blockDim, scene ) {
                 playerInCurrentCase = self.getPlayerByPosition( currentPosition );
 
                 if( playerInCurrentCase ){
-
                     playerAffectedByBomb.push( playerInCurrentCase );
 
                 }
 
                 if ( blockInCurrentCase ) {
-
                     caseAffectedByBomb.push( blockInCurrentCase );
 
                     break;

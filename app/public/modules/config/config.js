@@ -2,5 +2,5 @@
 var cfg = {
     showBlockColision : true,
     showBlockTemp : true,
-    bombCountDown : 5000
+    bombCountDown : 2000
 };
