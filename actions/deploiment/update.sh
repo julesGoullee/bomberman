@@ -5,7 +5,7 @@ git pull &&
 echo "Update project files!" >&2
 npm run prod &&
 echo "Configuation deploiment" >&2
-sudo forever start app/index.js &&
-echo "Nodejs app/index.js start!" >&2
+sudo forever start app/server/index.js &&
+echo "Nodejs app/server/index.js start!" >&2
 exit
 
