@@ -1,5 +1,6 @@
+.idea/
 node_modules/
 bower_components/
-.idea/
-public/external/bootstrap/
-public/external/jquery/
+app/public/external/
+!app/public/external/babylonjs/
+app/public/fonts

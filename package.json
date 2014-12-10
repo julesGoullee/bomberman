@@ -1,9 +1,10 @@
 {
   "name": "Bomberman",
   "scripts": {
-    "postInstall": "grunt install_external",
+    "dev": "grunt installDev",
+    "prod": "grunt installProd",
     "test": "grunt test_all",
-    "start": "node app/index.js"
+    "start": "node app/server/index.js"
   },
   "engines": {
     "node": "~1.30"

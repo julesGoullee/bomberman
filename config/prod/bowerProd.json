@@ -1,0 +1,29 @@
+{
+  "name": "Bomberman",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "latest",
+    "bootstrap": "latest",
+    "babylonjs": "latest",
+    "animate.css": "~3.2.0"
+  },
+  "exportsOverride": {
+    "bootstrap": {
+      "": [
+        "dist/css/*.min.css",
+        "dist/css/*.css.map",
+        "dist/js/*.min.js",
+        "dist/fonts/*.ttf",
+        "dist/fonts/*.woff"
+      ]
+    },
+    "animate.css": {
+      "": [
+        "animate.min.css"
+      ]
+    },
+    "babylonjs": {
+      "": ""
+    }
+  }
+}

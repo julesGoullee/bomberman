@@ -1,8 +1,8 @@
-/*global require, module*/
 "use strict";
-var config = require("./app/config/config.js");
+var config = require("./app/server/config/config.js");
 
 module.exports = function(grunt) {
+
     grunt.loadNpmTasks("grunt-karma");
     grunt.loadNpmTasks("grunt-simple-mocha");
     grunt.loadNpmTasks("grunt-bower-task");
@@ -23,13 +23,15 @@ module.exports = function(grunt) {
         },
         karma: {
             autoRun: {
-                basePath: "public",
+                basePath: "app/public",
                 frameworks: ["jasmine"],
                 options:{
                     files: [
                         //external
-                        "external/jquery/*.js",
-                        "external/bootstrap/*.js",
+                        "external/jquery.js",
+                        "external/bootstrap.js",
+                        //utils
+                        "modules/utils/*.js",
                         //MOCK
                         "modules/test/mock.js",
                         //config
@@ -48,29 +50,106 @@ module.exports = function(grunt) {
             }
         },
         copy:{
-            prod:{
+            confProd:{
                 files : [
                     {
-                        src: "app/config/config_prod.js",
-                        dest: "app/config/config.js"
+                        src: "config/prod/config_prod.js",
+                        dest: "app/server/config/config.js"
                     }
                 ]
             },
-            dev:{
+            confDev:{
                 files : [
                     {
-                        src: "app/config/config_dev.js",
-                        dest: "app/config/config.js"
+                        src: "config/dev/config_dev.js",
+                        dest: "app/server/config/config.js"
                     }
+                ]
+            },
+            bowerProd:{
+
+                files : [
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.min.css",
+                        dest: "app/public/external/bootstrap.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap-theme.min.css",
+                        dest: "app/public/external/bootstrap-theme.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/js/bootstrap.min.js",
+                        dest: "app/public/external/bootstrap.js"
+                    },
+                    {
+                        src: "bower_components/bootstrap-growl/jquery.bootstrap-growl.min.js",
+                        dest: "app/public/external/jquery.bootstrap-growl.js"
+                    },
+                    {
+                        src: "bower_components/jquery/dist/jquery.min.js",
+                        dest: "app/public/external/jquery.js"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
+                        dest: "app/public/fonts/glyphicons-halflings-regular.ttf"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff",
+                        dest: "app/public/fonts/glyphicons-halflings-regular.woff"
+                    }
+
+                ]
+            },
+            bowerDev:{
+                files : [
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.css",
+                        dest: "app/public/external/bootstrap.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap.css.map",
+                        dest: "app/public/external/bootstrap.css.map"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap-theme.css.map",
+                        dest: "app/public/external/bootstrap-theme.css.map"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/css/bootstrap-theme.css",
+                        dest: "app/public/external/bootstrap-theme.css"
+                    },
+                    {
+                        src: "bower_components/bootstrap/dist/js/bootstrap.js",
+                        dest: "app/public/external/bootstrap.js"
+                    },
+                    {
+                        src: "bower_components/bootstrap-growl/jquery.bootstrap-growl.js",
+                        dest: "app/public/external/jquery.bootstrap-growl.js"
+                    },
+                    {
+                        src: "bower_components/jquery/dist/jquery.js",
+                        dest: "app/public/external/jquery.js"
+                    },
+                    {
+                        src: "bower_components/jquery/dist/jquery.js.map",
+                        dest: "app/public/external/jquery.js.map"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
+                        dest: "app/public/fonts/glyphicons-halflings-regular.ttf"
+                    },
+                    {
+                        src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff",
+                        dest: "app/public/fonts/glyphicons-halflings-regular.woff"
+                    }
+
                 ]
             }
         },
         bower: {
             install: {
                 options: {
-                    targetDir: "./public/external/",
-                    cleanTargetDir: false,
-                    cleanBowerDir: false
+                    copy:false
                 }
             }
         },
@@ -86,16 +165,22 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask("default", ["test_all"]);
-    grunt.registerTask("install_external", ["bower:install"]);
 
-    /*TEST*/
+    //TEST//
     grunt.registerTask("test_server", ["simplemocha:all", "watch:mochaTest"]);
     grunt.registerTask("test_client", ["karma:autoRun"]);
+
     grunt.registerTask("test_all", ["karma:all","simplemocha:all"]);
 
-    /*CONFIG*/
-    grunt.registerTask("config_dev", ["copy:dev"]);
-    grunt.registerTask("config_prod", ["copy:prod"]);
+    //CONFIG//
+    grunt.registerTask("config_dev", ["copy:confDev", "copy:bowerDev"]);
+    grunt.registerTask("config_prod", ["copy:confProd", "copy:bowerProd"]);
+
+
+    //INSTALLATION
+    grunt.registerTask("installDev", ["bower:install", "config_dev"]);
+    grunt.registerTask("installProd", ["bower:install", "config_prod"]);
+
 };
 
 
