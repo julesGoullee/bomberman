@@ -20,7 +20,7 @@ var gameMock = {
         }],
         "personnage" :[{
             clone : function (){
-                return {};
+                return { dispose : function (){} };
             }
         }],
         "bomb" :[{

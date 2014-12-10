@@ -106,6 +106,19 @@ function Maps( assets, blockDim, scene ) {
         //todo delPlayers
     };
 
+    self.getPlayerByPosition = function ( position ) {
+
+        var players = self.getPlayers();
+
+        for ( var i = 0; i < players.length; i++ ){
+            if ( players[i].position.x === position.x && players[i].position.z === position.z ) {
+                return players[i];
+            }
+        }
+
+        return null;
+    };
+
     //Bombs
     self.setBomb = function ( player ) {
 
@@ -254,6 +267,23 @@ function Maps( assets, blockDim, scene ) {
         for ( var i = 0; i < _content.length; i++ ) {
 
             if( _content[i].type === "block" &&  _content[i].id === blockId ) {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    self.delPlayerById = function ( playerId ) {
+
+        for ( var i = 0; i < _content.length; i++ ) {
+
+            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
 
                 _content[i].destroy();
 
@@ -436,6 +466,10 @@ function Maps( assets, blockDim, scene ) {
 
         var blockInCurrentCase;
 
+        var playerAffectedByBomb = [];
+
+        var playerInCurrentCase;
+
         var currentPosition;
 
         // parcours les cases X superieur la position de la bombe
@@ -446,6 +480,14 @@ function Maps( assets, blockDim, scene ) {
             if( xPlus <= _colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
 
                 blockInCurrentCase = self.getBlocksByPosition( currentPosition );
+
+                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+
+                if( playerInCurrentCase ){
+
+                    playerAffectedByBomb.push( playerInCurrentCase );
+
+                }
 
                 if ( blockInCurrentCase ) {
 
@@ -470,6 +512,14 @@ function Maps( assets, blockDim, scene ) {
 
                 blockInCurrentCase = self.getBlocksByPosition( currentPosition );
 
+                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+
+                if( playerInCurrentCase ){
+
+                    playerAffectedByBomb.push( playerInCurrentCase );
+
+                }
+
                 if ( blockInCurrentCase ) {
 
                     caseAffectedByBomb.push( blockInCurrentCase );
@@ -492,6 +542,14 @@ function Maps( assets, blockDim, scene ) {
             if( xMoins >= -_colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
 
                 blockInCurrentCase = self.getBlocksByPosition( currentPosition );
+
+                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+
+                if( playerInCurrentCase ){
+
+                    playerAffectedByBomb.push( playerInCurrentCase );
+
+                }
 
                 if ( blockInCurrentCase ) {
 
@@ -516,6 +574,14 @@ function Maps( assets, blockDim, scene ) {
 
                 blockInCurrentCase = self.getBlocksByPosition( currentPosition );
 
+                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+
+                if( playerInCurrentCase ){
+
+                    playerAffectedByBomb.push( playerInCurrentCase );
+
+                }
+
                 if ( blockInCurrentCase ) {
 
                     caseAffectedByBomb.push( blockInCurrentCase );
@@ -535,6 +601,13 @@ function Maps( assets, blockDim, scene ) {
         for ( var i = 0; i < caseAffectedByBomb.length; i++ ) {
 
             self.delBlockById( caseAffectedByBomb[i].id );
+
+        }
+
+        for ( var i = 0; i < playerAffectedByBomb.length; i++ ) {
+
+            self.delPlayerById( playerAffectedByBomb[i].id );
+
         }
 
     }

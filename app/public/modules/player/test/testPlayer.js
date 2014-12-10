@@ -145,4 +145,11 @@ describe( "Player", function() {
 
     });
 
+    it( "Peut tuer un player", function () {
+
+        player.destroy();
+
+        expect( player.alive).toEqual( false );
+    });
+
 });

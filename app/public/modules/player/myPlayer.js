@@ -18,7 +18,6 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     //PUBLIC METHODS//
 
     self.player = new Player( name, spawnPoint, assets, blockDim );
-
     self.renderMyPlayer = function() {
 
         if ( self.camera.rotation.x <  -0.5 ) {
@@ -31,8 +30,8 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
             self.camera.rotation.x = 1.4;
         }
 
-        self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI );
-        self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI );
+        self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
+        self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
 
         self.player.meshs.colisionBlock.position.x = self.camera.position.x;
         self.player.meshs.shape.position.x = self.camera.position.x;
@@ -44,6 +43,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     self.restoreInit = function ( position ) {
 
         if ( position ) {
+
             self.camera.position.x = spawnPoint[0];
 
             self.camera.position.z = spawnPoint[1];

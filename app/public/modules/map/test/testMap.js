@@ -217,6 +217,14 @@ describe( "Maps", function() {
 
         });
 
+        it( "Peut recuperer un player avec sa position", function () {
+
+            maps.addObject( player );
+
+            expect( maps.getPlayerByPosition( player.roundPosition() )).toEqual( player );
+
+        });
+
     });
 
     describe( "Bombs methods", function () {
@@ -336,6 +344,8 @@ describe( "Maps", function() {
                 maps.create();
 
                 jasmine.clock().install();
+
+                maps.addObject( player );
             });
 
             afterEach(function() {
@@ -349,7 +359,6 @@ describe( "Maps", function() {
 
                 player.position.z = -64;
 
-                maps.addObject( player );
 
                 maps.setBomb( player );
 
@@ -409,8 +418,6 @@ describe( "Maps", function() {
 
                 player.position.z = 64;
 
-                maps.addObject( player );
-
                 maps.setBomb( player );
 
                 var positionExpectedAffected = [
@@ -469,8 +476,6 @@ describe( "Maps", function() {
 
                 player.position.z = 64;
 
-                maps.addObject( player );
-
                 maps.setBomb( player );
 
                 var positionExpectedAffected = [
@@ -513,8 +518,6 @@ describe( "Maps", function() {
 
             it( "Peut annulé l'explosion d'une bombe d'un joueur", function () {
 
-                maps.addObject( player );
-
                 maps.setBomb( player );
 
                 maps.delBombs();
@@ -524,8 +527,6 @@ describe( "Maps", function() {
             });
 
             it( "Peut annulé l'explosion de plusieur bombs d'un joueur", function () {
-
-                maps.addObject( player );
 
                 maps.setBomb( player );
 
@@ -541,8 +542,6 @@ describe( "Maps", function() {
 
                 var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
 
-                maps.addObject( player );
-
                 maps.addObject( player2 );
 
                 maps.setBomb( player );
@@ -556,6 +555,16 @@ describe( "Maps", function() {
                 maps.delBombs();
 
                 expect( maps.getBombs().length ).toEqual( 0 );
+
+            });
+
+            it ( "Peut tuer un player a la meme position", function () {
+
+                maps.setBomb( player );
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( player.alive ).toEqual( false );
 
             });
 

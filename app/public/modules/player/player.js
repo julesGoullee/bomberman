@@ -49,6 +49,16 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         return self.listBombs.length < self.powerUp.bombs ;
     };
 
+    self.destroy = function () {
+
+        self.alive = false;
+
+        self.meshs.shape.dispose();
+
+        self.meshs.colisionBlock.dispose();
+
+    };
+
     self.addBomb = function ( bomb ) {
 
         self.listBombs.push( bomb );
