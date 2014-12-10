@@ -1,8 +1,8 @@
 {
   "name": "Bomberman",
   "scripts": {
-    "dev": "grunt dev",
-    "prod": "grunt prod",
+    "installDev": "grunt installDev",
+    "installProd": "grunt installProd",
     "test": "grunt test_all",
     "start": "node app/server/index.js"
   },
