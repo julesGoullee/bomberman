@@ -10,7 +10,7 @@ describe( "Maps", function() {
 
     var player;
 
-    var spawnPoint = [48, -64];
+    var spawnPoint = [40, -64];
 
     beforeEach( function() {
 
@@ -170,6 +170,13 @@ describe( "Maps", function() {
             expect(maps.getBlocks().length).toEqual(135);
         });
 
+        it( "Peut suprimmer tout les blocks" , function () {
+
+            maps.delBlocks();
+
+            expect( maps.getBlocks().length).toEqual( 0 );
+        });
+
         it( "Peut recuperer un block par sa position", function () {
 
             var position = { x: -24, y: 0, z: -64 };
@@ -325,7 +332,7 @@ describe( "Maps", function() {
 
                 maps.setBomb( player2 );
 
-                player.position.x = 40;
+                player.position.x = 32;
                 player2.position.x = 8;
 
                 maps.setBomb( player );
@@ -608,6 +615,67 @@ describe( "Maps", function() {
                 jasmine.clock().tick( cfg.bombCountDown );
 
                 expect( player.alive ).toEqual( false );
+
+            });
+
+            it ( "Peut tuer un player ne position superieur a la bombe ", function () {
+
+                maps.setBomb( player );
+
+                player.position.z = -56;
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( player.alive ).toEqual( false );
+
+            });
+
+            it ( "Peut tuer un player ne position inferieur a la bombe ", function () {
+
+                player.position.z = -56;
+
+                maps.setBomb( player );
+
+                player.position.z = -64;
+
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( player.alive ).toEqual( false );
+
+            });
+
+            it ( "Ne peut pas tuer un player s'il il y un block temp entre lui et la bombe", function () {
+
+                maps.create();
+
+                player.position.z = -56;
+
+                maps.setBomb( player );
+
+                player.position.z = -40;
+
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( player.alive ).toEqual( true );
+
+            });
+
+            it ( "Ne peut pas tuer un player s'il y a un block permanent entre le player et la bombe ", function () {
+
+                maps.create();
+
+                player.position.z = -56;
+
+                maps.setBomb( player );
+
+                player.position.x = 24;
+
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( player.alive ).toEqual( true );
 
             });
 

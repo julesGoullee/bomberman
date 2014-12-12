@@ -90,6 +90,8 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
         return true;
     };
+
+
     //PRIVATE METHODS//
 
     function init() {

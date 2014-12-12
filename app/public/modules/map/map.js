@@ -292,9 +292,22 @@ function Maps( assets, blockDim, scene ) {
         return null;
     };
 
+    self.delBlocks = function () {
+
+        for ( var i = _content.length -1; i >= 0; i-- ) {
+
+            if ( _content[i].type === "block" ) {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+            }
+        }
+    };
+
     self.restoreBlock = function ( ) {
 
-        delTempBlock();
+        self.delBlocks();
 
         createTemporaireBlock();
     };
@@ -451,9 +464,10 @@ function Maps( assets, blockDim, scene ) {
     }
 
     function positionHavePermBlock ( position ){
+
         for ( var i = 0; i < _blocksPermanent.length; i++ ) {
 
-            if(_blocksPermanent[i].x === position.x && _blocksPermanent[i].z === position.z ) {
+            if ( _blocksPermanent[i].x === position.x && _blocksPermanent[i].z === position.z ) {
 
                 return true;
             }
@@ -634,30 +648,18 @@ function Maps( assets, blockDim, scene ) {
 
 
         // parcours les cases toucher par la bombe pour les suprimmées
-        for ( var i = 0; i < caseAffectedByBomb.length; i++ ) {
+        for ( var iBomb = 0; iBomb < caseAffectedByBomb.length; iBomb++ ) {
 
-            self.delBlockById( caseAffectedByBomb[i].id );
+            self.delBlockById( caseAffectedByBomb[iBomb].id );
 
         }
 
-        for ( var i = 0; i < playerAffectedByBomb.length; i++ ) {
+        for ( var iPlayer = 0; iPlayer < playerAffectedByBomb.length; iPlayer++ ) {
 
-            self.delPlayerById( playerAffectedByBomb[i].id );
+            self.delPlayerById( playerAffectedByBomb[iPlayer].id );
 
         }
 
     }
 
-    function delTempBlock () {
-
-        for ( var i = _content.length -1; i >= 0; i-- ) {
-
-            if( _content[i].type === "block") {
-
-                _content[i].destroy();
-
-                _content.splice( i, 1 );
-            }
-        }
-    }
 }

@@ -23,6 +23,11 @@ var gameMock = {
                 return { dispose : function (){} };
             }
         }],
+        "personnageColision" :[{
+            clone : function (){
+                return { dispose : function (){} };
+            }
+        }],
         "bomb" :[{
             clone : function (){
                 return { dispose : function (){} };

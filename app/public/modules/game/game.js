@@ -18,6 +18,7 @@ function Game ( canvasId ) {
         //"animBombTest",
         "bombColision",
         "personnage",
+        "personnageColision",
         "tourColision"
     ];
 
@@ -96,7 +97,7 @@ function Game ( canvasId ) {
                 myPlayer.renderMyPlayer();
 
                 //todo ameliorer le debug des positions
-                document.getElementById( "debug" ).innerHTML = "fps : " + BABYLON.Tools.GetFps().toFixed() + " Position camera Player: " + myPlayer.camera.position.toString();
+                document.getElementById( "debug" ).innerHTML = "fps : " + BABYLON.Tools.GetFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
             });
 
         });
