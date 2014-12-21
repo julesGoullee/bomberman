@@ -62,6 +62,11 @@ function homeRoutes( app ){
 
         commonResponseGetPost( res );
     });
+
+    //Common response BabylonjsManifest
+    app.use('/*babylon.manifest*', function (req, res) {
+        res.sendfile("./app/public/content/common.babylon.manifest");
+    })
 }
 
 module.exports = function( app ) {

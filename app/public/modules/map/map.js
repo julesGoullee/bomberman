@@ -106,8 +106,7 @@ function Maps( assets, blockDim, scene ) {
 
                 _content[i].destroy();
 
-                _content.splice( i, 1 );
-
+                //todo
                 return true;
             }
         }
@@ -131,6 +130,7 @@ function Maps( assets, blockDim, scene ) {
 
         return null;
     };
+
 
     //Bombs
     self.setBomb = function ( player ) {
