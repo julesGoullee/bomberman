@@ -1,8 +1,8 @@
-var path = require('path');
+var path = require("path");
 
 module.exports = {
     rootPath : "",
     rootPathPublic : path.resolve(__dirname + "/../../public/"),
-    port : 3000,
-    domaine: "localhost"
+    port : 80,
+    domaine: "monchezmoi.no-ip.org"
 };
