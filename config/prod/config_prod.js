@@ -1,3 +1,5 @@
+var path = require("path");
+
 module.exports = {
     rootPath : "",
     rootPathPublic : path.resolve(__dirname + "/../../public/"),
