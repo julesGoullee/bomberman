@@ -1,8 +1,10 @@
 #!/bin/sh
-echo "all process stop!" >&2
+echo "Git pull..." >&2
 git pull &&
-echo "Update project files!" >&2
+echo "Git pull [OK]" >&2
+echo "Configuration production..." >&2
 npm run prod &&
-echo "Configuation deploiment" >&2
+echo "Configuration production [OK]" >&2
+echo "Update success :)" >&2
 exit
 
