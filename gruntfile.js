@@ -90,6 +90,10 @@ module.exports = function(grunt) {
                         dest: "app/public/external/jquery.js"
                     },
                     {
+                        src: "bower_components/jquery/dist/jquery.js.map",
+                        dest: "app/public/external/jquery.js.map"
+                    },
+                    {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
                         dest: "app/public/fonts/glyphicons-halflings-regular.ttf"
                     },
@@ -129,10 +133,6 @@ module.exports = function(grunt) {
                     {
                         src: "bower_components/jquery/dist/jquery.js",
                         dest: "app/public/external/jquery.js"
-                    },
-                    {
-                        src: "bower_components/jquery/dist/jquery.js.map",
-                        dest: "app/public/external/jquery.js.map"
                     },
                     {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
