@@ -92,13 +92,12 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         return true;
     };
 
-
-    //PRIVATE METHODS//
-
-    function init() {
+    self.init = function() {
         createMesh();
         createMeshColision();
-    }
+    };
+
+    //PRIVATE METHODS//
 
     function createMesh() {
 
@@ -139,5 +138,5 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         self.meshs.colisionBlock = meshTempColision;
     }
 
-    init();
+    self.init();
 }

@@ -91,6 +91,10 @@ function Restore ( notifier, map, myPlayer ) {
 
             myPlayer.player.alive = true;
 
+            myPlayer.player.init();
+
+            map.addObject(myPlayer.player);
+
         }
 
         //todo restorer les params du player ( bombe, kill, alive speed..) &
