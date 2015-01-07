@@ -16,13 +16,12 @@ function Connector () {
     };
 
     self.sendMyPosition = function( position ) {
-
-        socket.emit( "myPosition", position );
+        _socket.emit( "myPosition", position );
     };
 
     self.onNewPlayer = function( callback ) {
 
-        socket.on( "newPlayer", function( playerData ) {
+        _socket.on( "newPlayer", function( playerData ) {
             callback(playerData);
         });
     };

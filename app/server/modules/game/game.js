@@ -25,6 +25,9 @@ function Game( io ) {
             _roomList.push( new Room () );
 
         }
+        socket.on('myPosition', function(position){
+           console.log(position);
+        });
         _roomList[_roomList.length -1].addPlayer( socket );
     }
 

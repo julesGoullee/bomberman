@@ -40,6 +40,8 @@ function Game ( canvasId ) {
 
     self.scene = initScene();
 
+    self.connector = new Connector();
+
     self.assets = {};
 
     self.init = function () {
@@ -52,11 +54,9 @@ function Game ( canvasId ) {
 
             // Creation du game
 
-            //var connector = new Connector();
-
             var notifier = new Notifier();
 
-            var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , spawnPoint, self.assets, _blockDim );
+            var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , spawnPoint, self.assets, self.connector );
 
             var map = new Maps( self.assets, _blockDim , self.scene);
 

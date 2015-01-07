@@ -1,6 +1,6 @@
 "use strict";
 
-function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
+function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
     var self = this;
 
@@ -14,10 +14,12 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
     var angularSensibility = 5000;
 
+    var notifyMovePlayer = new NotifyMovePlayer(connector, spawnPoint);
 
     //PUBLIC METHODS//
 
     self.player = new Player( name, spawnPoint, assets, blockDim );
+
     self.renderMyPlayer = function() {
 
         if(self.player.alive == true){
@@ -67,6 +69,8 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
         _scene.activeCamera = self.camera;
 
         cameraPlayerAttach();
+
+        checkMovePlayer();
     }
 
     function initCamera() {
@@ -138,6 +142,12 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
 
     }
 
+    function checkMovePlayer() {
+
+        notifyMovePlayer.notifyNewPosition( self.camera.position );
+
+        setTimeout( checkMovePlayer, 500);
+    }
     init();
 }
 
