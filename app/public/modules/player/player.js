@@ -46,7 +46,8 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
     self.shouldSetBomb = function () {
 
-        return self.listBombs.length < self.powerUp.bombs ;
+        return ( ( self.alive == true ) && (self.listBombs.length < self.powerUp.bombs ) )
+
     };
 
     self.destroy = function () {

@@ -385,6 +385,16 @@ describe( "Maps", function() {
 
             });
 
+            it( "Ne peut pas poser de bombe si il est mort", function () {
+
+                maps.addObject( player );
+
+                player.alive = false;
+
+                expect( player.shouldSetBomb()).toEqual(false);
+
+            });
+
         });
 
         describe( "Destroy", function () {
