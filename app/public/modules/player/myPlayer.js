@@ -54,13 +54,15 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
             self.camera.position.x = spawnPoint[0];
 
+            self.camera.position.y = 8.04;
+
             self.camera.position.z = spawnPoint[1];
 
             self.camera.setTarget(new BABYLON.Vector3(0, 6.5, -65));
 
 
     };
-
+    
     //PRIVATE METHODS//
     function init(){
 

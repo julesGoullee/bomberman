@@ -7,7 +7,8 @@ function Restore ( notifier, map, myPlayer ) {
     var _restartConfig = {
         player: {
             position: false,
-            destroyBombs : false
+            destroyBombs : false,
+            alive : false
         },
         map: {
             block: false
@@ -70,6 +71,8 @@ function Restore ( notifier, map, myPlayer ) {
 
         _restartConfig.player.position = $( "#restartPlayerPosition" ).prop( "checked" );
         _restartConfig.player.destroyBombs = $( "#restartPlayerBombe" ).prop( "checked" );
+        _restartConfig.player.alive = $( "#restartPlayerAlive" ).prop( "checked" );
+
 
         if ( _restartConfig.player.position ) {
 
@@ -83,6 +86,13 @@ function Restore ( notifier, map, myPlayer ) {
 
             notifier.showMessage("Restart!");
         }
+
+        if ( _restartConfig.player.alive ) {
+
+            myPlayer.player.alive = true;
+
+        }
+
         //todo restorer les params du player ( bombe, kill, alive speed..) &
         //todo map (  block, player...)
         //todo que faire des bombes deja posé ?
