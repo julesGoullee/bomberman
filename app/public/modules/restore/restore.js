@@ -73,7 +73,7 @@ function Restore ( notifier, map, myPlayer ) {
 
         if ( _restartConfig.player.position ) {
 
-            myPlayer.restoreInit( _restartConfig.player.position );
+            myPlayer.restoreInit();
         }
 
         if ( _restartConfig.player.destroyBombs ) {

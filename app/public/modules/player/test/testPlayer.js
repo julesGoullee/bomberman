@@ -6,6 +6,8 @@ describe( "Player", function() {
 
     var spawnPoint = [48, -64];
 
+    var deathCam = { x : 65, y: 147, z: 0 };
+
     beforeEach( function() {
 
         player = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
@@ -151,5 +153,17 @@ describe( "Player", function() {
 
         expect( player.alive).toEqual( false );
     });
+
+    /*it( "Place le player au dessus de la map à sa mort", function () {
+
+        player.destroy();
+
+        console.log( player.position );
+
+        expect( player. position ).toEqual(deathCam);
+
+    });*/
+
+    //todo test myPlayer
 
 });

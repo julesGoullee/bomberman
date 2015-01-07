@@ -20,36 +20,42 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
     self.player = new Player( name, spawnPoint, assets, blockDim );
     self.renderMyPlayer = function() {
 
-        if ( self.camera.rotation.x <  -0.5 ) {
+        if(self.player.alive == true){
 
-            self.camera.rotation.x = -0.5;
+            if ( self.camera.rotation.x <  -0.5 ) {
+
+                self.camera.rotation.x = -0.5;
+            }
+
+            if ( self.camera.rotation.x > 1.4 ) {
+
+                self.camera.rotation.x = 1.4;
+            }
+
+            self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
+            self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
+
+            self.player.meshs.colisionBlock.position.x = self.camera.position.x;
+            self.player.meshs.shape.position.x = self.camera.position.x;
+
+            self.player.meshs.colisionBlock.position.z = self.camera.position.z;
+            self.player.meshs.shape.position.z = self.camera.position.z;
+
+        }else{
+
+            deadView()
+
         }
-
-        if ( self.camera.rotation.x > 1.4 ) {
-
-            self.camera.rotation.x = 1.4;
-        }
-
-        self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
-        self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
-
-        self.player.meshs.colisionBlock.position.x = self.camera.position.x;
-        self.player.meshs.shape.position.x = self.camera.position.x;
-
-        self.player.meshs.colisionBlock.position.z = self.camera.position.z;
-        self.player.meshs.shape.position.z = self.camera.position.z;
     };
 
-    self.restoreInit = function ( position ) {
-
-        if ( position ) {
+    self.restoreInit = function () {
 
             self.camera.position.x = spawnPoint[0];
 
             self.camera.position.z = spawnPoint[1];
 
             self.camera.setTarget(new BABYLON.Vector3(0, 6.5, -65));
-        }
+
 
     };
 
@@ -117,6 +123,18 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets ) {
         self.player.meshs.colisionBlock.rotationQuaternion = null;
         self.player.meshs.shape.rotationQuaternion = null;
 
+
+    }
+
+    function deadView(){
+
+        self.camera.position.x = 65;
+
+        self.camera.position.y = 147;
+
+        self.camera.position.z = 0;
+
+        self.camera.setTarget(new BABYLON.Vector3(0.1, 0.1, 0.1));
 
     }
 
