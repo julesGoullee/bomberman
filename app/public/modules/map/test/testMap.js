@@ -155,6 +155,7 @@ describe( "Maps", function() {
 
             expect( maps.meshGround[1].checkCollisions ).toBe( true );
         });
+
     });
 
     describe( "Temps blocks methods", function() {
@@ -271,9 +272,23 @@ describe( "Maps", function() {
 
             maps.addObject( player );
 
-            expect( maps.getPlayerByPosition( player.roundPosition() )).toEqual( player );
+            expect( maps.getPlayerByPosition( player.roundPosition() ) ).toEqual( player );
 
         });
+
+        it( "Peut supprimer tous les players", function () {
+
+            var player2 = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+
+            maps.addObject( player );
+
+            maps.addObject( player2 );
+
+            maps.delPlayers();
+
+            expect( maps.getPlayers().length ).toEqual( 0 );
+
+        } )
 
     });
 

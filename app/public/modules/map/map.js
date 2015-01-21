@@ -115,7 +115,17 @@ function Maps( assets, blockDim, scene ) {
     };
 
     self.delPlayers = function ( )  {
-        //todo delPlayers
+
+        for ( var i = _content.length -1; i >= 0; i-- ) {
+
+            if ( _content[i].type === "player" ) {
+
+                _content[i].destroy();
+
+                _content.splice( i, 1 );
+            }
+        }
+
     };
 
     self.getPlayerByPosition = function ( position ) {
