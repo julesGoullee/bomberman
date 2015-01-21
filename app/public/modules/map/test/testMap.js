@@ -229,7 +229,6 @@ describe( "Maps", function() {
 
             expect( maps.getBlocks().length).toEqual( 132 );
 
-
             maps.restoreBlock();
 
             expect( maps.getBlocks().length).toEqual( 135 );

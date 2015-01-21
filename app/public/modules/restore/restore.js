@@ -11,7 +11,7 @@ function Restore ( notifier, map, myPlayer ) {
             alive : false
         },
         map: {
-            block: false
+            blocks: false
         }
 
     };
@@ -47,7 +47,7 @@ function Restore ( notifier, map, myPlayer ) {
                         "<span class='label label-default list-group-item active'>Map</span>"+
                         "<div class='checkbox list-group-item' >" +
                             "<label>" +
-                                "<input type='checkbox' id=''><span>Block</span>" +
+                                "<input type='checkbox' id='restoreBlock'><span>Block</span>" +
                             "</label>" +
                         "</div>" +
                     "</li>" +
@@ -72,7 +72,7 @@ function Restore ( notifier, map, myPlayer ) {
         _restartConfig.player.position = $( "#restartPlayerPosition" ).prop( "checked" );
         _restartConfig.player.destroyBombs = $( "#restartPlayerBombe" ).prop( "checked" );
         _restartConfig.player.alive = $( "#restartPlayerAlive" ).prop( "checked" );
-
+        _restartConfig.map.blocks = $( "#restoreBlock").prop( "checked" );
 
         if ( _restartConfig.player.position ) {
 
@@ -82,6 +82,7 @@ function Restore ( notifier, map, myPlayer ) {
         if ( _restartConfig.player.destroyBombs ) {
             map.delBombs();
         }
+
         if ( _restartConfig.player.destroyBombs || _restartConfig.player.position) {
 
             notifier.showMessage("Restart!");
@@ -94,6 +95,12 @@ function Restore ( notifier, map, myPlayer ) {
             myPlayer.player.init();
 
             map.addObject(myPlayer.player);
+
+        }
+
+        if ( _restartConfig.map.blocks ){
+
+            map.restoreBlock();
 
         }
 
