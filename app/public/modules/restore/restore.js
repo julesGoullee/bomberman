@@ -101,12 +101,9 @@ function Restore ( notifier, map, myPlayer ) {
         if ( _restartConfig.map.blocks ){
 
             map.restoreBlock();
-
         }
 
-        //todo restorer les params du player ( bombe, kill, alive speed..) &
-        //todo map (  block, player...)
-        //todo que faire des bombes deja posé ?
+        //todo restorer les params du player : kill
     };
 
 }
