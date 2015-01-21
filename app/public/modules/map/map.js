@@ -12,6 +12,8 @@ function Maps( assets, blockDim, scene ) {
 
     var _content = [];
 
+    var _powerUp = [];
+
     var _blocksPermanent = [];
 
     var _blockDim = blockDim;
@@ -48,6 +50,8 @@ function Maps( assets, blockDim, scene ) {
         createPositionMustFree();
 
         createPermanentBlock();
+
+        createPowerUp();
 
         if ( cfg.showBlockTemp) {
 
@@ -242,7 +246,6 @@ function Maps( assets, blockDim, scene ) {
         return false;
     };
 
-
     //Blocks
     self.getBlocks = function () {
 
@@ -354,7 +357,6 @@ function Maps( assets, blockDim, scene ) {
 
         return false;
     };
-
 
 
     //PRIVATE METHODS//
@@ -522,6 +524,22 @@ function Maps( assets, blockDim, scene ) {
         }
     }
 
+    function createPowerUp () {
+
+       /* var blocks = self.getBlocks();
+
+        for ( var i = 0; i < cfg.nbPowerUp; i++ ) {
+
+            var positionBlock = Math.floor( Math.random() * (blocks.length + 1) );
+
+            var position = blocks[positionBlock].position;
+
+            _powerUp.push( new PowerUp( position ) )
+
+        } */
+
+    }
+
     function explosion ( bomb ) {
 
         var caseAffectedByBomb = [];
@@ -671,5 +689,6 @@ function Maps( assets, blockDim, scene ) {
         }
 
     }
+
 
 }

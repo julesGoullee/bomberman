@@ -1,6 +1,6 @@
 "use strict";
 
-function powerUp ( position, pouvoir, valeur, assets ) {
+function PowerUp ( position, pouvoir, valeur, assets ) {
 
     var self = this;
 
