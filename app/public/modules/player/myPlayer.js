@@ -20,9 +20,12 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
     self.player = new Player( name, spawnPoint, assets, blockDim );
 
+    //scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true);
+
+
     self.renderMyPlayer = function() {
 
-        if(self.player.alive == true){
+        if( self.player.alive == true ){
 
             if ( self.camera.rotation.x <  -0.5 ) {
 
@@ -34,18 +37,18 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
                 self.camera.rotation.x = 1.4;
             }
 
-            self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
-            self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y);
+            self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
+            self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
 
             self.player.meshs.colisionBlock.position.x = self.camera.position.x;
-            self.player.meshs.shape.position.x = self.camera.position.x;
-
             self.player.meshs.colisionBlock.position.z = self.camera.position.z;
+
+            self.player.meshs.shape.position.x = self.camera.position.x ;
             self.player.meshs.shape.position.z = self.camera.position.z;
 
         }else{
 
-            deadView()
+            deadView();
 
         }
     };
@@ -86,9 +89,9 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
         camera.setTarget( new BABYLON.Vector3( 0, 4, -65 ) );
 
-        camera.ellipsoid = new BABYLON.Vector3( 2.5, 4, 2.5 );
+        camera.ellipsoid = new BABYLON.Vector3( 2.5, 3.7, 2.5 );
 
-        camera.ellipsoidOffset = new BABYLON.Vector3( 0,6, 0);
+        camera.ellipsoidOffset = new BABYLON.Vector3( 0, 6, 0);
 
         camera.keysUp = [90]; // Z
 
@@ -121,10 +124,11 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
         self.player.position = self.camera.position;
 
-        //var pivot = BABYLON.Matrix.Translation( 0,0 ,2.5 );
 
-        //self.player.meshs.colisionBlock.setPivotMatrix( pivot );
-        //self.player.meshs.shape.setPivotMatrix( pivot );
+        var pivot = BABYLON.Matrix.Translation(1.3,0,0.2);
+
+        self.player.meshs.colisionBlock.setPivotMatrix( pivot );
+        self.player.meshs.shape.setPivotMatrix( pivot );
 
         self.player.meshs.colisionBlock.rotationQuaternion = null;
         self.player.meshs.shape.rotationQuaternion = null;

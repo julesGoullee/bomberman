@@ -17,7 +17,8 @@ function Game ( canvasId ) {
         "bomb",
         //"animBombTest",
         "bombColision",
-        "personnage",
+        //"personnage",
+        "persocourse",
         "personnageColision",
         "tourColision"
     ];
@@ -50,7 +51,7 @@ function Game ( canvasId ) {
 
         preloader.onFinish( function(){
 
-            var spawnPoint = playsersSpawnPoint[1];
+            var spawnPoint = playsersSpawnPoint[3];
 
             // Creation du game
 
@@ -97,8 +98,10 @@ function Game ( canvasId ) {
                 myPlayer.renderMyPlayer();
 
                 //todo ameliorer le debug des positions
-                document.getElementById( "debug" ).innerHTML = "fps : " + BABYLON.Tools.GetFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
+                document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
             });
+
+            //var bot = new Bot(playsersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
 
         });
 

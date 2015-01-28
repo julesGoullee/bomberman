@@ -182,12 +182,12 @@ describe( "Maps", function() {
 
             var position = { x: -24, y: 0, z: -64 };
 
-            expect( maps.getBlocksByPosition( position ).position ).toEqual( position );
+            expect( maps.getBlockByPosition( position ).position ).toEqual( position );
         });
 
         it( "Peut suprimmer un block par son id", function () {
 
-            var block = maps.getBlocksByPosition( { x: -24, y: 0, z: -64 } );
+            var block = maps.getBlockByPosition( { x: -24, y: 0, z: -64 } );
 
             expect( maps.delBlockById( block.id )).toEqual( true );
 
@@ -195,21 +195,21 @@ describe( "Maps", function() {
 
         it( "Peut supprimer un block par sa position", function () {
 
-            var block = maps.getBlocksByPosition( { x: -24, y: 0, z: -64 } );
+            var block = maps.getBlockByPosition( { x: -24, y: 0, z: -64 } );
 
             expect( maps.delBlocksByPosition( { x: -24, y: 0, z: -64 } )).toEqual( true );
 
-            expect( maps.getBlocksByPosition( block.position )).toEqual( null );
+            expect( maps.getBlockByPosition( block.position )).toEqual( null );
 
         });
 
         it ( "Peut supprimer un bloc et le restaurer", function () {
 
-            var block = maps.getBlocksByPosition( { x: -24, y: 0, z: -64 } );
+            var block = maps.getBlockByPosition( { x: -24, y: 0, z: -64 } );
 
             expect( maps.delBlocksByPosition( { x: -24, y: 0, z: -64 } )).toEqual( true );
 
-            expect( maps.getBlocksByPosition( block.position )).toEqual( null );
+            expect( maps.getBlockByPosition( block.position )).toEqual( null );
 
             expect( maps.getBlocks().length).toEqual( 134 );
 
@@ -395,7 +395,7 @@ describe( "Maps", function() {
 
                 maps.setBomb( player );
 
-                expect( maps.hasBombByPosition( player.roundPosition() )).toEqual( true );
+                expect( maps.getBombByPosition( player.roundPosition() )).toEqual( player.listBombs[0] );
 
             });
 
@@ -465,23 +465,23 @@ describe( "Maps", function() {
 
                 for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
 
-                    expect( maps.getBlocksByPosition( positionExpectedAffected[i] )).not.toEqual( false );
+                    expect( maps.getBlockByPosition( positionExpectedAffected[i] )).not.toEqual( null );
                 }
 
                 for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
 
-                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[k] )).not.toEqual( false );
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[k] )).not.toEqual( null );
                 }
 
                 jasmine.clock().tick( cfg.bombCountDown );
 
                 for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
-                    expect( maps.getBlocksByPosition( positionExpectedAffected[j] )).toEqual( null );
+                    expect( maps.getBlockByPosition( positionExpectedAffected[j] )).toEqual( null );
                 }
 
                 for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
 
-                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
                 }
 
             });
@@ -523,23 +523,23 @@ describe( "Maps", function() {
 
                 for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
 
-                    expect( maps.getBlocksByPosition( positionExpectedAffected[i] )).not.toEqual( null );
+                    expect( maps.getBlockByPosition( positionExpectedAffected[i] )).not.toEqual( null );
                 }
 
                 for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
 
-                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[k] )).not.toEqual( null );
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[k] )).not.toEqual( null );
                 }
 
                 jasmine.clock().tick( cfg.bombCountDown );
 
                 for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
-                    expect( maps.getBlocksByPosition( positionExpectedAffected[j] )).toEqual( null );
+                    expect( maps.getBlockByPosition( positionExpectedAffected[j] )).toEqual( null );
                 }
 
                 for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
 
-                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
                 }
 
             });
@@ -569,23 +569,23 @@ describe( "Maps", function() {
 
                 for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
 
-                    expect( maps.getBlocksByPosition( positionExpectedAffected[i] )).not.toEqual( null );
+                    expect( maps.getBlockByPosition( positionExpectedAffected[i] )).not.toEqual( null );
                 }
 
                 for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
 
-                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[k] )).not.toEqual( null );
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[k] )).not.toEqual( null );
                 }
 
                 jasmine.clock().tick( cfg.bombCountDown );
 
                 for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
-                    expect( maps.getBlocksByPosition( positionExpectedAffected[j] )).toEqual( null );
+                    expect( maps.getBlockByPosition( positionExpectedAffected[j] )).toEqual( null );
                 }
 
                 for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
 
-                    expect( maps.getBlocksByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[l] )).not.toEqual( null );
                 }
 
             });
@@ -703,6 +703,88 @@ describe( "Maps", function() {
 
             });
 
+        });
+
+        describe("Reaction en chaine", function(){
+
+            beforeEach( function() {
+
+                maps.create();
+
+                jasmine.clock().install();
+
+                maps.addObject( player );
+
+
+            });
+
+            afterEach(function() {
+
+                jasmine.clock().uninstall();
+            });
+
+            it( "Peut detruire les blocks en position superieur a la bombe lors de l'explosion", function () {
+
+                //1
+                player.position.x = 32;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -64} ) ).not.toEqual( null );
+
+                player.position.x = 42;
+                player.position.z = -54;
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -64} ) ).toEqual( null );
+
+                // 2
+                player.position.x = 24;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -56} ) ).not.toEqual( null );
+                expect( maps.getBlockByPosition( {x: 16, z: -64} ) ).not.toEqual( null );
+
+                player.position.x = 42;
+                player.position.z = -54;
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -56} )).toEqual( null );
+                expect( maps.getBlockByPosition( {x: 16, z: -64} )).toEqual( null );
+
+                // 3 deux bombe cote a cote ( 2 block sur deux axes different)
+
+                player.position.x = 16;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                jasmine.clock().tick( cfg.bombCountDown / 2 );
+
+                player.position.x = 24;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                player.position.x = 42;
+                player.position.z = -54;
+
+                expect( maps.getBlockByPosition( {x: 8, z: -64} ) ).not.toEqual( null );
+                expect( maps.getBlockByPosition( {x: 24, z: -48} ) ).not.toEqual( null );
+
+                jasmine.clock().tick( cfg.bombCountDown / 2 );
+
+                expect( maps.getBlockByPosition( {x: 8, z: -64} ) ).toEqual( null );
+                expect( maps.getBlockByPosition( {x: 24, z: -48} ) ).toEqual( null );
+
+
+
+            });
         });
 
     });

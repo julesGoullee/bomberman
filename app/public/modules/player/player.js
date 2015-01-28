@@ -101,12 +101,16 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
     function createMesh() {
 
-        if ( assets["personnage"] === undefined ) {
-
-            throw new Error( "Mesh personnage is not preload" );
+        //if ( assets["personnage"] === undefined ) {
+        if ( assets["persocourse"] === undefined ) {
+                throw new Error( "Mesh personnage is not preload" );
         }
 
-        var meshPlayer = assets["personnage"][0].clone();
+        //var meshPlayer = assets["personnage"][0].clone();
+        var meshPlayer = assets["persocourse"][0].clone();
+
+
+        meshPlayer.skeleton = assets["persocourse"][0].skeleton.clone();
 
         meshPlayer.isVisible = true;
 

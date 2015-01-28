@@ -51,8 +51,6 @@ function Maps( assets, blockDim, scene ) {
 
         createPermanentBlock();
 
-        createPowerUp();
-
         if ( cfg.showBlockTemp) {
 
             createTemporaireBlock();
@@ -149,7 +147,7 @@ function Maps( assets, blockDim, scene ) {
     //Bombs
     self.setBomb = function ( player ) {
 
-        if ( player.shouldSetBomb() && !self.hasBombByPosition( player.roundPosition() ) ) {
+        if ( player.shouldSetBomb() && !self.getBombByPosition( player.roundPosition() ) ) {
 
             var bomb = new Bombe ( player, player.roundPosition() , _assets, scene);
 
@@ -160,7 +158,7 @@ function Maps( assets, blockDim, scene ) {
 
                 player.delBombById( bomb.id );
 
-                explosion( bomb );
+                explosion( bomb, player );
 
             });
 
@@ -228,17 +226,15 @@ function Maps( assets, blockDim, scene ) {
         }
     };
 
-    self.hasBombByPosition = function( position ) {
+    self.getBombByPosition = function( position ) {
 
         var tabBombs = self.getBombs();
-
-        var test = 0;
 
        for ( var i = 0; i<tabBombs.length; i++ ) {
 
            if (position.z === tabBombs[i].position.z && position.x === tabBombs[i].position.x) {
 
-               return true;
+               return tabBombs[i];
 
            }
        }
@@ -266,7 +262,55 @@ function Maps( assets, blockDim, scene ) {
         return tabBlocks;
     };
 
-    self.getBlocksByPosition = function ( position ) {
+    self.getFreeCases = function(){
+        //todo test
+        var iBlockPerm;
+        var iBlockTemp;
+        var currentBlock;
+        var casesFree = [];
+        var tempBlock = self.getBlocks();
+
+        for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
+
+            for ( var iBlockLongueur = -_lineLength / 2; iBlockLongueur <= _lineLength / 2; iBlockLongueur++ ) {
+
+                iBlockPerm = 0;
+                iBlockTemp = 0;
+
+                for (iBlockTemp; iBlockTemp < tempBlock.length ; iBlockTemp++ ) {
+
+                    currentBlock = tempBlock[iBlockTemp];
+
+                    if ( currentBlock.position.x ===  iBlockLargeur * blockDim && currentBlock.position.z === iBlockLongueur * blockDim) {
+
+                        break;
+                    }
+                }
+
+                for (iBlockPerm; iBlockPerm < _blocksPermanent.length ; iBlockPerm++ ) {
+
+                    currentBlock = _blocksPermanent[iBlockPerm];
+                    if ( currentBlock.x ===  iBlockLargeur * blockDim && currentBlock.z === iBlockLongueur * blockDim ) {
+
+                        break;
+                    }
+                }
+
+                if( iBlockTemp === tempBlock.length && iBlockPerm === _blocksPermanent.length ){
+
+                    casesFree.push({
+                       x: iBlockLargeur,
+                       z: iBlockLongueur
+                    });
+
+                }
+            }
+        }
+
+        return casesFree;
+    };
+
+    self.getBlockByPosition = function ( position ) {
 
         var blocks = self.getBlocks();
 
@@ -357,6 +401,7 @@ function Maps( assets, blockDim, scene ) {
 
         return false;
     };
+
 
 
     //PRIVATE METHODS//
@@ -539,156 +584,224 @@ function Maps( assets, blockDim, scene ) {
         } */
 
     }
+    
+    function explosion ( bomb, player ) {
 
-    function explosion ( bomb ) {
+        var degats = {
+            players: [],
+            blocks: []
+        };
 
-        var caseAffectedByBomb = [];
+        utils.addUniqueArrayProperty(degats.players);
+        utils.addUniqueArrayProperty(degats.blocks);
 
-        var blockInCurrentCase;
+        calcDegat(degats, bomb, function(){
 
-        var playerAffectedByBomb = [];
+            // parcours les cases touché par la bombe pour les suprimmées
+            for ( var iBlocks = 0; iBlocks < degats.blocks.length; iBlocks++ ) {
 
-        var playerInCurrentCase;
+                self.delBlockById( degats.blocks[iBlocks].id );
 
-        var currentPosition;
+            }
 
-        // parcours les cases X superieur la position de la bombe
-        for ( var xPlus = bomb.position.x; xPlus <= bomb.position.x + ( bomb.power * _blockDim )  ; xPlus += 8 ) {
+            // parcours les players touchés par la bombe pour les suprimmées
+            for ( var iPlayer = 0; iPlayer < degats.players.length; iPlayer++ ) {
 
-            currentPosition = { x: xPlus, z : bomb.position.z };
+                self.delPlayerById( degats.players[iPlayer].id );
 
-            if( xPlus <= _colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+            }
+        });
 
-                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
 
-                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+        function calcDegat(tabDegats, bomb, callback){
 
-                if( playerInCurrentCase ){
+            var caseAffectedByBomb = [];
 
-                    playerAffectedByBomb.push( playerInCurrentCase );
+            var playerAffectedByBomb = [];
 
-                }
+            var bombAffectedByBomb = [];
 
-                if ( blockInCurrentCase ) {
 
-                    caseAffectedByBomb.push( blockInCurrentCase );
+            var blockInCurrentCase;
+
+            var playerInCurrentCase;
+
+            var bombInCurrentCase;
+
+            var currentPosition;
+
+            // parcours les cases X superieur la position de la bombe
+            for ( var xPlus = bomb.position.x; xPlus <= bomb.position.x + ( bomb.power * _blockDim )  ; xPlus += 8 ) {
+
+                currentPosition = { x: xPlus, z : bomb.position.z };
+
+                if( xPlus <= _colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+
+                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
+
+                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+
+                    bombInCurrentCase = self.getBombByPosition( currentPosition );
+
+                    if( playerInCurrentCase ){
+
+                        playerAffectedByBomb.push( playerInCurrentCase );
+
+                    }
+
+                    if( bombInCurrentCase  && !bombInCurrentCase.degatCheck){
+
+                        bombInCurrentCase.degatCheck = true;
+
+                        bombAffectedByBomb.push( bombInCurrentCase );
+                    }
+
+                    if ( blockInCurrentCase ) {
+
+                        caseAffectedByBomb.push( blockInCurrentCase );
+
+                        break;
+                    }
+
+                } else {
 
                     break;
                 }
 
-            } else {
-
-                break;
             }
 
-        }
+            // parcours les cases z superieur la position de la bombe
+            for ( var zPlus = bomb.position.z; zPlus <= bomb.position.z + ( bomb.power * _blockDim )  ; zPlus += 8 ) {
 
-        // parcours les cases z superieur la position de la bombe
-        for ( var zPlus = bomb.position.z; zPlus <= bomb.position.z + ( bomb.power * _blockDim )  ; zPlus += 8 ) {
+                currentPosition = { x: bomb.position.x , z : zPlus };
 
-            currentPosition = { x: bomb.position.x , z : zPlus };
+                if( zPlus <= _lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
 
-            if( zPlus <= _lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
 
-                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
+                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
 
-                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+                    bombInCurrentCase = self.getBombByPosition( currentPosition );
 
-                if( playerInCurrentCase ){
+                    if( playerInCurrentCase ){
 
-                    playerAffectedByBomb.push( playerInCurrentCase );
+                        playerAffectedByBomb.push( playerInCurrentCase );
 
-                }
+                    }
 
-                if ( blockInCurrentCase ) {
+                    if( bombInCurrentCase ){
 
-                    caseAffectedByBomb.push( blockInCurrentCase );
+                        bombAffectedByBomb.push( bombInCurrentCase );
+                    }
+
+                    if ( blockInCurrentCase ) {
+
+                        caseAffectedByBomb.push( blockInCurrentCase );
+
+                        break;
+                    }
+
+
+                } else {
 
                     break;
                 }
 
-            } else {
-
-                break;
             }
 
-        }
+            // parcours les cases x inférieur la position de la bombe
+            for ( var xMoins = bomb.position.x; xMoins >= bomb.position.x - ( bomb.power * _blockDim )  ; xMoins -= 8 ) {
 
-        // parcours les cases x inférieur la position de la bombe
-        for ( var xMoins = bomb.position.x; xMoins >= bomb.position.x - ( bomb.power * _blockDim )  ; xMoins -= 8 ) {
+                currentPosition = { x: xMoins, z : bomb.position.z };
 
-            currentPosition = { x: xMoins, z : bomb.position.z };
+                if( xMoins >= -_colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
 
-            if( xMoins >= -_colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
 
-                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
+                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
 
-                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+                    bombInCurrentCase = self.getBombByPosition( currentPosition );
 
-                if( playerInCurrentCase ){
+                    if( playerInCurrentCase ){
 
-                    playerAffectedByBomb.push( playerInCurrentCase );
+                        playerAffectedByBomb.push( playerInCurrentCase );
 
-                }
+                    }
 
-                if ( blockInCurrentCase ) {
+                    if( bombInCurrentCase ){
 
-                    caseAffectedByBomb.push( blockInCurrentCase );
+                        bombAffectedByBomb.push( bombInCurrentCase );
+                    }
+
+                    if ( blockInCurrentCase ) {
+
+                        caseAffectedByBomb.push( blockInCurrentCase );
+
+                        break;
+                    }
+
+                } else {
 
                     break;
                 }
 
-            } else {
-
-                break;
             }
 
-        }
+            // parcours les cases z inférieur la position de la bombe
+            for ( var zMoins = bomb.position.z; zMoins >= bomb.position.z - ( bomb.power * _blockDim )  ; zMoins -= 8 ) {
 
-        // parcours les cases z inférieur la position de la bombe
-        for ( var zMoins = bomb.position.z; zMoins >= bomb.position.z - ( bomb.power * _blockDim )  ; zMoins -= 8 ) {
+                currentPosition = { x: bomb.position.x, z: zMoins };
 
-            currentPosition = { x: bomb.position.x, z: zMoins };
+                if( zMoins >= -_lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
 
-            if( zMoins >= -_lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
+                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
 
-                blockInCurrentCase = self.getBlocksByPosition( currentPosition );
+                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
 
-                playerInCurrentCase = self.getPlayerByPosition( currentPosition );
+                    bombInCurrentCase = self.getBombByPosition( currentPosition );
 
-                if( playerInCurrentCase ){
-                    playerAffectedByBomb.push( playerInCurrentCase );
+                    if( playerInCurrentCase ){
+                        playerAffectedByBomb.push( playerInCurrentCase );
 
-                }
+                    }
 
-                if ( blockInCurrentCase ) {
-                    caseAffectedByBomb.push( blockInCurrentCase );
+                    if( bombInCurrentCase ){
+
+                        bombAffectedByBomb.push( bombInCurrentCase );
+                    }
+
+                    if ( blockInCurrentCase ) {
+                        caseAffectedByBomb.push( blockInCurrentCase );
+
+                        break;
+                    }
+
+                } else {
 
                     break;
                 }
 
-            } else {
-
-                break;
             }
 
+            tabDegats.blocks = tabDegats.blocks.concat(caseAffectedByBomb);
+            //tabDegats.blocks.unique();TODO
+
+            tabDegats.players = tabDegats.players.concat(playerAffectedByBomb);
+            //tabDegats.players.unique();TODO
+            if(bombAffectedByBomb.length === 0 ){
+                callback();
+            }
+            else {
+                // parcours les players touchés par la bombe pour les suprimmées
+                for (var iBombe = 0; iBombe < bombAffectedByBomb.length; iBombe++) {
+                    bombAffectedByBomb[iBombe].exploded = true;
+                    bombAffectedByBomb[iBombe].deleted();
+                    player.delBombById(bomb.id);
+
+                    calcDegat(tabDegats, bombAffectedByBomb[iBombe], callback);
+                }
+            }
         }
-
-
-        // parcours les cases toucher par la bombe pour les suprimmées
-        for ( var iBomb = 0; iBomb < caseAffectedByBomb.length; iBomb++ ) {
-
-            self.delBlockById( caseAffectedByBomb[iBomb].id );
-
-        }
-
-        for ( var iPlayer = 0; iPlayer < playerAffectedByBomb.length; iPlayer++ ) {
-
-            self.delPlayerById( playerAffectedByBomb[iPlayer].id );
-
-        }
-
     }
-
 
 }

@@ -39,6 +39,7 @@ function homeRoutes( app ){
             "modules/player/player",
             "modules/player/myPlayer",
             "modules/player/notifyMovePlayer",
+            "modules/bot/bot",
             "main"
         ],
         css:[
