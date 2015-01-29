@@ -13,12 +13,14 @@ module.exports = function(grunt) {
         simplemocha: {
             all:{
                 options: {
+                    mocha:{
+                    growl: true},
                     timeout: 3000,
                     ignoreLeaks: true,
-                    reporter: "progress",
+                    reporter: "dot",
                     ui: "bdd"
                 },
-                src: config.rootPath + "/app/modules/**/*.js"
+                src: "app/server/modules/**/*.js"
             }
         },
         karma: {

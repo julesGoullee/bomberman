@@ -1,8 +1,10 @@
 "use strict";
 var config = require( "../../config/config.js" );
-var Room = require( config.rootPath + "../room/room.js" );
+var Room = require("../room/room.js" );
+//var socketHandler = require("../../services/server/server.js" );
 
-function Game( io ) {
+
+function Game() {
 
     var self = this;
 
@@ -10,24 +12,24 @@ function Game( io ) {
 
     var _roomList  = [];
 
-
     /*PRIVATE METHODS*/
 
-    io.on( "connection", function( socket ) {
-
-        console.log( "player connected" );
-
-        onPlayerConnection( socket );
-    });
+    //io.on( "connection", function( socket ) {
+    //
+    //    console.log( "player connected" );
+    //
+    //    onPlayerConnection( socket );
+    //});
 
     function onPlayerConnection( socket ) {
+
         if( _roomList.length === 0 || _roomList[_roomList.length -1].players.length === _maxPlayerPeerParty ) {
             _roomList.push( new Room () );
 
         }
-        socket.on('myPosition', function(position){
-           console.log(position);
-        });
+        //socket.on('myPosition', function(position){
+        //   console.log(position);
+        //});
         _roomList[_roomList.length -1].addPlayer( socket );
     }
 
