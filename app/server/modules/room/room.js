@@ -10,7 +10,7 @@ function Room() {
     self.players = [];
 
     self.addPlayer = function( socket ) {
-
+        self.players.push(socket);
     };
 }
 

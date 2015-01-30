@@ -1,26 +1,47 @@
 "use strict";
-var gameService = require( "../game.js" );
-var assert = require("assert");
+
+var expect = require('expect.js');
+var mock = require('../../../test/mock.js');
+var config = require( "../../../config/config.js" );
+
 
 describe("Gamee", function(){
 
     var _game;
 
-    var a;
+    beforeEach( function() {
 
-    beforeEach(function(){
-        _game = new gameService();
-        a=2;
+        _game = require( "../game.js" );
+
+        _game.launch(mock.socketHandler);
     });
 
-    it("peut creer un game service", function(){
-        a=1;
-        assert.equal(1,a);
-        a=0;
+    it ( "Peut creer une room quand premier player connect", function() {
+
+        mock.socketHandlerOnConnectCallbacks[0]();
+
+        expect(_game.getRoomList().length).to.equal(1);
     });
 
-    it("peut creer un game service", function(){
-        assert.equal(2,a);
+    it( "Peut creer une seul room si max player peer party conencter", function() {
+
+        for(var i = 0 ; i < config.maxPlayerPeerParty; i ++){
+            mock.socketHandlerOnConnectCallbacks[0]();
+        }
+
+        expect(_game.getRoomList().length).to.equal(1);
+
+    });
+
+    it( "Peut creer deux rooms si PLUS max player peer room conencter", function() {
+
+        for ( var i = 0 ; i <= config.maxPlayerPeerParty ; i ++ ) {
+
+            mock.socketHandlerOnConnectCallbacks[0]();
+        }
+
+        expect( _game.getRoomList().length ).to.equal(2);
+
     });
 
 });

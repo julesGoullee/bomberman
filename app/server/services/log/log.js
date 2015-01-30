@@ -2,7 +2,7 @@
 
 var config = require( "../../config/config.js" );
 
-var server = require( config.rootPath + "../server/server.js" );
+var server = require("../server/server.js" );
 
 function log(app){
 

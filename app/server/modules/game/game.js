@@ -1,38 +1,34 @@
 "use strict";
 var config = require( "../../config/config.js" );
 var Room = require("../room/room.js" );
-//var socketHandler = require("../../services/server/server.js" );
 
+var _roomList;
 
-function Game() {
+function onPlayerConnection( socket ) {
 
-    var self = this;
+    if( _roomList.length === 0 || _roomList[_roomList.length -1].players.length === config.maxPlayerPeerParty ) {
+        _roomList.push( new Room () );
 
-    var _maxPlayerPeerParty = 4;
-
-    var _roomList  = [];
-
-    /*PRIVATE METHODS*/
-
-    //io.on( "connection", function( socket ) {
-    //
-    //    console.log( "player connected" );
-    //
-    //    onPlayerConnection( socket );
-    //});
-
-    function onPlayerConnection( socket ) {
-
-        if( _roomList.length === 0 || _roomList[_roomList.length -1].players.length === _maxPlayerPeerParty ) {
-            _roomList.push( new Room () );
-
-        }
+    }
         //socket.on('myPosition', function(position){
         //   console.log(position);
         //});
-        _roomList[_roomList.length -1].addPlayer( socket );
-    }
-
+    _roomList[_roomList.length -1].addPlayer( socket );
 }
 
-module.exports = Game;
+
+module.exports = {
+    launch : function( socketHandler ){
+
+        _roomList = [];
+
+        socketHandler.newConnect( function( socket ){
+            onPlayerConnection(socket);
+        });
+
+    },
+    getRoomList: function(){
+        return _roomList;
+    }
+
+};

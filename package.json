@@ -1,8 +1,8 @@
 {
   "name": "Bomberman",
   "scripts": {
-    "dev": "grunt installDev",
-    "prod": "grunt installProd",
+    "dev": "grunt config_dev",
+    "prod": "grunt config_prod",
     "test": "grunt test_all",
     "start": "node app/server/index.js"
   },
@@ -19,23 +19,20 @@
   "dependencies": {
     "ejs": "~1.0.0",
     "express": "~4.10.1",
-    "socket.io": "~1.2.1",
     "grunt": "*",
     "grunt-bower-task": "*",
-    "grunt-contrib-concat": "*",
     "grunt-contrib-copy": "~0.7.0",
-    "grunt-contrib-uglify": "*"
+    "socket.io": "~1.2.1"
   },
   "devDependencies": {
-    "chai": "*",
     "grunt-contrib-watch": "*",
-    "grunt-karma": "*",
     "grunt-simple-mocha": "*",
+    "expect.js": "^0.3.1",
+    "grunt-karma": "*",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
     "karma-ubuntu-reporter": "*",
     "karma-growl-reporter": "*",
-    "growly": "*",
     "phantomjs": "*"
   }
 }

@@ -13,14 +13,12 @@ module.exports = function(grunt) {
         simplemocha: {
             all:{
                 options: {
-                    mocha:{
-                    growl: true},
                     timeout: 3000,
                     ignoreLeaks: true,
-                    reporter: "dot",
-                    ui: "bdd"
+                    reporter: "progress",
+                    tdd: "tdd"
                 },
-                src: "app/server/modules/**/*.js"
+                src: "app/server/modules/**/test/*.js"
             }
         },
         karma: {
@@ -182,14 +180,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask("test_all", ["karma:all","simplemocha:all"]);
 
-    //CONFIG//
-    grunt.registerTask("config_dev", ["copy:confDev", "copy:bowerDev"]);
-    grunt.registerTask("config_prod", ["copy:confProd", "copy:bowerProd"]);
-
-
     //INSTALLATION
-    grunt.registerTask("installDev", ["bower:install", "config_dev"]);
-    grunt.registerTask("installProd", ["bower:install", "config_prod"]);
+    grunt.registerTask("config_dev", ["bower:install","copy:confDev", "copy:bowerDev"]);
+    grunt.registerTask("config_prod", ["bower:install","copy:confProd", "copy:bowerProd"]);
 
 };
 
