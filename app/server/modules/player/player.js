@@ -1,11 +1,11 @@
 "use strict";
-var config = require( "../../config/config.js" );
-var utils = require( config.rootPath + "../utils/utils.js" );
 
-function Player( name, socket ) {
+var config = require("../../config/config.js");
+var utils = require("../utils/utils.js");
+
+function Player( socket, name ) {
 
     var self = this;
-
 
     /*PUBLIC METHODS*/
 

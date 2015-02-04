@@ -18,7 +18,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
     //PUBLIC METHODS//
 
-    self.player = new Player( name, spawnPoint, assets, blockDim );
+    self.player = new Player( 0, name, spawnPoint, assets, blockDim );
 
     //scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true);
 
@@ -55,11 +55,11 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
     self.restoreInit = function () {
 
-            self.camera.position.x = spawnPoint[0];
+            self.camera.position.x = spawnPoint.x;
 
             self.camera.position.y = 8.04;
 
-            self.camera.position.z = spawnPoint[1];
+            self.camera.position.z = spawnPoint.z;
 
             self.camera.setTarget(new BABYLON.Vector3(0, 6.5, -65));
 
@@ -82,7 +82,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
         var camera = new BABYLON.FreeCamera(
             "cameraPlayer",
-            new BABYLON.Vector3( spawnPoint[0], 8 , spawnPoint[1] ),
+            new BABYLON.Vector3( spawnPoint.x, 8 , spawnPoint.z ),
             _scene
         );
 

@@ -4,21 +4,21 @@ describe( "Player", function() {
 
     var player;
 
-    var spawnPoint = [48, -64];
+    var spawnPoint = { x:48, z:-64};
 
     var deathCam = { x : 65, y: 147, z: 0 };
 
     beforeEach( function() {
 
-        player = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+        player = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
     });
 
     it( "Peut créer un player a la bonne position", function() {
 
         var expectPosition = {
-            x: spawnPoint[0],
+            x: spawnPoint.x,
             y: 0,
-            z: spawnPoint[1]
+            z: spawnPoint.z
         };
 
         expect( expectPosition ).toEqual( player.position );

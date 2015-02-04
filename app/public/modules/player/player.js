@@ -1,6 +1,6 @@
 "use strict";
 
-function Player ( name, spawnPoint, assets, blockDim ) {
+function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     var self = this;
 
@@ -8,7 +8,7 @@ function Player ( name, spawnPoint, assets, blockDim ) {
 
     //PUBLIC METHODS//
 
-    self.id = utils.guid();
+    self.id = id;
 
     self.name = name;
 
@@ -115,9 +115,9 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         meshPlayer.isVisible = true;
 
         meshPlayer.position = {
-            x: spawnPoint[0],
+            x: spawnPoint.x,
             y: 0,
-            z: spawnPoint[1]
+            z: spawnPoint.z
         };
 
         self.meshs.shape = meshPlayer;
@@ -134,9 +134,9 @@ function Player ( name, spawnPoint, assets, blockDim ) {
         meshTempColision.checkCollisions = false;
 
         meshTempColision.position = {
-            x: spawnPoint[0],
+            x: spawnPoint.x,
             y: 0,
-            z: spawnPoint[1]
+            z: spawnPoint.z
         };
 
         self.meshs.colisionBlock = meshTempColision;

@@ -76,7 +76,7 @@ function Bot( position, map, scene, blockDim, assets ) {
 
     function init(){
 
-        self.player = new Player( "bot", position, assets, blockDim );
+        self.player = new Player(0, "bot", position, assets, blockDim );
         scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true);
 
         setTimeout(function() {

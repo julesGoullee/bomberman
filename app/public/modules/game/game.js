@@ -27,16 +27,6 @@ function Game ( canvasId ) {
 
     var _blockDim = 8;
 
-    //todo coté serv
-    var playsersSpawnPoint = [
-        [50, -64.5],
-        [36, -63],//todo perso trop grand
-        //[39.1, 77],
-        [-53, 64.5],
-        [-39.1, -77]
-    ];
-
-
     //PUBLIC METHODS//
 
     self.scene = initScene();
@@ -51,57 +41,65 @@ function Game ( canvasId ) {
 
         preloader.onFinish( function(){
 
-            var spawnPoint = playsersSpawnPoint[3];
-
-            // Creation du game
+            //var spawnPoint = playersSpawnPoint[3];
 
             var notifier = new Notifier();
 
-            var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , spawnPoint, self.assets, self.connector );
+            var keyBinder = new KeyBinder();
 
             var map = new Maps( self.assets, _blockDim , self.scene);
 
-            var keyBinder = new KeyBinder();
-
-            var freeCamera = new FreeCamera(self);
-
-            var restore = new Restore( notifier, map, myPlayer );
-
-            restore.showRestartButton();
-
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
-            cameraSwitcher.showSwitchButton();
 
-            keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
+            self.connector.getMyPosition( function( position ){
 
-            keyBinder.onRestore( restore.run );
+                // Creation du game
 
-            map.create();
+                var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector );
 
-            map.addObject( myPlayer.player );
+                var freeCamera = new FreeCamera(self);
 
-            keyBinder.onSetBomb( function() {
+                var restore = new Restore( notifier, map, myPlayer );
 
-                if ( _pointerLocked ) {
+                restore.showRestartButton();
 
-                    map.setBomb( myPlayer.player );
-                }
+                cameraSwitcher.showSwitchButton();
+
+                keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
+
+                keyBinder.onRestore( restore.run );
+
+                map.create();
+
+                map.addObject( myPlayer.player );
+
+                keyBinder.onSetBomb( function() {
+
+                    if ( _pointerLocked ) {
+
+                        map.setBomb( myPlayer.player );
+                    }
+                });
+
+                initPointerLock();
+
+                _engine.runRenderLoop( function () {
+
+                    self.scene.render();
+
+                    myPlayer.renderMyPlayer();
+
+                    //todo ameliorer le debug des positions
+                    document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
+                });
+
+                self.connector.onNewPlayer( function( playerData ){
+
+                    self.player = new Player(playerData.id, playerData.name, playerData.position, self.assets, _blockDim );
+                });
+                //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
             });
-
-            initPointerLock();
-
-            _engine.runRenderLoop( function () {
-
-                self.scene.render();
-
-                myPlayer.renderMyPlayer();
-
-                //todo ameliorer le debug des positions
-                document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
-            });
-
-            //var bot = new Bot(playsersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
 
         });
 

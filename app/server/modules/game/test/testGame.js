@@ -1,8 +1,8 @@
 "use strict";
 
-var expect = require('expect.js');
-var mock = require('../../../test/mock.js');
-var config = require( "../../../config/config.js" );
+var expect = require("expect.js");
+var mock = require("../../../test/mock.js");
+var config = require("../../../config/config.js");
 
 
 describe("Gamee", function(){
@@ -12,24 +12,25 @@ describe("Gamee", function(){
     beforeEach( function() {
 
         _game = require( "../game.js" );
-
-        _game.launch(mock.socketHandler);
+        _game.mockSocketHandler(mock.socketHandler);
+        _game.launch();
     });
 
-    it ( "Peut creer une room quand premier player connect", function() {
+    it( "Peut creer une room quand premier player connect", function() {
 
-        mock.socketHandlerOnConnectCallbacks[0]();
+        mock.socketHandlerOnConnectCallbacks[0]( mock.socket );
 
-        expect(_game.getRoomList().length).to.equal(1);
+        expect( _game.getRoomList().length ).to.equal( 1 );
     });
 
     it( "Peut creer une seul room si max player peer party conencter", function() {
 
-        for(var i = 0 ; i < config.maxPlayerPeerParty; i ++){
-            mock.socketHandlerOnConnectCallbacks[0]();
+        for ( var i = 0 ; i < config.maxPlayerPeerParty; i ++ ) {
+
+            mock.socketHandlerOnConnectCallbacks[0]( mock.socket );
         }
 
-        expect(_game.getRoomList().length).to.equal(1);
+        expect(_game.getRoomList().length).to.equal( 1 );
 
     });
 
@@ -37,10 +38,10 @@ describe("Gamee", function(){
 
         for ( var i = 0 ; i <= config.maxPlayerPeerParty ; i ++ ) {
 
-            mock.socketHandlerOnConnectCallbacks[0]();
+            mock.socketHandlerOnConnectCallbacks[0]( mock.socket );
         }
 
-        expect( _game.getRoomList().length ).to.equal(2);
+        expect( _game.getRoomList().length ).to.equal( 2 );
 
     });
 

@@ -5,8 +5,8 @@ function NotifyMovePlayer( connector, spawnPoint ){
     var self= this;
 
     var _currentPosition = {
-        x: spawnPoint[0].toFixed(1),
-        z: spawnPoint[1].toFixed(1)
+        x: spawnPoint.x.toFixed(1),
+        z: spawnPoint.z.toFixed(1)
     };
 
     self.notifyNewPosition = function( position ) {

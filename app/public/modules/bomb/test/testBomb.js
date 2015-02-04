@@ -1,14 +1,14 @@
 describe( "Bombe" ,function() {
 
     var player;
-    var spawnPoint = [50, -65];
+    var spawnPoint = {x :50, z:-65};
     var bombe;
 
     beforeEach( function() {
 
         jasmine.clock().install();
 
-        player = new Player( "testPlayer", spawnPoint, gameMock.assets, gameMock.blockDim );
+        player = new Player(0, "testPlayer", spawnPoint, gameMock.assets, gameMock.blockDim );
 
         bombe = new Bombe( player, player.position,  gameMock.assets, gameMock.blockDim );
     });
@@ -21,9 +21,9 @@ describe( "Bombe" ,function() {
     it( "Peut creer une bombe a la bonne position", function() {
 
         var expectPosition = {
-            x: spawnPoint[0],
+            x: spawnPoint.x,
             y: 0,
-            z: spawnPoint[1]
+            z: spawnPoint.z
         };
 
         expect( expectPosition ).toEqual( bombe.position );

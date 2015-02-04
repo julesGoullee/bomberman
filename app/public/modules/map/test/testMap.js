@@ -10,13 +10,13 @@ describe( "Maps", function() {
 
     var player;
 
-    var spawnPoint = [40, -64];
+    var spawnPoint = {x:40, z:-64};
 
     beforeEach( function() {
 
         maps = new Maps( gameMock.assets, gameMock.blockDim );
 
-        player = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+        player = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
 
     });
 
@@ -277,7 +277,7 @@ describe( "Maps", function() {
 
         it( "Peut supprimer tous les players", function () {
 
-            var player2 = new Player( "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+            var player2 = new Player(2, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
 
             maps.addObject( player );
 
@@ -321,7 +321,7 @@ describe( "Maps", function() {
 
             it( "Peut récupérer les bombes de deux players", function () {
 
-                var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+                var player2 = new Player(2, "testPlayer2", [0, 0], gameMock.assets );
 
                 maps.addObject( player );
 
@@ -336,7 +336,7 @@ describe( "Maps", function() {
             });
 
             it( "Peut récupérer deux bombes de deux players", function () {
-                var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets, gameMock.blockDim );
+                var player2 = new Player(2, "testPlayer2", [0, 0], gameMock.assets, gameMock.blockDim );
 
                 maps.addObject( player );
 
@@ -614,7 +614,7 @@ describe( "Maps", function() {
 
             it( "Peut annulé l'explosion de plusieur joueurs", function () {
 
-                var player2 = new Player( "testPlayer2", [0, 0], gameMock.assets );
+                var player2 = new Player(2, "testPlayer2", [0, 0], gameMock.assets );
 
                 maps.addObject( player2 );
 

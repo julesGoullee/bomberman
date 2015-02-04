@@ -1,17 +1,19 @@
 "use strict";
 
-var config = require( "./config/config.js" );
-var express = require( "express" );
+var config = require( "./config/config.js");
+var express = require( "express");
 var app = express();
-var server = require("./services/server/server.js" );
-var logService = require("./services/log/log.js" );
+var server = require("./services/server/server.js");
+var logService = require("./services/log/log.js");
+var game = require("./modules/game/game.js");
 
 logService.start( app );
 
 server.start( app );
 
-server.onListenStart(function(){
-    require("./modules/game/game.js" )();
+server.onListenStart( function() {
+
+    game.launch();
 });
 
 

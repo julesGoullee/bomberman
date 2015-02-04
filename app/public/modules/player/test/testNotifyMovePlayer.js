@@ -1,6 +1,6 @@
 describe("notifyMovePlayer", function(){
 
-    var spawnPoint = [ 38.12208999479195, -59.94280235891238];
+    var spawnPoint = { x:38.12208999479195, z:-59.94280235891238};
     var notifyMovePlayer;
     var connectorMock = {
 
