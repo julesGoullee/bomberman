@@ -60,6 +60,18 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     };
 
+    self.move = function( position ) {
+
+        self.position.x = position.x;
+        self.position.z = position.z;
+
+        self.meshs.colisionBlock.position.x = self.position.x;
+        self.meshs.colisionBlock.position.z = self.position.z;
+
+        self.meshs.shape.position.x = self.position.x;
+        self.meshs.shape.position.z = self.position.z;
+    };
+
     self.addBomb = function ( bomb ) {
 
         self.listBombs.push( bomb );

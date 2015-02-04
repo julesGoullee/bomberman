@@ -3,7 +3,7 @@
 var config = require("../../config/config.js");
 var utils = require("../utils/utils.js");
 
-function Player( socket, name ) {
+function Player( socket, name, room ) {
 
     var self = this;
 
@@ -12,6 +12,8 @@ function Player( socket, name ) {
     self.id = utils.guid();
 
     self.socket = socket;
+
+    self.room = room;
 
     self.kill = 0;
 

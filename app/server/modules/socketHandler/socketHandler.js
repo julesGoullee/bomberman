@@ -11,12 +11,14 @@ module.exports = {
 
         io.on( "connection", function( socket ) {
 
-            var i;
+            socket.on("getMyPosition", function(){
 
-            for ( i = 0; i < _callbackConnect.length; i++ ) {
+                for ( var i = 0; i < _callbackConnect.length; i++ ) {
 
-                _callbackConnect[i](socket);
-            }
+                    _callbackConnect[i](socket);
+                }
+            });
+
         });
     },
     newConnect: function( callback ){

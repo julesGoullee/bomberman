@@ -41,7 +41,6 @@ module.exports = {
 
             onPlayerConnection( socket, name + nbPlayer );
         });
-
     },
     getRoomList: function() {
 
@@ -55,5 +54,4 @@ module.exports = {
 
         _callbackOnConnection.push( callback );
     }
-
 };

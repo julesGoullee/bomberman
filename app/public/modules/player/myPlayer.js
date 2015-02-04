@@ -152,7 +152,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
         notifyMovePlayer.notifyNewPosition( self.camera.position );
 
-        setTimeout( checkMovePlayer, 500);
+        setTimeout( checkMovePlayer, 100);
     }
     init();
 }

@@ -27,9 +27,26 @@ function Connector () {
 
         _socket.on( "newPlayer", function( playerData ) {
 
-            callback( playerData );
+            callback( playerData.id, playerData.name, playerData.position );
         });
     };
+
+    self.onPlayerMove = function( callback ) {
+
+        _socket.on( "onPlayerMove", function( playerData ) {
+
+            callback( playerData.id, playerData.position );
+        });
+    };
+
+    self.onPlayerDisconnect = function( callback ){
+
+        _socket.on( "playerDisconnect" , function( playerData ) {
+
+              callback( playerData.id );
+        });
+    };
+
     /*PRIVATE METHODS*/
 
 

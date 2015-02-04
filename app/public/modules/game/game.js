@@ -51,6 +51,18 @@ function Game ( canvasId ) {
 
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
+            self.connector.onNewPlayer( function( id, name, position ){
+
+                var player = new Player( id, name, position, self.assets, _blockDim );
+
+                map.addObject( player );
+
+            });
+
+            self.connector.onPlayerDisconnect( function( playerId ){
+
+                map.delPlayerById( playerId );
+            });
 
             self.connector.getMyPosition( function( position ){
 
@@ -94,10 +106,16 @@ function Game ( canvasId ) {
                     document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
                 });
 
-                self.connector.onNewPlayer( function( playerData ){
+                self.connector.onPlayerMove( function( id, position ){
 
-                    self.player = new Player(playerData.id, playerData.name, playerData.position, self.assets, _blockDim );
+                    var player = map.getPlayerById( id );
+
+                    if( player) {
+
+                        player.move(position);
+                    }
                 });
+
                 //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
             });
 
