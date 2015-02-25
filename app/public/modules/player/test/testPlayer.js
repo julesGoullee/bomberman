@@ -15,11 +15,7 @@ describe( "Player", function() {
 
     it( "Peut créer un player a la bonne position", function() {
 
-        var expectPosition = {
-            x: spawnPoint.x,
-            y: 0,
-            z: spawnPoint.z
-        };
+        var expectPosition = new BABYLON.Vector3(spawnPoint.x, 0,spawnPoint.z);
 
         expect( expectPosition ).toEqual( player.position );
     });

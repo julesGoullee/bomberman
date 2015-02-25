@@ -22,7 +22,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     self.listBombs = [];
 
-    self.position = { x: 0, y: 0, z: 0 };
+    self.position = new BABYLON.Vector3( 0, 0, 0 );
 
     self.meshs = {};
 
@@ -64,26 +64,24 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     self.move = function( position ) {
 
-        var nextPos = {
-            x: parseFloat( position.x),
-            y: 0,
-            z: parseFloat( position.z)
-        };
+        var nextPos = new BABYLON.Vector3( self.position.x + parseFloat(  position.x ), 0, self.position.z + parseFloat( position.z ) );
 
-        self.position.x = position.x;
-        self.position.z = position.z;
+        //self.position.x = position.x;
+        //self.position.z = position.z;
 
-        _animationBox.setKeys([
-            {
-                frame: 0,
-                value: self.meshs.shape.position
-            },
-            {
-                frame: 100,
-                value: nextPos
-            }
-        ]);
-
+        //_animationBox.setKeys([
+        //    {
+        //        frame: 0,
+        //        value: self.meshs.shape.position
+        //    },
+        //    {
+        //        frame: 100,
+        //        value: nextPos
+        //    }
+        //]);
+        debugger;
+        BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 120,
+            self.meshs.shape.position, self.meshs.shape.position.add( nextPos ) );
 
         self.meshs.colisionBlock.position.x = self.position.x;
         self.meshs.colisionBlock.position.z = self.position.z;
@@ -129,9 +127,9 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         createMesh();
         createMeshColision();
 
-        _animationBox = new BABYLON.Animation("player.x-" + self.id, "position", 50, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        //_animationBox = new BABYLON.Animation("player-" + self.id, "nothing", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
 
-        self.meshs.shape.animations.push( _animationBox );
+        //self.meshs.shape.animations.push( _animationBox );
 
     };
 
@@ -141,22 +139,18 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         //if ( assets["personnage"] === undefined ) {
         if ( assets["persocourse"] === undefined ) {
-                throw new Error( "Mesh personnage is not preload" );
+            throw new Error( "Mesh personnage is not preload" );
         }
 
         //var meshPlayer = assets["personnage"][0].clone();
         var meshPlayer = assets["persocourse"][0].clone();
 
 
-        meshPlayer.skeleton = assets["persocourse"][0].skeleton.clone();
+        //meshPlayer.skeleton = assets["persocourse"][0].skeleton.clone();
 
         meshPlayer.isVisible = true;
 
-        meshPlayer.position = {
-            x: spawnPoint.x,
-            y: 0,
-            z: spawnPoint.z
-        };
+        meshPlayer.position = new BABYLON.Vector3( spawnPoint.x, 0, spawnPoint.z );
 
         self.meshs.shape = meshPlayer;
 

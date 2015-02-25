@@ -42,7 +42,6 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector ) {
 
             self.player.meshs.colisionBlock.position.x = self.camera.position.x;
             self.player.meshs.colisionBlock.position.z = self.camera.position.z;
-
             self.player.meshs.shape.position.x = self.camera.position.x ;
             self.player.meshs.shape.position.z = self.camera.position.z;
 
