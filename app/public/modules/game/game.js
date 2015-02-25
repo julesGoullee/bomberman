@@ -55,6 +55,7 @@ function Game ( canvasId ) {
 
                 var player = new Player( id, name, position, self.assets, _blockDim );
 
+
                 map.addObject( player );
 
             });
@@ -112,7 +113,10 @@ function Game ( canvasId ) {
 
                     if( player) {
 
-                        player.move(position);
+                        player.move( position );
+
+                        self.scene.beginAnimation( player.meshs.shape, 0, 100, true);
+
                     }
                 });
 

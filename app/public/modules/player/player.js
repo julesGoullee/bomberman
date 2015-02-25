@@ -6,6 +6,8 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     var _blockDim = blockDim;
 
+    var _animationBox;
+
     //PUBLIC METHODS//
 
     self.id = id;
@@ -62,14 +64,32 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     self.move = function( position ) {
 
+        var nextPos = {
+            x: parseFloat( position.x),
+            y: 0,
+            z: parseFloat( position.z)
+        };
+
         self.position.x = position.x;
         self.position.z = position.z;
+
+        _animationBox.setKeys([
+            {
+                frame: 0,
+                value: self.meshs.shape.position
+            },
+            {
+                frame: 100,
+                value: nextPos
+            }
+        ]);
+
 
         self.meshs.colisionBlock.position.x = self.position.x;
         self.meshs.colisionBlock.position.z = self.position.z;
 
-        self.meshs.shape.position.x = self.position.x;
-        self.meshs.shape.position.z = self.position.z;
+        //self.meshs.shape.position.x = self.position.x;
+        //self.meshs.shape.position.z = self.position.z;
     };
 
     self.addBomb = function ( bomb ) {
@@ -105,8 +125,14 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
     };
 
     self.init = function() {
+
         createMesh();
         createMeshColision();
+
+        _animationBox = new BABYLON.Animation("player.x-" + self.id, "position", 50, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+        self.meshs.shape.animations.push( _animationBox );
+
     };
 
     //PRIVATE METHODS//
