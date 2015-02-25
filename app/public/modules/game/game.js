@@ -80,7 +80,7 @@ function Game ( canvasId ) {
 
                 // Creation du game
 
-                var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector );
+                var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector, cameraSwitcher );
 
                 var freeCamera = new FreeCamera(self);
 
@@ -115,7 +115,7 @@ function Game ( canvasId ) {
                     myPlayer.renderMyPlayer();
 
                     //todo ameliorer le debug des positions
-                    document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
+                    document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
                 });
 
                 self.connector.onPlayerMove( function( id, position ){

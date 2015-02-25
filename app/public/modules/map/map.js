@@ -108,7 +108,6 @@ function Maps( assets, blockDim, scene ) {
 
                 _content[i].destroy();
 
-                //todo
                 return true;
             }
         }

@@ -90,11 +90,13 @@ function Restore ( notifier, map, myPlayer ) {
 
         if ( _restartConfig.player.alive ) {
 
-            myPlayer.player.alive = true;
-
             myPlayer.player.init();
 
             map.addObject(myPlayer.player);
+
+            myPlayer.restoreInit();
+
+            myPlayer.player.alive = true;
 
         }
 

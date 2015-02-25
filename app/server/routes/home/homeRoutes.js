@@ -33,6 +33,7 @@ function homeRoutes( app ){
             "modules/bomb/bomb",
             "modules/camera/freeCamera",
             "modules/camera/CameraSwitcher",
+            "modules/camera/DeadView",
             "modules/connector/connector",
             "modules/game/game",
             "modules/map/map",
