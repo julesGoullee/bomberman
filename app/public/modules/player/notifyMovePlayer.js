@@ -10,13 +10,15 @@ function NotifyMovePlayer( connector, spawnPoint ){
     };
 
     self.notifyNewPosition = function( position ) {
-        if( Math.abs( _currentPosition.x - position.x.toFixed(1) ).toFixed(1) > 0.1 ||
-            Math.abs( _currentPosition.z - position.z.toFixed(1) ).toFixed(1) > 0.1 ){
-            _currentPosition.x = position.x.toFixed(1);
+
+        if( Math.abs( _currentPosition.x - position.x.toFixed(1) ).toFixed(1) > cfg.pasToSendPosition ||
+            Math.abs( _currentPosition.z - position.z.toFixed(1) ).toFixed(1) > cfg.pasToSendPosition ){
 
             _currentPosition.z = position.z.toFixed(1);
 
-            connector.sendMyPosition(_currentPosition);
+            _currentPosition.x = position.x.toFixed(1);
+
+            connector.sendMyPosition( _currentPosition );
         }
 
 

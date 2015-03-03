@@ -8,14 +8,59 @@ function Room() {
 
     var self = this;
 
-    var _playersSpawnPoint = [
-        [50, -64.5],
-        [-50, 64.5],
-        [38, 75],
-        [-38, -75 ]
-    ];
+
 
     /*PUBLIC METHODS*/
+
+
+    self.playersSpawnPoint = [
+        {
+            x: 50,
+            z: -64.5,
+            playerId: false
+        },
+        {
+            x: -50,
+            z: 64.5,
+            playerId: false
+        },
+        {
+            x: 38,
+            z: 75,
+            playerId: false
+        },
+        {
+            x: -38,
+            z: -75,
+            playerId: false
+        }
+    ];
+
+    self.playersSpawnPoint.getFreePosition = function(){
+
+        for( var i = 0; i < self.playersSpawnPoint.length ; i++ ){
+
+            if( self.playersSpawnPoint[i].playerId === false ){
+
+                return self.playersSpawnPoint[i];
+            }
+        }
+    };
+
+    self.playersSpawnPoint.liberatePlayerPosition = function( playerId ){
+
+        for ( var i = 0 ; i < self.playersSpawnPoint.length; i++ ) {
+
+            if( self.playersSpawnPoint[i].playerId === playerId ){
+
+                self.playersSpawnPoint[i].playerId = false;
+
+                return true;
+            }
+        }
+
+        return false;
+    };
 
     self.players = [];
 
@@ -40,22 +85,25 @@ function Room() {
             }
         }
     };
+
     /*PRIVATE METHODS*/
 
     function addEventListener( player ){
 
 
-        var newPlayerPosition  = _playersSpawnPoint[ self.players.length-1 ];
+        var newPlayerPosition  = self.playersSpawnPoint.getFreePosition();
 
-        player.position.x = newPlayerPosition[0];
+        newPlayerPosition.playerId = player.id;
 
-        player.position.z = newPlayerPosition[1];
+        player.position.x = newPlayerPosition.x;
+
+        player.position.z = newPlayerPosition.z;
 
         player.socket.emit( "myPosition" , player.position );
 
-        sendOldPlayers( player );
+        sendOldPlayersToNew( player );
 
-        broadcastWithoutMe( player, "newPlayer", { id: player.id, name: player.name, position: player.position } );
+        sendNewPlayerToOld( player );
 
         player.socket.on( "myPosition" , function ( position){
 
@@ -64,16 +112,24 @@ function Room() {
 
         player.socket.on( "disconnect", function(){
 
-            console.log("Player disconnect: " + player.name + " on room: " + self.id);
+            //console.log( "Player disconnect: " + player.name + " on room: " + self.id );
 
-            broadcastWithoutMe( player, "playerDisconnect", { id: player.id} );
+            self.playersSpawnPoint.liberatePlayerPosition( player.id );
+
+            broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 
             self.delPlayerById( player.id );
 
         });
+
+        player.socket.on( "setBomb", function(){
+
+            broadcastWithoutMe( player, "setBomb", { id: player.id } );
+
+        });
     }
 
-    function broadcastWithoutMe ( player, event, params){
+    function broadcastWithoutMe ( player, event, params ){
 
         for ( var i = 0 ; i < self.players.length; i++ ){
 
@@ -84,14 +140,20 @@ function Room() {
         }
     }
 
-    function sendOldPlayers ( player ) {
+    function sendOldPlayersToNew ( player ) {
 
         var otherPlayers = getOtherPlayer( player );
 
         for ( var i = 0; i < otherPlayers.length ; i++) {
 
-            player.socket.emit("newPlayer", { id: otherPlayers[i].id, name: otherPlayers[i].name, position: otherPlayers[i].position }  );
+            player.socket.emit( "newPlayer", { id: otherPlayers[i].id, name: otherPlayers[i].name, position: otherPlayers[i].position }  );
         }
+    }
+
+    function sendNewPlayerToOld ( player ){
+
+        broadcastWithoutMe( player, "newPlayer", { id: player.id, name: player.name, position: player.position } );
+
     }
 
     function getOtherPlayer( player ){

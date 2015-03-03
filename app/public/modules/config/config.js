@@ -1,7 +1,8 @@
 "use strict";
 var cfg = {
     showBlockColision : false,
-    showBlockTemp : false,
+    showBlockTemp : true,
     bombCountDown : 3000,
-    nbPowerUp : 20
+    nbPowerUp : 20,
+    pasToSendPosition:  0.4
 };

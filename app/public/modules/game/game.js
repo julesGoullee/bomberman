@@ -41,8 +41,6 @@ function Game ( canvasId ) {
 
         preloader.onFinish( function(){
 
-            //var spawnPoint = playersSpawnPoint[3];
-
             var notifier = new Notifier();
 
             var keyBinder = new KeyBinder();
@@ -55,20 +53,9 @@ function Game ( canvasId ) {
 
                 var player = new Player( id, name, position, self.assets, _blockDim );
 
-                //self.scene.beginAnimation(player.meshs.shape.skeleton, 0, 100, true);
 
                 map.addObject( player );
 
-                //setTimeout(function(){
-                //
-                //    debugger;
-                    //player.move( {
-                    //    x: 10,
-                    //    z: 10
-                    //});
-                    //self.scene.beginAnimation( player.meshs.shape, 0, 50000, true);
-
-                //},3000);
             });
 
             self.connector.onPlayerDisconnect( function( playerId ){
@@ -102,7 +89,10 @@ function Game ( canvasId ) {
 
                     if ( _pointerLocked ) {
 
-                        map.setBomb( myPlayer.player );
+                        if( map.setBomb( myPlayer.player ) ){
+
+                            self.connector.setBomb( myPlayer.player.id );
+                        }
                     }
                 });
 
@@ -126,11 +116,20 @@ function Game ( canvasId ) {
 
                         player.move( position );
 
-                        //self.scene.beginAnimation( player.meshs.shape, 0, 100, true);
+                        //self.scene.beginAnimation(player.meshs.shape.skeleton, 0, 100, false); //anim run
 
                     }
                 });
 
+                self.connector.onPlayerSetBomb( function( id ) {
+
+                    var player = map.getPlayerById( id );
+
+                    if( player) {
+
+                        map.setBomb( player );
+                    }
+                });
                 //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
             });
 

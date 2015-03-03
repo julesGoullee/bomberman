@@ -1,11 +1,15 @@
 "use strict";
 
-var expect = require("expect.js");
+var chai = require('chai');
+var sinonChai = require("sinon-chai");
+global.expect = chai.expect;
+global.sinon = require('sinon');
+chai.use(sinonChai);
 var mock = require("../../../test/mock.js");
 var config = require("../../../config/config.js");
 
 
-describe("Gamee", function(){
+describe("Game", function(){
 
     var _game;
 
@@ -34,7 +38,7 @@ describe("Gamee", function(){
 
     });
 
-    it( "Peut creer deux rooms si PLUS max player peer room conencter", function() {
+    it( "Peut creer deux rooms si PLUS max player peer room connecter", function() {
 
         for ( var i = 0 ; i <= config.maxPlayerPeerParty ; i ++ ) {
 

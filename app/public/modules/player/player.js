@@ -64,30 +64,17 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     self.move = function( position ) {
 
-        var nextPos = new BABYLON.Vector3( self.position.x + parseFloat(  position.x ), 0, self.position.z + parseFloat( position.z ) );
+        var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
-        //self.position.x = position.x;
-        //self.position.z = position.z;
+        BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 60,
+            self.meshs.shape.position, nextPos , false );
 
-        //_animationBox.setKeys([
-        //    {
-        //        frame: 0,
-        //        value: self.meshs.shape.position
-        //    },
-        //    {
-        //        frame: 100,
-        //        value: nextPos
-        //    }
-        //]);
-        debugger;
-        BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 120,
-            self.meshs.shape.position, self.meshs.shape.position.add( nextPos ) );
+        self.position.x = position.x;
+        self.position.z = position.z;
 
         self.meshs.colisionBlock.position.x = self.position.x;
         self.meshs.colisionBlock.position.z = self.position.z;
 
-        //self.meshs.shape.position.x = self.position.x;
-        //self.meshs.shape.position.z = self.position.z;
     };
 
     self.addBomb = function ( bomb ) {
@@ -126,10 +113,6 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         createMesh();
         createMeshColision();
-
-        //_animationBox = new BABYLON.Animation("player-" + self.id, "nothing", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-
-        //self.meshs.shape.animations.push( _animationBox );
 
     };
 

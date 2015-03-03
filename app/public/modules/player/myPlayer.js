@@ -24,8 +24,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
 
     self.player = new Player( 0, name, spawnPoint, assets, blockDim );
 
-    //scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true);
-
+    //scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true); animRun
 
     self.renderMyPlayer = function() {
 
@@ -156,6 +155,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
 
         setTimeout( checkMovePlayer, 100);
     }
+
     init();
 }
 

@@ -47,6 +47,19 @@ function Connector () {
         });
     };
 
+    self.onPlayerSetBomb = function( callback ){
+
+        _socket.on( "setBomb" , function( playerData ) {
+
+            callback( playerData.id );
+        });
+    };
+
+    self.setBomb = function( id ) {
+
+        _socket.emit( "setBomb", id );
+    };
+
     /*PRIVATE METHODS*/
 
 

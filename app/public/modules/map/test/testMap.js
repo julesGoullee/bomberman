@@ -723,7 +723,7 @@ describe( "Maps", function() {
                 jasmine.clock().uninstall();
             });
 
-            xit( "Peut detruire les blocks en position superieur a la bombe lors de l'explosion", function () {
+            it( "Peut detruire les blocks en position superieur a la bombe lors de l'explosion", function () {
 
                 //1
                 player.position.x = 32;
