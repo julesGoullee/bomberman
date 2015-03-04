@@ -53,7 +53,6 @@ function Game ( canvasId ) {
 
                 var player = new Player( id, name, position, self.assets, _blockDim );
 
-
                 map.addObject( player );
 
             });
@@ -119,7 +118,7 @@ function Game ( canvasId ) {
 
                         if( !self.scene.getAnimatableByTarget(player.meshs.shape) ) {
 
-                            self.scene.beginAnimation(player.meshs.shape, 0, 120 );
+                            self.scene.beginAnimation(player.meshs.shape, 0, 20 );
 
                             player.animData.isRunnning = true;
 

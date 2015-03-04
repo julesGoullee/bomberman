@@ -71,25 +71,29 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
         self.meshs.shape.lookAt( nextPos );
+        var animationBox;
 
-        //if( self.meshs.shape.animations.length <= 0 ){
-            var animationBox = new BABYLON.Animation("myAnimationX", "position", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        if( self.meshs.shape.animations.length <= 0 ){
 
-        //}
+            animationBox = new BABYLON.Animation("myAnimationX", "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        }
+        else{
+            animationBox = self.meshs.shape.animations[0];
+        }
         var keysanim = [];
         keysanim.push({ frame: 0, value: self.meshs.shape.position  });
-        keysanim.push({ frame: 0, value: nextPos });//Push les frame au fure et a mesureTODO
+        keysanim.push({ frame: 10, value: nextPos });//Push les frame au fure et a mesureTODO
         animationBox.setKeys(keysanim);
         self.meshs.shape.animations.push( animationBox );
         //BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 120,
         //self.meshs.shape.position, nextPos , false );
 
 
-        //self.position.x = position.x;
-        //self.position.z = position.z;
+        self.position.x = position.x;
+        self.position.z = position.z;
 
-        //self.meshs.colisionBlock.position.x = self.position.x;
-        //self.meshs.colisionBlock.position.z = self.position.z;
+        self.meshs.colisionBlock.position.x = self.position.x;
+        self.meshs.colisionBlock.position.z = self.position.z;
 
     };
 
