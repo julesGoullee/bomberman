@@ -112,11 +112,27 @@ function Game ( canvasId ) {
 
                     var player = map.getPlayerById( id );
 
+
                     if( player) {
 
                         player.move( position );
 
-                        //self.scene.beginAnimation(player.meshs.shape.skeleton, 0, 100, false); //anim run
+                        if( !self.scene.getAnimatableByTarget(player.meshs.shape) ) {
+
+                            self.scene.beginAnimation(player.meshs.shape, 0, 120 );
+
+                            player.animData.isRunnning = true;
+
+
+
+                            //player.animData.animable = self.scene.beginAnimation(player.meshs.shape.skeleton, 0, 120, false, 1, function () {
+                            //
+                            //    player.animData.isRunnning = false;
+                            //
+                            //});
+                        }
+
+
 
                     }
                 });
@@ -130,6 +146,7 @@ function Game ( canvasId ) {
                         map.setBomb( player );
                     }
                 });
+
                 //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
             });
 

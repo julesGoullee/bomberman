@@ -39,7 +39,6 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
 
                 self.camera.rotation.x = 1.4;
             }
-
             self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
             self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
 

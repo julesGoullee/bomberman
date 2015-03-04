@@ -25,7 +25,10 @@ var gameMock = {
         }],
         "persocourse" :[{
             clone : function (){
-                return { dispose : function (){} };
+                return {
+                    dispose : function (){},
+                    setPivotMatrix: function(){}
+                };
             },
             skeleton : {
                 clone : function (){

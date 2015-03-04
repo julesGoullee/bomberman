@@ -32,6 +32,10 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         bombs: 2
     };
 
+    self.animData = {
+        isRunnning : false
+    };
+
     self.roundPosition = function () {
 
         function roundValue ( value ) {
@@ -66,14 +70,26 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
-        BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 60,
-            self.meshs.shape.position, nextPos , false );
+        self.meshs.shape.lookAt( nextPos );
 
-        self.position.x = position.x;
-        self.position.z = position.z;
+        //if( self.meshs.shape.animations.length <= 0 ){
+            var animationBox = new BABYLON.Animation("myAnimationX", "position", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
 
-        self.meshs.colisionBlock.position.x = self.position.x;
-        self.meshs.colisionBlock.position.z = self.position.z;
+        //}
+        var keysanim = [];
+        keysanim.push({ frame: 0, value: self.meshs.shape.position  });
+        keysanim.push({ frame: 0, value: nextPos });//Push les frame au fure et a mesureTODO
+        animationBox.setKeys(keysanim);
+        self.meshs.shape.animations.push( animationBox );
+        //BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 120,
+        //self.meshs.shape.position, nextPos , false );
+
+
+        //self.position.x = position.x;
+        //self.position.z = position.z;
+
+        //self.meshs.colisionBlock.position.x = self.position.x;
+        //self.meshs.colisionBlock.position.z = self.position.z;
 
     };
 
@@ -129,7 +145,11 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         var meshPlayer = assets["persocourse"][0].clone();
 
 
-        //meshPlayer.skeleton = assets["persocourse"][0].skeleton.clone();
+        meshPlayer.skeleton = assets["persocourse"][0].skeleton.clone();
+
+        var pivot = BABYLON.Matrix.RotationY( -Math.PI/2 );
+
+        meshPlayer.setPivotMatrix( pivot );
 
         meshPlayer.isVisible = true;
 
