@@ -35,7 +35,7 @@ function CameraSwitcher ( scene , canvas ) {
 
             _scene.activeCamera = _scene.getCameraByID( "cameraFree" );
 
-        } else if( activeCamera.id === "cameraFree" ){
+        } else if( activeCamera.id === "cameraFree" ) {
 
             _button.find( "span" ).text( "Player" );
 
@@ -48,6 +48,7 @@ function CameraSwitcher ( scene , canvas ) {
     };
 
     self.deadView = function () {
+
         _button.find( "span" ).text( "Dead" );
 
         _scene.activeCamera = _scene.getCameraByID( "cameraDead" );

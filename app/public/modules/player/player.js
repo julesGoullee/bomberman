@@ -52,7 +52,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     self.shouldSetBomb = function () {
 
-        return ( ( self.alive == true ) && (self.listBombs.length < self.powerUp.bombs ) )
+        return ( self.alive == true ) && (self.listBombs.length < self.powerUp.bombs );
 
     };
 
@@ -71,20 +71,27 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
         self.meshs.shape.lookAt( nextPos );
+
         var animationBox;
 
-        if( self.meshs.shape.animations.length <= 0 ){
+        if ( self.meshs.shape.animations.length <= 0 ) {
 
-            animationBox = new BABYLON.Animation("myAnimationX", "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+            animationBox = new BABYLON.Animation( "myAnimationX", "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
         }
         else{
             animationBox = self.meshs.shape.animations[0];
         }
+
         var keysanim = [];
+
         keysanim.push({ frame: 0, value: self.meshs.shape.position  });
-        keysanim.push({ frame: 10, value: nextPos });//Push les frame au fure et a mesureTODO
+
+        keysanim.push({ frame: 10, value: nextPos });
+
         animationBox.setKeys(keysanim);
+
         self.meshs.shape.animations.push( animationBox );
+
         //BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 120,
         //self.meshs.shape.position, nextPos , false );
 
@@ -132,6 +139,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
     self.init = function() {
 
         createMesh();
+
         createMeshColision();
 
     };
@@ -140,12 +148,11 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     function createMesh() {
 
-        //if ( assets["personnage"] === undefined ) {
         if ( assets["persocourse"] === undefined ) {
-            throw new Error( "Mesh personnage is not preload" );
+
+            throw new Error( "Mesh persocourse is not preload" );
         }
 
-        //var meshPlayer = assets["personnage"][0].clone();
         var meshPlayer = assets["persocourse"][0].clone();
 
 

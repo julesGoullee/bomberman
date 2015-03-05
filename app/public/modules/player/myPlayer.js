@@ -18,7 +18,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
 
     var deadView = new DeadView(_scene);
 
-    var notifyMovePlayer = new NotifyMovePlayer(connector, spawnPoint);
+    var notifyMovePlayer = new NotifyMovePlayer( connector, spawnPoint );
 
     //PUBLIC METHODS//
 

@@ -68,7 +68,7 @@ function Game ( canvasId ) {
 
                 var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector, cameraSwitcher );
 
-                var freeCamera = new FreeCamera(self);
+                var freeCamera = new FreeCamera( self );
 
                 var restore = new Restore( notifier, map, myPlayer );
 
@@ -107,31 +107,21 @@ function Game ( canvasId ) {
                     document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
                 });
 
-                self.connector.onPlayerMove( function( id, position ){
+                self.connector.onPlayerMove( function( id, position ) {
 
                     var player = map.getPlayerById( id );
-
 
                     if( player) {
 
                         player.move( position );
 
-                        if( !self.scene.getAnimatableByTarget(player.meshs.shape) ) {
+                        if( !self.scene.getAnimatableByTarget( player.meshs.shape ) ) {
 
-                            self.scene.beginAnimation(player.meshs.shape, 0, 20 );
+                            self.scene.beginAnimation( player.meshs.shape, 0, 20 );
 
                             player.animData.isRunnning = true;
 
-
-
-                            //player.animData.animable = self.scene.beginAnimation(player.meshs.shape.skeleton, 0, 120, false, 1, function () {
-                            //
-                            //    player.animData.isRunnning = false;
-                            //
-                            //});
                         }
-
-
 
                     }
                 });
@@ -140,7 +130,7 @@ function Game ( canvasId ) {
 
                     var player = map.getPlayerById( id );
 
-                    if( player) {
+                    if( player ) {
 
                         map.setBomb( player );
                     }
@@ -164,7 +154,7 @@ function Game ( canvasId ) {
     function initScene () {
 
         function enableLight(){
-            //light
+
             var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
 
             light.intensity = 0.8;
@@ -217,7 +207,8 @@ function Game ( canvasId ) {
             }
         }, false);
  
-        var pointerlockchange = function () {
+        var pointerLockChange = function () {
+
             var cameraActive = self.scene.activeCamera;
 
             _pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
@@ -232,9 +223,9 @@ function Game ( canvasId ) {
             }
         };
 
-        document.addEventListener( "pointerlockchange", pointerlockchange, false );
-        document.addEventListener( "mspointerlockchange", pointerlockchange, false );
-        document.addEventListener( "mozpointerlockchange", pointerlockchange, false );
-        document.addEventListener( "webkitpointerlockchange", pointerlockchange, false );
+        document.addEventListener( "pointerlockchange", pointerLockChange, false );
+        document.addEventListener( "mspointerlockchange", pointerLockChange, false );
+        document.addEventListener( "mozpointerlockchange", pointerLockChange, false );
+        document.addEventListener( "webkitpointerlockchange", pointerLockChange, false );
     }
 }
