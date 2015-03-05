@@ -9,7 +9,6 @@ function Room() {
     var self = this;
 
 
-
     /*PUBLIC METHODS*/
 
 
@@ -36,22 +35,22 @@ function Room() {
         }
     ];
 
-    self.playersSpawnPoint.getFreePosition = function(){
+    self.playersSpawnPoint.getFreePosition = function() {
 
-        for( var i = 0; i < self.playersSpawnPoint.length ; i++ ){
+        for ( var i = 0; i < self.playersSpawnPoint.length ; i++ ) {
 
-            if( self.playersSpawnPoint[i].playerId === false ){
+            if ( self.playersSpawnPoint[i].playerId === false ) {
 
                 return self.playersSpawnPoint[i];
             }
         }
     };
 
-    self.playersSpawnPoint.liberatePlayerPosition = function( playerId ){
+    self.playersSpawnPoint.liberatePlayerPosition = function( playerId ) {
 
         for ( var i = 0 ; i < self.playersSpawnPoint.length; i++ ) {
 
-            if( self.playersSpawnPoint[i].playerId === playerId ){
+            if ( self.playersSpawnPoint[i].playerId === playerId ) {
 
                 self.playersSpawnPoint[i].playerId = false;
 
@@ -66,9 +65,9 @@ function Room() {
 
     self.id = utils.guid();
 
-    self.addPlayer = function( socket, name) {
+    self.addPlayer = function( socket, name ) {
 
-        var player = new Player( socket, name, self);
+        var player = new Player( socket, name, self );
 
         self.players.push( player );
 
@@ -77,7 +76,7 @@ function Room() {
 
     self.delPlayerById = function( id ){
 
-        for( var i = 0 ; i < self.players.length ; i ++ ){
+        for ( var i = 0 ; i < self.players.length ; i ++ ) {
 
             if ( self.players[i].id === id ) {
 
@@ -105,12 +104,12 @@ function Room() {
 
         sendNewPlayerToOld( player );
 
-        player.socket.on( "myPosition" , function ( position){
+        player.socket.on( "myPosition" , function ( position ) {
 
-            broadcastWithoutMe( player, "onPlayerMove",{ id: player.id, position: position } );
+            broadcastWithoutMe( player, "onPlayerMove", { id: player.id, position: position } );
         });
 
-        player.socket.on( "disconnect", function(){
+        player.socket.on( "disconnect", function() {
 
             //console.log( "Player disconnect: " + player.name + " on room: " + self.id );
 
@@ -129,11 +128,11 @@ function Room() {
         });
     }
 
-    function broadcastWithoutMe ( player, event, params ){
+    function broadcastWithoutMe ( player, event, params ) {
 
-        for ( var i = 0 ; i < self.players.length; i++ ){
+        for ( var i = 0 ; i < self.players.length; i++ ) {
 
-            if( player.id !== self.players[i].id ){
+            if ( player.id !== self.players[i].id ) {
 
                 self.players[i].socket.emit( event, params );
             }
@@ -144,7 +143,7 @@ function Room() {
 
         var otherPlayers = getOtherPlayer( player );
 
-        for ( var i = 0; i < otherPlayers.length ; i++) {
+        for ( var i = 0; i < otherPlayers.length ; i++ ) {
 
             player.socket.emit( "newPlayer", { id: otherPlayers[i].id, name: otherPlayers[i].name, position: otherPlayers[i].position }  );
         }
@@ -152,17 +151,21 @@ function Room() {
 
     function sendNewPlayerToOld ( player ){
 
-        broadcastWithoutMe( player, "newPlayer", { id: player.id, name: player.name, position: player.position } );
+        broadcastWithoutMe( player, "newPlayer", {
+            id: player.id,
+            name: player.name,
+            position: player.position
+        });
 
     }
 
-    function getOtherPlayer( player ){
+    function getOtherPlayer( player ) {
 
         var players = [];
 
         for ( var i = 0; i < self.players.length; i++ ) {
 
-            if ( player.id !== self.players[i].id ){
+            if ( player.id !== self.players[i].id ) {
 
                 players.push( self.players[i] );
             }

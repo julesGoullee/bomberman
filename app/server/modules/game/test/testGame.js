@@ -16,7 +16,9 @@ describe("Game", function(){
     beforeEach( function() {
 
         _game = require( "../game.js" );
-        _game.mockSocketHandler(mock.socketHandler);
+
+        _game.mockSocketHandler( mock.socketHandler );
+
         _game.launch();
     });
 
@@ -34,7 +36,7 @@ describe("Game", function(){
             mock.socketHandlerOnConnectCallbacks[0]( mock.socket );
         }
 
-        expect(_game.getRoomList().length).to.equal( 1 );
+        expect( _game.getRoomList().length ).to.equal( 1 );
 
     });
 

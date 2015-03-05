@@ -67,8 +67,8 @@ function homeRoutes( app ){
     });
 
     //Common response BabylonjsManifest
-    app.use('/*babylon.manifest*', function (req, res) {
-        res.sendFile("/content/common.babylon.manifest", { "root": config.rootPathPublic});
+    app.use( "/*babylon.manifest*", function ( req, res ) {
+        res.sendFile( "/content/common.babylon.manifest", { "root": config.rootPathPublic } );
     })
 }
 

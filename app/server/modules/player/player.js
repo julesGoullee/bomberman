@@ -34,7 +34,6 @@ function Player( socket, name, room ) {
 
     /*PRIVATE METHODS*/
 
-
 }
 
 module.exports = Player;

@@ -11,7 +11,7 @@ module.exports = {
 
         io.on( "connection", function( socket ) {
 
-            socket.on("getMyPosition", function(){
+            socket.on("getMyPosition", function() {
 
                 for ( var i = 0; i < _callbackConnect.length; i++ ) {
 
@@ -21,7 +21,7 @@ module.exports = {
 
         });
     },
-    newConnect: function( callback ){
+    newConnect: function( callback ) {
 
         _callbackConnect.push( callback );
     }
