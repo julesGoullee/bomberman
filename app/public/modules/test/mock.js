@@ -59,3 +59,11 @@ utils.onMeshsExitIntersect = function( meshToActivate ){
 
     meshToActivate.checkCollisions = true;
 };
+
+function ConnectorMock (){
+
+    this.setTokenAndReturnUseProfil = function( token, callback ){
+
+        callback({ name: "player1", err: null, token: token });
+    }
+}

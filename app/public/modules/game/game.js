@@ -33,114 +33,119 @@ function Game ( canvasId ) {
 
     self.connector = new Connector();
 
+    //self.auth = new Auth( self.connector );
+    
     self.assets = {};
 
     self.init = function () {
 
-        var preloader = new Preloader( self.scene, _meshPreload, self.assets);
+        //auth.ready( function() {
 
-        preloader.onFinish( function(){
+            var preloader = new Preloader( self.scene, _meshPreload, self.assets);
 
-            var notifier = new Notifier();
+            preloader.onFinish( function(){
 
-            var keyBinder = new KeyBinder();
+                var notifier = new Notifier();
 
-            var map = new Maps( self.assets, _blockDim , self.scene);
+                var keyBinder = new KeyBinder();
 
-            var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
+                var map = new Maps( self.assets, _blockDim , self.scene);
 
-            self.connector.onNewPlayer( function( id, name, position ){
+                var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
-                var player = new Player( id, name, position, self.assets, _blockDim );
+                self.connector.onNewPlayer( function( id, name, position ){
 
-                map.addObject( player );
+                    var player = new Player( id, name, position, self.assets, _blockDim );
 
-            });
+                    map.addObject( player );
 
-            self.connector.onPlayerDisconnect( function( playerId ){
+                });
 
-                map.delPlayerById( playerId );
-            });
+                self.connector.onPlayerDisconnect( function( playerId ){
 
-            self.connector.getMyPosition( function( position ){
+                    map.delPlayerById( playerId );
+                });
 
-                // Creation du game
+                self.connector.getMyPosition( function( position ){
 
-                var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector, cameraSwitcher );
+                    // Creation du game
 
-                var freeCamera = new FreeCamera( self );
+                    var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector, cameraSwitcher );
 
-                var restore = new Restore( notifier, map, myPlayer );
+                    var freeCamera = new FreeCamera( self );
 
-                restore.showRestartButton();
+                    var restore = new Restore( notifier, map, myPlayer );
 
-                cameraSwitcher.showSwitchButton();
+                    restore.showRestartButton();
 
-                keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
+                    cameraSwitcher.showSwitchButton();
 
-                keyBinder.onRestore( restore.run );
+                    keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
-                map.create();
+                    keyBinder.onRestore( restore.run );
 
-                map.addObject( myPlayer.player );
+                    map.create();
 
-                keyBinder.onSetBomb( function() {
+                    map.addObject( myPlayer.player );
 
-                    if ( _pointerLocked ) {
+                    keyBinder.onSetBomb( function() {
 
-                        if( map.setBomb( myPlayer.player ) ){
+                        if ( _pointerLocked ) {
 
-                            self.connector.setBomb( myPlayer.player.id );
+                            if( map.setBomb( myPlayer.player ) ){
+
+                                self.connector.setBomb( myPlayer.player.id );
+                            }
                         }
-                    }
-                });
+                    });
 
-                initPointerLock();
+                    initPointerLock();
 
-                _engine.runRenderLoop( function () {
+                    _engine.runRenderLoop( function () {
 
-                    self.scene.render();
+                        self.scene.render();
 
-                    myPlayer.renderMyPlayer();
+                        myPlayer.renderMyPlayer();
 
-                    //todo ameliorer le debug des positions
-                    document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
-                });
+                        //todo ameliorer le debug des positions
+                        document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
+                    });
 
-                self.connector.onPlayerMove( function( id, position ) {
+                    self.connector.onPlayerMove( function( id, position ) {
 
-                    var player = map.getPlayerById( id );
+                        var player = map.getPlayerById( id );
 
-                    if( player) {
+                        if( player) {
 
-                        player.move( position );
+                            player.move( position );
 
-                        if( !self.scene.getAnimatableByTarget( player.meshs.shape ) ) {
+                            if( !self.scene.getAnimatableByTarget( player.meshs.shape ) ) {
 
-                            self.scene.beginAnimation( player.meshs.shape, 0, 20 );
+                                self.scene.beginAnimation( player.meshs.shape, 0, 20 );
 
-                            player.animData.isRunnning = true;
+                                player.animData.isRunnning = true;
+
+                            }
 
                         }
+                    });
 
-                    }
+                    self.connector.onPlayerSetBomb( function( id ) {
+
+                        var player = map.getPlayerById( id );
+
+                        if( player ) {
+
+                            map.setBomb( player );
+                        }
+                    });
+
+                    //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
                 });
 
-                self.connector.onPlayerSetBomb( function( id ) {
-
-                    var player = map.getPlayerById( id );
-
-                    if( player ) {
-
-                        map.setBomb( player );
-                    }
-                });
-
-                //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
             });
 
-        });
-
+        //});
     };
 
 

@@ -13,6 +13,14 @@ module.exports = {
 
         io.on( "connection", function( socket ) {
 
+            socket.on( "getMyPosition", function() {
+
+                for ( var i = 0; i < _callbackConnect.length; i++ ) {
+
+                    _callbackConnect[i](socket);
+                }
+            });
+
             socket.on( "setUser", function( name ){
 
                 auth.setUser( name, function( token, err ) {

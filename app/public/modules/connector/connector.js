@@ -8,6 +8,17 @@ function Connector () {
 
     /*PUBLIC METHODS*/
 
+    //Authentification
+    self.setUserAndReturnProfil = function(){
+
+    };
+
+    self.setTokenAndReturnUseProfil = function(){
+
+    };
+
+
+    //Game
     self.getMyPosition = function( callback ) {
 
         _socket.on( "myPosition", function ( myPosition ) {
