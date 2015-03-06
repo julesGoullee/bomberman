@@ -80,7 +80,7 @@ describe("Auth", function(){
         });
     });
 
-    it("Ne Peut validé un token si l'user est présent", function() {
+    it( "Ne Peut validé un token si l'user est présent", function() {
 
         var nameUser = "j1";
 

@@ -24,6 +24,7 @@ function homeRoutes( app ){
             "modules/utils/utils",
             "modules/config/config",
             "modules/notifier/notifier",
+            "modules/popup/popup",
 
             //modules
             "modules/preloader/preloader",
@@ -41,6 +42,7 @@ function homeRoutes( app ){
             "modules/player/myPlayer",
             "modules/player/notifyMovePlayer",
             "modules/bot/bot",
+            "modules/auth/auth",
             "main"
         ],
         css:[

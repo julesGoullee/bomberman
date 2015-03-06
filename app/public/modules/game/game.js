@@ -31,15 +31,17 @@ function Game ( canvasId ) {
 
     self.scene = initScene();
 
+    self.popup = new Popup();
+
     self.connector = new Connector();
 
-    //self.auth = new Auth( self.connector );
+    self.auth = new Auth( self.connector, self.popup );
     
     self.assets = {};
 
     self.init = function () {
 
-        //auth.ready( function() {
+        self.auth.ready( function() {
 
             var preloader = new Preloader( self.scene, _meshPreload, self.assets);
 
@@ -145,7 +147,7 @@ function Game ( canvasId ) {
 
             });
 
-        //});
+        });
     };
 
 

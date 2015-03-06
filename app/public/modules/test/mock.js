@@ -67,3 +67,17 @@ function ConnectorMock (){
         callback({ name: "player1", err: null, token: token });
     }
 }
+
+function PopupMock() {
+
+    var self = this;
+
+    self.setContent = function( header, body ){
+    };
+
+    self.show = function(){
+    };
+
+    self.hide = function(){
+    };
+}

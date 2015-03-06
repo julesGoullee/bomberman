@@ -11,15 +11,9 @@ module.exports = {
 
         var io = server.getSocketIo();
 
+        auth.launch();
+
         io.on( "connection", function( socket ) {
-
-            socket.on( "getMyPosition", function() {
-
-                for ( var i = 0; i < _callbackConnect.length; i++ ) {
-
-                    _callbackConnect[i](socket);
-                }
-            });
 
             socket.on( "setUser", function( name ){
 
@@ -28,6 +22,15 @@ module.exports = {
                     if( token && !err ){
 
                         socket.emit( "setUser", { name: name, token: token , err: null } );
+
+                        socket.on( "getMyPosition", function() {
+
+                            for ( var i = 0; i < _callbackConnect.length; i++ ) {
+
+                                _callbackConnect[i](socket);
+                            }
+                        });
+
                     }
                     else{
                         socket.emit( "setUser", { err: err } );
@@ -43,7 +46,7 @@ module.exports = {
 
                         socket.token = token;
 
-                        socket.emit( "setToken", { name: name, err: null } );
+                        socket.emit( "setToken", { name: name, token: token , err: null } );
 
                         socket.on( "getMyPosition", function() {
 

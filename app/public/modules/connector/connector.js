@@ -9,14 +9,25 @@ function Connector () {
     /*PUBLIC METHODS*/
 
     //Authentification
-    self.setUserAndReturnProfil = function(){
+    self.setUserAndReturnProfil = function( userName, callback ){
 
+        _socket.on( "setUser", function( userProfil ){
+
+            callback( userProfil );
+        });
+
+        _socket.emit( "setUser", userName );
     };
 
-    self.setTokenAndReturnUseProfil = function(){
+    self.setTokenAndReturnUseProfil = function( token, callback ){
 
+        _socket.on( "setToken", function( userProfil ){
+
+            callback( userProfil );
+        });
+
+        _socket.emit( "setToken", token );
     };
-
 
     //Game
     self.getMyPosition = function( callback ) {

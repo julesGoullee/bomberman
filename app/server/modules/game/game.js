@@ -16,7 +16,7 @@ function onPlayerConnection( socket, name ) {
 
     _roomList[ _roomList.length -1 ].addPlayer( socket, name );
 
-    for ( var i = 0; i < _callbackOnConnection.length; i ++ ){
+    for ( var i = 0; i < _callbackOnConnection.length; i ++ ) {
 
         _callbackOnConnection[i]( name , _roomList[ _roomList.length -1].id);
     }

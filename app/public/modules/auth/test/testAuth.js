@@ -4,25 +4,42 @@ describe( "Auth" , function() {
 
     var auth;
     var connectorMock ;
+    var popupMock;
+
     beforeEach(function () {
 
         connectorMock = new ConnectorMock();
 
-        localStorage.setItem("token", "tokenTest");
+        popupMock = new PopupMock();
 
-        auth = new Auth( connectorMock );
+        auth = new Auth( connectorMock, popupMock );
 
     });
 
-    it("Recuperer le token et checker ça validiter", function () {
+    it("Recuperer le token et le validiter", function () {
 
-        auth.ready( function( name ){
+        sessionStorage.setItem("token", "tokenTest");
 
-            expect( name).toBe( "player1" );
-        });
+        var spyCallback = jasmine.createSpy('spy');
+
+        auth.ready( spyCallback );
+
+        expect( spyCallback ).toHaveBeenCalledWith( "player1" );
+    });
+
+    it("Ne peut executer le callback si pas de token", function(){
+
+        sessionStorage.removeItem("token");
+
+        var spyCallback = jasmine.createSpy('spy');
+
+        auth.ready( spyCallback );
+
+        expect( spyCallback ).not.toHaveBeenCalled();
+
     });
 
     afterEach( function(){
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
     });
 });
