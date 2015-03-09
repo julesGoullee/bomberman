@@ -9,7 +9,7 @@ var mock = require("../../../test/mock.js");
 var config = require("../../../config/config.js");
 
 
-describe("Game", function(){
+describe("Game", function() {
 
     var _game;
 
@@ -24,7 +24,7 @@ describe("Game", function(){
 
     it( "Peut creer une room quand premier player connect", function() {
 
-        mock.socketHandlerOnConnectCallbacks[0]( mock.socket );
+        mock.socketHandlerOnConnectCallbacks[0]( { name: "j1", socket: mock.socket } );
 
         expect( _game.getRoomList().length ).to.equal( 1 );
     });
@@ -33,7 +33,7 @@ describe("Game", function(){
 
         for ( var i = 0 ; i < config.maxPlayerPeerParty; i ++ ) {
 
-            mock.socketHandlerOnConnectCallbacks[0]( mock.socket );
+            mock.socketHandlerOnConnectCallbacks[0]( { name: "j1", socket: mock.socket } );
         }
 
         expect( _game.getRoomList().length ).to.equal( 1 );
@@ -44,7 +44,7 @@ describe("Game", function(){
 
         for ( var i = 0 ; i <= config.maxPlayerPeerParty ; i ++ ) {
 
-            mock.socketHandlerOnConnectCallbacks[0]( mock.socket );
+            mock.socketHandlerOnConnectCallbacks[0]( { name: "j" + i, socket: mock.socket } );
         }
 
         expect( _game.getRoomList().length ).to.equal( 2 );

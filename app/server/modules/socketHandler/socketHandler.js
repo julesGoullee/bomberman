@@ -27,7 +27,7 @@ module.exports = {
 
                             for ( var i = 0; i < _callbackConnect.length; i++ ) {
 
-                                _callbackConnect[i](socket);
+                                _callbackConnect[i]( { name: name, socket: socket, token : token });
                             }
                         });
 
@@ -40,11 +40,9 @@ module.exports = {
 
             socket.on( "setToken", function( token ){
 
-                auth.checkToken( token, function( name, err ){
+                auth.checkToken( token, function( name, err ) {
 
                     if ( token && !err ) {
-
-                        socket.token = token;
 
                         socket.emit( "setToken", { name: name, token: token , err: null } );
 
@@ -52,11 +50,13 @@ module.exports = {
 
                             for ( var i = 0; i < _callbackConnect.length; i++ ) {
 
-                                _callbackConnect[i](socket);
+                                _callbackConnect[i]( { name: name, token: token, socket: socket } );
                             }
                         });
 
-                    }else{
+                    }
+                    else{
+
                         socket.emit( "setToken", { err: err });
                     }
                 });

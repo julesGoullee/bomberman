@@ -69,7 +69,7 @@ describe( "Room", function() {
         spyEmitP1 = sinon.spy( socket1, "emit" );
         spyEmitP2 = sinon.spy( socket2, "emit" );
         _room =  new Room();
-        _room.addPlayer( socket1, "player1" );
+        _room.addPlayer( { socket : socket1, name: "player1" } );
 
 
     });
@@ -91,7 +91,7 @@ describe( "Room", function() {
 
         beforeEach(function () {
 
-            _room.addPlayer( socket2, "player2" );
+            _room.addPlayer( { socket : socket2, name: "player2" } );
 
         });
 
@@ -114,7 +114,7 @@ describe( "Room", function() {
 
             var socket3 = utils.clone( mock.socket );
 
-            _room.addPlayer( socket3, "player3" );
+            _room.addPlayer( { socket : socket3, name: "player3" } );
 
 
             expect( _room.players[1].name ).to.equal( "player3");

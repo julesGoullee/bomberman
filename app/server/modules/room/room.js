@@ -3,13 +3,15 @@
 var config = require("../../config/config.js");
 var Player = require("../player/player.js");
 var utils = require("../utils/utils.js");
+var Map = require("../map/map.js");
 
 function Room() {
 
     var self = this;
 
+    var _map = new Map();
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS
 
 
     self.playersSpawnPoint = [
@@ -65,16 +67,26 @@ function Room() {
 
     self.id = utils.guid();
 
-    self.addPlayer = function( socket, name ) {
+    self.addPlayer = function( userProfil ) {
 
-        var player = new Player( socket, name, self );
+        var player = new Player( userProfil.socket, userProfil.name, self );
 
         self.players.push( player );
 
-        addEventListener( player );
+        sendPlayerPosition( player );
+
+        sendOldPlayersToNew( player );
+
+        sendNewPlayerToOld( player );
+
+        listenPlayerPosition( player );
+
+        listenDisconnect( player );
+
+        listenBomb( player );
     };
 
-    self.delPlayerById = function( id ){
+    self.delPlayerById = function( id ) {
 
         for ( var i = 0 ; i < self.players.length ; i ++ ) {
 
@@ -85,48 +97,7 @@ function Room() {
         }
     };
 
-    /*PRIVATE METHODS*/
-
-    function addEventListener( player ){
-
-
-        var newPlayerPosition  = self.playersSpawnPoint.getFreePosition();
-
-        newPlayerPosition.playerId = player.id;
-
-        player.position.x = newPlayerPosition.x;
-
-        player.position.z = newPlayerPosition.z;
-
-        player.socket.emit( "myPosition" , player.position );
-
-        sendOldPlayersToNew( player );
-
-        sendNewPlayerToOld( player );
-
-        player.socket.on( "myPosition" , function ( position ) {
-
-            broadcastWithoutMe( player, "onPlayerMove", { id: player.id, position: position } );
-        });
-
-        player.socket.on( "disconnect", function() {
-
-            //console.log( "Player disconnect: " + player.name + " on room: " + self.id );
-
-            self.playersSpawnPoint.liberatePlayerPosition( player.id );
-
-            broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
-
-            self.delPlayerById( player.id );
-
-        });
-
-        player.socket.on( "setBomb", function(){
-
-            broadcastWithoutMe( player, "setBomb", { id: player.id } );
-
-        });
-    }
+    //PRIVATE METHODS
 
     function broadcastWithoutMe ( player, event, params ) {
 
@@ -145,7 +116,11 @@ function Room() {
 
         for ( var i = 0; i < otherPlayers.length ; i++ ) {
 
-            player.socket.emit( "newPlayer", { id: otherPlayers[i].id, name: otherPlayers[i].name, position: otherPlayers[i].position }  );
+            player.socket.emit( "newPlayer", {
+                id: otherPlayers[i].id,
+                name: otherPlayers[i].name,
+                position: otherPlayers[i].position
+            });
         }
     }
 
@@ -172,6 +147,52 @@ function Room() {
         }
 
         return players;
+    }
+
+
+    //Player event
+    function sendMapNewPlayer( newPlayer ){
+
+    }
+
+    function sendPlayerPosition( newPlayer ){
+
+        newPlayer.socket.emit( "myPosition" , newPlayer.position );
+
+    }
+
+    function listenPlayerPosition( player ){
+
+        player.socket.on( "myPosition" , function ( position ) {
+
+            broadcastWithoutMe( player, "onPlayerMove", { id: player.id, position: position } );
+        });
+    }
+
+    function listenDisconnect( player ){
+
+        player.socket.on( "disconnect", function() {
+
+            //console.log( "Player disconnect: " + player.name + " on room: " + self.id );
+
+            self.playersSpawnPoint.liberatePlayerPosition( player.id );
+
+            broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
+
+            self.delPlayerById( player.id );
+
+        });
+
+    }
+
+    function listenBomb( player ){
+
+        player.socket.on( "setBomb", function(){
+
+            broadcastWithoutMe( player, "setBomb", { id: player.id } );
+
+        });
+
     }
 }
 
