@@ -16,7 +16,7 @@ function Auth( connector, popup ){
 
                 if(  userProfil && !userProfil.err && userProfil.name && userProfil.token ) {
 
-                    callback( userProfil.name );
+                    callback( userProfil );
                 }
                 else{
                     throw Error( "Token invalide. err: " + userProfil.err );
@@ -26,10 +26,10 @@ function Auth( connector, popup ){
         }
         else{
 
-            showForm( function(){
+            showForm( function( userProfil ){
 
                 popup.hide();
-                callback();
+                callback( userProfil );
             });
 
         }
@@ -74,7 +74,7 @@ function Auth( connector, popup ){
 
                     setTokenLS( userProfil.token );
 
-                    callback();
+                    callback( userProfil );
                 }
                 else{
                     $("#inscription-erreur").text( "Erreur: " + userProfil.err );

@@ -4,7 +4,7 @@ describe ( " PowerUp ", function() {
 
     beforeEach ( function() {
 
-       maps = new Maps( gameMock.assets, gameMock.blockDim );
+       maps = new Maps( gameMock.assets, gameMock.blockDim, new MenuPlayers() );
 
     });
 

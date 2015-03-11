@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps( assets, blockDim, scene ) {
+function Maps( assets, blockDim, scene, menuPlayers ) {
 
     var self = this;
 
@@ -112,6 +112,8 @@ function Maps( assets, blockDim, scene ) {
         for ( var i = 0; i < _content.length; i++ ) {
 
             if( _content[i].type === "player" &&  _content[i].id === playerId ) {
+
+                menuPlayers.changeStatus( "Mort", _content[i].id );
 
                 _content[i].destroy();
 
@@ -248,6 +250,7 @@ function Maps( assets, blockDim, scene ) {
 
         return false;
     };
+
 
     //Blocks
 
@@ -393,22 +396,6 @@ function Maps( assets, blockDim, scene ) {
         return null;
     };
 
-    self.delPlayerById = function ( playerId ) {
-
-        for ( var i = 0; i < _content.length; i++ ) {
-
-            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
-
-                _content[i].destroy();
-
-                _content.splice( i, 1 );
-
-                return true;
-            }
-        }
-
-        return false;
-    };
 
     //PowerUp
 
@@ -448,6 +435,7 @@ function Maps( assets, blockDim, scene ) {
         return null;
 
     };
+
 
     //PRIVATE METHODS//
 
@@ -637,6 +625,8 @@ function Maps( assets, blockDim, scene ) {
             blocks: []
         };
 
+        var playerKills = false;
+
         utils.addUniqueArrayProperty(degats.players);
         utils.addUniqueArrayProperty(degats.blocks);
 
@@ -646,17 +636,28 @@ function Maps( assets, blockDim, scene ) {
             for ( var iBlocks = 0; iBlocks < degats.blocks.length; iBlocks++ ) {
 
                 self.delBlockById( degats.blocks[iBlocks].id );
-
             }
 
             // parcours les players touchés par la bombe pour les suprimmées
             for ( var iPlayer = 0; iPlayer < degats.players.length; iPlayer++ ) {
+
+                if ( player.id !== degats.players[iPlayer].id ) {
+
+                    player.kills ++;
+
+                    playerKills = true;
+                }
 
                 self.delPlayerById( degats.players[iPlayer].id );
 
             }
         });
 
+        if ( playerKills == true ) {
+
+            menuPlayers.changeScore ( player.kills, player.id );
+
+        }
 
         function calcDegat(tabDegats, bomb, callback){
 

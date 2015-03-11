@@ -36,12 +36,14 @@ function Game ( canvasId ) {
     self.connector = new Connector();
 
     self.auth = new Auth( self.connector, self.popup );
+
+    self.menuPlayers = new MenuPlayers();
     
     self.assets = {};
 
     self.init = function () {
 
-        self.auth.ready( function() {
+        self.auth.ready( function( userProfil ) {
 
             var preloader = new Preloader( self.scene, _meshPreload, self.assets);
 
@@ -51,13 +53,15 @@ function Game ( canvasId ) {
 
                 var keyBinder = new KeyBinder();
 
-                var map = new Maps( self.assets, _blockDim , self.scene);
+                var map = new Maps( self.assets, _blockDim, self.scene, self.menuPlayers );
 
                 var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
                 self.connector.onNewPlayer( function( id, name, position ){
 
                     var player = new Player( id, name, position, self.assets, _blockDim );
+
+                    self.menuPlayers.addPlayer( player );
 
                     map.addObject( player );
 
@@ -66,17 +70,22 @@ function Game ( canvasId ) {
                 self.connector.onPlayerDisconnect( function( playerId ){
 
                     map.delPlayerById( playerId );
+
+                    self.menuPlayers.delPlayer( playerId );
+
                 });
 
                 self.connector.getMyPosition( function( position ){
 
                     // Creation du game
 
-                    var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector, cameraSwitcher );
+                    var myPlayer = new MyPlayer( self.scene, _blockDim, userProfil.name , position, self.assets, self.connector, cameraSwitcher );
 
                     var freeCamera = new FreeCamera( self );
 
                     var restore = new Restore( notifier, map, myPlayer );
+
+                    self.menuPlayers.addPlayer( myPlayer.player );
 
                     restore.showRestartButton();
 

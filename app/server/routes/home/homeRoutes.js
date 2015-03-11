@@ -44,6 +44,7 @@ function homeRoutes( app ){
             "modules/powerUp/powerUp",
             "modules/bot/bot",
             "modules/auth/auth",
+            "modules/menuPlayers/menuPlayers",
             "main"
         ],
         css:[

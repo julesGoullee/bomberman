@@ -24,7 +24,7 @@ describe( "Auth" , function() {
 
         auth.ready( spyCallback );
 
-        expect( spyCallback ).toHaveBeenCalledWith( "player1" );
+        expect( spyCallback ).toHaveBeenCalledWith( { name: 'player1', err: null, token: 'tokenTest' } );
     });
 
     it("Ne peut executer le callback si pas de token", function(){

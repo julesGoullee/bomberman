@@ -14,7 +14,7 @@ describe( "Maps", function() {
 
     beforeEach( function() {
 
-        maps = new Maps( gameMock.assets, gameMock.blockDim );
+        maps = new Maps( gameMock.assets, gameMock.blockDim, {}, new MenuPlayers() );
 
         player = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
 
@@ -632,13 +632,49 @@ describe( "Maps", function() {
 
             });
 
-            it ( "Peut tuer un player a la meme position", function () {
+            it ( "Peut se tuer", function () {
+
+                maps.setBomb( player );
+
+                expect( player.kills ).toEqual( 0 );
+
+                expect( player.alive ).toEqual( true );
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( player.alive ).toEqual( false );
+
+                expect( player.kills ).toEqual( 0 );
+
+            });
+
+            it ( "Peut tuer un deuxieme player et incrémenter son score", function () {
+
+                player.position.x = 32;
+                
+                player.position.z = 64;
+
+                var spawnPoint2 = {x:40, z:64};
+
+                var player2 = new Player(1, "testPlayer2", spawnPoint2 , gameMock.assets, gameMock.blockDim );
+
+                maps.addObject( player2 );
+
+                expect( player2.alive ).toEqual( true );
+
+                expect( player.kills).toEqual ( 0 );
 
                 maps.setBomb( player );
 
                 jasmine.clock().tick( cfg.bombCountDown );
 
                 expect( player.alive ).toEqual( false );
+
+                expect( player2.alive ).toEqual( false );
+
+                expect( player.kills ).toEqual( 1 );
+
+                expect( player2.kills ).toEqual( 0 );
 
             });
 
