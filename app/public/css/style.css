@@ -8,8 +8,24 @@ html, body {
 
 #renderCanvas {
     width: 100%;
-    height: 100%;
+    height: 85%;
+    position: absolute;
+    z-index: 1;
 }
+
+#menuPlayers {
+    width: 100%;
+    height: 15%;
+    position: absolute;
+    bottom: 0;
+    background-color: #cfcfcf;
+}
+
+.list-player-item{
+    display: inline-block;
+    margin: 0.2%;
+}
+
 
 /*DEBUG*/
 #debug {
@@ -17,6 +33,7 @@ html, body {
     left: 0;
     top: 2px;
     color: white;
+    z-index: 2;
 }
 
 #switchCameraButton{
@@ -24,6 +41,7 @@ html, body {
     top: 40px;
     left: 10px;
     font-size: 11px;
+    z-index: 3;
 }
 
 #restartDropDown{
@@ -31,6 +49,7 @@ html, body {
     top: 40px;
     right: 10px;
     font-size: 11px;
+    z-index: 4;
 }
 
 #restartDropDown .list-group-item {
