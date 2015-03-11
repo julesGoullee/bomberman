@@ -17,7 +17,7 @@ function Game ( canvasId ) {
         "bomb",
         //"animBombTest",
         "bombColision",
-        //"personnage",
+        "powerUpBallon",
         "persocourse",
         "personnageColision",
         "tourColision"

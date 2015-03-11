@@ -51,7 +51,7 @@ var gameMock = {
                 return { dispose : function (){} };
             }
         }],
-        "powerUp" :[{
+        "powerUpBallon" :[{
             clone : function (){
                 return { dispose : function (){} };
             }

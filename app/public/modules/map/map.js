@@ -435,7 +435,7 @@ function Maps( assets, blockDim, scene ) {
 
         for ( var i = 0; i < powerUps.length ; i++ ) {
 
-            var powerUp = powerUp[i];
+            var powerUp = powerUps[i];
 
             if ( powerUp.position.x === position.x && block.position.z === position.z ) {
 
@@ -609,6 +609,7 @@ function Maps( assets, blockDim, scene ) {
                     _content.push( new Block( _assets, blockPosition ) );
                 }
             }
+
         }
     }
 
@@ -618,10 +619,11 @@ function Maps( assets, blockDim, scene ) {
 
         for ( var i = 0; i < cfg.nbPowerUp; i++ ) {
 
-            var positionBlock = Math.floor( Math.random() * (blocks.length - 1) );
+            var positionBlock = Math.floor(Math.random() * (blocks.length - 1));
 
-            console.log(positionBlock, blocks.length);
             var position = blocks[positionBlock].position;
+
+            blocks.splice(positionBlock, 1);
 
             _powerUp.push( new PowerUp( position, "", "", _assets ) );
 

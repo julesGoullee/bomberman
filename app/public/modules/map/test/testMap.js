@@ -795,7 +795,19 @@ describe( "Maps", function() {
 
         it ( "Peut remplir la map de quelques powerUp", function () {
 
-            expect(maps.getPowerUps().length).toEqual(50);
+            expect(maps.getPowerUps().length).toEqual(135);
+
+        });
+
+        it ( "Evite la création de 2 powerUp à la même position", function() {
+
+            var tab1 = maps.getPowerUps();
+
+            utils.addUniqueArrayProperty( tab1 );
+
+            var tab2 = tab1.unique();
+
+            expect(tab1.length).toEqual(tab2.length);
 
         });
 

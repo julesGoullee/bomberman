@@ -24,6 +24,7 @@ var utils = {
             else {
 
                 clone[i] = obj[i];
+
             }
         }
 

@@ -37,12 +37,12 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
     function createMesh() {
 
-        if ( assets["powerUp"] === undefined ) {
+        if ( assets["powerUpBallon"] === undefined ) {
 
-            throw new Error( "Mesh powerUp is not preload" );
+            throw new Error( "Mesh powerUpBallon is not preload" );
         }
 
-        var meshPowerUp = assets["powerUp"][0].clone();
+        var meshPowerUp = assets["powerUpBallon"][0].clone();
 
         meshPowerUp.isVisible = true;
 

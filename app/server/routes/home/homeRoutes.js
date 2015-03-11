@@ -41,6 +41,7 @@ function homeRoutes( app ){
             "modules/player/player",
             "modules/player/myPlayer",
             "modules/player/notifyMovePlayer",
+            "modules/powerUp/powerUp",
             "modules/bot/bot",
             "modules/auth/auth",
             "main"
