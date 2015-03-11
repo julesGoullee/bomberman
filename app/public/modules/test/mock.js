@@ -50,6 +50,11 @@ var gameMock = {
             clone : function (){
                 return { dispose : function (){} };
             }
+        }],
+        "powerUp" :[{
+            clone : function (){
+                return { dispose : function (){} };
+            }
         }]
     },
     blockDim: 8

@@ -51,10 +51,16 @@ function Maps( assets, blockDim, scene ) {
 
         createPermanentBlock();
 
-        if ( cfg.showBlockTemp) {
+        if ( cfg.showBlockTemp ) {
 
             createTemporaireBlock();
         }
+
+        if ( cfg.showPowerUp ) {
+
+            //createPowerUp();
+        }
+
     };
 
     self.addObject = function ( player ) {
@@ -65,6 +71,7 @@ function Maps( assets, blockDim, scene ) {
 
 
     //Players
+
     self.getPlayers = function () {
 
         var tabPlayer = [];
@@ -144,6 +151,7 @@ function Maps( assets, blockDim, scene ) {
 
 
     //Bombs
+
     self.setBomb = function ( player ) {
 
         if ( player.shouldSetBomb() && !self.getBombByPosition( player.roundPosition() ) ) {
@@ -242,6 +250,7 @@ function Maps( assets, blockDim, scene ) {
     };
 
     //Blocks
+
     self.getBlocks = function () {
 
         var tabBlocks = [];
@@ -401,7 +410,44 @@ function Maps( assets, blockDim, scene ) {
         return false;
     };
 
+    //PowerUp
 
+    self.getPowerUps = function () {
+
+        var tabPowerUps = [];
+
+        var i = 0;
+
+        var size = _powerUp.length;
+
+        for ( i; i < size; i++ ) {
+
+            tabPowerUps.push(_powerUp[i]);
+
+        }
+
+        return tabPowerUps;
+    };
+
+    self.getPowerUpsByPosition = function ( position ) {
+
+        var powerUps = self.getPowerUps();
+
+        for ( var i = 0; i < powerUps.length ; i++ ) {
+
+            var powerUp = powerUp[i];
+
+            if ( powerUp.position.x === position.x && block.position.z === position.z ) {
+
+                return powerUp;
+
+            }
+
+        }
+
+        return null;
+
+    };
 
     //PRIVATE METHODS//
 
@@ -562,15 +608,13 @@ function Maps( assets, blockDim, scene ) {
 
                     _content.push( new Block( _assets, blockPosition ) );
                 }
-
-
             }
         }
     }
 
     function createPowerUp () {
 
-       /* var blocks = self.getBlocks();
+        var blocks = self.getBlocks();
 
         for ( var i = 0; i < cfg.nbPowerUp; i++ ) {
 
@@ -578,12 +622,11 @@ function Maps( assets, blockDim, scene ) {
 
             var position = blocks[positionBlock].position;
 
-            _powerUp.push( new PowerUp( position ) )
+            _powerUp.push( new PowerUp( position, "", "", _assets ) );
 
-        } */
-
+        }
     }
-    
+
     function explosion ( bomb, player ) {
 
         var degats = {

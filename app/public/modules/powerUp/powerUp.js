@@ -6,11 +6,17 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
     // PUBLIC METHODS //
 
+    self.id = utils.guid();
+
+    self.type = "powerUp";
+
     self.position = position;
 
     self.pouvoir = pouvoir;
 
     self.valeur = valeur;
+
+    self.meshs = {};
 
     self.destroy = function () {
 
@@ -21,11 +27,21 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
     };
 
     self.init = function () {
+
         createMesh();
+
         createMeshColision();
     };
 
     // PRIVATE METHODS //
+
+    function init() {
+
+        createMeshColision();
+
+        createMesh();
+
+    }
 
     function createMesh() {
 
@@ -65,5 +81,4 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
     }
 
     self.init();
-
 }

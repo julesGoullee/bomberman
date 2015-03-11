@@ -788,4 +788,20 @@ describe( "Maps", function() {
         });
 
     });
+
+    describe( "PowerUp methods", function () {
+
+        beforeEach ( function () {
+
+            maps.create();
+
+        });
+
+        xit ( "Peut remplir la map de quelques powerUp", function () {
+
+            expect(maps.getPowerUps().length).toEqual(50);
+
+        });
+
+    })
 });
