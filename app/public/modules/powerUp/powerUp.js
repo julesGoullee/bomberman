@@ -35,14 +35,6 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
     // PRIVATE METHODS //
 
-    function init() {
-
-        createMeshColision();
-
-        createMesh();
-
-    }
-
     function createMesh() {
 
         if ( assets["powerUp"] === undefined ) {
@@ -60,7 +52,7 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
             z: position.z
         };
 
-        self.mesh.shape = meshPowerUp;
+        self.meshs.shape = meshPowerUp;
     }
 
     function createMeshColision() {

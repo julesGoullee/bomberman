@@ -671,8 +671,6 @@ describe( "Maps", function() {
 
             it ( "Ne peut pas tuer un player s'il il y un block temp entre lui et la bombe", function () {
 
-                maps.create();
-
                 player.position.z = -56;
 
                 maps.setBomb( player );
@@ -687,8 +685,6 @@ describe( "Maps", function() {
             });
 
             it ( "Ne peut pas tuer un player s'il y a un block permanent entre le player et la bombe ", function () {
-
-                maps.create();
 
                 player.position.z = -56;
 
@@ -797,7 +793,7 @@ describe( "Maps", function() {
 
         });
 
-        xit ( "Peut remplir la map de quelques powerUp", function () {
+        it ( "Peut remplir la map de quelques powerUp", function () {
 
             expect(maps.getPowerUps().length).toEqual(50);
 

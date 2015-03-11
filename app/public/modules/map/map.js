@@ -58,7 +58,7 @@ function Maps( assets, blockDim, scene ) {
 
         if ( cfg.showPowerUp ) {
 
-            //createPowerUp();
+            createPowerUp();
         }
 
     };
@@ -618,8 +618,9 @@ function Maps( assets, blockDim, scene ) {
 
         for ( var i = 0; i < cfg.nbPowerUp; i++ ) {
 
-            var positionBlock = Math.floor( Math.random() * (blocks.length + 1) );
+            var positionBlock = Math.floor( Math.random() * (blocks.length - 1) );
 
+            console.log(positionBlock, blocks.length);
             var position = blocks[positionBlock].position;
 
             _powerUp.push( new PowerUp( position, "", "", _assets ) );
