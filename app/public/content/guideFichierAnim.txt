@@ -1,0 +1,14 @@
+
+
+Petit guide de l'animation <3 <3 :
+
+
+Course : Frame 0 a 20
+
+Perçage de Ballon : 56 à 115
+
+Attente (longue) : 160 à 258
+
+Attente (normal) : 310 à 420
+
+Mort : 500 à 590
