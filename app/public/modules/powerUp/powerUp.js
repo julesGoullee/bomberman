@@ -44,7 +44,7 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
         var meshPowerUp = assets["powerUpBallon"][0].clone();
 
-        meshPowerUp.isVisible = true;
+        meshPowerUp.isVisible = false;
 
         meshPowerUp.position = {
             x: position.x,

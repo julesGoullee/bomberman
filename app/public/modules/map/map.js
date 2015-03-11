@@ -349,6 +349,14 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
             if( _content[i].type === "block" &&  _content[i].id === blockId ) {
 
+                var powerUp = self.getPowerUpsByPosition( _content[i].position);
+
+                if ( powerUp ) {
+
+                    powerUp.meshs.shape.isVisible = true;
+
+                }
+
                 _content[i].destroy();
 
                 _content.splice( i, 1 );
@@ -356,7 +364,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
                 return true;
             }
         }
-
         return null;
     };
 
@@ -424,7 +431,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
             var powerUp = powerUps[i];
 
-            if ( powerUp.position.x === position.x && block.position.z === position.z ) {
+            if ( powerUp.position.x === position.x && powerUp.position.z === position.z ) {
 
                 return powerUp;
 

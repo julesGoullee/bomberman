@@ -831,7 +831,7 @@ describe( "Maps", function() {
 
         it ( "Peut remplir la map de quelques powerUp", function () {
 
-            expect(maps.getPowerUps().length).toEqual(135);
+            expect(maps.getPowerUps().length).toEqual(cfg.nbPowerUp);
 
         });
 
