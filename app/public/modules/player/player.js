@@ -68,32 +68,36 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     self.move = function( position ) {
 
+        var animName = "MoveAnim";
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
-        self.meshs.shape.lookAt( nextPos );
 
         var animationBox;
 
-        if ( self.meshs.shape.animations.length <= 0 ) {
+        for ( var iAnim = 0 ; iAnim < self.meshs.shape.animations.length ; iAnim ++ ){
 
-            animationBox = new BABYLON.Animation( "myAnimationX", "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
+            if( self.meshs.shape.animations[iAnim].name === animName){
+
+                animationBox = self.meshs.shape.animations[iAnim];
+            }
         }
-        else{
-            animationBox = self.meshs.shape.animations[0];
+        if ( !animationBox ) {
+
+            //animationBox = new BABYLON.Animation( animName, "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
         }
 
-        var keysanim = [];
-
-        keysanim.push({ frame: 0, value: self.meshs.shape.position  });
-
-        keysanim.push({ frame: 10, value: nextPos });
-
-        animationBox.setKeys(keysanim);
-
-        self.meshs.shape.animations.push( animationBox );
+        //var keysAnim = [];
+        //
+        //keysAnim.push({ frame: 0, value: self.meshs.shape.position  });
+        //
+        //keysAnim.push({ frame: 10, value: nextPos });
+        //
+        //animationBox.setKeys( keysAnim );
+        //
+        //self.meshs.shape.animations.push( animationBox );
 
         //BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 120,
-        //self.meshs.shape.position, nextPos , false );
+        self.meshs.shape.position= nextPos ;//, false );
 
 
         self.position.x = position.x;
@@ -101,6 +105,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         self.meshs.colisionBlock.position.x = self.position.x;
         self.meshs.colisionBlock.position.z = self.position.z;
+        self.meshs.shape.lookAt( nextPos );
 
     };
 
