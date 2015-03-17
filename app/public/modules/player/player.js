@@ -75,13 +75,14 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         var animationBox;
 
-        for ( var iAnim = 0 ; iAnim < self.meshs.shape.animations.length ; iAnim ++ ){
+        for ( var iAnim = 0 ; iAnim < self.meshs.shape.animations.length ; iAnim ++ ) {
 
-            if( self.meshs.shape.animations[iAnim].name === animName){
+            if ( self.meshs.shape.animations[iAnim].name === animName ) {
 
                 animationBox = self.meshs.shape.animations[iAnim];
             }
         }
+
         if ( !animationBox ) {
 
             animationBox = new BABYLON.Animation( animName, "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
@@ -89,15 +90,13 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         var keysAnim = [];
 
-        keysAnim.push({ frame: 0, value: self.meshs.shape.position  });
+        keysAnim.push( { frame: 0, value: self.meshs.shape.position } );
 
-        keysAnim.push({ frame: 10, value: nextPos });
+        keysAnim.push( { frame: 10, value: nextPos } );
 
         animationBox.setKeys( keysAnim );
 
         self.meshs.shape.animations.push( animationBox );
-
-
 
         self.position.x = position.x;
         self.position.z = position.z;
