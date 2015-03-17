@@ -54,13 +54,15 @@ function Auth( connector, popup ){
         var body = "<form id='form-disclamer'>"+
             "<div class='form-group'>"+
                 "<input type='text' class='form-control' id='input-pseudo' placeholder='Entre ton pseudo de guerrier' required='true'>"+
-                "<span class='alert alert-success' id='inscription-erreur' ></span>"+
+                "<span class='alert alert-warning' id='inscription-erreur' ></span>"+
             "</div>"+
             "<button type='submit' class='btn btn-default'>Jouer</button>"+
         "</form>";
 
 
         popup.setContent( header, body );
+
+        var errorContainer = $("#inscription-erreur");
 
         popup.show();
 
@@ -77,7 +79,17 @@ function Auth( connector, popup ){
                     callback( userProfil );
                 }
                 else{
-                    $("#inscription-erreur").text( "Erreur: " + userProfil.err );
+
+                    errorContainer.text( "Erreur: " + userProfil.err );
+
+                    errorContainer.show( "fast", function(){
+
+                        setTimeout(function(){
+                            errorContainer.hide("fast");
+                        },3000);
+
+                    });
+
                 }
 
             });

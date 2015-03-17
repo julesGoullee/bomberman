@@ -151,7 +151,7 @@ function Game ( canvasId ) {
                         }
                     });
 
-                    //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
+                    //var bot = new Bot(playersSpawnPoint[2], maps, self.scene, _blockDim, self.assets);
                 });
 
             });

@@ -71,6 +71,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         var animName = "MoveAnim";
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
+        self.meshs.shape.lookAt( nextPos );
 
         var animationBox;
 
@@ -83,21 +84,19 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         }
         if ( !animationBox ) {
 
-            //animationBox = new BABYLON.Animation( animName, "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
+            animationBox = new BABYLON.Animation( animName, "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
         }
 
-        //var keysAnim = [];
-        //
-        //keysAnim.push({ frame: 0, value: self.meshs.shape.position  });
-        //
-        //keysAnim.push({ frame: 10, value: nextPos });
-        //
-        //animationBox.setKeys( keysAnim );
-        //
-        //self.meshs.shape.animations.push( animationBox );
+        var keysAnim = [];
 
-        //BABYLON.Animation.CreateAndStartAnimation( "anim", self.meshs.shape, "position", 30, 120,
-        self.meshs.shape.position= nextPos ;//, false );
+        keysAnim.push({ frame: 0, value: self.meshs.shape.position  });
+
+        keysAnim.push({ frame: 10, value: nextPos });
+
+        animationBox.setKeys( keysAnim );
+
+        self.meshs.shape.animations.push( animationBox );
+
 
 
         self.position.x = position.x;
@@ -105,7 +104,6 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         self.meshs.colisionBlock.position.x = self.position.x;
         self.meshs.colisionBlock.position.z = self.position.z;
-        self.meshs.shape.lookAt( nextPos );
 
     };
 

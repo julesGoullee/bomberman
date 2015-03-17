@@ -166,7 +166,7 @@ describe( "Maps", function() {
 
         });
 
-        it( "Peut remplir la map de block en laissant les angles sans block temp", function () {
+        it( "Peut remplir la maps de block en laissant les angles sans block temp", function () {
 
             expect(maps.getBlocks().length).toEqual(135);
         });
@@ -829,7 +829,7 @@ describe( "Maps", function() {
 
         });
 
-        it ( "Peut remplir la map de quelques powerUp", function () {
+        it ( "Peut remplir la maps de quelques powerUp", function () {
 
             expect(maps.getPowerUps().length).toEqual(cfg.nbPowerUp);
 

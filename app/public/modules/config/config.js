@@ -5,6 +5,6 @@ var cfg = {
     showBlockTemp : true,
     bombCountDown : 3000,
     nbPowerUp : 50,
-    pasToSendPosition:  0.4,
-    showPowerUp : true
+    showPowerUp : true,
+    pasToSendPosition:  0.4
 };

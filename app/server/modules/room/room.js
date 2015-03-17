@@ -3,13 +3,13 @@
 var config = require("../../config/config.js");
 var Player = require("../player/player.js");
 var utils = require("../utils/utils.js");
-var Map = require("../map/map.js");
+var Maps = require("../maps/maps.js");
 
 function Room() {
 
     var self = this;
 
-    var _map = new Map();
+    var _map = new Maps();
 
     //PUBLIC METHODS
 

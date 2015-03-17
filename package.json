@@ -14,7 +14,7 @@
     "url": ""
   },
   "readmeFilename": "README.md",
-  "readme": "webgame!!",
+  "readme": "Bomberman",
   "version": "0.0.1",
   "dependencies": {
     "chai": "^2.1.1",
