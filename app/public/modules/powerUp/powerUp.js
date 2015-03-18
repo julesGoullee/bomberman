@@ -6,11 +6,17 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
     // PUBLIC METHODS //
 
+    self.id = utils.guid();
+
+    self.type = "powerUp";
+
     self.position = position;
 
     self.pouvoir = pouvoir;
 
     self.valeur = valeur;
+
+    self.meshs = {};
 
     self.destroy = function () {
 
@@ -21,7 +27,9 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
     };
 
     self.init = function () {
+
         createMesh();
+
         createMeshColision();
     };
 
@@ -29,14 +37,14 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
     function createMesh() {
 
-        if ( assets["powerUp"] === undefined ) {
+        if ( assets["powerUpBallon"] === undefined ) {
 
-            throw new Error( "Mesh powerUp is not preload" );
+            throw new Error( "Mesh powerUpBallon is not preload" );
         }
 
-        var meshPowerUp = assets["powerUp"][0].clone();
+        var meshPowerUp = assets["powerUpBallon"][0].clone();
 
-        meshPowerUp.isVisible = true;
+        meshPowerUp.isVisible = false;
 
         meshPowerUp.position = {
             x: position.x,
@@ -44,7 +52,7 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
             z: position.z
         };
 
-        self.mesh.shape = meshPowerUp;
+        self.meshs.shape = meshPowerUp;
     }
 
     function createMeshColision() {
@@ -65,5 +73,4 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
     }
 
     self.init();
-
 }

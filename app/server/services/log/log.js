@@ -13,14 +13,9 @@ function log(app){
         console.log( "server listen on 3000 ..." );
     });
 
-    game.callbackOnConnection( function( user, roomId){
+    game.callbackOnConnectionInRoom( function( userProfil, room ){
 
-        console.log( "New user: " + user + " on room: " + roomId );
-    });
-
-    app.use(function( req, res, next ){
-//        console.log(req.method, req.url);
-        next();
+        console.log( "New user: " + userProfil.name + " on room: " + room.id );
     });
 
 }

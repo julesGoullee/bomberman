@@ -24,7 +24,7 @@ function FreeCamera(game) {
 
         var camera = new BABYLON.FreeCamera(
             "cameraFree",
-            new BABYLON.Vector3(0, 60, 0),
+            new BABYLON.Vector3( 0, 60, 0 ),
             _scene
         );
 

@@ -34,7 +34,17 @@ function Player( socket, name, room ) {
 
     /*PRIVATE METHODS*/
 
+    function init(){
 
+        var newPosition = room.playersSpawnPoint.getFreePosition();
+
+        self.position = utils.clone( newPosition );
+
+        newPosition.playerId = self.id;
+
+    }
+
+    init();
 }
 
 module.exports = Player;

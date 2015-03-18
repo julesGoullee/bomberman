@@ -17,7 +17,7 @@ function Game ( canvasId ) {
         "bomb",
         //"animBombTest",
         "bombColision",
-        //"personnage",
+        "powerUpBallon",
         "persocourse",
         "personnageColision",
         "tourColision"
@@ -31,96 +31,132 @@ function Game ( canvasId ) {
 
     self.scene = initScene();
 
+    self.popup = new Popup();
+
     self.connector = new Connector();
 
+    self.auth = new Auth( self.connector, self.popup );
+
+    self.menuPlayers = new MenuPlayers();
+    
     self.assets = {};
 
     self.init = function () {
 
-        var preloader = new Preloader( self.scene, _meshPreload, self.assets);
+        self.auth.ready( function( userProfil ) {
 
-        preloader.onFinish( function(){
+            var preloader = new Preloader( self.scene, _meshPreload, self.assets);
 
-            //var spawnPoint = playersSpawnPoint[3];
+            preloader.onFinish( function(){
 
-            var notifier = new Notifier();
+                var notifier = new Notifier();
 
-            var keyBinder = new KeyBinder();
+                var keyBinder = new KeyBinder();
 
-            var map = new Maps( self.assets, _blockDim , self.scene);
+                var map = new Maps( self.assets, _blockDim, self.scene, self.menuPlayers );
 
-            var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
+                var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
-            self.connector.onNewPlayer( function( id, name, position ){
+                self.connector.onNewPlayer( function( id, name, position ){
 
-                var player = new Player( id, name, position, self.assets, _blockDim );
+                    var player = new Player( id, name, position, self.assets, _blockDim );
 
-                map.addObject( player );
+                    self.menuPlayers.addPlayer( player );
 
-            });
+                    map.addObject( player );
 
-            self.connector.onPlayerDisconnect( function( playerId ){
-
-                map.delPlayerById( playerId );
-            });
-
-            self.connector.getMyPosition( function( position ){
-
-                // Creation du game
-
-                var myPlayer = new MyPlayer( self.scene, _blockDim, "myPlayer" , position, self.assets, self.connector );
-
-                var freeCamera = new FreeCamera(self);
-
-                var restore = new Restore( notifier, map, myPlayer );
-
-                restore.showRestartButton();
-
-                cameraSwitcher.showSwitchButton();
-
-                keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
-
-                keyBinder.onRestore( restore.run );
-
-                map.create();
-
-                map.addObject( myPlayer.player );
-
-                keyBinder.onSetBomb( function() {
-
-                    if ( _pointerLocked ) {
-
-                        map.setBomb( myPlayer.player );
-                    }
                 });
 
-                initPointerLock();
+                self.connector.onPlayerDisconnect( function( playerId ){
 
-                _engine.runRenderLoop( function () {
+                    map.delPlayerById( playerId );
 
-                    self.scene.render();
+                    self.menuPlayers.delPlayer( playerId );
 
-                    myPlayer.renderMyPlayer();
-
-                    //todo ameliorer le debug des positions
-                    document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera  .position.toString();
                 });
 
-                self.connector.onPlayerMove( function( id, position ){
+                self.connector.getMyPosition( function( position ){
 
-                    var player = map.getPlayerById( id );
+                    // Creation du game
 
-                    if( player) {
+                    var myPlayer = new MyPlayer( self.scene, _blockDim, userProfil.name , position, self.assets, self.connector, cameraSwitcher );
 
-                        player.move(position);
-                    }
+                    var freeCamera = new FreeCamera( self );
+
+                    var restore = new Restore( notifier, map, myPlayer );
+
+                    self.menuPlayers.addPlayer( myPlayer.player );
+
+                    restore.showRestartButton();
+
+                    cameraSwitcher.showSwitchButton();
+
+                    keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
+
+                    keyBinder.onRestore( restore.run );
+
+                    map.create();
+
+                    map.addObject( myPlayer.player );
+
+                    keyBinder.onSetBomb( function() {
+
+                        if ( _pointerLocked ) {
+
+                            if( map.setBomb( myPlayer.player ) ){
+
+                                self.connector.setBomb( myPlayer.player.id );
+                            }
+                        }
+                    });
+
+                    initPointerLock();
+
+                    _engine.runRenderLoop( function () {
+
+                        self.scene.render();
+
+                        myPlayer.renderMyPlayer();
+
+                        //todo ameliorer le debug des positions
+                        document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
+                    });
+
+                    self.connector.onPlayerMove( function( id, position ) {
+
+                        var player = map.getPlayerById( id );
+
+                        if( player) {
+
+                            player.move( position );
+
+                            if( !self.scene.getAnimatableByTarget( player.meshs.shape ) ) {
+
+                                self.scene.beginAnimation( player.meshs.shape, 0, 20 );
+
+                                player.animData.isRunnning = true;
+
+                            }
+
+                        }
+                    });
+
+                    self.connector.onPlayerSetBomb( function( id ) {
+
+                        var player = map.getPlayerById( id );
+
+                        if( player ) {
+
+                            map.setBomb( player );
+                        }
+                    });
+
+                    //var bot = new Bot(playersSpawnPoint[2], maps, self.scene, _blockDim, self.assets);
                 });
 
-                //var bot = new Bot(playersSpawnPoint[2], map, self.scene, _blockDim, self.assets);
             });
 
         });
-
     };
 
 
@@ -134,7 +170,7 @@ function Game ( canvasId ) {
     function initScene () {
 
         function enableLight(){
-            //light
+
             var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
 
             light.intensity = 0.8;
@@ -187,7 +223,8 @@ function Game ( canvasId ) {
             }
         }, false);
  
-        var pointerlockchange = function () {
+        var pointerLockChange = function () {
+
             var cameraActive = self.scene.activeCamera;
 
             _pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
@@ -202,9 +239,9 @@ function Game ( canvasId ) {
             }
         };
 
-        document.addEventListener( "pointerlockchange", pointerlockchange, false );
-        document.addEventListener( "mspointerlockchange", pointerlockchange, false );
-        document.addEventListener( "mozpointerlockchange", pointerlockchange, false );
-        document.addEventListener( "webkitpointerlockchange", pointerlockchange, false );
+        document.addEventListener( "pointerlockchange", pointerLockChange, false );
+        document.addEventListener( "mspointerlockchange", pointerLockChange, false );
+        document.addEventListener( "mozpointerlockchange", pointerLockChange, false );
+        document.addEventListener( "webkitpointerlockchange", pointerLockChange, false );
     }
 }

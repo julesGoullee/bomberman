@@ -24,6 +24,7 @@ function homeRoutes( app ){
             "modules/utils/utils",
             "modules/config/config",
             "modules/notifier/notifier",
+            "modules/popup/popup",
 
             //modules
             "modules/preloader/preloader",
@@ -33,13 +34,17 @@ function homeRoutes( app ){
             "modules/bomb/bomb",
             "modules/camera/freeCamera",
             "modules/camera/CameraSwitcher",
+            "modules/camera/DeadView",
             "modules/connector/connector",
             "modules/game/game",
-            "modules/map/map",
+            "modules/maps/maps",
             "modules/player/player",
             "modules/player/myPlayer",
             "modules/player/notifyMovePlayer",
+            "modules/powerUp/powerUp",
             "modules/bot/bot",
+            "modules/auth/auth",
+            "modules/menuPlayers/menuPlayers",
             "main"
         ],
         css:[
@@ -66,8 +71,8 @@ function homeRoutes( app ){
     });
 
     //Common response BabylonjsManifest
-    app.use('/*babylon.manifest*', function (req, res) {
-        res.sendFile("/content/common.babylon.manifest", { "root": config.rootPathPublic});
+    app.use( "/*babylon.manifest*", function ( req, res ) {
+        res.sendFile( "/content/common.babylon.manifest", { "root": config.rootPathPublic } );
     })
 }
 

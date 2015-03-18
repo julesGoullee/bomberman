@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps( assets, blockDim, scene ) {
+function Maps( assets, blockDim, scene, menuPlayers ) {
 
     var self = this;
 
@@ -51,10 +51,16 @@ function Maps( assets, blockDim, scene ) {
 
         createPermanentBlock();
 
-        if ( cfg.showBlockTemp) {
+        if ( cfg.showBlockTemp ) {
 
             createTemporaireBlock();
         }
+
+        if ( cfg.showPowerUp ) {
+
+            createPowerUp();
+        }
+
     };
 
     self.addObject = function ( player ) {
@@ -65,6 +71,7 @@ function Maps( assets, blockDim, scene ) {
 
 
     //Players
+
     self.getPlayers = function () {
 
         var tabPlayer = [];
@@ -106,9 +113,10 @@ function Maps( assets, blockDim, scene ) {
 
             if( _content[i].type === "player" &&  _content[i].id === playerId ) {
 
+                menuPlayers.changeStatus( "Mort", _content[i].id );
+
                 _content[i].destroy();
 
-                //todo
                 return true;
             }
         }
@@ -145,6 +153,7 @@ function Maps( assets, blockDim, scene ) {
 
 
     //Bombs
+
     self.setBomb = function ( player ) {
 
         if ( player.shouldSetBomb() && !self.getBombByPosition( player.roundPosition() ) ) {
@@ -242,7 +251,9 @@ function Maps( assets, blockDim, scene ) {
         return false;
     };
 
+
     //Blocks
+
     self.getBlocks = function () {
 
         var tabBlocks = [];
@@ -338,6 +349,14 @@ function Maps( assets, blockDim, scene ) {
 
             if( _content[i].type === "block" &&  _content[i].id === blockId ) {
 
+                var powerUp = self.getPowerUpsByPosition( _content[i].position);
+
+                if ( powerUp ) {
+
+                    powerUp.meshs.shape.isVisible = true;
+
+                }
+
                 _content[i].destroy();
 
                 _content.splice( i, 1 );
@@ -345,7 +364,6 @@ function Maps( assets, blockDim, scene ) {
                 return true;
             }
         }
-
         return null;
     };
 
@@ -385,23 +403,45 @@ function Maps( assets, blockDim, scene ) {
         return null;
     };
 
-    self.delPlayerById = function ( playerId ) {
 
-        for ( var i = 0; i < _content.length; i++ ) {
+    //PowerUp
 
-            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
+    self.getPowerUps = function () {
 
-                _content[i].destroy();
+        var tabPowerUps = [];
 
-                _content.splice( i, 1 );
+        var i = 0;
 
-                return true;
-            }
+        var size = _powerUp.length;
+
+        for ( i; i < size; i++ ) {
+
+            tabPowerUps.push(_powerUp[i]);
+
         }
 
-        return false;
+        return tabPowerUps;
     };
 
+    self.getPowerUpsByPosition = function ( position ) {
+
+        var powerUps = self.getPowerUps();
+
+        for ( var i = 0; i < powerUps.length ; i++ ) {
+
+            var powerUp = powerUps[i];
+
+            if ( powerUp.position.x === position.x && powerUp.position.z === position.z ) {
+
+                return powerUp;
+
+            }
+
+        }
+
+        return null;
+
+    };
 
 
     //PRIVATE METHODS//
@@ -563,34 +603,36 @@ function Maps( assets, blockDim, scene ) {
 
                     _content.push( new Block( _assets, blockPosition ) );
                 }
-
-
             }
+
         }
     }
 
     function createPowerUp () {
 
-       /* var blocks = self.getBlocks();
+        var blocks = self.getBlocks();
 
         for ( var i = 0; i < cfg.nbPowerUp; i++ ) {
 
-            var positionBlock = Math.floor( Math.random() * (blocks.length + 1) );
+            var positionBlock = Math.floor(Math.random() * (blocks.length - 1));
 
             var position = blocks[positionBlock].position;
 
-            _powerUp.push( new PowerUp( position ) )
+            blocks.splice(positionBlock, 1);
 
-        } */
+            _powerUp.push( new PowerUp( position, "", "", _assets ) );
 
+        }
     }
-    
+
     function explosion ( bomb, player ) {
 
         var degats = {
             players: [],
             blocks: []
         };
+
+        var playerKills = false;
 
         utils.addUniqueArrayProperty(degats.players);
         utils.addUniqueArrayProperty(degats.blocks);
@@ -601,17 +643,28 @@ function Maps( assets, blockDim, scene ) {
             for ( var iBlocks = 0; iBlocks < degats.blocks.length; iBlocks++ ) {
 
                 self.delBlockById( degats.blocks[iBlocks].id );
-
             }
 
             // parcours les players touchés par la bombe pour les suprimmées
             for ( var iPlayer = 0; iPlayer < degats.players.length; iPlayer++ ) {
+
+                if ( player.id !== degats.players[iPlayer].id ) {
+
+                    player.kills ++;
+
+                    playerKills = true;
+                }
 
                 self.delPlayerById( degats.players[iPlayer].id );
 
             }
         });
 
+        if ( playerKills == true ) {
+
+            menuPlayers.changeScore ( player.kills, player.id );
+
+        }
 
         function calcDegat(tabDegats, bomb, callback){
 

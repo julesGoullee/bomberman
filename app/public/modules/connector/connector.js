@@ -8,6 +8,28 @@ function Connector () {
 
     /*PUBLIC METHODS*/
 
+    //Authentification
+    self.setUserAndReturnProfil = function( userName, callback ){
+
+        _socket.on( "setUser", function( userProfil ){
+
+            callback( userProfil );
+        });
+
+        _socket.emit( "setUser", userName );
+    };
+
+    self.setTokenAndReturnUseProfil = function( token, callback ){
+
+        _socket.on( "setToken", function( userProfil ){
+
+            callback( userProfil );
+        });
+
+        _socket.emit( "setToken", token );
+    };
+
+    //Game
     self.getMyPosition = function( callback ) {
 
         _socket.on( "myPosition", function ( myPosition ) {
@@ -45,6 +67,19 @@ function Connector () {
 
               callback( playerData.id );
         });
+    };
+
+    self.onPlayerSetBomb = function( callback ){
+
+        _socket.on( "setBomb" , function( playerData ) {
+
+            callback( playerData.id );
+        });
+    };
+
+    self.setBomb = function( id ) {
+
+        _socket.emit( "setBomb", id );
     };
 
     /*PRIVATE METHODS*/

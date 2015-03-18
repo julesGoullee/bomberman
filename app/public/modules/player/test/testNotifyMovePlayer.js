@@ -21,9 +21,9 @@ describe("notifyMovePlayer", function(){
 
         // arrondie en dessous
 
-        notifyMovePlayer.notifyNewPosition({x:38.32208999479, z: -59.94280235891238 });
+        notifyMovePlayer.notifyNewPosition({x:38.62208999479, z: -59.94280235891238 });
 
-        expect(connectorMock.sendMyPosition).toHaveBeenCalledWith({x: '38.3', z: '-59.9' });
+        expect(connectorMock.sendMyPosition).toHaveBeenCalledWith({x: '38.6', z: '-59.9' });
 
         notifyMovePlayer.notifyNewPosition({x:37.92208999479, z: -59.94280235891238 });
 
@@ -31,9 +31,9 @@ describe("notifyMovePlayer", function(){
 
 
         // arrondie au dessus
-        notifyMovePlayer.notifyNewPosition({x:38.26208999479, z: -59.94280235891238 });
+        notifyMovePlayer.notifyNewPosition({x:38.36208999479, z: -59.94280235891238 });
 
-        expect(connectorMock.sendMyPosition).toHaveBeenCalledWith({x: '38.3', z: '-59.9' });
+        expect(connectorMock.sendMyPosition).toHaveBeenCalledWith({x: '38.4', z: '-59.9' });
 
         notifyMovePlayer.notifyNewPosition({x:37.87208999479, z: -59.94280235891238 });
 

@@ -8,14 +8,16 @@ function CameraSwitcher ( scene , canvas ) {
 
     var _canvas = canvas;
 
-
+    var _button;
     //PUBLIC METHODS//
 
     self.showSwitchButton = function () {
 
         $( "body" ).append( "<button class='btn btn-default' id='switchCameraButton'>Change view or press key C (actual : camera <span>" + _scene.activeCamera.id + "</span>)</button>" );
 
-        $( "#switchCameraButton" ).click( function() {
+        _button = $( "#switchCameraButton" );
+
+        _button.click( function() {
 
             self.switchCamera();
         });
@@ -29,19 +31,28 @@ function CameraSwitcher ( scene , canvas ) {
 
         if ( activeCamera.id === "cameraPlayer" ) {
 
-            $(this).find( "span" ).text( "Free" );
+            _button.find( "span" ).text( "Free" );
 
             _scene.activeCamera = _scene.getCameraByID( "cameraFree" );
 
-        } else {
+        } else if( activeCamera.id === "cameraFree" ) {
 
-            $(this).find( "span" ).text( "Player" );
+            _button.find( "span" ).text( "Player" );
 
             _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
+
         }
 
         _scene.activeCamera.attachControl( _canvas );
 
     };
 
+    self.deadView = function () {
+
+        _button.find( "span" ).text( "Dead" );
+
+        _scene.activeCamera = _scene.getCameraByID( "cameraDead" );
+
+        _scene.activeCamera.attachControl( _canvas );
+    }
 }

@@ -6,6 +6,4 @@
 //        connector = new Connector();
 //    });
 //
-//    it("Peut recuperer son nom et sa pos")
-//
 //});

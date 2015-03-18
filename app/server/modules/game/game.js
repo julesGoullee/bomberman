@@ -4,54 +4,51 @@ var config = require( "../../config/config.js" );
 var Room = require("../room/room.js" );
 var socketHandler = require("../socketHandler/socketHandler.js");
 
-var _callbackOnConnection = [];
+var _callbackOnConnectionRoom = [];
 var _roomList;
+var _playerInHome;
 
-function onPlayerConnection( socket, name ) {
+function onPlayerConnectionRoom( userProfil ) {
 
-    if( _roomList.length === 0 || _roomList[ _roomList.length - 1 ].players.length === config.maxPlayerPeerParty ) {
+    if ( _roomList.length === 0 || _roomList[ _roomList.length - 1 ].players.length === config.maxPlayerPeerParty ) {
 
         _roomList.push( new Room () );
     }
 
-    _roomList[ _roomList.length -1 ].addPlayer( socket, name );
+    _roomList[ _roomList.length -1 ].addPlayer( userProfil );
 
-    for ( var i = 0; i < _callbackOnConnection.length; i ++ ){
+    for ( var i = 0; i < _callbackOnConnectionRoom.length; i ++ ) {
 
-        _callbackOnConnection[i]( name , _roomList[ _roomList.length -1].id);
+        _callbackOnConnectionRoom[i]( userProfil, _roomList[ _roomList.length -1 ] );
     }
 }
 
 
 module.exports = {
 
-    launch : function( ){
+    launch: function( ){
 
         _roomList = [];
 
-        var nbPlayer = 0;
-
-        var name = "player";
+        _playerInHome = [];
 
         socketHandler.launch();
 
-        socketHandler.newConnect( function( socket ) {
+        socketHandler.newConnect( function( userProfil ) {
 
-            nbPlayer ++;
-
-            onPlayerConnection( socket, name + nbPlayer );
+            onPlayerConnectionRoom( userProfil );
         });
     },
     getRoomList: function() {
 
         return _roomList;
     },
-    mockSocketHandler : function( mock ) {
+    mockSocketHandler: function( mock ) {
 
         socketHandler = mock;
     },
-    callbackOnConnection: function( callback ){
+    callbackOnConnectionInRoom: function( callback ){
 
-        _callbackOnConnection.push( callback );
+        _callbackOnConnectionRoom.push( callback );
     }
 };

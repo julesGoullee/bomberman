@@ -34,7 +34,7 @@ module.exports = {
     },
     onListenStart : function( callback ) {
 
-        onListenStartCallbacks.push(callback);
+        onListenStartCallbacks.push( callback );
     },
     getSocketIo : function() {
         return io;

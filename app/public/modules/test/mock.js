@@ -25,7 +25,10 @@ var gameMock = {
         }],
         "persocourse" :[{
             clone : function (){
-                return { dispose : function (){} };
+                return {
+                    dispose : function (){},
+                    setPivotMatrix: function(){}
+                };
             },
             skeleton : {
                 clone : function (){
@@ -47,6 +50,11 @@ var gameMock = {
             clone : function (){
                 return { dispose : function (){} };
             }
+        }],
+        "powerUpBallon" :[{
+            clone : function (){
+                return { dispose : function (){} };
+            }
         }]
     },
     blockDim: 8
@@ -56,3 +64,25 @@ utils.onMeshsExitIntersect = function( meshToActivate ){
 
     meshToActivate.checkCollisions = true;
 };
+
+function ConnectorMock (){
+
+    this.setTokenAndReturnUseProfil = function( token, callback ){
+
+        callback({ name: "player1", err: null, token: token });
+    }
+}
+
+function PopupMock() {
+
+    var self = this;
+
+    self.setContent = function( header, body ){
+    };
+
+    self.show = function(){
+    };
+
+    self.hide = function(){
+    };
+}

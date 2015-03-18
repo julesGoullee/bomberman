@@ -14,7 +14,7 @@ describe( "Maps", function() {
 
     beforeEach( function() {
 
-        maps = new Maps( gameMock.assets, gameMock.blockDim );
+        maps = new Maps( gameMock.assets, gameMock.blockDim, {}, new MenuPlayers() );
 
         player = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
 
@@ -166,7 +166,7 @@ describe( "Maps", function() {
 
         });
 
-        it( "Peut remplir la map de block en laissant les angles sans block temp", function () {
+        it( "Peut remplir la maps de block en laissant les angles sans block temp", function () {
 
             expect(maps.getBlocks().length).toEqual(135);
         });
@@ -632,13 +632,49 @@ describe( "Maps", function() {
 
             });
 
-            it ( "Peut tuer un player a la meme position", function () {
+            it ( "Peut se tuer", function () {
+
+                maps.setBomb( player );
+
+                expect( player.kills ).toEqual( 0 );
+
+                expect( player.alive ).toEqual( true );
+
+                jasmine.clock().tick( cfg.bombCountDown );
+
+                expect( player.alive ).toEqual( false );
+
+                expect( player.kills ).toEqual( 0 );
+
+            });
+
+            it ( "Peut tuer un deuxieme player et incrémenter son score", function () {
+
+                player.position.x = 32;
+                
+                player.position.z = 64;
+
+                var spawnPoint2 = {x:40, z:64};
+
+                var player2 = new Player(1, "testPlayer2", spawnPoint2 , gameMock.assets, gameMock.blockDim );
+
+                maps.addObject( player2 );
+
+                expect( player2.alive ).toEqual( true );
+
+                expect( player.kills).toEqual ( 0 );
 
                 maps.setBomb( player );
 
                 jasmine.clock().tick( cfg.bombCountDown );
 
                 expect( player.alive ).toEqual( false );
+
+                expect( player2.alive ).toEqual( false );
+
+                expect( player.kills ).toEqual( 1 );
+
+                expect( player2.kills ).toEqual( 0 );
 
             });
 
@@ -671,8 +707,6 @@ describe( "Maps", function() {
 
             it ( "Ne peut pas tuer un player s'il il y un block temp entre lui et la bombe", function () {
 
-                maps.create();
-
                 player.position.z = -56;
 
                 maps.setBomb( player );
@@ -687,8 +721,6 @@ describe( "Maps", function() {
             });
 
             it ( "Ne peut pas tuer un player s'il y a un block permanent entre le player et la bombe ", function () {
-
-                maps.create();
 
                 player.position.z = -56;
 
@@ -788,4 +820,32 @@ describe( "Maps", function() {
         });
 
     });
+
+    describe( "PowerUp methods", function () {
+
+        beforeEach ( function () {
+
+            maps.create();
+
+        });
+
+        it ( "Peut remplir la maps de quelques powerUp", function () {
+
+            expect(maps.getPowerUps().length).toEqual(cfg.nbPowerUp);
+
+        });
+
+        it ( "Evite la création de 2 powerUp à la même position", function() {
+
+            var tab1 = maps.getPowerUps();
+
+            utils.addUniqueArrayProperty( tab1 );
+
+            var tab2 = tab1.unique();
+
+            expect(tab1.length).toEqual(tab2.length);
+
+        });
+
+    })
 });

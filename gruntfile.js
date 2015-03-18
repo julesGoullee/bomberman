@@ -30,6 +30,7 @@ module.exports = function(grunt) {
                         //external
                         "external/jquery.js",
                         "external/bootstrap.js",
+                        "external/babylonjs/babylon.js",
                         //utils
                         "modules/utils/*.js",
                         //MOCK
@@ -42,10 +43,36 @@ module.exports = function(grunt) {
                     ]
                 },
                 // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-                //reporters: ["dots", "ubuntu"],
-                reporters: ["dots", "growl"],
-                //reporters: ["dots"],
+                reporters: ["dots", "ubuntu"],
+                //reporters: ["dots", "growl"],
                 autoWatch: true,
+                browsers: ["PhantomJS"]
+            },
+            singleRun: {
+                basePath: "app/public",
+                frameworks: ["jasmine"],
+                options:{
+                    files: [
+                        //external
+                        "external/jquery.js",
+                        "external/bootstrap.js",
+                        "external/babylonjs/babylon.js",
+                        //utils
+                        "modules/utils/*.js",
+                        //MOCK
+                        "modules/test/mock.js",
+                        //config
+                        "modules/config/config.js",
+                        //modules
+                        "modules/**/test/*.js",
+                        "modules/**/*.js"
+                    ]
+                },
+                // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+                reporters: ["dots", "ubuntu"],
+                //reporters: ["dots", "growl"],
+                autoWatch: false,
+                singleRun: true,
                 browsers: ["PhantomJS"]
             }
         },
@@ -178,7 +205,7 @@ module.exports = function(grunt) {
     grunt.registerTask("test_server", ["simplemocha:all", "watch:mochaTest"]);
     grunt.registerTask("test_client", ["karma:autoRun"]);
 
-    grunt.registerTask("test_all", ["karma:all","simplemocha:all"]);
+    grunt.registerTask("test_all", ["karma:singleRun","simplemocha:all"]);
 
     //INSTALLATION
     grunt.registerTask("config_dev", ["bower:install","copy:confDev", "copy:bowerDev"]);
