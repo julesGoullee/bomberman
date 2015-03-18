@@ -612,16 +612,18 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
         var blocks = self.getBlocks();
 
-        for ( var i = 0; i < cfg.nbPowerUp; i++ ) {
+        if ( blocks.length >= cfg.nbPowerUp ) {
+            for (var i = 0; i < cfg.nbPowerUp; i++) {
 
-            var positionBlock = Math.floor(Math.random() * (blocks.length - 1));
+                var positionBlock = Math.floor(Math.random() * (blocks.length - 1));
 
-            var position = blocks[positionBlock].position;
+                var position = blocks[positionBlock].position;
 
-            blocks.splice(positionBlock, 1);
+                blocks.splice(positionBlock, 1);
 
-            _powerUp.push( new PowerUp( position, "", "", _assets ) );
+                _powerUp.push(new PowerUp(position, "", "", _assets));
 
+            }
         }
     }
 

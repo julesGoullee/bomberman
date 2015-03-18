@@ -71,7 +71,10 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         var animName = "MoveAnim";
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
-        self.meshs.shape.lookAt( nextPos );
+        self.meshs.shape.registerBeforeRender(function() {
+
+            self.meshs.shape.lookAt(nextPos);
+        });
 
         var animationBox;
 
