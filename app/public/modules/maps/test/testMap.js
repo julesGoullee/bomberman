@@ -247,6 +247,24 @@ describe( "Maps", function() {
 
         });
 
+        it( "Peut récuperer les players alive", function () {
+
+            maps.addObject( player );
+
+            var player2 = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+
+            maps.addObject( player2 );
+
+            var tab1 = maps.getPlayersAlive();
+
+            player2.alive = false;
+
+            var tab2 = maps.getPlayersAlive();
+
+            expect(tab1).not.toEqual(tab2);
+
+        });
+
         it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
 
             var block = new Block( gameMock.assets, { x: 0, z: 0 } );
@@ -844,6 +862,38 @@ describe( "Maps", function() {
             var tab2 = tab1.unique();
 
             expect(tab1.length).toEqual(tab2.length);
+
+        });
+
+        it ( "Peut trouver les PowerUps visibles", function () {
+
+            var block = maps.getBlockByPosition( { x: -24, y: 0, z: -64 } );
+
+            maps.delBlockById( block.id );
+
+            var tab1 = maps.getPowerUpsVisible();
+
+            expect(tab1.length).toEqual(1);
+
+        });
+
+        it ( "Peut retrouver un PowerUp par son ID", function () {
+
+            var powerUps = maps.getPowerUps();
+
+            expect( maps.getPowerUpsById( powerUps[8].id ) ).toEqual( powerUps[8] );
+
+        });
+
+        it ( "Peut supprimer un powerUps par son ID", function() {
+
+            var powerUps = maps.getPowerUps();
+
+            maps.delPowerUpsById( powerUps[8].id );
+
+            var powerUps2 = maps.getPowerUps();
+
+            expect( powerUps ).not.toEqual( powerUps2 );
 
         });
 
