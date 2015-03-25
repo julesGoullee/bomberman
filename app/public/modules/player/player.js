@@ -69,22 +69,19 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
     self.move = function( position ) {
 
         var animNamePosition = "MoveAnim";
-        var animNameRotate = "RotateAnim";
 
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
+        var animNameRotate = "RotateAnim";
+        var animationRotate;
         var angleRotate = Math.atan( nextPos.z - self.meshs.shape.position.z/ nextPos.x - self.meshs.shape.position.x );
-
         //self.meshs.shape.rotation.x = angleRotate + Math.PI;
 
         //self.meshs.shape.registerBeforeRender(function() {
-        //    debugger;
-        self.meshs.shape.lookAt( new BABYLON.Vector3( parseFloat( position.x ), 0, parseFloat( position.z ) ) );
-
+            self.meshs.shape.lookAt( new BABYLON.Vector3( parseFloat( position.x ), 0, parseFloat( position.z ) ) );
         //});
 
         var animationPosition;
-        var animationRotate;
 
         for ( var iAnim = 0 ; iAnim < self.meshs.shape.animations.length ; iAnim ++ ) {
 
@@ -98,20 +95,16 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
             animationPosition = new BABYLON.Animation( animNamePosition, "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
             self.meshs.shape.animations.push( animationPosition );
-
         }
+
         //var anim = self.meshs.shape.animations[0].animate(0, 0, 20, 1);
-        //debugger;
-
-
         var keysAnimPosition = [];
 
         keysAnimPosition.push( { frame: 0, value: self.meshs.shape.position } );
 
-        keysAnimPosition.push( { frame: 20, value: nextPos } );
+        keysAnimPosition.push( { frame: 10, value: nextPos } );
 
         animationPosition.setKeys( keysAnimPosition );
-
 
         //self.position.x = position.x;
         //self.position.z = position.z;

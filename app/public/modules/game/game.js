@@ -129,24 +129,22 @@ function Game ( canvasId ) {
                         var player = map.getPlayerById( id );
 
                         if( player) {
-                            //player.meshs.shape.lookAt( new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) ) );
 
                             player.move( position );
-                            self.scene.beginAnimation( player.meshs.shape, 0, 20, false, 1.5, function(){
 
-                                //player.meshs.shape.lookAt(new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) ));
-                            });
+                            var animable =  self.scene.getAnimatableByTarget( player.meshs.shape );
 
-                            //if( !self.scene.getAnimatableByTarget( player.meshs.shape ) ) {
+                            if( !animable ) {
 
+                                self.scene.beginAnimation( player.meshs.shape, 0, 20, true, 1, function(){
 
+                                    //player.meshs.shape.lookAt(new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) ));
+                                });
 
+                            }else{
 
-
-
-                                //player.animData.isRunnning = true;
-                            //
-                            //}
+                                console.log(animable.currentFrame );
+                            }
 
                         }
                     });

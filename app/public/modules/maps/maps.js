@@ -598,7 +598,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
             if ( self.meshsData[iMesh].colisionCase ) {
 
-                var  meshColision = _assets[self.meshsData[ iMesh].name + "Colision" ][0];
+                var  meshColision = _assets[self.meshsData[ iMesh ].name + "Colision" ][0];
 
                 meshColision.isVisible = cfg.showBlockColision;
 
