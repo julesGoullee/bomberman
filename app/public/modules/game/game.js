@@ -118,6 +118,8 @@ function Game ( canvasId ) {
 
                         myPlayer.renderMyPlayer();
 
+                        map.playerLootPowerUp();
+
                         //todo ameliorer le debug des positions
                         document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
                     });

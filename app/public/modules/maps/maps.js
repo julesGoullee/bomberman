@@ -12,7 +12,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
     var _content = [];
 
-    var _powerUp = [];
+    var _powerUps = [];
 
     var _blocksPermanent = [];
 
@@ -89,6 +89,28 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
         }
         return tabPlayer;
     };
+
+
+    self.getPlayersAlive = function() {
+
+        var tabPlayers = self.getPlayers();
+
+        var playersAlive = [];
+
+        for ( var i = 0; i < tabPlayers.length; i++ ){
+
+            if(tabPlayers[i].alive) {
+
+                playersAlive.push(tabPlayers[i]);
+
+            }
+        }
+
+        return playersAlive
+    };
+
+
+
 
     self.getPlayerById = function ( id ) {
 
@@ -412,15 +434,34 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
         var i = 0;
 
-        var size = _powerUp.length;
+        var size = _powerUps.length;
 
         for ( i; i < size; i++ ) {
 
-            tabPowerUps.push(_powerUp[i]);
+            tabPowerUps.push(_powerUps[i]);
 
         }
 
         return tabPowerUps;
+    };
+
+    self.getPowerUpsVisible = function () {
+
+        var tabPowerUps = self.getPowerUps();
+
+        var powerUpsVisible = [];
+
+        for (var i = 0; i < tabPowerUps.length ; i++){
+
+            if(tabPowerUps[i].meshs.shape.isVisible){
+
+                powerUpsVisible.push(tabPowerUps[i]);
+
+            }
+        }
+
+        return powerUpsVisible;
+
     };
 
     self.getPowerUpsByPosition = function ( position ) {
@@ -441,6 +482,40 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
         return null;
 
+    };
+
+    self.getPowerUpsById = function ( id ) {
+
+        var powerUps = self.getPowerUps();
+
+        var size = powerUps.length;
+
+        for ( var i = 0; i < size; i++ ) {
+
+            if ( powerUps[i].id == id ) {
+
+                return powerUps[i];
+            }
+        }
+
+        return null;
+    };
+
+    self.delPowerUpsById = function ( powerUpId ) {
+
+        for ( var i = 0; i < _powerUps.length; i++ ) {
+
+            if( _powerUps[i].id === powerUpId ) {
+
+                _powerUps[i].destroy();
+
+                _powerUps.splice(i, 1);
+
+                return true;
+            }
+        }
+
+        return false;
     };
 
 
@@ -621,7 +696,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
                 blocks.splice(positionBlock, 1);
 
-                _powerUp.push(new PowerUp(position, "", "", _assets));
+                _powerUps.push(new PowerUp(position, "", "", _assets));
 
             }
         }
@@ -857,6 +932,28 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
                 }
             }
         }
+    }
+
+    self.playerLootPowerUp = function ( ) {
+
+        var players = self.getPlayersAlive();
+
+        var powerUps = self.getPowerUpsVisible();
+
+        for ( var i = 0; i < players.length ; i++){
+
+            for( var j = 0 ; j < powerUps.length ; j++){
+
+                if (players[i].meshs.shape.intersectsMesh(powerUps[j].meshs.shape, false)) {
+
+                    self.delPowerUpsById( powerUps[j].id);
+
+                }
+
+            }
+
+        }
+
     }
 
 }

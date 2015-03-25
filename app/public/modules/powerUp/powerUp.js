@@ -44,6 +44,8 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
         var meshPowerUp = assets["powerUpBallon"][0].clone();
 
+        meshPowerUp.checkCollisions = false;
+
         meshPowerUp.isVisible = false;
 
         meshPowerUp.position = {
@@ -71,6 +73,8 @@ function PowerUp ( position, pouvoir, valeur, assets ) {
 
         self.meshs.colisionBlock = meshTempColision;
     }
+
+
 
     self.init();
 }
