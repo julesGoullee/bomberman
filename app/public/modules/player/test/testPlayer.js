@@ -150,7 +150,7 @@ describe( "Player", function() {
         expect( player.alive).toEqual( false );
     });
 
-    /*it( "Place le player au dessus de la map à sa mort", function () {
+    /*it( "Place le player au dessus de la maps à sa mort", function () {
 
         player.destroy();
 

@@ -13,6 +13,13 @@ html, body {
     z-index: 1;
 }
 
+/*Popup auth*/
+
+#inscription-erreur{
+    display: none;
+}
+
+/*Menu Players*/
 #menuPlayers {
     width: 100%;
     height: 15%;
@@ -25,7 +32,6 @@ html, body {
     display: inline-block;
     margin: 0.2%;
 }
-
 
 /*DEBUG*/
 #debug {

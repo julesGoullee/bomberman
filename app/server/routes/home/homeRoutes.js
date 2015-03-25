@@ -37,7 +37,7 @@ function homeRoutes( app ){
             "modules/camera/DeadView",
             "modules/connector/connector",
             "modules/game/game",
-            "modules/map/map",
+            "modules/maps/maps",
             "modules/player/player",
             "modules/player/myPlayer",
             "modules/player/notifyMovePlayer",

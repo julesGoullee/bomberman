@@ -44,7 +44,7 @@ function Restore ( notifier, map, myPlayer ) {
                         "</div>" +
                     "</li>" +
                     "<li class='list-group-item'>" +
-                        "<span class='label label-default list-group-item active'>Map</span>"+
+                        "<span class='label label-default list-group-item active'>Maps</span>"+
                         "<div class='checkbox list-group-item' >" +
                             "<label>" +
                                 "<input type='checkbox' id='restoreBlock'><span>Block</span>" +

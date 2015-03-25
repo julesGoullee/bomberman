@@ -2,9 +2,9 @@
 
 var cfg = {
     showBlockColision : false,
-    showBlockTemp : true,
+    showBlockTemp : false,
     bombCountDown : 3000,
     nbPowerUp : 50,
-    pasToSendPosition:  0.4,
-    showPowerUp : true
+    showPowerUp : true,
+    pasToSendPosition:  0.4
 };
