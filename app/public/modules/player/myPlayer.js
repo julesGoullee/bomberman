@@ -83,6 +83,7 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
     }
 
     function death() {
+
         self.camera = deadView.camera;
 
         _scene.activeCamera = self.camera;

@@ -137,7 +137,10 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
                 menuPlayers.changeStatus( "Mort", _content[i].id );
 
-                _content[i].destroy();
+                (function(i){scene.beginAnimation(_content[i].meshs.shape, 500, 590, false, 1, function(){
+                    setTimeout(_content[i].destroy, 500);
+
+                });})(i);
 
                 return true;
             }
@@ -377,6 +380,8 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
                     powerUp.meshs.shape.isVisible = true;
 
+                    scene.beginAnimation(powerUp.meshs.shape, 0, 200, true, 1);
+
                 }
 
                 _content[i].destroy();
@@ -412,6 +417,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
     self.delBlocksByPosition = function ( position ) {
 
         for ( var i = 0;  i < _content.length; i++ ) {
+
             if ( _content[i].type === "block" && _content[i].position.x === position.x && _content[i].position.z === position.z) {
 
                 _content[i].destroy();
@@ -507,7 +513,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
             if( _powerUps[i].id === powerUpId ) {
 
-                _powerUps[i].destroy();
+                setTimeout(_powerUps[i].destroy,500);
 
                 _powerUps.splice(i, 1);
 
@@ -945,8 +951,10 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
             for( var j = 0 ; j < powerUps.length ; j++){
 
                 if (players[i].meshs.shape.intersectsMesh(powerUps[j].meshs.shape, false)) {
-
                     self.delPowerUpsById( powerUps[j].id);
+
+                    (function(i){scene.beginAnimation(players[i].meshs.shape, 56, 115, false, 2, function(){
+                    });})(i);
 
                 }
 

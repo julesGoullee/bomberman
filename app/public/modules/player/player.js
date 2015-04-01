@@ -72,14 +72,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         var nextPos = new BABYLON.Vector3( parseFloat(  position.x ), 0, parseFloat( position.z ) );
 
-        var animNameRotate = "RotateAnim";
-        var animationRotate;
-        var angleRotate = Math.atan( nextPos.z - self.meshs.shape.position.z/ nextPos.x - self.meshs.shape.position.x );
-        //self.meshs.shape.rotation.x = angleRotate + Math.PI;
-
-        //self.meshs.shape.registerBeforeRender(function() {
-            self.meshs.shape.lookAt( new BABYLON.Vector3( parseFloat( position.x ), 0, parseFloat( position.z ) ) );
-        //});
+        self.meshs.shape.lookAt( new BABYLON.Vector3( parseFloat( position.x ), 0, parseFloat( position.z ) ) );
 
         var animationPosition;
 
@@ -93,11 +86,10 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         if ( !animationPosition ) {
 
-            animationPosition = new BABYLON.Animation( animNamePosition, "position", 20, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
+            animationPosition = new BABYLON.Animation( animNamePosition, "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
             self.meshs.shape.animations.push( animationPosition );
         }
 
-        //var anim = self.meshs.shape.animations[0].animate(0, 0, 20, 1);
         var keysAnimPosition = [];
 
         keysAnimPosition.push( { frame: 0, value: self.meshs.shape.position } );
@@ -106,8 +98,8 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
         animationPosition.setKeys( keysAnimPosition );
 
-        //self.position.x = position.x;
-        //self.position.z = position.z;
+        self.position.x = position.x;
+        self.position.z = position.z;
 
         self.meshs.colisionBlock.position.x = self.position.x;
         self.meshs.colisionBlock.position.z = self.position.z;
@@ -164,7 +156,6 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         }
 
         var meshPlayer = assets["persocourse"][0].clone();
-
 
         meshPlayer.skeleton = assets["persocourse"][0].skeleton.clone();
 

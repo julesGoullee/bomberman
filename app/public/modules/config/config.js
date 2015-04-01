@@ -6,5 +6,5 @@ var cfg = {
     bombCountDown : 3000,
     nbPowerUp : 135,
     showPowerUp : true,
-    pasToSendPosition:  0.4
+    pasToSendPosition:  0.6
 };
