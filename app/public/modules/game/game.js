@@ -151,7 +151,7 @@ function Game ( canvasId ) {
                                     player.timeOut = setTimeout(function(){
                                         if( player.lastAnim){
                                             player.lastAnimRun = true;
-                                            self.scene.beginAnimation( player.meshs.shape,310, 420, true, 1);
+                                            self.scene.beginAnimation( player.meshs.shape,308, 458, true, 1);
 
                                         }
                                     },100);

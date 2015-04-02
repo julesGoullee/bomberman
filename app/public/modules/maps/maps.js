@@ -137,7 +137,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
                 menuPlayers.changeStatus( "Mort", _content[i].id );
 
-                (function(i){scene.beginAnimation(_content[i].meshs.shape, 500, 590, false, 1, function(){
+                (function(i){scene.beginAnimation(_content[i].meshs.shape, 506, 550, false, 1, function(){
                     setTimeout(_content[i].destroy, 500);
 
                 });})(i);
@@ -953,7 +953,7 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
                 if (players[i].meshs.shape.intersectsMesh(powerUps[j].meshs.shape, false)) {
                     self.delPowerUpsById( powerUps[j].id);
 
-                    (function(i){scene.beginAnimation(players[i].meshs.shape, 56, 115, false, 2, function(){
+                    (function(i){scene.beginAnimation(players[i].meshs.shape, 60, 110, false, 2, function(){
                     });})(i);
 
                 }
