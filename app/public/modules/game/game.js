@@ -16,6 +16,7 @@ function Game ( canvasId ) {
         "tempBlockColision",
         "tour",
         "bomb",
+        "explosionFlammes",
         //"animBombTest",
         "bombColision",
         "powerUpBallon",
@@ -182,6 +183,9 @@ function Game ( canvasId ) {
                         }
                     });
 
+                    self.scene.beginAnimation( self.assets[i].meshs.shape, 506, 550, false, 1, function() {
+
+                    });
                     //var bot = new Bot(playersSpawnPoint[2], maps, self.scene, _blockDim, self.assets);
                 });
 
