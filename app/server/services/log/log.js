@@ -10,7 +10,7 @@ function log(app){
 
     server.onListenStart(function(){
 
-        console.log( "server listen on 3000 ..." );
+        console.log( "server listen on " + config.port + "..." );
     });
 
     game.callbackOnConnectionInRoom( function( userProfil, room ){

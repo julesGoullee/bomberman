@@ -14,7 +14,7 @@ describe( "Maps", function() {
 
     beforeEach( function() {
 
-        maps = new Maps( gameMock.assets, gameMock.blockDim, {}, new MenuPlayers() );
+        maps = new Maps( gameMock.assets, gameMock.blockDim, gameMock.scene, new MenuPlayers() );
 
         player = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
 
@@ -658,7 +658,7 @@ describe( "Maps", function() {
 
                 expect( player.alive ).toEqual( true );
 
-                jasmine.clock().tick( cfg.bombCountDown );
+                jasmine.clock().tick( cfg.bombCountDown + cfg.destroyPlayerTimer);
 
                 expect( player.alive ).toEqual( false );
 
@@ -684,7 +684,7 @@ describe( "Maps", function() {
 
                 maps.setBomb( player );
 
-                jasmine.clock().tick( cfg.bombCountDown );
+                jasmine.clock().tick( cfg.bombCountDown + cfg.destroyPlayerTimer );
 
                 expect( player.alive ).toEqual( false );
 
@@ -702,7 +702,7 @@ describe( "Maps", function() {
 
                 player.position.z = -56;
 
-                jasmine.clock().tick( cfg.bombCountDown );
+                jasmine.clock().tick( cfg.bombCountDown + cfg.destroyPlayerTimer);
 
                 expect( player.alive ).toEqual( false );
 
@@ -717,7 +717,7 @@ describe( "Maps", function() {
                 player.position.z = -64;
 
 
-                jasmine.clock().tick( cfg.bombCountDown );
+                jasmine.clock().tick( cfg.bombCountDown + cfg.destroyPlayerTimer );
 
                 expect( player.alive ).toEqual( false );
 

@@ -23,6 +23,7 @@
     "grunt": "*",
     "grunt-bower-task": "*",
     "grunt-contrib-copy": "~0.8.0",
+    "pem": "^1.7.2",
     "sinon": "^1.13.0",
     "sinon-chai": "^2.7.0",
     "socket.io": "~1.3.5"

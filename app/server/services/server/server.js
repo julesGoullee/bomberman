@@ -2,8 +2,12 @@
 
 var config = require( "../../config/config.js" );
 var onListenStartCallbacks = [];
-var http = require( "http" );
+var https = require('https');
 var io = require( "socket.io" );
+var pem = require('pem');
+
+
+
 
 module.exports = {
 
@@ -17,20 +21,24 @@ module.exports = {
 
         app.engine( "html", require( "ejs" ).renderFile );
 
-        var httpServer = http.createServer( app );
 
-        httpServer.listen( config.port, function () {
+        pem.createCertificate({days:1, selfSigned:true}, function(err, keys){
+            var httpsServer = https.createServer({key: keys.serviceKey, cert: keys.certificate}, app);
 
-            io = io( httpServer );
+            httpsServer.listen( config.port, function () {
 
-            for ( var callback in onListenStartCallbacks ) {
+                io = io( httpsServer );
 
-                if ( onListenStartCallbacks.hasOwnProperty( callback ) ) {
+                for ( var callback in onListenStartCallbacks ) {
 
-                    onListenStartCallbacks[callback]();
+                    if ( onListenStartCallbacks.hasOwnProperty( callback ) ) {
+
+                        onListenStartCallbacks[callback]();
+                    }
                 }
-            }
+            });
         });
+
     },
     onListenStart : function( callback ) {
 

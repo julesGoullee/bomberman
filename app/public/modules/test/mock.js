@@ -53,11 +53,23 @@ var gameMock = {
         }],
         "powerUpBallon" :[{
             clone : function (){
-                return { dispose : function (){} };
+                return {
+                    dispose : function (){}
+                };
+            },
+            skeleton : {
+                clone : function (){
+                    return {};
+                }
             }
         }]
     },
-    blockDim: 8
+    blockDim: 8,
+    scene : {
+        beginAnimation : function( shape, from, to, loop, speed, callback ){
+            callback && callback();
+        }
+    }
 };
 
 utils.onMeshsExitIntersect = function( meshToActivate ){
@@ -70,6 +82,10 @@ function ConnectorMock (){
     this.setTokenAndReturnUseProfil = function( token, callback ){
 
         callback({ name: "player1", err: null, token: token });
+    };
+
+    this.onSetUser = function( callback ){
+        //todo;
     }
 }
 

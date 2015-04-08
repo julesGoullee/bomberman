@@ -31,7 +31,6 @@ function Auth( connector, popup ){
                 popup.hide();
                 callback( userProfil );
             });
-
         }
     };
 
@@ -53,11 +52,11 @@ function Auth( connector, popup ){
 
         var body = "<form id='form-disclamer'>"+
             "<div class='form-group'>"+
-                "<input type='text' class='form-control' id='input-pseudo' placeholder='Entre ton pseudo de guerrier' required='true'>"+
-                "<span class='alert alert-warning' id='inscription-erreur' ></span>"+
+            "<input type='text' class='form-control' id='input-pseudo' placeholder='Entre ton pseudo de guerrier' required='true'>"+
+            "<span class='alert alert-warning' id='inscription-erreur' ></span>"+
             "</div>"+
             "<button type='submit' class='btn btn-default'>Jouer</button>"+
-        "</form>";
+            "</form>";
 
 
         popup.setContent( header, body );
@@ -66,33 +65,37 @@ function Auth( connector, popup ){
 
         popup.show();
 
+        connector.onSetUser( function( userProfil ){
+
+            if ( userProfil && !userProfil.err && userProfil.token && userProfil.name ) {
+
+                setTokenLS( userProfil.token );
+
+                callback( userProfil );
+            }
+            else{
+
+                errorContainer.text( "Erreur: " + userProfil.err );
+
+                errorContainer.show( "fast", function(){
+
+                    setTimeout(function(){
+
+                        errorContainer.hide("fast");
+
+                    },3000);
+
+                });
+
+            }
+
+        });
+
         $("#form-disclamer").submit( function( e ) {
 
             e.preventDefault();
 
-            connector.setUserAndReturnProfil( $("#input-pseudo").val(), function( userProfil ){
-
-                if ( userProfil && !userProfil.err && userProfil.token && userProfil.name ) {
-
-                    setTokenLS( userProfil.token );
-
-                    callback( userProfil );
-                }
-                else{
-
-                    errorContainer.text( "Erreur: " + userProfil.err );
-
-                    errorContainer.show( "fast", function(){
-
-                        setTimeout(function(){
-                            errorContainer.hide("fast");
-                        },3000);
-
-                    });
-
-                }
-
-            });
+            connector.setUser( $("#input-pseudo").val());
         });
     }
 }
