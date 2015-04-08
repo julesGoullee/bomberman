@@ -2,8 +2,8 @@ var path = require("path");
 
 module.exports = {
     rootPath : "",
-    rootPathPublic : path.resolve(__dirname + "/../../public/"),
-    port : 80,
+    rootPathPublic : path.resolve( __dirname + "/../../public/" ),
+    port : 443,
     domaine: "monchezmoi.no-ip.org",
     maxPlayerPeerParty : 4,
     blockDim: 8,
