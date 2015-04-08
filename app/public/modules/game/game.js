@@ -133,25 +133,33 @@ function Game ( canvasId ) {
                             player.move( position );
 
                             var animable =  self.scene.getAnimatableByTarget( player.meshs.shape);
-                            if( player.timeOut){
-                                clearTimeout(player.timeOut );
+
+                            if( player.timeOut ){
+
+                                clearTimeout( player.timeOut );
                             }
-                            if( player.lastAnimRun){
+
+                            if( player.lastAnimRun ){
+
                                 animable && animable.stop();
                                 delete player.lastAnimRun ;
                             }
 
                             if( !animable ) {
+
                                 self.scene.beginAnimation( player.meshs.shape, 0, 20, false, 1, function(){
 
-                                    if( player.timeOut){
+                                    if( player.timeOut ){
                                         clearTimeout(player.timeOut );
                                     }
 
-                                    player.timeOut = setTimeout(function(){
-                                        if( player.lastAnim){
+                                    player.timeOut = setTimeout( function(){
+
+                                        if( player.lastAnim ) {
+
                                             player.lastAnimRun = true;
-                                            self.scene.beginAnimation( player.meshs.shape,308, 458, true, 1);
+
+                                            self.scene.beginAnimation( player.meshs.shape,308, 458, true, 1 );
 
                                         }
                                     },100);

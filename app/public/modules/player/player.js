@@ -6,8 +6,6 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     var _blockDim = blockDim;
 
-    var _animationBox;
-
     //PUBLIC METHODS//
 
     self.id = id;
@@ -87,6 +85,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
         if ( !animationPosition ) {
 
             animationPosition = new BABYLON.Animation( animNamePosition, "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
+
             self.meshs.shape.animations.push( animationPosition );
         }
 

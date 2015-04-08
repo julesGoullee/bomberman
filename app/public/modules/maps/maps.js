@@ -43,7 +43,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
     ];
 
     self.create = function () {
-        //_assets["ground"][0].setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false});
 
         createGroundMeshs();
 
@@ -137,10 +136,14 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
                 menuPlayers.changeStatus( "Mort", _content[i].id );
 
-                (function(i){scene.beginAnimation(_content[i].meshs.shape, 506, 550, false, 1, function(){
-                    setTimeout(_content[i].destroy, 500);
+                (function( i ){
 
-                });})(i);
+                    scene.beginAnimation( _content[i].meshs.shape, 506, 550, false, 1, function() {
+
+                        setTimeout(_content[i].destroy, cfg.destroyPlayerTimer);
+                    });
+
+                })(i);
 
                 return true;
             }
