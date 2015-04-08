@@ -9,14 +9,17 @@ function Connector () {
     /*PUBLIC METHODS*/
 
     //Authentification
-    self.setUserAndReturnProfil = function( userName, callback ){
+    self.setUser = function( userName ){
+
+        _socket.emit( "setUser", userName );
+    };
+
+    self.onSetUser = function( callback ){
 
         _socket.on( "setUser", function( userProfil ){
 
             callback( userProfil );
         });
-
-        _socket.emit( "setUser", userName );
     };
 
     self.setTokenAndReturnUseProfil = function( token, callback ){
