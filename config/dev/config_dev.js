@@ -7,7 +7,7 @@ module.exports = {
     domaine: "localhost",
     maxPlayerPeerParty : 4,
     blockDim: 8,
-    showBlockTemp : true,
+    showBlockTemp : false,
     bombCountDown : 3000,
     showPowerUp : true,
     nbPowerUp : 50
