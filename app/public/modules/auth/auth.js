@@ -19,7 +19,14 @@ function Auth( connector, popup ){
                     callback( userProfil );
                 }
                 else{
-                    throw Error( "Token invalide. err: " + userProfil.err );
+
+                    console.log( "Token err: " + userProfil.err );
+
+                    showForm( function( userProfil ){
+
+                        popup.hide();
+                        callback( userProfil );
+                    });
                 }
             });
 

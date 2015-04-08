@@ -23,7 +23,7 @@
   "cameras": [
     {
       "name": "Default camera",
-      "id": "9d813874-5e75-4d54-ac7c-7cb97eca5bb7",
+      "id": "922be49f-e450-47d9-9c05-91d789d37205",
       "parentId": null,
       "lockedTargetId": null,
       "type": null,
@@ -57,11 +57,11 @@
       "animations": null
     }
   ],
-  "activeCameraID": "9d813874-5e75-4d54-ac7c-7cb97eca5bb7",
+  "activeCameraID": "922be49f-e450-47d9-9c05-91d789d37205",
   "lights": [
     {
       "name": "Default light",
-      "id": "950a5aeb-6a6c-44aa-aeab-1f866fd0f7b4",
+      "id": "f8cf868d-27bc-4896-85f0-f69acacaddc8",
       "parentId": null,
       "position": null,
       "direction": [
