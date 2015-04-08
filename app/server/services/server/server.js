@@ -4,9 +4,10 @@ var config = require( "../../config/config.js" );
 var onListenStartCallbacks = [];
 var https = require('https');
 var io = require( "socket.io" );
-var pem = require('pem');
-
-
+var fs = require('fs');
+var privateKey  = fs.readFileSync("./app/server/ssl/bomberman-key.pem", "utf8");
+var certificate = fs.readFileSync("./app/server/ssl/bomberman-cert.pem", "utf8");
+var credentials = {key: privateKey, cert: certificate};
 
 
 module.exports = {
@@ -22,21 +23,19 @@ module.exports = {
         app.engine( "html", require( "ejs" ).renderFile );
 
 
-        pem.createCertificate({days:1, selfSigned:true}, function(err, keys){
-            var httpsServer = https.createServer({key: keys.serviceKey, cert: keys.certificate}, app);
+        var httpsServer = https.createServer( credentials, app);
 
-            httpsServer.listen( config.port, function () {
+        httpsServer.listen( config.port, function () {
 
-                io = io( httpsServer );
+            io = io( httpsServer );
 
-                for ( var callback in onListenStartCallbacks ) {
+            for ( var callback in onListenStartCallbacks ) {
 
-                    if ( onListenStartCallbacks.hasOwnProperty( callback ) ) {
+                if ( onListenStartCallbacks.hasOwnProperty( callback ) ) {
 
-                        onListenStartCallbacks[callback]();
-                    }
+                    onListenStartCallbacks[callback]();
                 }
-            });
+            }
         });
 
     },
