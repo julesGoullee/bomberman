@@ -2,7 +2,6 @@
 
 var config = require( "../../config/config.js" );
 var onListenStartCallbacks = [];
-var http = require( "http" );
 var https = require('https');
 var io = require( "socket.io" );
 var pem = require('pem');
