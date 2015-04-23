@@ -13,11 +13,18 @@ describe( "Maps", function() {
 
     var maps;
 
+    //var player;
+
+    //var spawnPoint = {x:40, z:-64};
+
     beforeEach(function(){
 
         maps = new Maps();
 
         maps.create();
+
+        //player = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+
     });
 
     describe( "Temps blocks methods", function() {
@@ -93,4 +100,75 @@ describe( "Maps", function() {
 
     });
 
+    //describe( "Player methods", function () {
+    //
+    //    it( "Peut ajouter et recuperer player", function () {
+    //
+    //        maps.addObject( player );
+    //
+    //        expect(maps.getPlayers().length ).toEqual( 1 );
+    //
+    //    });
+    //
+    //    it( "Peut récuperer les players alive", function () {
+    //
+    //        maps.addObject( player );
+    //
+    //        var player2 = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+    //
+    //        maps.addObject( player2 );
+    //
+    //        var tab1 = maps.getPlayersAlive();
+    //
+    //        player2.alive = false;
+    //
+    //        var tab2 = maps.getPlayersAlive();
+    //
+    //        expect(tab1).not.toEqual(tab2);
+    //
+    //    });
+    //
+    //    it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
+    //
+    //        var block = new Block( gameMock.assets, { x: 0, z: 0 } );
+    //
+    //        maps.addObject( player );
+    //
+    //        maps.addObject( block );
+    //
+    //        expect( maps.getPlayers().length ).toEqual( 1 );
+    //
+    //    });
+    //
+    //    it( "Peut recuperer un player avec son ID", function () {
+    //
+    //        maps.addObject( player );
+    //
+    //        expect( maps.getPlayerById( player.id ) ).toEqual( player );
+    //
+    //    });
+    //
+    //    it( "Peut recuperer un player avec sa position", function () {
+    //
+    //        maps.addObject( player );
+    //
+    //        expect( maps.getPlayerByPosition( player.roundPosition() ) ).toEqual( player );
+    //
+    //    });
+    //
+    //    it( "Peut supprimer tous les players", function () {
+    //
+    //        var player2 = new Player(2, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+    //
+    //        maps.addObject( player );
+    //
+    //        maps.addObject( player2 );
+    //
+    //        maps.delPlayers();
+    //
+    //        expect( maps.getPlayers().length ).toEqual( 0 );
+    //
+    //    } )
+    //
+    //});
 });
