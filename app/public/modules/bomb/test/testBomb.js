@@ -31,6 +31,8 @@ describe( "Bombe" ,function() {
 
     it( "Peut détruire une bombe", function () {
 
+        expect( bombe.exploded ).toEqual( false );
+
         jasmine.clock().tick( bombe.countDown );
 
         expect( bombe.exploded ).toEqual( true );

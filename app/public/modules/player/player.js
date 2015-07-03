@@ -112,7 +112,7 @@ function Player ( id, name, spawnPoint, assets, blockDim ) {
 
     self.delBombById = function ( Bombid ) {
 
-        for ( var i = 0; i < self.listBombs.length ; i++ ) {//todo test
+        for ( var i = 0; i < self.listBombs.length ; i++ ) {
 
             if ( self.listBombs[i].id === Bombid ) {
 

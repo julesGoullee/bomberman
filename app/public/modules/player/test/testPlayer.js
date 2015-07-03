@@ -54,8 +54,6 @@ describe( "Player", function() {
 
         beforeEach( function () {
 
-            jasmine.clock().install();
-
             bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
         });
 
@@ -147,7 +145,7 @@ describe( "Player", function() {
 
         player.destroy();
 
-        expect( player.alive).toEqual( false );
+        expect( player.alive ).toEqual( false );
     });
 
     /*it( "Place le player au dessus de la maps à sa mort", function () {
@@ -159,7 +157,5 @@ describe( "Player", function() {
         expect( player. position ).toEqual(deathCam);
 
     });*/
-
-    //todo test myPlayer
 
 });

@@ -124,6 +124,19 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
         return null;
     };
 
+    self.getPlayerByPosition = function ( position ) {
+
+        var players = self.getPlayers();
+
+        for ( var i = 0; i < players.length; i++ ){
+            if ( players[i].roundPosition().x === position.x && players[i].roundPosition().z === position.z ) {
+                return players[i];
+            }
+        }
+
+        return null;
+    };
+
     self.delPlayerById = function ( playerId ) {
 
         for ( var i = 0; i < _content.length; i++ ) {
@@ -160,19 +173,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
             }
         }
 
-    };
-
-    self.getPlayerByPosition = function ( position ) {
-
-        var players = self.getPlayers();
-
-        for ( var i = 0; i < players.length; i++ ){
-            if ( players[i].roundPosition().x === position.x && players[i].roundPosition().z === position.z ) {
-                return players[i];
-            }
-        }
-
-        return null;
     };
 
 
@@ -249,6 +249,22 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
         return null;
     };
 
+    self.getBombByPosition = function( position ) {
+
+        var tabBombs = self.getBombs();
+
+        for ( var i = 0; i<tabBombs.length; i++ ) {
+
+            if (position.z === tabBombs[i].position.z && position.x === tabBombs[i].position.x) {
+
+                return tabBombs[i];
+
+            }
+        }
+
+        return false;
+    };
+
     self.delBombs = function () {
 
         var players = self.getPlayers();
@@ -257,22 +273,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
             players[i].delBombs();
         }
-    };
-
-    self.getBombByPosition = function( position ) {
-
-        var tabBombs = self.getBombs();
-
-       for ( var i = 0; i<tabBombs.length; i++ ) {
-
-           if (position.z === tabBombs[i].position.z && position.x === tabBombs[i].position.x) {
-
-               return tabBombs[i];
-
-           }
-       }
-
-        return false;
     };
 
 
@@ -334,8 +334,8 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
                 if( iBlockTemp === tempBlock.length && iBlockPerm === _blocksPermanent.length ){
 
                     casesFree.push({
-                       x: iBlockLargeur,
-                       z: iBlockLongueur
+                        x: iBlockLargeur,
+                        z: iBlockLongueur
                     });
 
                 }

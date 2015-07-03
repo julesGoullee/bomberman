@@ -293,6 +293,22 @@ describe( "Maps", function() {
 
         });
 
+        it( "Peut supprimer un player", function () {
+
+            maps.addObject( player );
+
+            maps.delPlayerById( player.id );
+
+            jasmine.clock().install();
+            jasmine.clock().tick( cfg.destroyPlayerTimer );
+
+            //expect( maps.getPlayers().length ).toEqual( 0 );
+            //TODO pas suprimmer de content mais mesh destroy et player.alive false
+
+            jasmine.clock().uninstall();
+
+        });
+
         it( "Peut supprimer tous les players", function () {
 
             var player2 = new Player(2, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
