@@ -33,13 +33,13 @@ describe( "Room", function() {
         socket1 = utils.clone( mock).socket;
         socket2 = utils.clone( mock).socket;
 
-        stubOnP1 = sinon.stub(socket1, "on", function(event, callback){
+        stubOnP1 = sinon.stub(socket1, "on", function( event, callback ){
 
             if( event === "myPosition" ){
 
                 callbackOnMyPositionP1 = callback;
 
-            }else if( event === "disconnect"){
+            }else if( event === "disconnect" ){
 
                 callbackDisconnectP1 = callback;
 
@@ -49,7 +49,7 @@ describe( "Room", function() {
             }
         });
 
-        stubOnP2 = sinon.stub(socket2, "on", function(event, callback){
+        stubOnP2 = sinon.stub( socket2, "on", function( event, callback ) {
 
             if( event === "myPosition" ){
 

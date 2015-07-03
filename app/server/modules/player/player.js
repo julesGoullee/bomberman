@@ -7,7 +7,8 @@ function Player( socket, name, room ) {
 
     var self = this;
 
-    /*PUBLIC METHODS*/
+
+    //PUBLIC METHODS//
 
     self.id = utils.guid();
 
@@ -15,7 +16,7 @@ function Player( socket, name, room ) {
 
     self.room = room;
 
-    self.kill = 0;
+    self.kills = 0;
 
     self.alive = true;
 
@@ -31,8 +32,75 @@ function Player( socket, name, room ) {
 
     self.name = name;
 
+    self.type = "player";
 
-    /*PRIVATE METHODS*/
+    self.roundPosition = function () {
+
+        function roundValue ( value ) {
+
+            return Math.round( Math.round( value ) / config.blockDim ) *  config.blockDim;
+
+        }
+
+        return {
+            x: roundValue( self.position.x ),
+            z: roundValue( self.position.z )
+        }
+    };
+
+    self.shouldSetBomb = function () {
+
+        return ( self.alive == true ) && (self.listBombs.length < self.powerUp.bombs );
+
+    };
+
+    self.destroy = function () {
+
+        self.alive = false;
+
+    };
+
+    self.move = function( position ) {
+
+        self.position.x = position.x;
+        self.position.z = position.z;
+
+    };
+
+    self.addBomb = function ( bomb ) {
+
+        self.listBombs.push( bomb );
+    };
+
+    self.delBombById = function ( Bombid ) {
+
+        for ( var i = 0; i < self.listBombs.length ; i++ ) {
+
+            if ( self.listBombs[i].id === Bombid ) {
+
+                self.listBombs.splice( i, 1 );
+
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    self.delBombs = function ( ){
+
+        for ( var i = 0; i < self.listBombs.length ; i++ ) {
+
+            self.listBombs[i].deleted();
+        }
+
+        self.listBombs = [];
+
+        return true;
+    };
+
+
+    //PRIVATE METHODS//
 
     function init(){
 

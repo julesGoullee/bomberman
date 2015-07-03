@@ -7,23 +7,39 @@ global.expect = chai.expect;
 global.assert = chai.assert;
 chai.use( sinonChai );
 
+var config = require("../../../config/config.js");
+
 var Maps = require("./../maps.js");
+var Player = require("./../../player/player.js");
+var Block = require("./../../block/block.js");
 
 describe( "Maps", function() {
 
     var maps;
 
-    //var player;
+    var player;
 
-    //var spawnPoint = {x:40, z:-64};
+    var spawnPoint = {x:40, z:-64};
+
+    var mockRoom = {
+        playersSpawnPoint: {
+            getFreePosition: function(){}
+        }
+    };
+
+    sinon.stub( mockRoom.playersSpawnPoint, "getFreePosition", function() {
+        return spawnPoint;
+    });
 
     beforeEach(function(){
+
+        var mockSocket = {};
 
         maps = new Maps();
 
         maps.create();
 
-        //player = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
+        player = new Player( mockSocket, "testPlayer", mockRoom );
 
     });
 
@@ -100,75 +116,658 @@ describe( "Maps", function() {
 
     });
 
-    //describe( "Player methods", function () {
-    //
-    //    it( "Peut ajouter et recuperer player", function () {
-    //
-    //        maps.addObject( player );
-    //
-    //        expect(maps.getPlayers().length ).toEqual( 1 );
-    //
-    //    });
-    //
-    //    it( "Peut r�cuperer les players alive", function () {
-    //
-    //        maps.addObject( player );
-    //
-    //        var player2 = new Player(0, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
-    //
-    //        maps.addObject( player2 );
-    //
-    //        var tab1 = maps.getPlayersAlive();
-    //
-    //        player2.alive = false;
-    //
-    //        var tab2 = maps.getPlayersAlive();
-    //
-    //        expect(tab1).not.toEqual(tab2);
-    //
-    //    });
-    //
-    //    it( "Peut ajouter un player et un block et r�cup�rer uniquement le player", function () {
-    //
-    //        var block = new Block( gameMock.assets, { x: 0, z: 0 } );
-    //
-    //        maps.addObject( player );
-    //
-    //        maps.addObject( block );
-    //
-    //        expect( maps.getPlayers().length ).toEqual( 1 );
-    //
-    //    });
-    //
-    //    it( "Peut recuperer un player avec son ID", function () {
-    //
-    //        maps.addObject( player );
-    //
-    //        expect( maps.getPlayerById( player.id ) ).toEqual( player );
-    //
-    //    });
-    //
-    //    it( "Peut recuperer un player avec sa position", function () {
-    //
-    //        maps.addObject( player );
-    //
-    //        expect( maps.getPlayerByPosition( player.roundPosition() ) ).toEqual( player );
-    //
-    //    });
-    //
-    //    it( "Peut supprimer tous les players", function () {
-    //
-    //        var player2 = new Player(2, "testPlayer", spawnPoint , gameMock.assets, gameMock.blockDim );
-    //
-    //        maps.addObject( player );
-    //
-    //        maps.addObject( player2 );
-    //
-    //        maps.delPlayers();
-    //
-    //        expect( maps.getPlayers().length ).toEqual( 0 );
-    //
-    //    } )
-    //
-    //});
+    describe( "Player methods", function () {
+
+        it( "Peut ajouter et recuperer player", function () {
+
+            maps.addObject( player );
+
+            expect(maps.getPlayers().length ).to.equal( 1 );
+
+        });
+
+        it( "Peut récuperer les players alive", function () {
+
+            maps.addObject( player );
+
+            var mockSocket2 = {};
+            var player2 =  new Player(mockSocket2, "testPlayer", mockRoom);
+
+
+            maps.addObject( player2 );
+
+            var tab1 = maps.getPlayersAlive();
+
+            player2.alive = false;
+
+            var tab2 = maps.getPlayersAlive();
+
+            expect(tab1).not.to.equal(tab2);
+
+        });
+
+        it( "Peut ajouter un player et un block et récupérer uniquement le player", function () {
+
+            var block = new Block( { x: 0, z: 0 } );
+
+            maps.addObject( player );
+
+            maps.addObject( block );
+
+            expect( maps.getPlayers().length ).to.equal( 1 );
+
+        });
+
+        it( "Peut recuperer un player avec son ID", function () {
+
+            maps.addObject( player );
+
+            expect( maps.getPlayerById( player.id ) ).to.equal( player );
+
+        });
+
+        it( "Peut recuperer un player avec sa position", function () {
+
+            maps.addObject( player );
+
+            expect( maps.getPlayerByPosition( player.roundPosition() ) ).to.equal( player );
+
+        });
+
+        it( "Peut supprimer un player", function () {
+
+            maps.addObject( player );
+            expect( maps.getPlayers().length ).to.equal( 1 );
+
+            assert( maps.delPlayerById( player.id ) );
+            //expect( maps.getPlayers().length ).toEqual( 0 );
+            //TODO pas suprimmer de content mais mesh destroy et player.alive false
+
+        });
+
+        it( "Peut supprimer tous les players", function () {
+            var mockSocket2 = {};
+            var player2 =  new Player(mockSocket2, "testPlayer", mockRoom);
+
+            maps.addObject( player );
+
+            maps.addObject( player2 );
+
+            maps.delPlayers();
+
+            expect( maps.getPlayers().length ).to.equal( 0 );
+
+        });
+
+    });
+
+    describe( "Bombs methods", function () {
+
+        describe( "Get", function () {
+
+            it( "Peut récupérer la bombe d'un player", function () {
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                expect( maps.getBombs().length ).to.equal( 1 );
+
+            });
+
+            it( "Peut récupérer deux bombes d'un player", function () {
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                player.position.x = 16;
+
+                maps.setBomb( player );
+
+                expect( maps.getBombs().length ).to.equal( 2 );
+
+            });
+
+            it( "Peut récupérer les bombes de deux players", function () {
+
+                var spawnPoint2 = {x:0, z: 0};
+                var mockSocket2 = {};
+                var mockRoom2 = {
+                    playersSpawnPoint: {
+                        getFreePosition: function(){}
+                    }
+                };
+                sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
+                    return spawnPoint2;
+                });
+
+                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+
+                maps.addObject( player );
+
+                maps.addObject( player2 );
+
+                maps.setBomb( player );
+
+                maps.setBomb( player2 );
+
+                expect( maps.getBombs().length ).to.equal( 2 );
+
+            });
+
+            it( "Peut récupérer deux bombes de deux players", function () {
+                var spawnPoint2 = {x:0, z: 0};
+                var mockSocket2 = {};
+                var mockRoom2 = {
+                    playersSpawnPoint: {
+                        getFreePosition: function(){}
+                    }
+                };
+                sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
+                    return spawnPoint2;
+                });
+
+                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+
+                maps.addObject( player );
+
+                maps.addObject( player2 );
+
+                maps.setBomb( player );
+
+                maps.setBomb( player2 );
+
+                player.position.x = 32;
+                player2.position.x = 8;
+
+                maps.setBomb( player );
+
+                maps.setBomb( player2 );
+
+                expect( maps.getBombs().length).to.equal( 4 );
+
+            });
+
+            it( "Peut récupérer une bombe avec son ID", function () {
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                expect ( maps.getBombsById( player.listBombs[0].id )).to.equal( player.listBombs[0] );
+
+            });
+
+        });
+
+        describe( "Set", function () {
+
+            it( "Ne peut depasser le nombre de bombe maximun", function() {
+
+                var nbBombeMax = player.powerUp.bombs;
+
+                for ( var i = 0; i < nbBombeMax; i++ ) {
+
+                    expect( maps.setBomb( player ) ).to.equal( true );
+                }
+
+                expect( player.listBombs.length ).to.equal( nbBombeMax );
+
+                expect( maps.setBomb( player ) ).to.equal( false );
+
+                expect( player.shouldSetBomb() ).to.equal( false );
+
+                expect( player.listBombs.length ).to.equal( nbBombeMax );
+            });
+
+            it( "Une bombe est présente à la position", function () {
+
+                maps.addObject( player );
+
+                maps.setBomb( player );
+
+                expect( maps.getBombByPosition( player.roundPosition() )).to.equal( player.listBombs[0] );
+
+            });
+
+            it( "Ne peut pas poser de bombe si il est mort", function () {
+
+                maps.addObject( player );
+
+                player.alive = false;
+
+                expect( player.shouldSetBomb()).to.equal(false);
+
+            });
+
+        });
+
+        describe( "Destroy", function () {
+
+            var clock;
+
+            beforeEach( function() {
+
+                clock = sinon.useFakeTimers();
+
+                maps.addObject( player );
+            });
+
+            afterEach(function() {
+
+                clock.restore();
+
+            });
+
+            it( "Peut detruire les blocks en position superieur a la bombe lors de l'explosion", function () {
+
+                player.position.x = -40;
+
+                player.position.z = -64;
+
+
+                assert( maps.setBomb( player ) );
+
+                var positionExpectedAffected = [
+                    {
+                        x: -24,
+                        z: -64
+                    },
+                    {
+                        x: -40,
+                        z: -48
+                    }
+                ];
+
+                var positionNotExpectedAffected = [
+                    {
+                        x: -16,
+                        z: -64
+                    },
+                    {
+                        x: -40,
+                        z: -40
+                    },
+                    {
+                        x: -24,
+                        z: -48
+                    }
+                ];
+
+
+                for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
+
+                    expect( maps.getBlockByPosition( positionExpectedAffected[i] )).not.to.equal( null );
+                }
+
+                for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
+
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[k] )).not.to.equal( null );
+                }
+
+                clock.tick( config.bombCountDown*20 );
+
+                for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
+                    expect( maps.getBlockByPosition( positionExpectedAffected[j]) ).to.equal( null );
+                }
+
+                for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
+
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[l] )).not.to.equal( null );
+                }
+
+            });
+
+            it( "Peut detruire les blocks en position inférieur a la bombe lors de l'explosion", function () {
+
+                player.position.x = 40;
+
+                player.position.z = 64;
+
+                maps.setBomb( player );
+
+                var positionExpectedAffected = [
+                    {
+                        x: 24,
+                        z: 64
+                    },
+                    {
+                        x: 40,
+                        z: 48
+                    }
+                ];
+
+                var positionNotExpectedAffected = [
+                    {
+                        x: 16,
+                        z: 64
+                    },
+                    {
+                        x: 40,
+                        z: 40
+                    },
+                    {
+                        x: 24,
+                        z: 48
+                    }
+                ];
+
+
+                for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
+
+                    expect( maps.getBlockByPosition( positionExpectedAffected[i] )).not.to.equal( null );
+                }
+
+                for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
+
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[k] )).not.to.equal( null );
+                }
+
+                clock.tick( config.bombCountDown );
+
+                for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
+                    expect( maps.getBlockByPosition( positionExpectedAffected[j] )).to.equal( null );
+                }
+
+                for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
+
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[l] )).not.to.equal( null );
+                }
+            });
+
+            it( "Peux stopper une explosion si il y a un block permanent", function () {
+
+                player.position.x = 32;
+
+                player.position.z = 64;
+
+                maps.setBomb( player );
+
+                var positionExpectedAffected = [
+                    {
+                        x: 24,
+                        z: 64
+                    }
+                ];
+
+                var positionNotExpectedAffected = [
+                    {
+                        x: 32,
+                        z: 48
+                    }
+                ];
+
+
+                for ( var i = 0; i < positionExpectedAffected.length; i++ ) {
+
+                    expect( maps.getBlockByPosition( positionExpectedAffected[i] )).not.to.equal( null );
+                }
+
+                for ( var k = 0; k < positionNotExpectedAffected.length; k++ ) {
+
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[k] )).not.to.equal( null );
+                }
+
+                clock.tick( config.bombCountDown );
+
+                for ( var j = 0; j < positionExpectedAffected.length ; j++ ) {
+                    expect( maps.getBlockByPosition( positionExpectedAffected[j] )).to.equal( null );
+                }
+
+                for ( var l = 0; l < positionNotExpectedAffected.length ; l++ ) {
+
+                    expect( maps.getBlockByPosition( positionNotExpectedAffected[l] )).not.to.equal( null );
+                }
+
+            });
+
+            it( "Peut annulé l'explosion d'une bombe d'un joueur", function () {
+
+                maps.setBomb( player );
+
+                maps.delBombs();
+
+                expect( maps.getBombs().length ).to.equal( 0 );
+
+            });
+
+            it( "Peut annulé l'explosion de plusieur bombs d'un joueur", function () {
+
+                maps.setBomb( player );
+
+                maps.setBomb( player );
+
+                maps.delBombs();
+
+                expect( maps.getBombs().length ).to.equal( 0 );
+
+            });
+
+            it( "Peut annulé l'explosion de plusieur joueurs", function () {
+
+                var spawnPoint2 = {x:0, z: 0};
+                var mockSocket2 = {};
+                var mockRoom2 = {
+                    playersSpawnPoint: {
+                        getFreePosition: function(){}
+                    }
+                };
+                sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
+                    return spawnPoint2;
+                });
+
+                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+
+
+                maps.addObject( player2 );
+
+                maps.setBomb( player );
+
+                maps.setBomb( player );
+
+                maps.setBomb( player2 );
+                maps.setBomb( player2 );
+
+
+                maps.delBombs();
+
+                expect( maps.getBombs().length ).to.equal( 0 );
+
+            });
+
+            it ( "Peut se tuer", function () {
+
+                maps.setBomb( player );
+
+                expect( player.kills ).to.equal( 0 );
+
+                expect( player.alive ).to.equal( true );
+
+                clock.tick( config.bombCountDown );
+
+                expect( player.alive ).to.equal( false );
+
+                expect( player.kills ).to.equal( 0 );
+
+            });
+
+            it ( "Peut tuer un deuxieme player et incrémenter son score", function () {
+
+                player.position.x = 32;
+
+                player.position.z = 64;
+
+                var spawnPoint2 = {x:40, z:64};
+                var mockSocket2 = {};
+                var mockRoom2 = {
+                    playersSpawnPoint: {
+                        getFreePosition: function(){}
+                    }
+                };
+                sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
+                    return spawnPoint2;
+                });
+
+                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+
+                maps.addObject( player2 );
+
+                expect( player2.alive ).to.equal( true );
+
+                expect( player.kills).to.equal ( 0 );
+
+                maps.setBomb( player );
+
+                clock.tick( config.bombCountDown );
+
+                expect( player.alive ).to.equal( false );
+
+                expect( player2.alive ).to.equal( false );
+
+                expect( player.kills ).to.equal( 1 );
+
+                expect( player2.kills ).to.equal( 0 );
+
+            });
+
+            it ( "Peut tuer un player ne position superieur a la bombe ", function () {
+
+                maps.setBomb( player );
+
+                player.position.z = -56;
+
+                clock.tick( config.bombCountDown );
+
+                expect( player.alive ).to.equal( false );
+
+            });
+
+            it ( "Peut tuer un player ne position inferieur a la bombe ", function () {
+
+                player.position.z = -56;
+
+                maps.setBomb( player );
+
+                player.position.z = -64;
+
+
+                clock.tick( config.bombCountDown );
+
+                expect( player.alive ).to.equal( false );
+
+            });
+
+            it ( "Ne peut pas tuer un player s'il il y un block temp entre lui et la bombe", function () {
+
+                player.position.z = -56;
+
+                maps.setBomb( player );
+
+                player.position.z = -40;
+
+
+                clock.tick( config.bombCountDown );
+
+                expect( player.alive ).to.equal( true );
+
+            });
+
+            it ( "Ne peut pas tuer un player s'il y a un block permanent entre le player et la bombe ", function () {
+
+                player.position.z = -56;
+
+                maps.setBomb( player );
+
+                player.position.x = 24;
+
+
+                clock.tick( config.bombCountDown );
+
+                expect( player.alive ).to.equal( true );
+
+            });
+
+        });
+
+        describe("Reaction en chaine", function(){
+
+            var clock;
+
+            beforeEach( function() {
+
+                clock = sinon.useFakeTimers();
+
+                maps.addObject( player );
+
+            });
+
+            afterEach(function() {
+
+                clock.uninstall();
+            });
+
+            it( "Peut detruire les blocks en position superieur a la bombe lors de l'explosion", function () {
+
+                //1
+                player.position.x = 32;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -64} ) ).not.to.equal( null );
+
+                player.position.x = 42;
+                player.position.z = -54;
+
+                clock.tick( config.bombCountDown );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -64} ) ).to.equal( null );
+
+                // 2
+                player.position.x = 24;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -56} ) ).not.to.equal( null );
+                expect( maps.getBlockByPosition( {x: 16, z: -64} ) ).not.to.equal( null );
+
+                player.position.x = 42;
+                player.position.z = -54;
+
+                clock.tick( config.bombCountDown );
+
+                expect( maps.getBlockByPosition( {x: 24, z: -56} )).to.equal( null );
+                expect( maps.getBlockByPosition( {x: 16, z: -64} )).to.equal( null );
+
+                // 3 deux bombe cote a cote ( 2 block sur deux axes different)
+
+                player.position.x = 16;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                clock.tick( config.bombCountDown / 2 );
+
+                player.position.x = 24;
+                player.position.z = -64;
+
+                maps.setBomb( player );
+
+                player.position.x = 42;
+                player.position.z = -54;
+
+                expect( maps.getBlockByPosition( {x: 8, z: -64} ) ).not.to.equal( null );
+                expect( maps.getBlockByPosition( {x: 24, z: -48} ) ).not.to.equal( null );
+
+                clock.tick( config.bombCountDown / 2 );
+
+                expect( maps.getBlockByPosition( {x: 8, z: -64} ) ).to.equal( null );
+                expect( maps.getBlockByPosition( {x: 24, z: -48} ) ).to.equal( null );
+
+            });
+        });
+
+    });
 });
