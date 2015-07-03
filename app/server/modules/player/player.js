@@ -3,7 +3,7 @@
 var config = require("../../config/config.js");
 var utils = require("../utils/utils.js");
 
-function Player( socket, name, room ) {
+function Player( token, socket, name, room ) {
 
     var self = this;
 
@@ -11,6 +11,8 @@ function Player( socket, name, room ) {
     //PUBLIC METHODS//
 
     self.id = utils.guid();
+
+    self.token = token;
 
     self.socket = socket;
 

@@ -69,7 +69,7 @@ function Room() {
 
     self.addPlayer = function( userProfil ) {
 
-        var player = new Player( userProfil.socket, userProfil.name, self );
+        var player = new Player( userProfil.token, userProfil.socket, userProfil.name, self );
 
         _map.addObject( player );
 
@@ -84,6 +84,10 @@ function Room() {
         listenDisconnect( player );
 
         listenBomb( player );
+    };
+
+    self.alreadyJoined = function( token ){
+
     };
 
     self.delPlayerById = function( id ) {
@@ -185,7 +189,8 @@ function Room() {
     function listenPlayerPosition( player ){
 
         player.socket.on( "myPosition" , function ( position ) {
-            //TODO l'actualiser dans la carte
+
+            player.move( position );
             broadcastWithoutMe( player, "onPlayerMove", { id: player.id, position: position } );
         });
     }
@@ -195,7 +200,7 @@ function Room() {
         player.socket.on( "disconnect", function() {
             _map.delPlayerById( player.id );
 
-            //console.log( "Player disconnect: " + player.name + " on room: " + self.id );
+            console.log( "Player disconnect: " + player.id + " on room: " + self.id );
 
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 

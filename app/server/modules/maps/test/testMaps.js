@@ -34,12 +34,13 @@ describe( "Maps", function() {
     beforeEach(function(){
 
         var mockSocket = {};
+        var mockToken = "t1";
 
         maps = new Maps();
 
         maps.create();
 
-        player = new Player( mockSocket, "testPlayer", mockRoom );
+        player = new Player( mockToken, mockSocket, "testPlayer", mockRoom );
 
     });
 
@@ -131,7 +132,8 @@ describe( "Maps", function() {
             maps.addObject( player );
 
             var mockSocket2 = {};
-            var player2 =  new Player(mockSocket2, "testPlayer", mockRoom);
+            var mockToken2 = "t2";
+            var player2 =  new Player( mockToken2, mockSocket2, "testPlayer", mockRoom);
 
 
             maps.addObject( player2 );
@@ -186,8 +188,10 @@ describe( "Maps", function() {
         });
 
         it( "Peut supprimer tous les players", function () {
+
             var mockSocket2 = {};
-            var player2 =  new Player(mockSocket2, "testPlayer", mockRoom);
+            var mockToken2 = "t2";
+            var player2 =  new Player( mockToken2, mockSocket2, "testPlayer", mockRoom);
 
             maps.addObject( player );
 
@@ -238,11 +242,13 @@ describe( "Maps", function() {
                         getFreePosition: function(){}
                     }
                 };
+                var mockToken2 = "t2";
+
                 sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
                     return spawnPoint2;
                 });
 
-                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+                var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
 
                 maps.addObject( player );
 
@@ -264,11 +270,12 @@ describe( "Maps", function() {
                         getFreePosition: function(){}
                     }
                 };
+                var mockToken2 = "t2";
                 sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
                     return spawnPoint2;
                 });
 
-                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+                var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
 
                 maps.addObject( player );
 
@@ -553,11 +560,12 @@ describe( "Maps", function() {
                         getFreePosition: function(){}
                     }
                 };
+                var mockToken2 = "t2";
                 sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
                     return spawnPoint2;
                 });
 
-                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+                var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
 
 
                 maps.addObject( player2 );
@@ -605,11 +613,12 @@ describe( "Maps", function() {
                         getFreePosition: function(){}
                     }
                 };
+                var mockToken2 = "t2";
                 sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
                     return spawnPoint2;
                 });
 
-                var player2 =  new Player(mockSocket2, "testPlayer2", mockRoom2);
+                var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
 
                 maps.addObject( player2 );
 

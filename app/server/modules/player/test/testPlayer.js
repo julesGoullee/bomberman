@@ -29,8 +29,9 @@ describe( "Player", function() {
     beforeEach(function(){
 
         var mockSocket = {};
+        var mockToken1 = "t1";
 
-        player = new Player(mockSocket, "testPlayer", mockRoom);
+        player = new Player( mockToken1, mockSocket, "testPlayer", mockRoom );
 
     });
 

@@ -28,10 +28,11 @@ describe( "Bombe" ,function() {
 
     beforeEach( function() {
         var mockSocket = {};
+        var mockToken = "t1";
 
         clock = sinon.useFakeTimers();
 
-        player = new Player(mockSocket, "testPlayer", mockRoom);
+        player = new Player( mockToken, mockSocket, "testPlayer", mockRoom );
 
         bombe = new Bombe( player, player.position );
     });

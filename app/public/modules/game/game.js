@@ -83,8 +83,6 @@ function Game ( canvasId ) {
 
                     var restore = new Restore( notifier, map, myPlayer );
 
-                    self.menuPlayers.addPlayer( myPlayer.player );
-
                     restore.showRestartButton();
 
                     cameraSwitcher.showSwitchButton();

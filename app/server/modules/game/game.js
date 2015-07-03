@@ -10,7 +10,9 @@ var _playerInHome;
 
 function onPlayerConnectionRoom( userProfil ) {
 
-    if ( _roomList.length === 0 || _roomList[ _roomList.length - 1 ].players.length === config.maxPlayerPeerParty ) {
+    if ( _roomList.length === 0 ||
+        _roomList[ _roomList.length - 1 ].players.length === config.maxPlayerPeerParty ||
+        _roomList[ _roomList.length -1 ].alreadyJoined( userProfil.token ) ) {
 
         _roomList.push( new Room () );
     }
