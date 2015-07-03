@@ -164,7 +164,7 @@ function Room() {
     function listenPlayerPosition( player ){
 
         player.socket.on( "myPosition" , function ( position ) {
-
+            //TODO envoyer la position au autre l'actualiser dans la carte
             broadcastWithoutMe( player, "onPlayerMove", { id: player.id, position: position } );
         });
     }
@@ -188,7 +188,7 @@ function Room() {
     function listenBomb( player ){
 
         player.socket.on( "setBomb", function(){
-
+            //TODO envoyer setBomb au autre l'actualiser dans la carte
             broadcastWithoutMe( player, "setBomb", { id: player.id } );
 
         });

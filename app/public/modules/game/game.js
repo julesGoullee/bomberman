@@ -183,9 +183,9 @@ function Game ( canvasId ) {
                         }
                     });
 
-                    self.scene.beginAnimation( self.assets[i].meshs.shape, 506, 550, false, 1, function() {
-
-                    });
+                    //self.scene.beginAnimation( self.assets["explosionFlammes"][0], 0, 40, true, 1, function() {
+                    //
+                    //});
                     //var bot = new Bot(playersSpawnPoint[2], maps, self.scene, _blockDim, self.assets);
                 });
 

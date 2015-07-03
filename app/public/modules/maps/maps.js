@@ -89,7 +89,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
         return tabPlayer;
     };
 
-
     self.getPlayersAlive = function() {
 
         var tabPlayers = self.getPlayers();
@@ -107,9 +106,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
         return playersAlive
     };
-
-
-
 
     self.getPlayerById = function ( id ) {
 
