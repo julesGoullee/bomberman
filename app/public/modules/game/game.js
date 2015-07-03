@@ -40,167 +40,177 @@ function Game ( canvasId ) {
     self.auth = new Auth( self.connector, self.popup );
 
     self.menuPlayers = new MenuPlayers();
-    
+
     self.assets = {};
 
     self.init = function () {
 
         self.auth.ready( function( userProfil ) {
 
-            var preloader = new Preloader( self.scene, _meshPreload, self.assets);
+            var preloadFinish = false;
+            var getMapFinish = false;
 
-            preloader.onFinish( function(){
+            var mapJson;
+            new Preloader( self.scene, _meshPreload, self.assets).onFinish( function() {
+                preloadFinish = true;
+                render();
+            });
+
+            self.connector.getMap( function( data ) {
+                mapJson = data;
+                getMapFinish = true;
+                render();
+            });
+
+            function render (){
+
+                if( !preloadFinish || ! getMapFinish) return;
 
                 var notifier = new Notifier();
 
                 var keyBinder = new KeyBinder();
 
                 var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
-
-                self.connector.getMap( function( mapJson ){
-
-                    var map = new Maps( self.assets, _blockDim, mapJson.blockTemp, self.scene, self.menuPlayers );
+                var map = new Maps( self.assets, _blockDim, mapJson.blockTemp, self.scene, self.menuPlayers );
 
 
-                    // Creation du game
-                    for ( var i = 0; i < mapJson.players.length; i++ ) {
+                // Creation du game
+                for ( var i = 0; i < mapJson.players.length; i++ ) {
 
-                        var playerJson = mapJson.players[i];
-                        var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, self.assets, _blockDim );
+                    var playerJson = mapJson.players[i];
+                    var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, self.assets, _blockDim );
 
-                        if ( playerJson.isMine ) {
+                    if ( playerJson.isMine ) {
 
-                            var myPlayer = new MyPlayer( self.scene, playerJson.position, self.connector, cameraSwitcher );
-                            myPlayer.player = player;
-                            myPlayer.init();
-                        }
-
-                        map.addObject( player );
-                        self.menuPlayers.addPlayer( player );
+                        var myPlayer = new MyPlayer( self.scene, playerJson.position, self.connector, cameraSwitcher );
+                        myPlayer.player = player;
+                        myPlayer.init();
                     }
 
-                    var freeCamera = new FreeCamera( self );
+                    map.addObject( player );
+                    self.menuPlayers.addPlayer( player );
+                }
 
-                    var restore = new Restore( notifier, map, myPlayer );
+                var freeCamera = new FreeCamera( self );
 
-                    restore.showRestartButton();
+                var restore = new Restore( notifier, map, myPlayer );
 
-                    cameraSwitcher.showSwitchButton();
+                restore.showRestartButton();
 
-                    keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
+                cameraSwitcher.showSwitchButton();
 
-                    keyBinder.onRestore( restore.run );
+                keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
-                    map.create();
+                keyBinder.onRestore( restore.run );
 
-                    map.addObject( myPlayer.player );
+                map.create();
 
-                    keyBinder.onSetBomb( function() {
+                map.addObject( myPlayer.player );
 
-                        if ( _pointerLocked ) {
+                keyBinder.onSetBomb( function() {
 
-                            if( map.setBomb( myPlayer.player ) ){
+                    if ( _pointerLocked ) {
 
-                                self.connector.setBomb( myPlayer.player.id );
-                            }
+                        if( map.setBomb( myPlayer.player ) ){
+
+                            self.connector.setBomb( myPlayer.player.id );
                         }
-                    });
-
-                    initPointerLock();
-
-                    _engine.runRenderLoop( function () {
-
-                        self.scene.render();
-
-                        myPlayer.renderMyPlayer();
-
-                        map.playerLootPowerUp();
-
-                        //todo ameliorer le debug des positions
-                        document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
-                    });
-
-                    self.connector.onPlayerMove( function( id, position ) {
-
-                        var player = map.getPlayerById( id );
-
-                        if( player) {
-
-                            player.move( position );
-
-                            var animable =  self.scene.getAnimatableByTarget( player.meshs.shape);
-
-                            if( player.timeOut ){
-
-                                clearTimeout( player.timeOut );
-                            }
-
-                            if( player.lastAnimRun ){
-
-                                animable && animable.stop();
-                                delete player.lastAnimRun ;
-                            }
-
-                            if( !animable ) {
-
-                                self.scene.beginAnimation( player.meshs.shape, 0, 20, false, 1, function(){
-
-                                    if( player.timeOut ){
-                                        clearTimeout(player.timeOut );
-                                    }
-
-                                    player.timeOut = setTimeout( function(){
-
-                                        if( player.lastAnim ) {
-
-                                            player.lastAnimRun = true;
-
-                                            self.scene.beginAnimation( player.meshs.shape,308, 458, true, 1 );
-
-                                        }
-                                    },100);
-
-                                    player.lastAnim = true;
-                                });
-
-                            }
-                        }
-                    });
-
-                    self.connector.onPlayerSetBomb( function( id ) {
-
-                        var player = map.getPlayerById( id );
-
-                        if( player ) {
-
-                            map.setBomb( player );
-                        }
-                    });
-
-                    self.connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){
-
-                        var player = new Player( id, name, position, powerUp, alive, kills, self.assets, _blockDim );
-
-                        self.menuPlayers.addPlayer( player );
-
-                        map.addObject( player );
-
-                    });
-
-                    self.connector.onPlayerDisconnect( function( playerId ){
-
-                        map.delPlayerById( playerId );
-
-                        self.menuPlayers.delPlayer( playerId );
-
-                    });
-                    //self.scene.beginAnimation( self.assets["explosionFlammes"][0], 0, 40, true, 1, function() {
-                    //
-                    //});
-                    //var bot = new Bot(playersSpawnPoint[2], maps, self.scene, _blockDim, self.assets);
+                    }
                 });
 
-            });
+                initPointerLock();
+
+                _engine.runRenderLoop( function () {
+
+                    self.scene.render();
+
+                    myPlayer.renderMyPlayer();
+
+                    map.playerLootPowerUp();
+
+                    //todo ameliorer le debug des positions
+                    document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
+                });
+
+                self.connector.onPlayerMove( function( id, position ) {
+
+                    var player = map.getPlayerById( id );
+
+                    if( player) {
+
+                        player.move( position );
+
+                        var animable =  self.scene.getAnimatableByTarget( player.meshs.shape);
+
+                        if( player.timeOut ){
+
+                            clearTimeout( player.timeOut );
+                        }
+
+                        if( player.lastAnimRun ){
+
+                            animable && animable.stop();
+                            delete player.lastAnimRun ;
+                        }
+
+                        if( !animable ) {
+
+                            self.scene.beginAnimation( player.meshs.shape, 0, 20, false, 1, function(){
+
+                                if( player.timeOut ){
+                                    clearTimeout(player.timeOut );
+                                }
+
+                                player.timeOut = setTimeout( function(){
+
+                                    if( player.lastAnim ) {
+
+                                        player.lastAnimRun = true;
+
+                                        self.scene.beginAnimation( player.meshs.shape,308, 458, true, 1 );
+
+                                    }
+                                },100);
+
+                                player.lastAnim = true;
+                            });
+
+                        }
+                    }
+                });
+
+                self.connector.onPlayerSetBomb( function( id ) {
+
+                    var player = map.getPlayerById( id );
+
+                    if( player ) {
+
+                        map.setBomb( player );
+                    }
+                });
+
+                self.connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){
+
+                    var player = new Player( id, name, position, powerUp, alive, kills, self.assets, _blockDim );
+
+                    self.menuPlayers.addPlayer( player );
+
+                    map.addObject( player );
+
+                });
+
+                self.connector.onPlayerDisconnect( function( playerId ){
+
+                    map.delPlayerById( playerId );
+
+                    self.menuPlayers.delPlayer( playerId );
+
+                });
+                //self.scene.beginAnimation( self.assets["explosionFlammes"][0], 0, 40, true, 1, function() {
+                //
+                //});
+                //var bot = new Bot(playersSpawnPoint[2], maps, self.scene, _blockDim, self.assets);
+            }
 
         });
     };
@@ -268,7 +278,7 @@ function Game ( canvasId ) {
                 _canvas.requestPointerLock();
             }
         }, false);
- 
+
         var pointerLockChange = function () {
 
             var cameraActive = self.scene.activeCamera;
