@@ -9,10 +9,10 @@ function Room() {
 
     var self = this;
 
-    var _map = new Maps();
+    var _map;
+
 
     //PUBLIC METHODS
-
 
     self.playersSpawnPoint = [
         {
@@ -63,7 +63,7 @@ function Room() {
         return false;
     };
 
-    self.players = [];
+    self.players = [];//TODO synchronisé avec la map
 
     self.id = utils.guid();
 
@@ -71,11 +71,11 @@ function Room() {
 
         var player = new Player( userProfil.socket, userProfil.name, self );
 
+        _map.addObject( player );
+
         self.players.push( player );
 
-        sendPlayerPosition( player );
-
-        sendOldPlayersToNew( player );
+        sendMapToNewPlayer( player );
 
         sendNewPlayerToOld( player );
 
@@ -91,8 +91,8 @@ function Room() {
         for ( var i = 0 ; i < self.players.length ; i ++ ) {
 
             if ( self.players[i].id === id ) {
-
-               self.players.splice( i , 1);
+                _map.delPlayerById( id );
+                self.players.splice( i , 1);
             }
         }
     };
@@ -110,26 +110,15 @@ function Room() {
         }
     }
 
-    function sendOldPlayersToNew ( player ) {
-
-        var otherPlayers = getOtherPlayer( player );
-
-        for ( var i = 0; i < otherPlayers.length ; i++ ) {
-
-            player.socket.emit( "newPlayer", {
-                id: otherPlayers[i].id,
-                name: otherPlayers[i].name,
-                position: otherPlayers[i].position
-            });
-        }
-    }
-
     function sendNewPlayerToOld ( player ){
 
         broadcastWithoutMe( player, "newPlayer", {
             id: player.id,
-            name: player.name,
-            position: player.position
+            kills: player.kills,
+            alive: player.alive,
+            position: player.position,
+            powerUp: player.powerUp,
+            name: player.name
         });
 
     }
@@ -151,20 +140,52 @@ function Room() {
 
 
     //Player event
-    function sendMapNewPlayer( newPlayer ){
 
-    }
+    function sendMapToNewPlayer( newPlayer ){
 
-    function sendPlayerPosition( newPlayer ){
+        var blocksTempJson = [];
+        var playersJson = [];
 
-        newPlayer.socket.emit( "myPosition" , newPlayer.position );
+        var players = _map.getPlayers();
 
+        for ( var i = 0; i < players.length; i++ ) {
+            var player = players[i];
+
+            var playerJson = {
+                id: player.id,
+                kills: player.kills,
+                alive: player.alive,
+                position: player.position,
+                powerUp: player.powerUp,
+                name: player.name
+            };
+
+            if( player.id === newPlayer.id ){
+                playerJson.isMine = true;
+            }
+
+            playersJson.push( playerJson );
+        }
+
+        var blocksTemp = _map.getBlocks();
+        for ( var j = 0; j < blocksTemp.length; j++ ) {
+            var blockTemp = blocksTemp[j];
+            blocksTempJson.push({
+                id: blockTemp.id,
+                position: blockTemp.position
+            });
+        }
+
+        newPlayer.socket.emit("map", {
+            player: playersJson,
+            blockTemp: blocksTempJson
+        });
     }
 
     function listenPlayerPosition( player ){
 
         player.socket.on( "myPosition" , function ( position ) {
-            //TODO envoyer la position au autre l'actualiser dans la carte
+            //TODO l'actualiser dans la carte
             broadcastWithoutMe( player, "onPlayerMove", { id: player.id, position: position } );
         });
     }
@@ -188,12 +209,19 @@ function Room() {
     function listenBomb( player ){
 
         player.socket.on( "setBomb", function(){
-            //TODO envoyer setBomb au autre l'actualiser dans la carte
+            //TODO  l'actualiser dans la carte
             broadcastWithoutMe( player, "setBomb", { id: player.id } );
 
         });
 
     }
+
+    function init(){
+        _map = new Maps();
+        _map.create();
+    }
+
+    init();
 }
 
 module.exports = Room;

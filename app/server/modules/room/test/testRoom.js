@@ -82,9 +82,14 @@ describe( "Room", function() {
         expect( _room.players[0].position.z ).to.equal( _room.playersSpawnPoint[0].z );
     });
 
-    it( "Peut notifier sa position au player", function(){
+    it( "Peut notifier la map au player", function(){
 
-        assert( spyEmitP1.calledWith( "myPosition", _room.players[0].position ) );
+        expect(spyEmitP1.args[0][0]).to.equal("map");
+        var jsonMap = spyEmitP1.args[0][1];
+        expect(jsonMap.player.length).to.equal(1);
+        expect(jsonMap.player[0].isMine).to.equal(true);
+        expect(jsonMap.blockTemp.length).to.equal(135);
+
     });
 
     describe( "deuxieme player", function() {
@@ -97,14 +102,18 @@ describe( "Room", function() {
 
         it( "Peut ajouter deux player a la bonne position et notifier la presence de l'un a l'autre", function(){
 
-            assert( spyEmitP2.calledWith( "myPosition", _room.players[1].position ) );
+            expect(spyEmitP2.args[0][0]).to.equal("map");
+            var jsonMap = spyEmitP2.args[0][1];
+            expect(jsonMap.player.length).to.equal(2);
+
+            expect(jsonMap.player[0].isMine).to.equal(undefined);
+            expect(jsonMap.player[0].name).to.equal("player1");
+            expect(jsonMap.player[1].isMine).to.equal(true);
+            expect(jsonMap.blockTemp.length).to.equal(135);
 
 
-            assert( spyEmitP1.calledWith( "newPlayer",
-                { id: _room.players[1].id, name: _room.players[1].name, position: _room.players[1].position } ) );
-
-            assert( spyEmitP2.calledWith( "newPlayer",
-                { id: _room.players[0].id, name: _room.players[0].name, position: _room.players[0].position } ) );
+            expect(spyEmitP1.args[1][0]).to.equal("newPlayer");
+            expect(spyEmitP1.args[1][1].name).to.equal("player2");
 
         });
 

@@ -200,7 +200,7 @@ function Maps(){
         return null;
     };
 
-    self.getTempsBlocks =  function(){
+    self.getTempsBlocks =  function() {
         var tabBlocks = [];
 
         var i = 0;
@@ -458,7 +458,7 @@ function Maps(){
         ];
     }
 
-    function createPermanentBlock(){
+    function createPermanentBlock() {
 
         for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
 
@@ -480,7 +480,7 @@ function Maps(){
         }
     }
 
-    function positionHavePermBlock ( position ){
+    function positionHavePermBlock ( position ) {
 
         for ( var i = 0; i < _blocksPermanent.length; i++ ) {
 
@@ -493,7 +493,7 @@ function Maps(){
         return false;
     }
 
-    function createTemporaireBlock (){
+    function createTemporaireBlock () {
 
         function thisPositionMustBeFree ( position ) {
 
@@ -524,23 +524,6 @@ function Maps(){
                     _content.push( new Block( blockPosition ) );
                 }
             }
-
-        }
-    }
-
-    function createPowerUp () {
-
-        var blocks = self.getBlocks();
-
-        for ( var i = 0; i < config.nbPowerUp; i++ ) {
-
-            var positionBlock = Math.floor(Math.random() * (blocks.length - 1));
-
-            var position = blocks[positionBlock].position;
-
-            blocks.splice(positionBlock, 1);
-
-            _powerUp.push( new PowerUp( position, "", "", _assets ) );
 
         }
     }
