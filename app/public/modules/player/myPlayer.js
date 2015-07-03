@@ -1,6 +1,6 @@
 "use strict";
 
-function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraSwitcher ) {
+function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     var self = this;
 
@@ -22,8 +22,18 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
 
     //PUBLIC METHODS//
 
-    self.player = new Player( 0, name, spawnPoint, assets, blockDim );
+    self.player;
 
+    self.init = function(){
+
+        self.camera = initCamera();
+
+        _scene.activeCamera = self.camera;
+
+        cameraPlayerAttach();
+
+        checkMovePlayer();
+    };
     //scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true); animRun
 
     self.renderMyPlayer = function() {
@@ -71,16 +81,6 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
     };
     
     //PRIVATE METHODS//
-    function init(){
-
-        self.camera = initCamera();
-
-        _scene.activeCamera = self.camera;
-
-        cameraPlayerAttach();
-
-        checkMovePlayer();
-    }
 
     function death() {
 
@@ -155,7 +155,5 @@ function MyPlayer( scene, blockDim, name, spawnPoint, assets, connector, cameraS
 
         setTimeout( checkMovePlayer, 100);
     }
-
-    init();
 }
 

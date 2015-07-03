@@ -8,7 +8,7 @@ describe( "Bombe" ,function() {
 
         jasmine.clock().install();
 
-        player = new Player(0, "testPlayer", spawnPoint, gameMock.assets, gameMock.blockDim );
+        player = new Player(0, "testPlayer", spawnPoint, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, gameMock.assets, gameMock.blockDim );
 
         bombe = new Bombe( player, player.position,  gameMock.assets, gameMock.blockDim );
     });

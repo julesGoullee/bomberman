@@ -55,33 +55,29 @@ function Game ( canvasId ) {
 
                 var keyBinder = new KeyBinder();
 
-                var map = new Maps( self.assets, _blockDim, self.scene, self.menuPlayers );
-
                 var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
-                self.connector.onNewPlayer( function( id, name, position ){
+                self.connector.getMap( function( mapJson ){
 
-                    var player = new Player( id, name, position, self.assets, _blockDim );
+                    var map = new Maps( self.assets, _blockDim, mapJson.blockTemp, self.scene, self.menuPlayers );
 
-                    self.menuPlayers.addPlayer( player );
-
-                    map.addObject( player );
-
-                });
-
-                self.connector.onPlayerDisconnect( function( playerId ){
-
-                    map.delPlayerById( playerId );
-
-                    self.menuPlayers.delPlayer( playerId );
-
-                });
-
-                self.connector.getMap( function( position ){
 
                     // Creation du game
+                    for ( var i = 0; i < mapJson.players.length; i++ ) {
 
-                    var myPlayer = new MyPlayer( self.scene, _blockDim, userProfil.name , position, self.assets, self.connector, cameraSwitcher );
+                        var playerJson = mapJson.players[i];
+                        var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, self.assets, _blockDim );
+
+                        if ( playerJson.isMine ) {
+
+                            var myPlayer = new MyPlayer( self.scene, playerJson.position, self.connector, cameraSwitcher );
+                            myPlayer.player = player;
+                            myPlayer.init();
+                        }
+
+                        map.addObject( player );
+                        self.menuPlayers.addPlayer( player );
+                    }
 
                     var freeCamera = new FreeCamera( self );
 
@@ -183,6 +179,23 @@ function Game ( canvasId ) {
                         }
                     });
 
+                    self.connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){
+
+                        var player = new Player( id, name, position, powerUp, alive, kills, self.assets, _blockDim );
+
+                        self.menuPlayers.addPlayer( player );
+
+                        map.addObject( player );
+
+                    });
+
+                    self.connector.onPlayerDisconnect( function( playerId ){
+
+                        map.delPlayerById( playerId );
+
+                        self.menuPlayers.delPlayer( playerId );
+
+                    });
                     //self.scene.beginAnimation( self.assets["explosionFlammes"][0], 0, 40, true, 1, function() {
                     //
                     //});

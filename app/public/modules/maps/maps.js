@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps( assets, blockDim, scene, menuPlayers ) {
+function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
     var self = this;
 
@@ -45,8 +45,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
     self.create = function () {
 
         createGroundMeshs();
-
-        createPositionMustFree();
 
         createPermanentBlock();
 
@@ -526,64 +524,6 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
     //PRIVATE METHODS//
 
-    function createPositionMustFree (){
-
-        _positionMustFree = [
-            // pour les 4 angles la maps
-            // angle 1
-            {
-                x: _colLength * blockDim / 2,
-                z: _lineLength * blockDim / 2
-            },
-            {
-                x: ( _colLength * blockDim / 2 ) - blockDim,
-                z: ( _lineLength * blockDim / 2 )
-            },
-            {
-                x: ( _colLength * blockDim / 2 ),
-                z: ( _lineLength * blockDim / 2 ) - blockDim
-            },
-            //angle 2
-            {
-                x: -_colLength * blockDim / 2,
-                z: -_lineLength * blockDim / 2
-            },
-            {
-                x: ( -_colLength * blockDim / 2 ) + blockDim,
-                z: ( -_lineLength * blockDim / 2 )
-            },
-            {
-                x: ( -_colLength * blockDim / 2 ),
-                z: ( -_lineLength * blockDim / 2 ) + blockDim
-            },
-            // angle 3
-            {
-                x: -_colLength * blockDim / 2,
-                z: _lineLength * blockDim / 2
-            },
-            {
-                x: ( -_colLength * blockDim / 2 ) + blockDim,
-                z: ( _lineLength * blockDim / 2 )
-            },
-            {
-                x: ( -_colLength * blockDim / 2 ),
-                z: ( _lineLength * blockDim / 2 ) - blockDim
-            },
-            //angle 4
-            {
-                x: _colLength * blockDim / 2,
-                z: -_lineLength * blockDim / 2
-            },
-            {
-                x: ( _colLength * blockDim / 2 ) - blockDim,
-                z: ( -_lineLength * blockDim / 2 )
-            },
-            {
-                x: ( _colLength * blockDim / 2 ),
-                z: ( -_lineLength * blockDim / 2 ) + blockDim
-            }
-        ];
-    }
 
     function createGroundMeshs () {
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
@@ -655,36 +595,10 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
 
     function createTemporaireBlock (){
 
-        function thisPositionMustBeFree ( position ) {
+        for ( var i = 0; i < blocksTemp.length; i++ ) {
 
-            for ( var i = 0; i < _positionMustFree.length; i++ ) {
-
-                if(_positionMustFree[i].x === position.x && _positionMustFree[i].z === position.z ) {
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        for ( var iBlockLargeur = -_colLength / 2 ; iBlockLargeur <= _colLength / 2 ; iBlockLargeur++ ) {
-
-            for ( var iBlockLongueur = - _lineLength / 2 ; iBlockLongueur <= _lineLength / 2 ; iBlockLongueur++ ) {
-
-                var blockPosition = {
-
-                    x: iBlockLargeur * _blockDim,
-
-                    z: iBlockLongueur * _blockDim
-                };
-
-                if ( !positionHavePermBlock( blockPosition ) && !thisPositionMustBeFree( blockPosition ) ) {
-
-                    _content.push( new Block( _assets, blockPosition ) );
-                }
-            }
-
+            var blockTemp = blocksTemp[i];
+            _content.push( new Block( _assets, blockTemp.position ) );
         }
     }
 

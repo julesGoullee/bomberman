@@ -35,9 +35,9 @@ function Connector () {
     //Game
     self.getMap = function( callback ) {
 
-        _socket.on( "map", function ( myPosition ) {
-            debugger;
-            callback(myPosition);
+        _socket.on( "map", function ( map ) {
+
+            callback(map);
         });
 
         _socket.emit( "ready", {} );
@@ -52,7 +52,7 @@ function Connector () {
 
         _socket.on( "newPlayer", function( playerData ) {
 
-            callback( playerData.id, playerData.name, playerData.position );
+            callback( playerData.id, playerData.name, playerData.position, playerData.powerUp, playerData.alive, playerData.kills );
         });
     };
 
