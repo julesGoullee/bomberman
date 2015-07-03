@@ -33,7 +33,7 @@ describe("Game", function() {
 
         for ( var i = 0 ; i < config.maxPlayerPeerParty; i ++ ) {
 
-            mock.socketHandlerOnConnectCallbacks[0]( { name: "j1", socket: mock.socket } );
+            mock.socketHandlerOnConnectCallbacks[0]( { name: "j"+i , socket: mock.socket, token : "t"+i } );
         }
 
         expect( _game.getRoomList().length ).to.equal( 1 );
@@ -44,9 +44,20 @@ describe("Game", function() {
 
         for ( var i = 0 ; i <= config.maxPlayerPeerParty ; i ++ ) {
 
-            mock.socketHandlerOnConnectCallbacks[0]( { name: "j" + i, socket: mock.socket } );
+            mock.socketHandlerOnConnectCallbacks[0]( { name: "j" + i, socket: mock.socket, token : "t"+i } );
         }
 
+        expect( _game.getRoomList().length ).to.equal( 2 );
+
+    });
+
+    it( "Ne Peux ajouter le meme player dans la meme partis", function() {
+
+
+        mock.socketHandlerOnConnectCallbacks[0]( { name: "j1", socket: mock.socket, token : "t2" } );
+        assert( _game.getRoomList()[0].alreadyJoined("t2") );
+
+        mock.socketHandlerOnConnectCallbacks[0]( { name: "j1", socket: mock.socket, token : "t2" } );
         expect( _game.getRoomList().length ).to.equal( 2 );
 
     });

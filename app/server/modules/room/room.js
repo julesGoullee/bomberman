@@ -87,7 +87,13 @@ function Room() {
     };
 
     self.alreadyJoined = function( token ){
-
+        for ( var i = 0; i < self.players.length; i++ ) {
+            var player = self.players[i];
+            if( player.token === token ){
+                return true;
+            }
+        }
+        return false;
     };
 
     self.delPlayerById = function( id ) {
@@ -200,7 +206,7 @@ function Room() {
         player.socket.on( "disconnect", function() {
             _map.delPlayerById( player.id );
 
-            console.log( "Player disconnect: " + player.id + " on room: " + self.id );
+            //console.log( "Player disconnect: " + player.id + " on room: " + self.id );
 
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 
