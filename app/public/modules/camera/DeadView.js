@@ -1,7 +1,3 @@
-/**
- * Created by Antoine on 07/01/2015.
- */
-
 "use strict";
 
 function DeadView( scene ) {
@@ -27,8 +23,6 @@ function DeadView( scene ) {
     function initCamera() {
 
         var camera = new BABYLON.ArcRotateCamera( "cameraDead", 0, 0, 0, BABYLON.Vector3.Zero(), _scene );
-
-
 
         camera.setPosition( new BABYLON.Vector3( -86, 117, 0 ) );
 

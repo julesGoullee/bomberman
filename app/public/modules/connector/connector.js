@@ -33,14 +33,14 @@ function Connector () {
     };
 
     //Game
-    self.getMyPosition = function( callback ) {
+    self.getMap = function( callback ) {
 
-        _socket.on( "myPosition", function ( myPosition ) {
+        _socket.on( "map", function ( myPosition ) {
+            debugger;
             callback(myPosition);
         });
 
-        _socket.emit("getMyPosition", {});
-
+        _socket.emit( "ready", {} );
     };
 
     self.sendMyPosition = function( position ) {

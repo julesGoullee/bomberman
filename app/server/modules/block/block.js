@@ -12,7 +12,7 @@ function Block ( position ) {
 
     self.type = "block";
 
-    self.position = { x: position.x, y: 0, z: position.z };
+    self.position = { x: position.x, z: position.z };
 
     //PRIVATE METHODS//
 

@@ -59,7 +59,7 @@ describe( "Maps", function() {
 
         it( "Peut recuperer un block par sa position", function () {
 
-            var position = { x: -24, y: 0, z: -64 };
+            var position = { x: -24, z: -64 };
 
             expect( maps.getBlockByPosition( position ).position ).to.deep.equal( position );
         });

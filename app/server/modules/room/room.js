@@ -91,7 +91,7 @@ function Room() {
         for ( var i = 0 ; i < self.players.length ; i ++ ) {
 
             if ( self.players[i].id === id ) {
-                _map.delPlayerById( id );
+
                 self.players.splice( i , 1);
             }
         }
@@ -193,14 +193,11 @@ function Room() {
     function listenDisconnect( player ){
 
         player.socket.on( "disconnect", function() {
+            _map.delPlayerById( player.id );
 
             //console.log( "Player disconnect: " + player.name + " on room: " + self.id );
 
-            self.playersSpawnPoint.liberatePlayerPosition( player.id );
-
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
-
-            self.delPlayerById( player.id );
 
         });
 

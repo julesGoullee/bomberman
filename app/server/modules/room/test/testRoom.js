@@ -117,19 +117,20 @@ describe( "Room", function() {
 
         });
 
-        it( "Peut ajouter deux player, deconnecter le premier et ajouter un troisieme a la position 1", function(){
+        it( "Peut ajouter deux player, deconnecter le premier et ajouter un troisieme 3", function(){
 
             callbackDisconnectP1();
 
+            expect( _room.players[0].alive ).to.equal( false );
             var socket3 = utils.clone( mock.socket );
 
             _room.addPlayer( { socket : socket3, name: "player3" } );
 
 
-            expect( _room.players[1].name ).to.equal( "player3");
+            expect( _room.players[2].name ).to.equal( "player3");
 
-            expect( _room.players[1].position.x ).to.equal( _room.playersSpawnPoint[0].x );
-            expect( _room.players[1].position.z ).to.equal( _room.playersSpawnPoint[0].z );
+            expect( _room.players[2].position.x ).to.equal( _room.playersSpawnPoint[2].x );
+            expect( _room.players[2].position.z ).to.equal( _room.playersSpawnPoint[2].z );
 
             expect( _room.player)
         });
@@ -161,7 +162,7 @@ describe( "Room", function() {
 
             callbackDisconnectP1();
 
-            expect( _room.players.length).to.equal( 1 );
+            expect( _room.players[0].alive ).to.equal( false );
 
             assert( spyEmitP2.calledWith( "playerDisconnect",
                 { id: idP1 } ) );
@@ -173,7 +174,7 @@ describe( "Room", function() {
 
             callbackDisconnectP2();
 
-            expect( _room.players.length).to.equal( 1 );
+            expect( _room.players[1].alive ).to.equal( false );
 
             assert( spyEmitP1.calledWith( "playerDisconnect",
                 { id: idP2 } ) );

@@ -77,7 +77,7 @@ function Game ( canvasId ) {
 
                 });
 
-                self.connector.getMyPosition( function( position ){
+                self.connector.getMap( function( position ){
 
                     // Creation du game
 

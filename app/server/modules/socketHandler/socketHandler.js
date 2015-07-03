@@ -23,7 +23,7 @@ module.exports = {
 
                         socket.emit( "setUser", { name: name, token: token , err: null } );
 
-                        socket.on( "getMyPosition", function() {
+                        socket.on( "ready", function() {
 
                             for ( var i = 0; i < _callbackConnect.length; i++ ) {
 
@@ -46,7 +46,7 @@ module.exports = {
 
                         socket.emit( "setToken", { name: name, token: token , err: null } );
 
-                        socket.on( "getMyPosition", function() {
+                        socket.on( "ready", function() {
 
                             for ( var i = 0; i < _callbackConnect.length; i++ ) {
 
