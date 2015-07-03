@@ -105,11 +105,8 @@ function Player( socket, name, room ) {
     function init(){
 
         var newPosition = room.playersSpawnPoint.getFreePosition();
-
-        self.position = utils.clone( newPosition );
-
         newPosition.playerId = self.id;
-
+        self.position = { x: newPosition.x, z: newPosition.z };
     }
 
     init();

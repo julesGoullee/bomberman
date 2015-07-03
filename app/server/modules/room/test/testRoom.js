@@ -86,8 +86,8 @@ describe( "Room", function() {
 
         expect(spyEmitP1.args[0][0]).to.equal("map");
         var jsonMap = spyEmitP1.args[0][1];
-        expect(jsonMap.player.length).to.equal(1);
-        expect(jsonMap.player[0].isMine).to.equal(true);
+        expect(jsonMap.players.length).to.equal(1);
+        expect(jsonMap.players[0].isMine).to.equal(true);
         expect(jsonMap.blockTemp.length).to.equal(135);
 
     });
@@ -104,11 +104,11 @@ describe( "Room", function() {
 
             expect(spyEmitP2.args[0][0]).to.equal("map");
             var jsonMap = spyEmitP2.args[0][1];
-            expect(jsonMap.player.length).to.equal(2);
+            expect(jsonMap.players.length).to.equal(2);
 
-            expect(jsonMap.player[0].isMine).to.equal(undefined);
-            expect(jsonMap.player[0].name).to.equal("player1");
-            expect(jsonMap.player[1].isMine).to.equal(true);
+            expect(jsonMap.players[0].isMine).to.equal(undefined);
+            expect(jsonMap.players[0].name).to.equal("player1");
+            expect(jsonMap.players[1].isMine).to.equal(true);
             expect(jsonMap.blockTemp.length).to.equal(135);
 
 

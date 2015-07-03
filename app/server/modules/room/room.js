@@ -177,7 +177,7 @@ function Room() {
         }
 
         newPlayer.socket.emit("map", {
-            player: playersJson,
+            players: playersJson,
             blockTemp: blocksTempJson
         });
     }
