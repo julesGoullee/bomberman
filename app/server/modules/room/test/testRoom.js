@@ -126,7 +126,6 @@ describe( "Room", function() {
 
             _room.addPlayer( { socket : socket3, name: "player3" , token: "t2"} );
 
-
             expect( _room.players[2].name ).to.equal( "player3");
 
             expect( _room.players[2].position.x ).to.equal( _room.playersSpawnPoint[2].x );
