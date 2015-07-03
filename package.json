@@ -32,6 +32,8 @@
     "grunt-simple-mocha": "*",
     "expect.js": "^0.3.1",
     "grunt-karma": "*",
+    "karma": "*",
+    "jasmine-core": "*",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
     "karma-ubuntu-reporter": "*",
