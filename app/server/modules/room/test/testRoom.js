@@ -224,7 +224,7 @@ describe( "Room", function() {
 
             expect( spyEmitP2.args[2][0]).to.equal( "explosion");
             expect( spyEmitP2.args[2][1]).to.deep.equal({
-                owner: _room.players[0].id,
+                ownerId: _room.players[0].id,
                 bombeId : bombeId,
                 playersIdKilled: [ _room.players[0].id ],
                 blocksIdDestroy: []

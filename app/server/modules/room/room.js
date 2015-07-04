@@ -234,7 +234,7 @@ function Room() {
                 playersIdKilled.push( degats.players[j].id );
             }
             broadcast( "explosion", {
-                owner: player.id,
+                ownerId: player.id,
                 bombeId: bombe.id,
                 playersIdKilled: playersIdKilled,
                 blocksIdDestroy: blocksIdDestroy
