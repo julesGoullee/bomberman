@@ -217,8 +217,10 @@ function Room() {
     function listenBomb( player ){
 
         player.socket.on( "setBomb", function(){
-            //TODO  l'actualiser dans la carte
-            broadcastWithoutMe( player, "setBomb", { id: player.id } );
+
+            if( _map.setBomb( player ) ) {
+                broadcastWithoutMe(player, "setBomb", {id: player.id});
+            }
 
         });
 
