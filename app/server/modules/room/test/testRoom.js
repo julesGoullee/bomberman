@@ -6,6 +6,7 @@ global.sinon = require('sinon');
 global.expect = chai.expect;
 global.assert = chai.assert;
 chai.use( sinonChai );
+var config = require("./../../../config/config.js");
 
 var utils = require("../../utils/utils.js");
 var mock = utils.clone( require("../../../test/mock.js") );
@@ -183,19 +184,57 @@ describe( "Room", function() {
 
             callbackSetBombP2();
 
-            assert( spyEmitP1.calledWith( "setBomb",
-                { id: _room.players[1].id } ) );
+            expect( spyEmitP1.args[2][0]).to.equal( "setBomb");
+            expect( spyEmitP1.args[2][1]).to.deep.equal({
+                playerId: _room.players[1].id,
+                bombeId : _room.players[1].listBombs[0].id,
+                position: {
+                    x:_room.players[1].listBombs[0].position.x,
+                    z: _room.players[1].listBombs[0].position.z
+
+                }
+            });
 
         });
 
-        it("Player un peux poser une bombe et la notifier au deuxieme player", function(){
+        it("Player 1 peut poser une bombe et la notifier au deuxieme player", function(){
 
             callbackSetBombP1();
 
-            assert( spyEmitP2.calledWith( "setBomb",
-                { id: _room.players[0].id } ) );
+            expect( spyEmitP2.args[1][0]).to.equal( "setBomb");
+            expect( spyEmitP2.args[1][1]).to.deep.equal({
+                playerId: _room.players[0].id,
+                bombeId : _room.players[0].listBombs[0].id,
+                position: {
+                    x:_room.players[0].listBombs[0].position.x,
+                    z: _room.players[0].listBombs[0].position.z
+
+                }
+            });
 
         });
+
+        it("Bombe Player1 explose et les degats sont notifié a tout le monde", function(){
+            var clock = sinon.useFakeTimers();
+
+            callbackSetBombP1();
+            var bombeId = _room.players[0].listBombs[0].id;
+
+            clock.tick( config.bombCountDown );
+
+            expect( spyEmitP2.args[2][0]).to.equal( "explosion");
+            expect( spyEmitP2.args[2][1]).to.deep.equal({
+                owner: _room.players[0].id,
+                bombeId : bombeId,
+                playersIdKilled: [ _room.players[0].id ],
+                blocksIdDestroy: []
+            });
+
+            clock.restore();
+
+        });
+
+        //TODO test multiplayer mort && block
     });
 
 });

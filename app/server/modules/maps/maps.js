@@ -44,7 +44,6 @@ function Maps(){
     };
 
     self.addObject = function ( player ) {
-
         _content.push( player );
 
     };
@@ -260,11 +259,11 @@ function Maps(){
 
     //Bombs
 
-    self.setBomb = function ( player ) {
+    self.setBomb = function ( player, callback ) {
 
         if ( player.shouldSetBomb() && !self.getBombByPosition( player.roundPosition() ) ) {
 
-            var bomb = new Bombe ( player, player.roundPosition());
+            var bomb = new Bombe( player, player.roundPosition());
 
 
             player.addBomb( bomb );
@@ -273,11 +272,13 @@ function Maps(){
 
                 player.delBombById( bomb.id );
 
-                explosion( bomb, player );
+                explosion( bomb, player, function( degats ){
+                    callback && callback( degats, bomb );
+                });
 
             });
 
-            return true;
+            return bomb;
         }
 
         return false;
@@ -528,17 +529,16 @@ function Maps(){
         }
     }
 
-    function explosion ( bomb, player ) {
+    function explosion ( bomb, player, callback ) {
 
         var degats = {
             players: [],
             blocks: []
         };
 
-        var playerKills = false;
 
-        utils.addUniqueArrayProperty(degats.players);
-        utils.addUniqueArrayProperty(degats.blocks);
+        //utils.addUniqueArrayProperty(degats.players);
+        //utils.addUniqueArrayProperty(degats.blocks);
 
         calcDegat(degats, bomb, function(){
 
@@ -555,19 +555,13 @@ function Maps(){
 
                     player.kills ++;
 
-                    playerKills = true;
                 }
 
                 self.delPlayerById( degats.players[iPlayer].id );
 
             }
+            callback( degats );
         });
-
-        if ( playerKills == true ) {
-
-            //TODO notify
-
-        }
 
         function calcDegat(tabDegats, bomb, callback){
 
@@ -739,11 +733,10 @@ function Maps(){
 
             }
 
-            tabDegats.blocks = tabDegats.blocks.concat(caseAffectedByBomb);
-            //tabDegats.blocks.unique();TODO
+            utils.uniqueElementById( tabDegats.blocks, caseAffectedByBomb );//TODO
 
-            tabDegats.players = tabDegats.players.concat(playerAffectedByBomb);
-            //tabDegats.players.unique();TODO
+            utils.uniqueElementById( tabDegats.players, playerAffectedByBomb );//TODO
+
             if(bombAffectedByBomb.length === 0 ){
                 callback();
             }

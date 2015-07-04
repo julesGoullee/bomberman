@@ -120,6 +120,12 @@ function Room() {
         }
     }
 
+    function broadcast( event, params ){
+        for ( var i = 0 ; i < self.players.length; i++ ) {
+            self.players[i].socket.emit( event, params );
+        }
+    }
+
     function sendNewPlayerToOld ( player ){
 
         broadcastWithoutMe( player, "newPlayer", {
@@ -216,10 +222,38 @@ function Room() {
 
     function listenBomb( player ){
 
+        function onExplosion( degats, bombe ){
+            var blocksIdDestroy = [];
+            for (var i = 0; i < degats.blocks.length; i++) {
+                blocksIdDestroy.push( degats.blocks[i].id );
+
+            }
+
+            var playersIdKilled = [];
+            for (var j = 0; i < degats.players.length; i++) {
+                playersIdKilled.push( degats.players[j].id );
+            }
+            broadcast( "explosion", {
+                owner: player.id,
+                bombeId: bombe.id,
+                playersIdKilled: playersIdKilled,
+                blocksIdDestroy: blocksIdDestroy
+            });
+        }
+
         player.socket.on( "setBomb", function(){
 
-            if( _map.setBomb( player ) ) {
-                broadcastWithoutMe(player, "setBomb", {id: player.id});
+            var bombe = _map.setBomb( player , onExplosion );
+
+            if ( bombe ) {
+                broadcastWithoutMe(player, "setBomb", {
+                    playerId: player.id,
+                    bombeId : bombe.id,
+                    position: {
+                        x: bombe.position.x,
+                        z: bombe.position.z
+                    }
+                });
             }
 
         });

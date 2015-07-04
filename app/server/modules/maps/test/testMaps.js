@@ -41,7 +41,6 @@ describe( "Maps", function() {
         maps.create();
 
         player = new Player( mockToken, mockSocket, "testPlayer", mockRoom );
-
     });
 
     describe( "Temps blocks methods", function() {
@@ -119,9 +118,13 @@ describe( "Maps", function() {
 
     describe( "Player methods", function () {
 
-        it( "Peut ajouter et recuperer player", function () {
+        beforeEach(function(){
 
             maps.addObject( player );
+
+        });
+
+        it( "Peut ajouter et recuperer player", function () {
 
             expect(maps.getPlayers().length ).to.equal( 1 );
 
@@ -129,14 +132,9 @@ describe( "Maps", function() {
 
         it( "Peut récuperer les players alive", function () {
 
-            maps.addObject( player );
-
             var mockSocket2 = {};
             var mockToken2 = "t2";
             var player2 =  new Player( mockToken2, mockSocket2, "testPlayer", mockRoom);
-
-
-            maps.addObject( player2 );
 
             var tab1 = maps.getPlayersAlive();
 
@@ -152,8 +150,6 @@ describe( "Maps", function() {
 
             var block = new Block( { x: 0, z: 0 } );
 
-            maps.addObject( player );
-
             maps.addObject( block );
 
             expect( maps.getPlayers().length ).to.equal( 1 );
@@ -162,15 +158,11 @@ describe( "Maps", function() {
 
         it( "Peut recuperer un player avec son ID", function () {
 
-            maps.addObject( player );
-
             expect( maps.getPlayerById( player.id ) ).to.equal( player );
 
         });
 
         it( "Peut recuperer un player avec sa position", function () {
-
-            maps.addObject( player );
 
             expect( maps.getPlayerByPosition( player.roundPosition() ) ).to.equal( player );
 
@@ -178,7 +170,6 @@ describe( "Maps", function() {
 
         it( "Peut supprimer un player", function () {
 
-            maps.addObject( player );
             expect( maps.getPlayers().length ).to.equal( 1 );
 
             assert( maps.delPlayerById( player.id ) );
@@ -192,8 +183,6 @@ describe( "Maps", function() {
             var mockSocket2 = {};
             var mockToken2 = "t2";
             var player2 =  new Player( mockToken2, mockSocket2, "testPlayer", mockRoom);
-
-            maps.addObject( player );
 
             maps.addObject( player2 );
 
@@ -312,11 +301,14 @@ describe( "Maps", function() {
 
             it( "Ne peut depasser le nombre de bombe maximun", function() {
 
+                maps.addObject( player );
+
                 var nbBombeMax = player.powerUp.bombs;
 
                 for ( var i = 0; i < nbBombeMax; i++ ) {
-
-                    expect( maps.setBomb( player ) ).to.equal( true );
+                    //le déplacer sinon pas possible de mettre plusieur bombe dans la mem ecase
+                    player.position.x += i*4 ;
+                    expect( maps.setBomb( player ) ).to.equal( maps.getBombs()[i] );
                 }
 
                 expect( player.listBombs.length ).to.equal( nbBombeMax );
@@ -364,6 +356,20 @@ describe( "Maps", function() {
             afterEach(function() {
 
                 clock.restore();
+
+            });
+
+            it( "Peut envoyer les degat dans le callabck setBomb", function( done ){
+                player.position.x = 0;
+                player.position.z = 0;
+
+                maps.setBomb( player, function( degats ){
+                    //TODO element different a cause des stubs donc on peu pas array.unique()
+                    //expect( degats.blocks.length ).to.deep.equal(4);
+                    //expect( degats.players.length ).to.deep.equal(4);
+                    done();
+                });
+                clock.tick( config.bombCountDown*20 );
 
             });
 
