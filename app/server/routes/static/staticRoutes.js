@@ -2,12 +2,15 @@
 
 var express = require( "express" );
 var config = require( "../../config/config.js" );
+var compress = require('compression');
 
 function staticRoutes( app ) {
     
     var rootPathPublic = "app/public" ;
 
-    app.use( express.static( rootPathPublic ) );
+    var oneDay = 86400000;
+    app.use( compress() );
+    app.use( express.static( rootPathPublic, { maxAge: oneDay } ) );
 }
 
 module.exports = function( app ) {
