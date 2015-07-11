@@ -4,3 +4,5 @@ bower_components/
 app/public/external/
 !app/public/external/babylonjs/
 app/public/fonts/
+app/public/content/common.babylon.manifest
+app/server/config/config.js
