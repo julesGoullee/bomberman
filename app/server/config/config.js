@@ -9,6 +9,6 @@ module.exports = {
     blockDim: 8,
     showBlockTemp : true,
     bombCountDown : 3000,
-    showPowerUp : true,
+    showPowerUp : false,
     nbPowerUp : 50
 };

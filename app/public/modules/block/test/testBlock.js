@@ -4,11 +4,11 @@ describe( "Block" , function() {
 
     beforeEach( function() {
 
-        block = new Block( gameMock.assets, { x: 1, z: 0} );
+        block = new Block( utils.guid(), { x: 1, z: 0}, gameMock.assets );
     });
 
     it( "Peut creer un block temp a la bonne position", function() {
-        expect(block.position).toEqual( { x: 1, y: 0, z:0 } );
+        expect( block.position ).toEqual( { x: 1, y: 0, z:0 } );
     });
 
     it( "Peut creer un block ayant un shape et un block temp", function() {

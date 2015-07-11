@@ -7,6 +7,7 @@ global.expect = chai.expect;
 global.assert = chai.assert;
 chai.use( sinonChai );
 
+var utils = require("../../utils/utils.js");
 var Player = require("./../../player/player.js");
 var Bombe = require("./../../bomb/bomb.js");
 
@@ -76,7 +77,7 @@ describe( "Player", function() {
 
         beforeEach( function () {
 
-            bomb = new Bombe( player, player.roundPosition() );
+            bomb = new Bombe( utils.guid(), player, player.roundPosition() );
         });
 
         it( "Peut ajouter une bombe", function () {
@@ -100,7 +101,7 @@ describe( "Player", function() {
 
             player.position.z = -13.557235;
 
-            bomb = new Bombe( player, player.roundPosition() );
+            bomb = new Bombe( utils.guid(), player, player.roundPosition() );
 
             player.addBomb( bomb );
 
@@ -114,7 +115,7 @@ describe( "Player", function() {
 
             player.position.z = -10.557235;
 
-            bomb = new Bombe( player, player.roundPosition() );
+            bomb = new Bombe( utils.guid(), player, player.roundPosition() );
 
             player.addBomb( bomb );
 
@@ -149,10 +150,10 @@ describe( "Player", function() {
 
             player.addBomb( bomb );
 
-            var bomb2 = new Bombe ( player, player.roundPosition() );
+            var bomb2 = new Bombe( utils.guid(), player, player.roundPosition() );
 
             player.addBomb( bomb2 );
-            var bomb3 = new Bombe ( player, player.roundPosition() );
+            var bomb3 = new Bombe( utils.guid(), player, player.roundPosition() );
 
             player.addBomb( bomb3 );
             player.delBombs();

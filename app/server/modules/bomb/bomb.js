@@ -2,7 +2,7 @@
 var config = require("./../../config/config.js");
 var utils = require("../utils/utils.js");
 
-function Bombe ( owner, position ) {
+function Bombe ( id, owner, position ) {
 
     var self = this;
 
@@ -12,7 +12,7 @@ function Bombe ( owner, position ) {
 
     //PUBLIC METHODS//
 
-    self.id = utils.guid();
+    self.id = id;
 
     self.power = 2;
 

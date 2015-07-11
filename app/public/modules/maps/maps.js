@@ -8,8 +8,6 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
     var _lineLength = 16;
 
-    var _positionMustFree = [];
-
     var _content = [];
 
     var _powerUps = [];
@@ -143,14 +141,16 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
                 menuPlayers.changeStatus( "Mort", _content[i].id );
 
-                (function( i ){
+                (function( player ){
 
-                    scene.beginAnimation( _content[i].meshs.shape, 506, 550, false, 1, function() {
+                    player.alive = false;
 
-                        setTimeout(_content[i].destroy, cfg.destroyPlayerTimer);
+                    scene.beginAnimation( player.meshs.shape, 506, 550, false, 1, function() {
+
+                        setTimeout(player.destroy, cfg.destroyPlayerTimer);
                     });
 
-                })(i);
+                })(_content[i]);
 
                 return true;
             }
@@ -176,27 +176,25 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
     //Bombs
 
-    self.setBomb = function ( player ) {
+    //self.setBomb = function ( player ) {
+    //};
 
-        if ( player.shouldSetBomb() && !self.getBombByPosition( player.roundPosition() ) ) {
+    self.explosion = function( ownerId, bombeId, playersIdKilled, blocksIdDestroy  ){
 
-            var bomb = new Bombe ( player, player.roundPosition() , _assets, scene);
+        var player = self.getPlayerById( ownerId );
+        var bombe = self.getBlockById( bombeId);
 
+        player.delBombById( bombeId );
 
-            player.addBomb( bomb );
+        bombe.destroy();
 
-            bomb.onExploded( function() {
-
-                player.delBombById( bomb.id );
-
-                explosion( bomb, player );
-
-            });
-
-            return true;
+        for (var i = 0; i < playersIdKilled.length; i++) {
+            self.delPlayerById( playersIdKilled[i]);
         }
 
-        return false;
+        for (var j = 0; i < blocksIdDestroy.length; i++) {
+            self.delBlockById( blocksIdDestroy[j]);
+        }
     };
 
     self.getBombs = function () {
@@ -253,7 +251,7 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
         for ( var i = 0; i<tabBombs.length; i++ ) {
 
-            if (position.z === tabBombs[i].position.z && position.x === tabBombs[i].position.x) {
+            if ( position.z == tabBombs[i].position.z && position.x == tabBombs[i].position.x ) {
 
                 return tabBombs[i];
 
@@ -524,7 +522,6 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
     //PRIVATE METHODS//
 
-
     function createGroundMeshs () {
         for ( var iMesh = 0 ; iMesh < self.meshsData.length ; iMesh++ ) {
 
@@ -580,25 +577,12 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
         }
     }
 
-    function positionHavePermBlock ( position ){
-
-        for ( var i = 0; i < _blocksPermanent.length; i++ ) {
-
-            if ( _blocksPermanent[i].x === position.x && _blocksPermanent[i].z === position.z ) {
-
-                return true;
-            }
-
-        }
-        return false;
-    }
-
     function createTemporaireBlock (){
 
         for ( var i = 0; i < blocksTemp.length; i++ ) {
 
             var blockTemp = blocksTemp[i];
-            _content.push( new Block( _assets, blockTemp.position ) );
+            _content.push( new Block( blockTemp.id, blockTemp.position, _assets ) );
         }
     }
 
@@ -621,237 +605,6 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
         }
     }
 
-    function explosion ( bomb, player ) {
-
-        var degats = {
-            players: [],
-            blocks: []
-        };
-
-        var playerKills = false;
-
-        utils.addUniqueArrayProperty(degats.players);
-        utils.addUniqueArrayProperty(degats.blocks);
-
-        calcDegat(degats, bomb, function(){
-
-            // parcours les cases touché par la bombe pour les suprimmées
-            for ( var iBlocks = 0; iBlocks < degats.blocks.length; iBlocks++ ) {
-
-                self.delBlockById( degats.blocks[iBlocks].id );
-            }
-
-            // parcours les players touchés par la bombe pour les suprimmées
-            for ( var iPlayer = 0; iPlayer < degats.players.length; iPlayer++ ) {
-
-                if ( player.id !== degats.players[iPlayer].id ) {
-
-                    player.kills ++;
-
-                    playerKills = true;
-                }
-
-                self.delPlayerById( degats.players[iPlayer].id );
-
-            }
-        });
-
-        if ( playerKills == true ) {
-
-            menuPlayers.changeScore ( player.kills, player.id );
-
-        }
-
-        function calcDegat(tabDegats, bomb, callback){
-
-            var caseAffectedByBomb = [];
-
-            var playerAffectedByBomb = [];
-
-            var bombAffectedByBomb = [];
-
-
-            var blockInCurrentCase;
-
-            var playerInCurrentCase;
-
-            var bombInCurrentCase;
-
-            var currentPosition;
-
-            // parcours les cases X superieur la position de la bombe
-            for ( var xPlus = bomb.position.x; xPlus <= bomb.position.x + ( bomb.power * _blockDim )  ; xPlus += 8 ) {
-
-                currentPosition = { x: xPlus, z : bomb.position.z };
-
-                if( xPlus <= _colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
-
-                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
-
-                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
-
-                    bombInCurrentCase = self.getBombByPosition( currentPosition );
-
-                    if( playerInCurrentCase ){
-
-                        playerAffectedByBomb.push( playerInCurrentCase );
-
-                    }
-
-                    if( bombInCurrentCase  && !bombInCurrentCase.degatCheck){
-
-                        bombInCurrentCase.degatCheck = true;
-
-                        bombAffectedByBomb.push( bombInCurrentCase );
-                    }
-
-                    if ( blockInCurrentCase ) {
-
-                        caseAffectedByBomb.push( blockInCurrentCase );
-
-                        break;
-                    }
-
-                } else {
-
-                    break;
-                }
-
-            }
-
-            // parcours les cases z superieur la position de la bombe
-            for ( var zPlus = bomb.position.z; zPlus <= bomb.position.z + ( bomb.power * _blockDim )  ; zPlus += 8 ) {
-
-                currentPosition = { x: bomb.position.x , z : zPlus };
-
-                if( zPlus <= _lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
-
-                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
-
-                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
-
-                    bombInCurrentCase = self.getBombByPosition( currentPosition );
-
-                    if( playerInCurrentCase ){
-
-                        playerAffectedByBomb.push( playerInCurrentCase );
-
-                    }
-
-                    if( bombInCurrentCase ){
-
-                        bombAffectedByBomb.push( bombInCurrentCase );
-                    }
-
-                    if ( blockInCurrentCase ) {
-
-                        caseAffectedByBomb.push( blockInCurrentCase );
-
-                        break;
-                    }
-
-
-                } else {
-
-                    break;
-                }
-
-            }
-
-            // parcours les cases x inférieur la position de la bombe
-            for ( var xMoins = bomb.position.x; xMoins >= bomb.position.x - ( bomb.power * _blockDim )  ; xMoins -= 8 ) {
-
-                currentPosition = { x: xMoins, z : bomb.position.z };
-
-                if( xMoins >= -_colLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
-
-                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
-
-                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
-
-                    bombInCurrentCase = self.getBombByPosition( currentPosition );
-
-                    if( playerInCurrentCase ){
-
-                        playerAffectedByBomb.push( playerInCurrentCase );
-
-                    }
-
-                    if( bombInCurrentCase ){
-
-                        bombAffectedByBomb.push( bombInCurrentCase );
-                    }
-
-                    if ( blockInCurrentCase ) {
-
-                        caseAffectedByBomb.push( blockInCurrentCase );
-
-                        break;
-                    }
-
-                } else {
-
-                    break;
-                }
-
-            }
-
-            // parcours les cases z inférieur la position de la bombe
-            for ( var zMoins = bomb.position.z; zMoins >= bomb.position.z - ( bomb.power * _blockDim )  ; zMoins -= 8 ) {
-
-                currentPosition = { x: bomb.position.x, z: zMoins };
-
-                if( zMoins >= -_lineLength * _blockDim && !positionHavePermBlock( currentPosition ) ){
-
-                    blockInCurrentCase = self.getBlockByPosition( currentPosition );
-
-                    playerInCurrentCase = self.getPlayerByPosition( currentPosition );
-
-                    bombInCurrentCase = self.getBombByPosition( currentPosition );
-
-                    if( playerInCurrentCase ){
-                        playerAffectedByBomb.push( playerInCurrentCase );
-
-                    }
-
-                    if( bombInCurrentCase ){
-
-                        bombAffectedByBomb.push( bombInCurrentCase );
-                    }
-
-                    if ( blockInCurrentCase ) {
-                        caseAffectedByBomb.push( blockInCurrentCase );
-
-                        break;
-                    }
-
-                } else {
-
-                    break;
-                }
-
-            }
-
-            tabDegats.blocks = tabDegats.blocks.concat(caseAffectedByBomb);
-            //tabDegats.blocks.unique();TODO
-
-            tabDegats.players = tabDegats.players.concat(playerAffectedByBomb);
-            //tabDegats.players.unique();TODO
-            if(bombAffectedByBomb.length === 0 ){
-                callback();
-            }
-            else {
-                // parcours les players touchés par la bombe pour les suprimmées
-                for (var iBombe = 0; iBombe < bombAffectedByBomb.length; iBombe++) {
-                    bombAffectedByBomb[iBombe].exploded = true;
-                    bombAffectedByBomb[iBombe].deleted();
-                    player.delBombById(bomb.id);
-
-                    calcDegat(tabDegats, bombAffectedByBomb[iBombe], callback);
-                }
-            }
-        }
-    }
 
     self.playerLootPowerUp = function ( ) {
 

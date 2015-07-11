@@ -222,38 +222,56 @@ function Room() {
 
     function listenBomb( player ){
 
-        function onExplosion( degats, bombe ){
-            var blocksIdDestroy = [];
-            for (var i = 0; i < degats.blocks.length; i++) {
-                blocksIdDestroy.push( degats.blocks[i].id );
+        function onExplosion( degats ){
 
+            var blocksIdDestroy = [];
+            for ( var i = 0; i < degats.blocks.length; i++ ) {
+
+                blocksIdDestroy.push( degats.blocks[i].id );
             }
 
             var playersIdKilled = [];
-            for (var j = 0; i < degats.players.length; i++) {
+            
+            for ( var j = 0; j < degats.players.length; j++ ) {
+
                 playersIdKilled.push( degats.players[j].id );
             }
+
+            var bombesId = [];
+
+            for ( var k = 0; k < degats.bombes.length; k++ ) {
+
+                bombesId.push( degats.bombes[k].id );
+            }
+
             broadcast( "explosion", {
                 ownerId: player.id,
-                bombeId: bombe.id,
+                bombesExplodedId: bombesId,
                 playersIdKilled: playersIdKilled,
                 blocksIdDestroy: blocksIdDestroy
             });
         }
 
-        player.socket.on( "setBomb", function(){
+        player.socket.on( "setBomb", function( tempId ){
 
             var bombe = _map.setBomb( player , onExplosion );
 
             if ( bombe ) {
                 broadcastWithoutMe(player, "setBomb", {
-                    playerId: player.id,
+                    ownerId: player.id,
                     bombeId : bombe.id,
                     position: {
                         x: bombe.position.x,
                         z: bombe.position.z
                     }
                 });
+
+                player.socket.emit("setPermanentBombId", {
+                    tempId: tempId,
+                    id: bombe.id
+                });
+            }else{
+                console.log("peut pas poser " + tempId);
             }
 
         });

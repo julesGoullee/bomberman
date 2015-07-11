@@ -22,6 +22,7 @@ module.exports = {
 
         app.engine( "html", require( "ejs" ).renderFile );
 
+        https.globalAgent.maxSockets = 100;
 
         var httpsServer = https.createServer( credentials, app);
 

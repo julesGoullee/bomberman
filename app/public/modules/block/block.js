@@ -1,13 +1,13 @@
 "use strict";
 
-function Block ( assets, position ) {
+function Block ( id, position, assets) {
 
     var self = this;
 
 
     //PUBLIC METHODS//
 
-    self.id = utils.guid();
+    self.id = id;
 
     self.type = "block";
 

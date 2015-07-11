@@ -1,16 +1,13 @@
 "use strict";
 
-function Bombe ( owner, position, assets, scene) {
+function Bombe ( id, owner, position, assets, scene) {
 
     var self = this;
 
-    var _timeOutExploded;
-
-    var _explodedCallback = [];
 
     //PUBLIC METHODS//
 
-    self.id = utils.guid();
+    self.id = id;
 
     self.power = 2;
 
@@ -30,12 +27,6 @@ function Bombe ( owner, position, assets, scene) {
 
     self.destroy = function () {
 
-        for ( var i = 0; i < _explodedCallback.length; i++ ) {
-
-            _explodedCallback[i](self);
-
-        }
-
         //launchExplosion();
 
         self.exploded = true;
@@ -45,24 +36,13 @@ function Bombe ( owner, position, assets, scene) {
         self.meshs.colisionBlock.dispose();
     };
 
-    self.onExploded = function ( callback ) {
-
-        _explodedCallback.push( callback );
-    };
-
     self.deleted = function () {
-
-        self.cancelTimer();
 
         self.meshs.shape.dispose();
 
         self.meshs.colisionBlock.dispose();
     };
 
-    self.cancelTimer = function ( ) {
-
-        clearTimeout( _timeOutExploded );
-    };
 
     //PRIVATE METHODS//
 
@@ -72,11 +52,6 @@ function Bombe ( owner, position, assets, scene) {
 
         createMesh();
 
-        _timeOutExploded = setTimeout( function() {
-
-            self.destroy();
-
-        }, self.countDown );
     }
 
     function createMesh () {

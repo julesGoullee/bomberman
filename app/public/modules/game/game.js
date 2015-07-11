@@ -64,17 +64,17 @@ function Game ( canvasId ) {
 
             function render (){
 
-                if( !preloadFinish || ! getMapFinish) return;
+                if( !preloadFinish || !getMapFinish ){ return null; }
 
                 var notifier = new Notifier();
 
                 var keyBinder = new KeyBinder();
 
                 var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
+
                 var map = new Maps( self.assets, _blockDim, mapJson.blockTemp, self.scene, self.menuPlayers );
 
-
-                // Creation du game
+                // Creation des players
                 for ( var i = 0; i < mapJson.players.length; i++ ) {
 
                     var playerJson = mapJson.players[i];
@@ -111,9 +111,14 @@ function Game ( canvasId ) {
 
                     if ( _pointerLocked ) {
 
-                        if( map.setBomb( myPlayer.player ) ){
+                        if ( player.shouldSetBomb() && !map.getBombByPosition( player.roundPosition() ) ) {
 
-                            self.connector.setBomb( myPlayer.player.id );
+                            var bombTempId = utils.guid();
+
+                            var bombe = new Bombe( bombTempId, player, player.roundPosition() , self.assets, self.scene);
+
+                            myPlayer.player.addBomb( bombe );
+                            self.connector.setBomb( bombe.id );
                         }
                     }
                 });
@@ -179,13 +184,39 @@ function Game ( canvasId ) {
                     }
                 });
 
-                self.connector.onPlayerSetBomb( function( id ) {
+                self.connector.onPlayerSetBomb( function( playerId, bombeId, position ) {
 
-                    var player = map.getPlayerById( id );
+                    var player = map.getPlayerById( playerId );
+                    var bombe = new Bombe( bombeId, player, position , self.assets, self.scene );
+                    player.addBomb( bombe );
 
-                    if( player ) {
+                });
+                
+                self.connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
 
-                        map.setBomb( player );
+                    for ( var i = 0; i < playersIdKilled.length; i++ ) {
+
+                        var playerKilledId = playersIdKilled[i];
+                        map.delPlayerById( playerKilledId );
+                        //todo score && menu
+                    }
+
+                    for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
+
+                        var blockIdDestroy = blocksIdDestroy[j];
+                        map.delBlockById( blockIdDestroy );
+                    }
+
+                    for ( var k = 0; k < bombesExplodedId.length; k++ ) {
+
+                        var bombeExplodedId = bombesExplodedId[k];
+                        var bombe = map.getBombsById( bombeExplodedId );
+                        if( !bombe ){
+                            debugger;
+                        }
+                        bombe.destroy();
+                        bombe.owner.delBombById( bombe.id );
+
                     }
                 });
 
@@ -206,6 +237,14 @@ function Game ( canvasId ) {
                     self.menuPlayers.delPlayer( playerId );
 
                 });
+
+                self.connector.setPermanentBombId( function( tempBombId, bombId ){
+
+                    var bomb = map.getBombsById( tempBombId );
+                    bomb.id = bombId;
+
+                });
+
                 //self.scene.beginAnimation( self.assets["explosionFlammes"][0], 0, 40, true, 1, function() {
                 //
                 //});

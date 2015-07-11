@@ -6,7 +6,7 @@ function Connector () {
 
     var _socket = io();
 
-    /*PUBLIC METHODS*/
+    //PUBLIC METHODS//
 
     //Authentification
     self.setUser = function( userName ){
@@ -68,24 +68,36 @@ function Connector () {
 
         _socket.on( "playerDisconnect" , function( playerData ) {
 
-              callback( playerData.id );
+            callback( playerData.id );
         });
     };
 
     self.onPlayerSetBomb = function( callback ){
 
-        _socket.on( "setBomb" , function( playerData ) {
+        _socket.on( "setBomb" , function( bombeData ) {
 
-            callback( playerData.id );
+            callback( bombeData.ownerId, bombeData.bombeId, bombeData.position );
         });
     };
 
-    self.setBomb = function( id ) {
+    self.setBomb = function( bombTempId ){
 
-        _socket.emit( "setBomb", id );
+        _socket.emit( "setBomb", bombTempId );
     };
 
-    /*PRIVATE METHODS*/
+    self.setPermanentBombId = function( callback ){
+        _socket.on( "setPermanentBombId", function( data ){
+            callback( data.tempId, data.id );
+        });
+    };
 
+    self.onExplosion = function( callback ){
+
+        _socket.on( "explosion", function( explosionData ) {
+            callback( explosionData.ownerId, explosionData.bombesExplodedId, explosionData.playersIdKilled, explosionData.blocksIdDestroy );
+        });
+    };
+
+    //PRIVATE METHODS//
 
 }

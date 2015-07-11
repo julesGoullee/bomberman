@@ -180,13 +180,15 @@ describe( "Room", function() {
                 { id: idP2 } ) );
         });
 
-        it("Player deux peux poser une bombe et la notifier au premier player", function(){
 
-            callbackSetBombP2();
+        it( "Player deux peux poser une bombe et la notifier au premier player", function(){
+
+            var tempId = utils.guid();
+            callbackSetBombP2( tempId );
 
             expect( spyEmitP1.args[2][0]).to.equal( "setBomb");
             expect( spyEmitP1.args[2][1]).to.deep.equal({
-                playerId: _room.players[1].id,
+                ownerId: _room.players[1].id,
                 bombeId : _room.players[1].listBombs[0].id,
                 position: {
                     x:_room.players[1].listBombs[0].position.x,
@@ -197,13 +199,27 @@ describe( "Room", function() {
 
         });
 
-        it("Player 1 peut poser une bombe et la notifier au deuxieme player", function(){
+        it( "Player 1 peut poser une bombe et etre notifier de son id permanent", function(){
 
-            callbackSetBombP1();
+            var tempId = utils.guid();
+            callbackSetBombP1( tempId );
+
+            expect( spyEmitP1.args[2][0]).to.equal( "setPermanentBombId");
+            expect( spyEmitP1.args[2][1]).to.deep.equal({
+                tempId: tempId,
+                id : _room.players[0].listBombs[0].id
+            });
+
+        });
+
+        it( "Player 1 peut poser une bombe et la notifier au deuxieme player", function(){
+
+            var tempId = utils.guid();
+            callbackSetBombP1( tempId );
 
             expect( spyEmitP2.args[1][0]).to.equal( "setBomb");
             expect( spyEmitP2.args[1][1]).to.deep.equal({
-                playerId: _room.players[0].id,
+                ownerId: _room.players[0].id,
                 bombeId : _room.players[0].listBombs[0].id,
                 position: {
                     x:_room.players[0].listBombs[0].position.x,
@@ -214,10 +230,12 @@ describe( "Room", function() {
 
         });
 
-        it("Bombe Player1 explose et les degats sont notifié a tout le monde", function(){
+        it( "Bombe Player1 explose et les degats sont notifié a tout le monde", function(){
             var clock = sinon.useFakeTimers();
 
-            callbackSetBombP1();
+            var tempId = utils.guid();
+            callbackSetBombP1( tempId );
+
             var bombeId = _room.players[0].listBombs[0].id;
 
             clock.tick( config.bombCountDown );
@@ -225,7 +243,7 @@ describe( "Room", function() {
             expect( spyEmitP2.args[2][0]).to.equal( "explosion");
             expect( spyEmitP2.args[2][1]).to.deep.equal({
                 ownerId: _room.players[0].id,
-                bombeId : bombeId,
+                bombesExplodedId : [ bombeId ],
                 playersIdKilled: [ _room.players[0].id ],
                 blocksIdDestroy: []
             });

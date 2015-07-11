@@ -1,1 +1,1 @@
-creer un syteme de notification coté js
+Gerer un tab de bombe dans la map

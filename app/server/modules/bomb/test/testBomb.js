@@ -7,6 +7,7 @@ global.expect = chai.expect;
 global.assert = chai.assert;
 chai.use( sinonChai );
 
+var utils = require("../../utils/utils.js");
 var Player = require("./../../player/player.js");
 var Bombe = require("./../bomb.js");
 
@@ -34,7 +35,7 @@ describe( "Bombe" ,function() {
 
         player = new Player( mockToken, mockSocket, "testPlayer", mockRoom );
 
-        bombe = new Bombe( player, player.position );
+        bombe = new Bombe( utils.guid(), player, player.position );
     });
 
     afterEach(function() {

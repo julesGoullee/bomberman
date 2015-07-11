@@ -50,23 +50,22 @@ describe( "Player", function() {
 
     describe( "Bombe", function () {
 
-        var bomb;
+        var bombe;
 
         beforeEach( function () {
-
-            bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
+            bombe = new Bombe( utils.guid(), player, player.roundPosition() , gameMock.assets, gameMock.scene);
         });
 
         it( "Peut ajouter une bombe", function () {
 
-            player.addBomb( bomb );
+            player.addBomb( bombe );
 
             expect( player.listBombs.length ).toEqual( 1 );
         });
 
         it( "Peut poser une bombe a la position du player", function () {
 
-            player.addBomb( bomb );
+            player.addBomb( bombe );
 
             expect( player.listBombs[0].position.x ).toEqual( player.position.x);
             expect( player.listBombs[0].position.z ).toEqual( player.position.z);
@@ -78,9 +77,9 @@ describe( "Player", function() {
 
             player.position.z = -13.557235;
 
-            bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
+            bombe = new Bombe( utils.guid(), player, player.roundPosition() , gameMock.assets, gameMock.scene);
 
-            player.addBomb( bomb );
+            player.addBomb( bombe );
 
             expect( player.listBombs[0].position.x ).toEqual( 32 );
             expect( player.listBombs[0].position.z).toEqual( -16 );
@@ -92,9 +91,9 @@ describe( "Player", function() {
 
             player.position.z = -10.557235;
 
-            bomb = new Bombe ( player, player.roundPosition() , gameMock.assets);
+            bombe = new Bombe( utils.guid(), player, player.roundPosition() , gameMock.assets, gameMock.scene);
 
-            player.addBomb( bomb );
+            player.addBomb( bombe );
 
             expect( player.listBombs[0].position.x ).toEqual( 24 );
             expect( player.listBombs[0].position.z ).toEqual( -8 );
@@ -105,7 +104,7 @@ describe( "Player", function() {
             var nbBombeMax = player.powerUp.bombs;
 
             for ( var i = 0; i < nbBombeMax; i++ ) {
-                player.addBomb( bomb );
+                player.addBomb( bombe );
             }
 
             expect( player.listBombs.length ).toEqual( nbBombeMax );
@@ -116,23 +115,24 @@ describe( "Player", function() {
 
         it( "Peut détruire une bombe par son id ", function () {
 
-            player.addBomb( bomb );
+            player.addBomb( bombe );
 
-            player.delBombById( bomb.id );
+            player.delBombById( bombe.id );
 
             expect( player.listBombs.length ).toEqual( 0 );
         });
 
         it( "Peut detruire toutes les bombes", function() {
 
-            player.addBomb( bomb );
+            player.addBomb( bombe );
 
-            var bomb2 = new Bombe ( player, player.roundPosition() , gameMock.assets);
+            var bombe2 = new Bombe( utils.guid(), player, player.roundPosition() , gameMock.assets, gameMock.scene);
 
-            player.addBomb( bomb2 );
-            var bomb3 = new Bombe ( player, player.roundPosition() , gameMock.assets);
 
-            player.addBomb( bomb3 );
+            player.addBomb( bombe2 );
+            var bombe3 = new Bombe( utils.guid(), player, player.roundPosition() , gameMock.assets, gameMock.scene);
+
+            player.addBomb( bombe3 );
             player.delBombs();
 
             expect( player.listBombs.length ).toEqual( 0 );

@@ -263,8 +263,7 @@ function Maps(){
 
         if ( player.shouldSetBomb() && !self.getBombByPosition( player.roundPosition() ) ) {
 
-            var bomb = new Bombe( player, player.roundPosition());
-
+            var bomb = new Bombe( utils.guid(), player, player.roundPosition());
 
             player.addBomb( bomb );
 
@@ -273,7 +272,7 @@ function Maps(){
                 player.delBombById( bomb.id );
 
                 explosion( bomb, player, function( degats ){
-                    callback && callback( degats, bomb );
+                    callback && callback( degats );
                 });
 
             });
@@ -290,16 +289,11 @@ function Maps(){
 
         var players = self.getPlayers();
 
-        var size = players.length;
-
-        var i = 0;
-        var j = 0;
-
-        for ( i; i < size; i++ ) {
+        for (  var i = 0; i < players.length; i++ ) {
 
             var player = players[i];
 
-            for ( j= 0 ; j < player.listBombs.length; j++ ){
+            for ( var j = 0; j < player.listBombs.length; j++ ){
 
                 tabBomb.push( player.listBombs[j] );
             }
@@ -338,7 +332,7 @@ function Maps(){
 
         for ( var i = 0; i<tabBombs.length; i++ ) {
 
-            if (position.z === tabBombs[i].position.z && position.x === tabBombs[i].position.x) {
+            if (position.z == tabBombs[i].position.z && position.x == tabBombs[i].position.x) {
 
                 return tabBombs[i];
 
@@ -533,12 +527,10 @@ function Maps(){
 
         var degats = {
             players: [],
-            blocks: []
+            blocks: [],
+            bombes: []
         };
 
-
-        //utils.addUniqueArrayProperty(degats.players);
-        //utils.addUniqueArrayProperty(degats.blocks);
 
         calcDegat(degats, bomb, function(){
 
@@ -579,6 +571,9 @@ function Maps(){
             var bombInCurrentCase;
 
             var currentPosition;
+            utils.uniqueElementById( degats.bombes, [bomb] );
+            bomb.degatCheck = true;
+            bomb.exploded = true;
 
             // parcours les cases X superieur la position de la bombe
             for ( var xPlus = bomb.position.x; xPlus <= bomb.position.x + ( bomb.power * _blockDim )  ; xPlus += 8 ) {
@@ -737,15 +732,17 @@ function Maps(){
 
             utils.uniqueElementById( tabDegats.players, playerAffectedByBomb );//TODO
 
-            if(bombAffectedByBomb.length === 0 ){
+            utils.uniqueElementById( tabDegats.bombes, bombAffectedByBomb );//TODO
+
+            if( bombAffectedByBomb.length === 0 && degats.bombes[ degats.bombes.length -1].id === bomb.id ){
                 callback();
             }
             else {
                 // parcours les players touchés par la bombe pour les suprimmées
-                for (var iBombe = 0; iBombe < bombAffectedByBomb.length; iBombe++) {
+                for ( var iBombe = 0; iBombe < bombAffectedByBomb.length; iBombe++ ) {
                     bombAffectedByBomb[iBombe].exploded = true;
                     bombAffectedByBomb[iBombe].deleted();
-                    player.delBombById(bomb.id);
+                    bombAffectedByBomb[iBombe].owner.delBombById(bombAffectedByBomb[iBombe].id);
 
                     calcDegat(tabDegats, bombAffectedByBomb[iBombe], callback);
                 }
@@ -754,5 +751,8 @@ function Maps(){
     }
 
 }
+
+//une bombe explose détruit l'autre et elle n'est pas notifier
+//plusieur callback executé
 
 module.exports = Maps;

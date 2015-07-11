@@ -6,16 +6,9 @@ describe( "Bombe" ,function() {
 
     beforeEach( function() {
 
-        jasmine.clock().install();
-
         player = new Player(0, "testPlayer", spawnPoint, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, gameMock.assets, gameMock.blockDim );
 
-        bombe = new Bombe( player, player.position,  gameMock.assets, gameMock.blockDim );
-    });
-
-    afterEach(function() {
-
-        jasmine.clock().uninstall();
+        bombe = new Bombe( utils.guid(), player, player.position,  gameMock.assets, gameMock.blockDim );
     });
 
     it( "Peut creer une bombe a la bonne position", function() {
@@ -33,38 +26,8 @@ describe( "Bombe" ,function() {
 
         expect( bombe.exploded ).toEqual( false );
 
-        jasmine.clock().tick( bombe.countDown );
+        bombe.destroy();
 
         expect( bombe.exploded ).toEqual( true );
-    });
-
-    it( "Peut annuler la déstruction d'une bombe", function () {
-
-        var callbackExplodedSpy = jasmine.createSpy('spy');
-
-        bombe.onExploded( callbackExplodedSpy );
-
-        bombe.cancelTimer();
-
-        jasmine.clock().tick( bombe.countDown );
-
-        expect( bombe.exploded ).toEqual( false );
-
-        expect( callbackExplodedSpy ).not.toHaveBeenCalled();
-
-    });
-
-    it( "Peut exectuer un callback apres l'explosion", function() {
-
-        var callbackExplodedSpy = jasmine.createSpy('spy');
-
-        bombe.onExploded( callbackExplodedSpy );
-
-        expect( callbackExplodedSpy ).not.toHaveBeenCalled();
-
-        jasmine.clock().tick( bombe.countDown );
-
-        expect( callbackExplodedSpy ).toHaveBeenCalled();
-
     });
 });

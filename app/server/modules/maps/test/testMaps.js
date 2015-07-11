@@ -782,6 +782,11 @@ describe( "Maps", function() {
                 expect( maps.getBlockByPosition( {x: 24, z: -48} ) ).to.equal( null );
 
             });
+
+            it( "Peux explosé plusieur bombe mais n'executé que le premier callback setBomb", function(){
+                //TODO element different a cause des stubs donc on peu pas array.unique()
+                // Donc pas possible de fair de reaction en chaine
+            });
         });
 
     });
