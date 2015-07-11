@@ -14,7 +14,7 @@ module.exports = {
 
     start : function(app) {
 
-        require( config.rootPath + "../../routes/router.js" )( app );
+        require( "../../routes/router.js" )( app );
 
         app.set( "views", "app/server/routes" );
 

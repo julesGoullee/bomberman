@@ -46,15 +46,9 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
         createPermanentBlock();
 
-        if ( cfg.showBlockTemp ) {
+        createTemporaireBlock();
 
-            createTemporaireBlock();
-        }
-
-        if ( cfg.showPowerUp ) {
-
-            createPowerUp();
-        }
+        createPowerUp();
 
     };
 
@@ -176,7 +170,7 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
     //Bombs
 
-    //self.setBomb = function ( player ) {
+    //self.setBomb = f //    return false;
     //};
 
     self.explosion = function( ownerId, bombeId, playersIdKilled, blocksIdDestroy  ){
