@@ -1,6 +1,4 @@
 "use strict";
-var config = require("./app/server/config/config.js");
-
 module.exports = function(grunt) {
 
     grunt.loadNpmTasks("grunt-karma");
