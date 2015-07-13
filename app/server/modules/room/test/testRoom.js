@@ -16,6 +16,7 @@ var Room = require("../room.js" );
 describe( "Room", function() {
 
     var _room;
+    var clock;
     var socket1 ;
     var socket2 ;
     var spyEmitP1 ;
@@ -31,8 +32,10 @@ describe( "Room", function() {
 
     beforeEach(function () {
 
-        socket1 = utils.clone( mock).socket;
-        socket2 = utils.clone( mock).socket;
+        clock = sinon.useFakeTimers();
+
+        socket1 = utils.clone( mock ).socket;
+        socket2 = utils.clone( mock ).socket;
 
         stubOnP1 = sinon.stub(socket1, "on", function( event, callback ){
 
@@ -70,13 +73,106 @@ describe( "Room", function() {
         spyEmitP1 = sinon.spy( socket1, "emit" );
         spyEmitP2 = sinon.spy( socket2, "emit" );
         _room =  new Room();
-        _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+    });
 
+    afterEach(function() {
 
+        clock.restore();
+    });
+
+    describe("Timer to start", function(){
+
+        it("Ne peut démarrer une partie sans player", function(){
+            clock.tick( config.timerToStartParty );
+            expect( _room.timerToStart ).to.equal( config.timerToStartParty - 1000 );
+            expect( _room.isStartFrom ).to.equal( false );
+
+        });
+
+        it("Ne peut démarrer une partie avec un player", function(){
+            _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+
+            clock.tick( config.timerToStartParty );
+
+            expect( _room.timerToStart).to.equal( config.limitToCheckNumberPlayer );
+
+            expect( _room.isStartFrom ).to.equal( false );
+
+        });
+
+        it("Peux démarrer une partie avec deux player", function(){
+
+            _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+            _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+
+            clock.tick( config.timerToStartParty );
+
+            expect( _room.timerToStart ).to.equal( 0 );
+
+            expect( _room.isStartFrom ).to.equal( config.timerToPlaying );
+
+        });
+
+        it("Peux stoper le decompte puis le relancer", function(){
+
+            _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+
+            clock.tick( config.timerToStartParty );
+
+            expect( _room.timerToStart ).to.equal( config.limitToCheckNumberPlayer  );
+
+            _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+
+            clock.tick( config.timerToStartParty );
+
+            expect( _room.timerToStart).to.equal( 0 );
+
+            expect( _room.isStartFrom ).to.equal( config.timerToPlaying );
+
+        });
+
+        it("Peux stoper le decompte puis le relancer apres deconnection d'un player", function(){
+
+            _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+
+            clock.tick( config.timerToStartParty );
+
+            expect( _room.timerToStart).to.equal( config.limitToCheckNumberPlayer  );
+
+            _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+
+            clock.tick( 2000 );
+
+            callbackDisconnectP1();
+
+            clock.tick( config.timerToStartParty );
+
+            expect( _room.timerToStart ).to.equal( config.limitToCheckNumberPlayer );
+
+            _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+
+            clock.tick( config.timerToStartParty );
+
+            expect( _room.timerToStart ).to.equal( 0 );
+
+            expect( _room.isStartFrom ).to.equal( config.timerToPlaying );
+
+        });
+
+        it("Peux executer les callbacks onDestruction si plus personne", function(){
+
+            var callbackDestroy = { call:function(){} };
+            var spyDestroy = sinon.spy( callbackDestroy, "call" );
+            _room.onDestroy(callbackDestroy.call);
+            _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+            callbackDisconnectP1();
+
+            assert(spyDestroy.calledWith( _room ));
+        });
     });
 
     it( "Peut ajouter un player dans une room à la bonne position", function () {
-
+        _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
         expect( _room.players.length ).to.equal( 1 );
 
         expect( _room.players[0].position.x ).to.equal( _room.playersSpawnPoint[0].x );
@@ -84,7 +180,7 @@ describe( "Room", function() {
     });
 
     it( "Peut notifier la map au player", function(){
-
+        _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
         expect(spyEmitP1.args[0][0]).to.equal("map");
         var jsonMap = spyEmitP1.args[0][1];
         expect(jsonMap.players.length).to.equal(1);
@@ -97,8 +193,17 @@ describe( "Room", function() {
 
         beforeEach(function () {
 
+            _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+
             _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
 
+            clock.tick( config.timerToStartParty );
+
+        });
+
+        it("Peut notifier les players que la partie commence", function(){
+            expect(spyEmitP1.args[2][0]).to.equal("ready");
+            expect(spyEmitP1.args[2][1]).to.deep.equal({ partyTimer : config.timerToPlaying });
         });
 
         it( "Peut ajouter deux player a la bonne position et notifier la presence de l'un a l'autre", function(){
@@ -186,8 +291,8 @@ describe( "Room", function() {
             var tempId = utils.guid();
             callbackSetBombP2( tempId );
 
-            expect( spyEmitP1.args[2][0]).to.equal( "setBomb");
-            expect( spyEmitP1.args[2][1]).to.deep.equal({
+            expect( spyEmitP1.args[3][0]).to.equal( "setBomb");
+            expect( spyEmitP1.args[3][1]).to.deep.equal({
                 ownerId: _room.players[1].id,
                 bombeId : _room.players[1].listBombs[0].id,
                 position: {
@@ -204,8 +309,8 @@ describe( "Room", function() {
             var tempId = utils.guid();
             callbackSetBombP1( tempId );
 
-            expect( spyEmitP1.args[2][0]).to.equal( "setPermanentBombId");
-            expect( spyEmitP1.args[2][1]).to.deep.equal({
+            expect( spyEmitP1.args[3][0]).to.equal( "setPermanentBombId");
+            expect( spyEmitP1.args[3][1]).to.deep.equal({
                 tempId: tempId,
                 id : _room.players[0].listBombs[0].id
             });
@@ -217,8 +322,8 @@ describe( "Room", function() {
             var tempId = utils.guid();
             callbackSetBombP1( tempId );
 
-            expect( spyEmitP2.args[1][0]).to.equal( "setBomb");
-            expect( spyEmitP2.args[1][1]).to.deep.equal({
+            expect( spyEmitP2.args[2][0]).to.equal( "setBomb");
+            expect( spyEmitP2.args[2][1]).to.deep.equal({
                 ownerId: _room.players[0].id,
                 bombeId : _room.players[0].listBombs[0].id,
                 position: {
@@ -240,8 +345,8 @@ describe( "Room", function() {
 
             clock.tick( config.bombCountDown );
 
-            expect( spyEmitP2.args[2][0]).to.equal( "explosion");
-            expect( spyEmitP2.args[2][1]).to.deep.equal({
+            expect( spyEmitP2.args[3][0]).to.equal( "explosion");
+            expect( spyEmitP2.args[3][1]).to.deep.equal({
                 ownerId: _room.players[0].id,
                 bombesExplodedId : [ bombeId ],
                 playersIdKilled: [ _room.players[0].id ],

@@ -21,8 +21,6 @@ module.exports = {
 
                     if( token && !err ){
 
-                        socket.emit( "setUser", { name: name, token: token , err: null } );
-
                         socket.on( "ready", function() {
 
                             for ( var i = 0; i < _callbackConnect.length; i++ ) {
@@ -30,6 +28,8 @@ module.exports = {
                                 _callbackConnect[i]( { name: name, socket: socket, token : token });
                             }
                         });
+
+                        socket.emit( "setUser", { name: name, token: token , err: null } );
 
                     }
                     else{

@@ -9,8 +9,13 @@ function Room() {
 
     var self = this;
 
+    var timeoutToStart;
+    var _limitToCheckNumberPlayer = config.limitToCheckNumberPlayer;
+    var _nbPlayersToStart = 2;
+
     var _map;
 
+    var _callbackDestroy = [];
 
     //PUBLIC METHODS
 
@@ -63,12 +68,15 @@ function Room() {
         return false;
     };
 
-    self.players = [];//TODO synchronisé avec la map
+    self.players = [];
 
     self.id = utils.guid();
 
-    self.addPlayer = function( userProfil ) {
+    self.timerToStart = config.timerToStartParty;
 
+    self.isStartFrom = false;
+
+    self.addPlayer = function( userProfil ) {
         var player = new Player( userProfil.token, userProfil.socket, userProfil.name, self );
 
         _map.addObject( player );
@@ -79,11 +87,7 @@ function Room() {
 
         sendNewPlayerToOld( player );
 
-        listenPlayerPosition( player );
-
         listenDisconnect( player );
-
-        listenBomb( player );
     };
 
     self.alreadyJoined = function( token ){
@@ -107,6 +111,9 @@ function Room() {
         }
     };
 
+    self.onDestroy = function ( callback ){
+        _callbackDestroy.push( callback );
+    };
     //PRIVATE METHODS
 
     function broadcastWithoutMe ( player, event, params ) {
@@ -212,10 +219,16 @@ function Room() {
         player.socket.on( "disconnect", function() {
             _map.delPlayerById( player.id );
 
+            if( !self.isStartFrom ){
+                self.delPlayerById( player.id );
+            }
             //console.log( "Player disconnect: " + player.id + " on room: " + self.id );
 
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 
+            if( self.players.length === 0 ){
+                launchDestroyCallback();
+            }
         });
 
     }
@@ -278,9 +291,62 @@ function Room() {
 
     }
 
+    function startTimer( callback ){
+
+        self.timerToStart = self.timerToStart - 1000;
+
+
+        if( self.timerToStart  > 0 ){
+
+            if( self.timerToStart <= _limitToCheckNumberPlayer &&
+                self.players.length < _nbPlayersToStart ) {
+
+                self.timerToStart = _limitToCheckNumberPlayer;
+                //block le timer a 10s en attendant un autre joueur
+            }
+
+            if(  self.players.length === 0 ){
+                clearTimeout( timeoutToStart );
+
+            } else{
+                timeoutToStart = setTimeout(function () {
+                    startTimer( callback );
+                }, 1000);
+            }
+
+
+        }
+        else{
+            clearTimeout( timeoutToStart );
+            callback();
+        }
+    }
+
+    function launchDestroyCallback(){
+
+        for ( var i = 0; i < _callbackDestroy.length; i++ ) {
+            _callbackDestroy[i]( self );
+        }
+    }
+
     function init(){
         _map = new Maps();
         _map.create();
+
+        setTimeout(function () {
+            startTimer(function () {
+                self.isStartFrom = config.timerToPlaying;
+
+                for ( var i = 0; i < self.players.length; i++ ) {
+                    var player = self.players[i];
+
+                    listenPlayerPosition( player );
+                    listenBomb( player );
+                }
+
+                broadcast("ready", { partyTimer : self.isStartFrom } );
+            });
+        },1000);
     }
 
     init();
