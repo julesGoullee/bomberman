@@ -93,15 +93,15 @@ function Game ( canvasId ) {
 
                 var freeCamera = new FreeCamera( self );
 
-                var restore = new Restore( notifier, map, myPlayer );
+                //var restore = new Restore( notifier, map, myPlayer );
 
-                restore.showRestartButton();
+                //restore.showRestartButton();
 
                 cameraSwitcher.showSwitchButton();
 
                 keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
-                keyBinder.onRestore( restore.run );
+                //keyBinder.onRestore( restore.run );
 
                 map.create();
 
@@ -134,7 +134,9 @@ function Game ( canvasId ) {
                     map.playerLootPowerUp();
 
                     //todo ameliorer le debug des positions
-                    document.getElementById( "debug" ).innerHTML = "fps : " + _engine.getFps().toFixed() + " Position camera Player: " + self.scene.activeCamera.position.toString();
+                    document.getElementById( "debug" ).innerHTML = "fps : " + (Math.round(_engine.getFps() * 100) / 100).toFixed(2) +
+                        " <br>Position camera Player: x: " + ( Math.round( self.scene.activeCamera.position.x * 100)/100).toFixed(2) +
+                        " | z: " + (Math.round( self.scene.activeCamera.position.z * 100)/100).toFixed(2);
                 });
 
                 self.connector.onPlayerMove( function( id, position ) {
@@ -234,7 +236,7 @@ function Game ( canvasId ) {
 
                     map.delPlayerById( playerId );
 
-                    self.menuPlayers.delPlayer( playerId );
+                    self.menuPlayers.changeStatus( "disconnect Dead", playerId );
 
                 });
 

@@ -29,8 +29,7 @@ html, body {
 }
 
 .list-player-item{
-    display: inline-block;
-    margin: 0.2%;
+    /*margin: 0.2%;*/
 }
 
 /*DEBUG*/

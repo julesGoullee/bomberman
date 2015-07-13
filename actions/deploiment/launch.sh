@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "All process stop..." >&2
-echo "$1" | sudo -S forever stopall
+echo "$1" | sudo -S forever stopall &&
 echo "All process stop [OK]" >&2
 echo "Start node app..." >&2
 sudo forever start app/server/index.js -w &&
