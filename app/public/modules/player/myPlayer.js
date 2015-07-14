@@ -20,9 +20,11 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     var notifyMovePlayer = new NotifyMovePlayer( connector, spawnPoint );
 
+
     //PUBLIC METHODS//
 
-    self.player;
+    self.camera = deadView.camera;
+    self.player = null;
 
     self.init = function(){
 

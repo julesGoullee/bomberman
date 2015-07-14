@@ -5,7 +5,14 @@ BABYLON.Mesh.CreateBox = function(){
 BABYLON.ParticleSystem = function(){
     return {
         start: function(){},
-        stop: function(){}
+        stop: function(){},
+        clone : function (){
+            return {
+                dispose : function (){},
+                start: function(){},
+                stop: function(){}
+            };
+        }
     };
 };
 BABYLON.Texture = function(){

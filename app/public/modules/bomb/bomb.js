@@ -102,27 +102,27 @@ function Bombe ( id, owner, position, assets, scene) {
     var launchExplosion = function ( callback ){
 
         // Create a particle system
-        var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+        var particleSystem = new BABYLON.ParticleSystem("particles", 3000, scene);
 
         //Texture of each particle
         particleSystem.particleTexture = new BABYLON.Texture("content/particule.png", scene);
 
         // Where the particles come from
         particleSystem.emitter = self.meshs.shape; // the starting object, the emitter
-        particleSystem.minEmitBox = new BABYLON.Vector3(-4, 3, 4); // Starting all from
+        particleSystem.minEmitBox = new BABYLON.Vector3(-4, 0, 4); // Starting all from
         particleSystem.maxEmitBox = new BABYLON.Vector3(4, 8, -4); // To...
 
         particleSystem.color1 = new BABYLON.Color4(1, 0.5, 0, 1.0);
-        particleSystem.color2 = new BABYLON.Color4(0.8, 0.3, 0, 1.0);
-        particleSystem.colorDead = new BABYLON.Color4(0.2, 0.1, 0, 0.0);
+        particleSystem.color2 = new BABYLON.Color4(0.8, 0.2, 0, 1.0);
+        particleSystem.colorDead = new BABYLON.Color4(0.3, 0.1, 0, 0.3);
 
         // Size of each particle (random between...
         particleSystem.minSize = 1;
-        particleSystem.maxSize = 1;
+        particleSystem.maxSize = 2;
 
         // Life time of each particle (random between...
         particleSystem.minLifeTime = 1;
-        particleSystem.maxLifeTime = 1;
+        particleSystem.maxLifeTime = 2;
 
         // Emission rate
         particleSystem.emitRate = 1000;
@@ -134,32 +134,35 @@ function Bombe ( id, owner, position, assets, scene) {
         particleSystem.gravity = new BABYLON.Vector3(0, 1, 0);
 
         // Direction of each particle after it has been emitted
-        particleSystem.direction1 = new BABYLON.Vector3(-8, 0, 0);
-        particleSystem.direction2 = new BABYLON.Vector3(8, 0, 0);
+        particleSystem.direction1 = new BABYLON.Vector3(-6, 0, 0);
+        particleSystem.direction2 = new BABYLON.Vector3(6, 0, 0);
 
         // Angular speed, in radians
         particleSystem.minAngularSpeed = 0;
         particleSystem.maxAngularSpeed = Math.PI;
 
         // Speed
-        particleSystem.minEmitPower = 5;
-        particleSystem.maxEmitPower = 10;
-        particleSystem.updateSpeed = 0.01;
+        particleSystem.minEmitPower = 14;
+        particleSystem.maxEmitPower = 20;
+        particleSystem.updateSpeed = 0.008;
+        particleSystem.targetStopDuration = 1.5;
 
         // Start the particle system
-        var p2 = particleSystem.clone();
-        p2.direction1 = new BABYLON.Vector3(0, 0 , 8);
-        p2.direction2 = new BABYLON.Vector3(0, 0, -8);
-        var p3 = particleSystem.clone();
-        p3.minEmitBox = new BABYLON.Vector3(-4, 0, 4);
-        p3.direction1 = new BABYLON.Vector3(0, 8 , 0);
-        p3.direction2 = new BABYLON.Vector3(0, 8, 0);
-        particleSystem.start();
-        p2.start();
-        p3.start();
+        var ps2 = particleSystem.clone();
+        ps2.direction1 = new BABYLON.Vector3(0, 0 , 6);
+        ps2.direction2 = new BABYLON.Vector3(0, 0, -6);
 
-        particleSystem.targetStopDuration = 1.5;
-            //particleSystem.disposeOnStop = true;
+        var ps3 = particleSystem.clone();
+        ps3.minEmitBox = new BABYLON.Vector3(-4, 0, 4);
+        ps3.direction1 = new BABYLON.Vector3(0, 8 , 0);
+        ps3.direction2 = new BABYLON.Vector3(0, 8, 0);
+
+        particleSystem.start();
+        ps2.start();
+        ps3.start();
+
+        particleSystem.disposeOnStop = true;
+
         setTimeout(function(){
             callback();
         },1500);

@@ -100,18 +100,44 @@ function Game ( canvasId ) {
                     self.menuPlayers.addPlayer( player );
                 }
 
-                var freeCamera = new FreeCamera( self );
+                var radius_step = 1;
+                var alpha_step = .01;
 
-                //initLightDark( freeCamera.camera );
-                //var restore = new Restore( notifier, map, myPlayer );
-                //restore.showRestartButton();
-                //keyBinder.onRestore( restore.run );
+                function myAnimation() {
+                    var camera = myPlayer.camera;
+                    camera.radius -= radius_step;
+
+                    if (camera.radius < 150) {
+                        radius_step = 0;
+                        camera.alpha -= alpha_step;
+                        if ( _isInParty ) {
+                            self.scene.unregisterBeforeRender(myAnimation);
+
+                            camera.keysUp = [90]; // Z
+
+                            camera.keysLeft = [81]; // Q
+
+                            camera.keysDown = [83]; // S
+
+                            camera.keysRight = [68]; // D
+                        }
+                    }
+                }
+
+                self.scene.registerBeforeRender(myAnimation);
 
                 cameraSwitcher.showSwitchButton();
 
                 keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
                 map.create();
+
+                var freeCamera = new FreeCamera( self );
+
+                //initLightDark( freeCamera.camera );
+                //var restore = new Restore( notifier, map, myPlayer );
+                //restore.showRestartButton();
+                //keyBinder.onRestore( restore.run );
 
                 self.connector.onReady(function( timeParty ){
 
@@ -373,8 +399,9 @@ function Game ( canvasId ) {
                 cameraActive.detachControl( _canvas );
 
             } else {
-
-                cameraActive.attachControl( _canvas );
+                if( _isInParty ) {
+                    cameraActive.attachControl(_canvas);
+                }
             }
         };
 
