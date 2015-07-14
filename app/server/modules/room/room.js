@@ -8,7 +8,6 @@ var Maps = require("../maps/maps.js");
 function Room() {
 
     var self = this;
-    console.log("new room");
     var timeoutToStart;
     var _limitToCheckNumberPlayer = config.limitToCheckNumberPlayer;
     var _nbPlayersToStart = config.nbPlayersToStart;

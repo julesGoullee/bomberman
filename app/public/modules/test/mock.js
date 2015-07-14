@@ -1,5 +1,16 @@
 "use strict";
-
+BABYLON.Mesh.CreateBox = function(){
+    return {};
+};
+BABYLON.ParticleSystem = function(){
+    return {
+        start: function(){},
+        stop: function(){}
+    };
+};
+BABYLON.Texture = function(){
+    return {};
+};
 var gameMock = {
 
     assets : {

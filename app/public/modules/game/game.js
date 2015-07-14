@@ -102,6 +102,7 @@ function Game ( canvasId ) {
 
                 var freeCamera = new FreeCamera( self );
 
+                //initLightDark( freeCamera.camera );
                 //var restore = new Restore( notifier, map, myPlayer );
                 //restore.showRestartButton();
                 //keyBinder.onRestore( restore.run );
@@ -281,6 +282,29 @@ function Game ( canvasId ) {
 
         _engine && _engine.resize();
     }, false);
+
+    function initLightDark( camera ){
+
+        var light = new BABYLON.HemisphericLight("omni", new BABYLON.Vector3(0, 1, 0.1), scene);
+        light.diffuse = new BABYLON.Color3(0.1, 0.1, 0.17);
+        light.specular = new BABYLON.Color3(0.1, 0.1, 0.1);
+        var light2 = new BABYLON.HemisphericLight("dirlight", new BABYLON.Vector3(1, -0.75, 0.25), scene);
+        light2.diffuse = new BABYLON.Color3(0.95, 0.7, 0.4);
+        light.specular = new BABYLON.Color3(0.7, 0.7, 0.4);
+
+        var lensEffect = new BABYLON.LensRenderingPipeline('lens', {
+            edge_blur: 1.0,
+            chromatic_aberration: 1.0,
+            distortion: 1.0,
+            dof_focus_distance: 50,
+            dof_aperture: 6.0,			// set this very high for tilt-shift effect
+            grain_amount: 1.0,
+            dof_pentagon: true,
+            dof_gain: 1.0,
+            dof_threshold: 1.0,
+            dof_darken: 0.25
+        }, self.scene, 1.0, camera);
+    }
 
     function initScene () {
 
