@@ -45,6 +45,7 @@ function homeRoutes( app ){
             "modules/bot/bot",
             "modules/auth/auth",
             "modules/menuPlayers/menuPlayers",
+            "modules/timer/timer",
             "main"
         ],
         css:[

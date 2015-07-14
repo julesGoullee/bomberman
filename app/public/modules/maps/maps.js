@@ -65,14 +65,8 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
         var tabPlayer = [];
 
-        var i = 0;
-
-        var size = _content.length;
-
-        for ( i; i < size; i++ ) {
-
-            if ( _content[i].type == "player" ) {
-
+        for ( var i = 0; i < _content.length; i++ ) {
+            if( _content[i].type == "player") {
                 tabPlayer.push(_content[i]);
             }
         }

@@ -6,6 +6,9 @@ function MenuPlayers() {
 
     var _playersContainer;
 
+
+    //PUBLIC METHODS//
+
     self.addPlayer = function( player ) {
 
         var status =  player.alive == true ? "En vie"  : "Mort";
@@ -39,6 +42,9 @@ function MenuPlayers() {
         $('#menu-player-' + idPlayer).find(".player-score").text( "Score : " + newScore );
 
     };
+
+
+    //PRIVATE METHODS//
 
     function init(){
 

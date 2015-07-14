@@ -78,16 +78,24 @@ module.exports = function(grunt) {
             confProd:{
                 files : [
                     {
-                        src: "config/prod/config_prod.js",
+                        src: "config/prod/configServer_prod.js",
                         dest: "app/server/config/config.js"
+                    },
+                    {
+                        src: "config/dev/configClient_prod.js",
+                        dest: "app/public/modules/config/config.js"
                     }
                 ]
             },
             confDev:{
                 files : [
                     {
-                        src: "config/dev/config_dev.js",
+                        src: "config/dev/configServer_dev.js",
                         dest: "app/server/config/config.js"
+                    },
+                    {
+                        src: "config/dev/configClient_dev.js",
+                        dest: "app/public/modules/config/config.js"
                     }
                 ]
             },

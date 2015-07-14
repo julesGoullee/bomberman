@@ -19,6 +19,7 @@ function delRoomById( roomId ){
 }
 
 function onRoomDestroy( room ){
+    console.log("destroy" + room.id );
     delRoomById( room.id );
 }
 

@@ -37,10 +37,19 @@ function Connector () {
 
         _socket.on( "map", function ( map ) {
 
-            callback(map);
+            callback( map );
         });
 
+    };
+
+    self.ready = function(){
         _socket.emit( "ready", {} );
+    };
+
+    self.onReady = function( callback ){
+        _socket.on( "ready", function( partyData ){
+           callback( partyData.partyTimer );
+        });
     };
 
     self.sendMyPosition = function( position ) {

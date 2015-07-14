@@ -27,6 +27,8 @@ function Game ( canvasId ) {
 
     var _pointerLocked = false;
 
+    var _isInParty = false;
+
     var _blockDim = 8;
 
     //PUBLIC METHODS//
@@ -51,7 +53,15 @@ function Game ( canvasId ) {
             var getMapFinish = false;
 
             var mapJson;
+
+            var notifier = new Notifier();
+            var keyBinder = new KeyBinder();
+            var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
+
             new Preloader( self.scene, _meshPreload, self.assets).onFinish( function() {
+                self.connector.ready();
+                _engine.displayLoadingUI();
+                _engine.loadingUIText = "Recherche de parti...";
                 preloadFinish = true;
                 render();
             });
@@ -59,20 +69,20 @@ function Game ( canvasId ) {
             self.connector.getMap( function( data ) {
                 mapJson = data;
                 getMapFinish = true;
+                _engine.hideLoadingUI();
                 render();
             });
+
 
             function render (){
 
                 if( !preloadFinish || !getMapFinish ){ return null; }
 
-                var notifier = new Notifier();
-
-                var keyBinder = new KeyBinder();
-
-                var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
-
                 var map = new Maps( self.assets, _blockDim, mapJson.blockTemp, self.scene, self.menuPlayers );
+
+                var timer = new Timer( map );
+
+                timer.showTimerToStartParty( mapJson.timerToStart );
 
                 // Creation des players
                 for ( var i = 0; i < mapJson.players.length; i++ ) {
@@ -84,7 +94,6 @@ function Game ( canvasId ) {
 
                         var myPlayer = new MyPlayer( self.scene, playerJson.position, self.connector, cameraSwitcher );
                         myPlayer.player = player;
-                        myPlayer.init();
                     }
 
                     map.addObject( player );
@@ -94,28 +103,32 @@ function Game ( canvasId ) {
                 var freeCamera = new FreeCamera( self );
 
                 //var restore = new Restore( notifier, map, myPlayer );
-
                 //restore.showRestartButton();
+                //keyBinder.onRestore( restore.run );
 
                 cameraSwitcher.showSwitchButton();
 
                 keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
-                //keyBinder.onRestore( restore.run );
-
                 map.create();
 
-                map.addObject( myPlayer.player );
+                self.connector.onReady(function( timeParty ){
+
+                    myPlayer.init();
+                    timer.startGame( timeParty );
+
+                    _isInParty = true;
+                });
 
                 keyBinder.onSetBomb( function() {
 
-                    if ( _pointerLocked ) {
+                    if ( _pointerLocked && _isInParty ) {
 
-                        if ( player.shouldSetBomb() && !map.getBombByPosition( player.roundPosition() ) ) {
+                        if ( myPlayer.player.shouldSetBomb() && !map.getBombByPosition( myPlayer.player.roundPosition() ) ) {
 
                             var bombTempId = utils.guid();
 
-                            var bombe = new Bombe( bombTempId, player, player.roundPosition() , self.assets, self.scene);
+                            var bombe = new Bombe( bombTempId, myPlayer.player, player.roundPosition() , self.assets, self.scene);
 
                             myPlayer.player.addBomb( bombe );
                             self.connector.setBomb( bombe.id );
@@ -129,11 +142,11 @@ function Game ( canvasId ) {
 
                     self.scene.render();
 
-                    myPlayer.renderMyPlayer();
+                    if( _isInParty ){
+                        myPlayer.renderMyPlayer();
+                    }
+                    //map.playerLootPowerUp();
 
-                    map.playerLootPowerUp();
-
-                    //todo ameliorer le debug des positions
                     document.getElementById( "debug" ).innerHTML = "fps : " + (Math.round(_engine.getFps() * 100) / 100).toFixed(2) +
                         " <br>Position camera Player: x: " + ( Math.round( self.scene.activeCamera.position.x * 100)/100).toFixed(2) +
                         " | z: " + (Math.round( self.scene.activeCamera.position.z * 100)/100).toFixed(2);
@@ -193,7 +206,7 @@ function Game ( canvasId ) {
                     player.addBomb( bombe );
 
                 });
-                
+
                 self.connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
 
                     for ( var i = 0; i < playersIdKilled.length; i++ ) {
@@ -235,8 +248,13 @@ function Game ( canvasId ) {
                 self.connector.onPlayerDisconnect( function( playerId ){
 
                     map.delPlayerById( playerId );
+                    if( _isInParty ) {
+                        self.menuPlayers.changeStatus("disconnect Dead", playerId);
+                    }
+                    else{
+                        self.menuPlayers.delPlayer( playerId );
 
-                    self.menuPlayers.changeStatus( "disconnect Dead", playerId );
+                    }
 
                 });
 

@@ -8,10 +8,10 @@ var Maps = require("../maps/maps.js");
 function Room() {
 
     var self = this;
-
+    console.log("new room");
     var timeoutToStart;
     var _limitToCheckNumberPlayer = config.limitToCheckNumberPlayer;
-    var _nbPlayersToStart = 2;
+    var _nbPlayersToStart = config.nbPlayersToStart;
 
     var _map;
 
@@ -83,11 +83,12 @@ function Room() {
 
         self.players.push( player );
 
+        listenDisconnect( player );
+
         sendMapToNewPlayer( player );
 
         sendNewPlayerToOld( player );
 
-        listenDisconnect( player );
     };
 
     self.alreadyJoined = function( token ){
@@ -201,7 +202,8 @@ function Room() {
 
         newPlayer.socket.emit("map", {
             players: playersJson,
-            blockTemp: blocksTempJson
+            blockTemp: blocksTempJson,
+            timerToStart: self.timerToStart
         });
     }
 
@@ -317,7 +319,6 @@ function Room() {
 
         }
         else{
-            clearTimeout( timeoutToStart );
             callback();
         }
     }
