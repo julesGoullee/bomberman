@@ -7,3 +7,5 @@ app/public/fonts/
 app/public/content/common.babylon.manifest
 app/server/config/config.js
 app/public/modules/config/config.js
+log/out.log
+log/err.log
