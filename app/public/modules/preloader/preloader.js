@@ -21,16 +21,16 @@ function Preloader ( scene, meshList, assets ) {
     function init() {
 
         _loader = new BABYLON.AssetsManager( scene );
+        _loader.useDefaultLoadingScreen = false;
 
         scene._engine.loadingUIBackgroundColor = "#271204";
-        _loader.useDefaultLoadingScreen = true;//todo creer un loader qui attend les webSockets
         scene._engine.loadingUIText = "Loading 0%";
         loopInitMeshs();
 
         _loader.load();
 
         _loader.onFinish = function(){
-            scene._engine.loadingUIText = "Loading 100%";
+            //scene._engine.loadingUIText = "Loading 100%";
             for ( var i = 0 ; i < _onFinishCallbacks.length ; i++ ){
                 _onFinishCallbacks[i]();
             }

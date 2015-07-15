@@ -57,10 +57,11 @@ function Game ( canvasId ) {
             var notifier = new Notifier();
             var keyBinder = new KeyBinder();
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
+            _engine.displayLoadingUI();
 
             new Preloader( self.scene, _meshPreload, self.assets).onFinish( function() {
+
                 self.connector.ready();
-                _engine.displayLoadingUI();
                 _engine.loadingUIText = "Recherche d'autre joueurs...";
                 preloadFinish = true;
                 render();
@@ -69,7 +70,6 @@ function Game ( canvasId ) {
             self.connector.getMap( function( data ) {
                 mapJson = data;
                 getMapFinish = true;
-                _engine.hideLoadingUI();
                 render();
             });
 
@@ -292,6 +292,9 @@ function Game ( canvasId ) {
                     bomb.id = bombId;
 
                 });
+
+                _engine.hideLoadingUI();
+
 
                 //self.scene.beginAnimation( self.assets["explosionFlammes"][0], 0, 40, true, 1, function() {
                 //
