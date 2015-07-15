@@ -6,9 +6,7 @@ function Player( id, name, spawnPoint, powerUp, alive, kills, assets, blockDim )
 
     var _blockDim = blockDim;
 
-    var _timeLastBombe = 0;
-
-    var _timeBetweenTwoBombe = 500;
+    var _isReadyForSetBomb = true;
 
     //PUBLIC METHODS//
 
@@ -51,7 +49,7 @@ function Player( id, name, spawnPoint, powerUp, alive, kills, assets, blockDim )
 
     self.shouldSetBomb = function () {
 
-        return ( self.alive == true ) && (self.listBombs.length < self.powerUp.bombs ) && ( _timeLastBombe + _timeBetweenTwoBombe ) <= Date.now();
+        return ( self.alive == true ) && (self.listBombs.length < self.powerUp.bombs ) && _isReadyForSetBomb;
 
     };
 
@@ -108,7 +106,13 @@ function Player( id, name, spawnPoint, powerUp, alive, kills, assets, blockDim )
 
     self.addBomb = function ( bomb ) {
 
-        _timeLastBombe = Date.now();
+        _isReadyForSetBomb = false;
+
+        setTimeout(function(){
+
+            _isReadyForSetBomb = true;
+
+        }, cfg.timeBetweenTwoBombe );
 
         self.listBombs.push( bomb );
     };

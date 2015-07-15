@@ -124,8 +124,10 @@ describe( "Player", function() {
 
             for ( var i = 0; i < nbBombeMax; i++ ) {
                 jasmine.clock().tick( cfg.timeBetweenTwoBombe );
+
                 if( player.shouldSetBomb() ) {
                     player.addBomb(bombe);
+
                 }
             }
 
