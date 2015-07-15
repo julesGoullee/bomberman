@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                         dest: "app/server/config/config.js"
                     },
                     {
-                        src: "config/dev/configClient_prod.js",
+                        src: "config/prod/configClient_prod.js",
                         dest: "app/public/modules/config/config.js"
                     }
                 ]
