@@ -6,23 +6,41 @@ var server = require("../server/server.js" );
 
 var game = require("../../modules/game/game.js");
 
-function log(app){
+function dateToString( date ){
+    var dayOfMonth = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate() ;
+    var month = (date.getMonth() < 10) ? "0" + date.getMonth() : date.getMonth() ;
+    var curHour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    var curMinute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    var curSeconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+    return curHour + "h:" + curMinute + "m:" + curSeconds  + "s " + dayOfMonth + "/" + month;
+}
+
+function log( message , status ){
+    var date = dateToString( new Date() );
+    var statusString = status ? "[" + status.toUpperCase() + "]" : "";
+    console.log( statusString + "[" + date + "] "  + message );
+
+}
+
+function logServ(app){
 
     server.onListenStart(function(){
-
-        console.log( "server listen " + config.domaine + " on " + config.port + "..." );
+        log( "server " + config.domaine + "listen on " + config.port + "...", "info");
     });
 
     game.callbackOnConnectionInRoom( function( userProfil, room ){
 
-        console.log( "New user: " + userProfil.name + " on room: " + room.id );
+        log( "New user: " + userProfil.name + " on room: " + room.id, "info" );
     });
 
 }
 
+global.log = log;
+
 module.exports ={
     start : function( app ){
 
-        log( app );
+        logServ( app );
     }
 };

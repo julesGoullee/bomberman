@@ -223,7 +223,7 @@ function Room() {
             if( !self.isStartFrom ){
                 self.delPlayerById( player.id );
             }
-            //console.log( "Player disconnect: " + player.id + " on room: " + self.id );
+            //log( "Player disconnect: " + player.id + " on room: " + self.id, "info" );
 
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 
@@ -285,7 +285,7 @@ function Room() {
                     id: bombe.id
                 });
             }else{
-                console.log("peut pas poser " + tempId);
+                log("peut pas poser " + tempId, "err");
             }
 
         });

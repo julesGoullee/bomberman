@@ -1,6 +1,6 @@
 #!/bin/bash
 scriptDir="`dirname $0`"
-cd $scriptDir"/../../"
+cd ${scriptDir}"/../../"
 mkdir -p log
 echo "Update sources..." &&
 git pull &&
