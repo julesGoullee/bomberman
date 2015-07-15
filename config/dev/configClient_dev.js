@@ -2,7 +2,7 @@
 
 var cfg = {
     showBlockColision: false,
-    limitToCheckNumberPlayer: 5000,
+    limitToCheckNumberPlayer: 0,
     destroyPlayerTimer: 500,
     timeBetweenTwoBombe: 500,
     pasToSendPosition:  0.6,

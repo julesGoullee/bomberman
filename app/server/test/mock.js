@@ -28,4 +28,6 @@ module.exports={
 };
 
 global.log = function(){};
+config.timerToStartParty = 5000;
+config.limitToCheckNumberPlayer = 4000;
 config.nbPlayersToStart = 2;
