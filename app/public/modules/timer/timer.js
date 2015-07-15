@@ -6,6 +6,7 @@ function Timer( map ){
     var _timeUnite;
     var _timeValue;
     var _timeoutDecompteToStartParty;
+    var _callbackOnEnd;
 
     //PUBLIC METHODS//
     self.timeToStartParty = 0;
@@ -32,13 +33,27 @@ function Timer( map ){
         _timeUnite.text("secondes");
         decompteInparty();
     };
+
+    self.onTimerEnd = function( callback ){
+        _callbackOnEnd = callback;
+    };
+
     //PRIVATE METHODS//
 
-    function decompteInparty( ){
+    function decompteInparty(){
+
         setTimeout(function(){
             _timeValue.text( self.timeInParty / 1000 );
             self.timeInParty = self.timeInParty - 1000;
-            decompteInparty( self.timeInParty );
+            if( self.timeInParty <= 0 ){
+                $("#timer-label").text("On mange du chat dans:");
+                _timeUnite.text("");
+                _timeValue.text("Terminé!");
+                _callbackOnEnd();
+            }
+            else {
+                decompteInparty( self.timeInParty );
+            }
         },1000);
     }
 

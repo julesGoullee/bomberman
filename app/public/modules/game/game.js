@@ -16,7 +16,7 @@ function Game ( canvasId ) {
         "tempBlockColision",
         "tour",
         "bomb",
-        "explosionFlammes",
+        //"explosionFlammes",
         //"animBombTest",
         "bombColision",
         "powerUpBallon",
@@ -57,6 +57,7 @@ function Game ( canvasId ) {
             var notifier = new Notifier();
             var keyBinder = new KeyBinder();
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
+
             _engine.displayLoadingUI();
 
             new Preloader( self.scene, _meshPreload, self.assets).onFinish( function() {
@@ -104,6 +105,7 @@ function Game ( canvasId ) {
                 var alpha_step = .01;
 
                 function myAnimation() {
+
                     var camera = myPlayer.camera;
                     camera.radius -= radius_step;
 

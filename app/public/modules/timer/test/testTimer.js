@@ -80,5 +80,21 @@ describe( "timer", function() {
         it("Peut lancer la partie", function(){
             expect( timer.timeInParty).toEqual( timeInParty );
         });
+
+        describe("end", function(){
+
+            var spyCallback = jasmine.createSpy('spy');
+
+            beforeEach( function(){
+                timer.onTimerEnd( spyCallback );
+                jasmine.clock().tick( timeInParty );
+            });
+
+            it( "Peut lancer le callback a la fin de la partie", function(){
+                expect( spyCallback ).toHaveBeenCalled();
+            });
+        });
     });
+
+
 });
