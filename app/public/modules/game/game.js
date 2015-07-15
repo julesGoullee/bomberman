@@ -61,7 +61,7 @@ function Game ( canvasId ) {
             new Preloader( self.scene, _meshPreload, self.assets).onFinish( function() {
                 self.connector.ready();
                 _engine.displayLoadingUI();
-                _engine.loadingUIText = "Recherche de parti...";
+                _engine.loadingUIText = "Recherche d'autre joueurs...";
                 preloadFinish = true;
                 render();
             });

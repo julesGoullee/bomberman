@@ -99,17 +99,41 @@ describe( "Player", function() {
             expect( player.listBombs[0].position.z ).toEqual( -8 );
         });
 
+        it( "Ne peut pas poser deux bombe trop rapidement", function(){
+
+            jasmine.clock().install();
+
+            for ( var i = 0; i < 9999; i++ ) {
+                if( player.shouldSetBomb()){
+                    player.addBomb( bombe );
+                }
+            }
+            jasmine.clock().tick(1);
+
+            expect( player.listBombs.length ).toEqual( 1 );
+
+
+            jasmine.clock().uninstall();
+
+        });
+
         it( "Peut dire quand le nombre de bombe max est atteind", function() {
+            jasmine.clock().install();
 
             var nbBombeMax = player.powerUp.bombs;
 
             for ( var i = 0; i < nbBombeMax; i++ ) {
-                player.addBomb( bombe );
+                jasmine.clock().tick( cfg.timeBetweenTwoBombe );
+                if( player.shouldSetBomb() ) {
+                    player.addBomb(bombe);
+                }
             }
 
             expect( player.listBombs.length ).toEqual( nbBombeMax );
 
             expect( player.shouldSetBomb() ).toEqual( false );
+
+            jasmine.clock().uninstall();
 
         });
 
