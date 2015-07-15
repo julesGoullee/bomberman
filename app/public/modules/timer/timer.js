@@ -36,7 +36,7 @@ function Timer( map ){
 
     function decompteInparty( ){
         setTimeout(function(){
-            _timeValue.text( self.timeInParty/1000 );
+            _timeValue.text( self.timeInParty / 1000 );
             self.timeInParty = self.timeInParty - 1000;
             decompteInparty( self.timeInParty );
         },1000);
