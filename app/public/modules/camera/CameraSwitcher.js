@@ -42,6 +42,13 @@ function CameraSwitcher ( scene , canvas ) {
             _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
 
         }
+        else if( activeCamera.id === "cameraDead" ) {
+
+            _button.find( "span" ).text( "Player" );
+
+            _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
+
+        }
 
         _scene.activeCamera.attachControl( _canvas );
 

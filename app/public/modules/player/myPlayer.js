@@ -16,14 +16,11 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     var _cameraSwitcher = cameraSwitcher;
 
-    var deadView = new DeadView(_scene);
-
     var notifyMovePlayer = new NotifyMovePlayer( connector, spawnPoint );
 
 
     //PUBLIC METHODS//
 
-    self.camera = deadView.camera;
     self.player = null;
 
     self.init = function(){
@@ -63,8 +60,7 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
         }else{
 
-            death();
-
+            _cameraSwitcher.deadView();
         }
     };
 
@@ -72,7 +68,7 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
         _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
 
-        self.camera = _scene.activeCamera;
+        _cameraSwitcher.switchCamera();
 
         self.camera.position = new BABYLON.Vector3( spawnPoint.x, 8 , spawnPoint.z );
 
@@ -83,15 +79,6 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
     };
     
     //PRIVATE METHODS//
-
-    function death() {
-
-        self.camera = deadView.camera;
-
-        _scene.activeCamera = self.camera;
-
-        _cameraSwitcher.deadView();
-    }
 
     function initCamera() {
 
@@ -138,7 +125,6 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
     function cameraPlayerAttach(){
 
         self.player.position = self.camera.position;
-
 
         var pivot = BABYLON.Matrix.Translation(1.3,0,0.2);
 

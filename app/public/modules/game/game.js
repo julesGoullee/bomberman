@@ -56,6 +56,9 @@ function Game ( canvasId ) {
 
             var notifier = new Notifier();
             var keyBinder = new KeyBinder();
+            var deadView = new DeadView(self.scene);
+            var freeCamera = new FreeCamera( self );
+
             var cameraSwitcher = new CameraSwitcher( self.scene, _canvas );
 
             _engine.displayLoadingUI();
@@ -101,12 +104,15 @@ function Game ( canvasId ) {
                     self.menuPlayers.addPlayer( player );
                 }
 
+                cameraSwitcher.showSwitchButton();
+                cameraSwitcher.deadView();
+
                 var radius_step = 1;
                 var alpha_step = .01;
 
                 function myAnimation() {
 
-                    var camera = myPlayer.camera;
+                    var camera = self.scene.activeCamera;
                     camera.radius -= radius_step;
 
                     if (camera.radius < 150) {
@@ -125,16 +131,11 @@ function Game ( canvasId ) {
                         }
                     }
                 }
-
                 self.scene.registerBeforeRender(myAnimation);
-
-                cameraSwitcher.showSwitchButton();
 
                 keyBinder.onSwitchCamera( cameraSwitcher.switchCamera );
 
                 map.create();
-
-                var freeCamera = new FreeCamera( self );
 
                 //initLightDark( freeCamera.camera );
                 //var restore = new Restore( notifier, map, myPlayer );
@@ -292,6 +293,12 @@ function Game ( canvasId ) {
 
                     var bomb = map.getBombsById( tempBombId );
                     bomb.id = bombId;
+
+                });
+
+                timer.onTimerEnd(function(){
+                    _isInParty = false;
+                    cameraSwitcher.deadView();
 
                 });
 
