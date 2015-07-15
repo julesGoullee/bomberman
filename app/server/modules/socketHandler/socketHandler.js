@@ -14,8 +14,9 @@ module.exports = {
         auth.launch();
 
         io.on( "connection", function( socket ) {
-
+            log("connection");
             socket.on( "setUser", function( name ){
+                log("setUser");
 
                 auth.setUser( name, function( token, err ) {
 

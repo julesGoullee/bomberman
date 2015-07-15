@@ -239,7 +239,7 @@ function Game ( canvasId ) {
                     for ( var i = 0; i < playersIdKilled.length; i++ ) {
 
                         var playerKilledId = playersIdKilled[i];
-                        map.delPlayerById( playerKilledId );
+                        map.killPlayerById( playerKilledId );
                         //todo score && menu
                     }
 
@@ -274,13 +274,14 @@ function Game ( canvasId ) {
 
                 self.connector.onPlayerDisconnect( function( playerId ){
 
-                    map.delPlayerById( playerId );
+
                     if( _isInParty ) {
                         self.menuPlayers.changeStatus("disconnect Dead", playerId);
+                        map.killPlayerById( playerId );
                     }
                     else{
                         self.menuPlayers.delPlayer( playerId );
-
+                        map.delPlayerById ( playerId );
                     }
 
                 });

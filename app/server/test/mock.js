@@ -1,3 +1,5 @@
+var config = require("./../config/config.js");
+
 var _socketHandlerOnConnectCallbacks = [];
 
 module.exports={
@@ -24,3 +26,6 @@ module.exports={
         }
     }
 };
+
+global.log = function(){};
+config.nbPlayersToStart = 2;

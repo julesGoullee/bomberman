@@ -5,5 +5,5 @@ var cfg = {
     limitToCheckNumberPlayer: 5000,
     destroyPlayerTimer: 500,
     pasToSendPosition:  0.6,
-    nbPlayersToStart: 2
+    nbPlayersToStart: 3
 };

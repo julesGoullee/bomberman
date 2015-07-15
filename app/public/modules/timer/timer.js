@@ -42,7 +42,7 @@ function Timer( map ){
         },1000);
     }
 
-    function decompteToStartParty( ){
+    function decompteToStartParty(){
 
         _timeoutDecompteToStartParty = setTimeout(function(){
             if(  self.timeToStartParty <= cfg.limitToCheckNumberPlayer ) {

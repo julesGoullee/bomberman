@@ -16,7 +16,10 @@ module.exports = function(grunt) {
                     reporter: "progress",
                     tdd: "tdd"
                 },
-                src: "app/server/modules/**/test/*.js"
+                src: [
+                    "app/server/test/mock.js",
+                    "app/server/modules/**/test/*.js"
+                ]
             }
         },
         karma: {

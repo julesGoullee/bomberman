@@ -121,17 +121,14 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
         return null;
     };
 
-    self.delPlayerById = function ( playerId ) {
-
+    self.killPlayerById = function( playerId ){
         for ( var i = 0; i < _content.length; i++ ) {
 
-            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
+            if (_content[i].type === "player" && _content[i].id === playerId) {
 
                 menuPlayers.changeStatus( "Mort", _content[i].id );
 
                 (function( player ){
-
-                    player.alive = false;
 
                     scene.beginAnimation( player.meshs.shape, 506, 550, false, 1, function() {
 
@@ -140,6 +137,22 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
                 })(_content[i]);
 
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    self.delPlayerById = function ( playerId ) {
+
+        for ( var i = 0; i < _content.length; i++ ) {
+
+            if( _content[i].type === "player" &&  _content[i].id === playerId ) {
+
+                self.killPlayerById( playerId );
+
+                _content.splice( i, 1);
                 return true;
             }
         }
@@ -177,7 +190,7 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
         bombe.destroy();
 
         for (var i = 0; i < playersIdKilled.length; i++) {
-            self.delPlayerById( playersIdKilled[i]);
+            self.killPlayerById( playersIdKilled[i]);
         }
 
         for (var j = 0; i < blocksIdDestroy.length; i++) {

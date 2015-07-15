@@ -298,11 +298,22 @@ describe( "Maps", function() {
 
             maps.delPlayerById( player.id );
 
+            expect( maps.getPlayers().length ).toEqual( 0 );
+
+        });
+
+        it( "Peut tuer un player", function () {
             jasmine.clock().install();
+
+            maps.addObject( player );
+
+            maps.killPlayerById( player.id );
+
             jasmine.clock().tick( cfg.destroyPlayerTimer );
 
-            //expect( maps.getPlayers().length ).toEqual( 0 );
-            //TODO pas suprimmer de content mais mesh destroy et player.alive false
+            expect( maps.getPlayers().length ).toEqual( 1 );
+
+            expect( player.alive ).toBeFalsy();
 
             jasmine.clock().uninstall();
 

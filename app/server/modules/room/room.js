@@ -80,6 +80,8 @@ function Room() {
 
         _map.addObject( player );
 
+        log( "Player connected: " + player.id + " on room: " + self.id, "info" );
+
         self.players.push( player );
 
         listenDisconnect( player );
@@ -105,6 +107,8 @@ function Room() {
         for ( var i = 0 ; i < self.players.length ; i ++ ) {
 
             if ( self.players[i].id === id ) {
+
+                _map.delPlayerById( id );
 
                 self.players.splice( i , 1);
             }
@@ -218,14 +222,23 @@ function Room() {
     function listenDisconnect( player ){
 
         player.socket.on( "disconnect", function() {
-            _map.delPlayerById( player.id );
 
             if( !self.isStartFrom ){
                 self.delPlayerById( player.id );
             }
-            //log( "Player disconnect: " + player.id + " on room: " + self.id, "info" );
+            else{
+                _map.killPlayerById( player.id );
+            }
+
+            log( "Player disconnect: " + player.id + " on room: " + self.id, "info" );
 
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
+
+            player.socket.removeAllListeners("connection");
+            player.socket.removeAllListeners("ready");
+            player.socket.removeAllListeners("setUser");
+            player.socket.removeAllListeners("myPosition");
+            player.socket.removeAllListeners("setBomb");
 
             if( self.players.length === 0 ){
                 launchDestroyCallback();
@@ -245,7 +258,7 @@ function Room() {
             }
 
             var playersIdKilled = [];
-            
+
             for ( var j = 0; j < degats.players.length; j++ ) {
 
                 playersIdKilled.push( degats.players[j].id );
@@ -294,32 +307,31 @@ function Room() {
 
     function startTimer( callback ){
 
-        self.timerToStart = self.timerToStart - 1000;
+        timeoutToStart = setTimeout(function () {
 
+            self.timerToStart = self.timerToStart - 1000;
 
-        if( self.timerToStart  > 0 ){
+            if( self.timerToStart  > 0 ){
 
-            if( self.timerToStart <= _limitToCheckNumberPlayer &&
-                self.players.length < _nbPlayersToStart ) {
+                if( self.timerToStart <= _limitToCheckNumberPlayer &&
+                    self.players.length < _nbPlayersToStart ) {
 
-                self.timerToStart = _limitToCheckNumberPlayer;
-                //block le timer a 10s en attendant un autre joueur
-            }
+                    self.timerToStart = _limitToCheckNumberPlayer;
+                    //block le timer a 10s en attendant un autre joueur
+                }
 
-            if(  self.players.length === 0 ){
-                clearTimeout( timeoutToStart );
+                if(  self.players.length === 0 ){
+                    clearTimeout( timeoutToStart );
 
-            } else{
-                timeoutToStart = setTimeout(function () {
+                } else{
                     startTimer( callback );
-                }, 1000);
+                }
             }
+            else{
+                callback();
+            }
+        }, 1000);
 
-
-        }
-        else{
-            callback();
-        }
     }
 
     function launchDestroyCallback(){
@@ -333,20 +345,18 @@ function Room() {
         _map = new Maps();
         _map.create();
 
-        setTimeout(function () {
-            startTimer(function () {
-                self.isStartFrom = config.timerToPlaying;
+        startTimer(function () {
+            self.isStartFrom = config.timerToPlaying;
 
-                for ( var i = 0; i < self.players.length; i++ ) {
-                    var player = self.players[i];
+            for ( var i = 0; i < self.players.length; i++ ) {
+                var player = self.players[i];
 
-                    listenPlayerPosition( player );
-                    listenBomb( player );
-                }
+                listenPlayerPosition( player );
+                listenBomb( player );
+            }
 
-                broadcast("ready", { partyTimer : self.isStartFrom } );
-            });
-        },1000);
+            broadcast("ready", { partyTimer : self.isStartFrom } );
+        });
     }
 
     init();

@@ -116,12 +116,21 @@ function Maps(){
         return null;
     };
 
+    self.killPlayerById = function( playerId ){
+
+        var player = self.getPlayerById( playerId );
+        player.destroy();
+    };
+
     self.delPlayerById = function ( playerId ) {
 
         for ( var i = 0; i < _content.length; i++ ) {
+
             if( _content[i].type === "player" &&  _content[i].id === playerId ) {
 
                 _content[i].destroy();
+
+                _content.splice( i, 1 );
 
                 return true;
             }
@@ -549,7 +558,7 @@ function Maps(){
 
                 }
 
-                self.delPlayerById( degats.players[iPlayer].id );
+                self.killPlayerById( degats.players[iPlayer].id );
 
             }
             callback( degats );

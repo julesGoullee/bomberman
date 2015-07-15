@@ -4,8 +4,6 @@ var config = require( "../../config/config.js" );
 
 var server = require("../server/server.js" );
 
-var game = require("../../modules/game/game.js");
-
 function dateToString( date ){
     var dayOfMonth = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate() ;
     var month = (date.getMonth() < 10) ? "0" + date.getMonth() : date.getMonth() ;
@@ -28,12 +26,6 @@ function logServ(app){
     server.onListenStart(function(){
         log( "server " + config.domaine + "listen on " + config.port + "...", "info");
     });
-
-    game.callbackOnConnectionInRoom( function( userProfil, room ){
-
-        log( "New user: " + userProfil.name + " on room: " + room.id, "info" );
-    });
-
 }
 
 global.log = log;

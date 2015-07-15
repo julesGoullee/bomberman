@@ -173,8 +173,7 @@ describe( "Maps", function() {
             expect( maps.getPlayers().length ).to.equal( 1 );
 
             assert( maps.delPlayerById( player.id ) );
-            //expect( maps.getPlayers().length ).toEqual( 0 );
-            //TODO pas suprimmer de content mais mesh destroy et player.alive false
+            expect( maps.getPlayers().length ).to.equal( 0 );
 
         });
 

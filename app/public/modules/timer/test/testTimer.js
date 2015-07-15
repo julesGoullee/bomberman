@@ -2,7 +2,7 @@
 
 describe( "timer", function() {
 
-
+    cfg.nbPlayersToStart = 2;
     var timer;
     var map;
     var timeToStartParty = 60000;//ms
