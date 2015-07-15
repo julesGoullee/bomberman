@@ -3,60 +3,68 @@
 function Timer( map ){
     var self = this;
 
-    var timeUnite;
-    var timeValue;
-    var timeoutDecompteToStartParty;
+    var _timeUnite;
+    var _timeValue;
+    var _timeoutDecompteToStartParty;
 
     //PUBLIC METHODS//
+    self.timeToStartParty = 0;
+    self.timeInParty = 0;
+
     self.showTimerToStartParty = function( timerToStart ){
+        self.timeToStartParty = timerToStart;
+
         $("#timer-label").text("En attente d'autre joueurs la partie demarre dans");
-        timeUnite.text("secondes à attendre...");
-        timeUnite.show();
+        _timeUnite.text("secondes à attendre...");
+        _timeValue.text( self.timeToStartParty/1000 );
+        _timeUnite.show();
+
         decompteToStartParty( timerToStart );
     };
 
     self.startGame = function( timeParty ){
-        clearTimeout( timeoutDecompteToStartParty );
+        self.timeInParty = timeParty;
+
+        clearTimeout( _timeoutDecompteToStartParty );
 
         $("#timer-label").text("On mange du chat dans:");
-        timeUnite.show();
-        timeUnite.text("secondes");
-        decompteInparty( timeParty );
+        _timeUnite.show();
+        _timeUnite.text("secondes");
+        decompteInparty();
     };
     //PRIVATE METHODS//
 
-    function decompteInparty( timeReamining ){
-
-        timeValue.text( timeReamining/1000 );
-        timeReamining = timeReamining - 1000;
-
+    function decompteInparty( ){
         setTimeout(function(){
-            decompteInparty( timeReamining );
+            _timeValue.text( self.timeInParty/1000 );
+            self.timeInParty = self.timeInParty - 1000;
+            decompteInparty( self.timeInParty );
         },1000);
     }
 
-    function decompteToStartParty( value ){
-        if(  value < cfg.limitToCheckNumberPlayer ) {
-            $("#time-unite").hide();
+    function decompteToStartParty( ){
 
-            if( map.getPlayers().length < cfg.nbPlayersToStart ) {
-                $("#timer-label").text("A partir de deux joueurs la partie demarreras...");
-                timeValue.text("Invite des amis !");
+        _timeoutDecompteToStartParty = setTimeout(function(){
+            if(  self.timeToStartParty <= cfg.limitToCheckNumberPlayer ) {
+                $("#time-unite").hide();
+
+                if( map.getPlayers().length < cfg.nbPlayersToStart ) {
+                    $("#timer-label").text("A partir de deux joueurs la partie demarreras...");
+                    _timeValue.text("Invite des amis !");
+                }
+                else{
+                    $("#timer-label").text("Prepare toi !");
+                    _timeValue.text("la partie va démarrer !");
+                }
             }
             else{
-                $("#timer-label").text("Prepare toi !");
-                timeValue.text("la partie va démarrer !");
+                _timeValue.text( self.timeToStartParty/1000 );
+                _timeUnite.show();
+                _timeUnite.text("secondes à attendre...");
+                self.timeToStartParty = self.timeToStartParty - 1000;
             }
-        }
-        else{
-            $("#timer-value").text( value/1000 );
-            timeUnite.show();
-            timeUnite.text("secondes à attendre...");
-            value = value - 1000;
-        }
 
-        timeoutDecompteToStartParty = setTimeout(function(){
-            decompteToStartParty( value );
+            decompteToStartParty();
         },1000);
     }
 
@@ -74,8 +82,8 @@ function Timer( map ){
         "</div>";
 
         $('body').append( timerHtml );
-        timeUnite = $("#time-unite");
-        timeValue = $("#timer-value");
+        _timeUnite = $("#time-unite");
+        _timeValue = $("#timer-value");
     }
 
     init();
