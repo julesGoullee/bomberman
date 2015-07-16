@@ -3,8 +3,12 @@
 function Timer( map ){
     var self = this;
 
+    //JQ elements
     var _timeUnite;
     var _timeValue;
+    var _timerContainer;
+    var _timeLabel;
+
     var _timeoutDecompteToStartParty;
     var _callbackOnEnd;
 
@@ -15,8 +19,8 @@ function Timer( map ){
     self.showTimerToStartParty = function( timerToStart ){
         self.timeToStartParty = timerToStart;
 
-        $("#timer-label").text("En attente d'autre joueurs la partie demarre dans");
-        _timeUnite.text("secondes à attendre...");
+        _timeLabel.text("En attente d'autres joueurs");
+        _timeUnite.text("secondes restantes...");
         _timeValue.text( self.timeToStartParty/1000 );
         _timeUnite.show();
 
@@ -28,7 +32,7 @@ function Timer( map ){
 
         clearTimeout( _timeoutDecompteToStartParty );
 
-        $("#timer-label").text("On mange du chat dans:");
+        _timeLabel.text("On mange du chat dans:");
         _timeUnite.show();
         _timeUnite.text("secondes");
         decompteInparty();
@@ -36,6 +40,12 @@ function Timer( map ){
 
     self.onTimerEnd = function( callback ){
         _callbackOnEnd = callback;
+    };
+
+    self.hide = function(){
+        _timerContainer.hide();
+        _timeUnite.empty();
+        _timeValue.empty();
     };
 
     //PRIVATE METHODS//
@@ -46,8 +56,8 @@ function Timer( map ){
             _timeValue.text( self.timeInParty / 1000 );
             self.timeInParty = self.timeInParty - 1000;
             if( self.timeInParty <= 0 ){
-                $("#timer-label").text("On mange du chat dans:");
-                _timeUnite.text("");
+                _timeLabel.text("A table");
+                _timeUnite.empty();
                 _timeValue.text("Terminé!");
                 _callbackOnEnd();
             }
@@ -64,7 +74,7 @@ function Timer( map ){
                 $("#time-unite").hide();
 
                 if( map.getPlayers().length < cfg.nbPlayersToStart ) {
-                    $("#timer-label").text("A partir de deux joueurs la partie demarreras...");
+                    _timeLabel.text("En attente de " + ( cfg.nbPlayersToStart - map.getPlayers().length ) + " joueurs...");
                     _timeValue.text("Invite des amis !");
                 }
                 else{
@@ -99,6 +109,8 @@ function Timer( map ){
         $('body').append( timerHtml );
         _timeUnite = $("#time-unite");
         _timeValue = $("#timer-value");
+        _timerContainer = $("#timer-container");
+        _timeLabel = $("#timer-label");
     }
 
     init();

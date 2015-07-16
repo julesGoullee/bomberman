@@ -330,6 +330,7 @@ function Game ( canvasId ) {
                             "<td>" + statusString + "</td>"+
                         "</tr>";
                     }
+
                     self.popup.setContent( header, body );
                     $("#table-score-body").append( tablePlayers );
 

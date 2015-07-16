@@ -38,7 +38,7 @@ describe( "timer", function() {
 
             jasmine.clock().tick(timeToStartParty*3);
             expect( timer.timeToStartParty ).toEqual( cfg.limitToCheckNumberPlayer );
-            expect($( "#timer-label").text() ).toEqual("A partir de deux joueurs la partie demarreras...");
+            expect($( "#timer-label").text() ).toEqual("En attente de 1 joueurs...");
         });
 
         it( "Peut se préparer au lancement de la partie si le nombre de joueur est suffisant", function () {
@@ -56,7 +56,7 @@ describe( "timer", function() {
 
             jasmine.clock().tick(timeToStartParty*3);
             expect( timer.timeToStartParty ).toEqual( cfg.limitToCheckNumberPlayer );
-            expect($( "#timer-label").text() ).toEqual("A partir de deux joueurs la partie demarreras...");
+            expect($( "#timer-label").text() ).toEqual("En attente de 1 joueurs...");
 
             var player2 = new Player(1, "testPlayer2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, gameMock.assets, gameMock.blockDim );
             map.addObject( player2 );
