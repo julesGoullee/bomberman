@@ -1,10 +1,9 @@
 "use strict";
 
-function FreeCamera(game) {
+function FreeCamera( scene ) {
 
     var self = this;
 
-    var _scene = game.scene;
 
     var _speed = 1;
 
@@ -25,7 +24,7 @@ function FreeCamera(game) {
         var camera = new BABYLON.FreeCamera(
             "cameraFree",
             new BABYLON.Vector3( 0, 60, 0 ),
-            _scene
+            scene
         );
 
         camera.setTarget( new BABYLON.Vector3( 0, 15, -65 ) );
