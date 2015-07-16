@@ -132,7 +132,7 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
 
                     scene.beginAnimation( player.meshs.shape, 506, 550, false, 1, function() {
 
-                        setTimeout(player.destroy, cfg.destroyPlayerTimer);
+                        setTimeout( player.destroy, cfg.destroyPlayerTimer);
                     });
 
                 })(_content[i]);

@@ -299,7 +299,41 @@ function Game ( canvasId ) {
                 timer.onTimerEnd(function(){
                     _isInParty = false;
                     cameraSwitcher.deadView();
+                    var header = "<h4 class='modal-title' >Partie Terminée!</h4>";
 
+                    var body = "<table class='table table-striped'>"+
+                        "<thead>"+
+                            "<tr>"+
+                                "<th>Kills</th>"+
+                                "<th>Nom</th>"+
+                                "<th>Statu</th>"+
+                            "</tr>"+
+                        "</thead>"+
+                        "<tbody id='table-score-body'>"+
+
+                        "</tbody>"+
+                    "</table>";
+
+                    var players = map.getPlayers();
+                    var tablePlayers = "";
+
+                    players.sort(function( a, b ){
+                       return a.kills <= b.kills;
+                    });
+
+                    for (var i = 0; i < players.length; i++) {
+                        var player = players[i];
+                        var statusString = player.alive ? "alive" : "dead";
+                        tablePlayers += "<tr>"+
+                            "<th>" + player.kills + "</th>"+
+                            "<td>" + player.name + "</td>"+
+                            "<td>" + statusString + "</td>"+
+                        "</tr>";
+                    }
+                    self.popup.setContent( header, body );
+                    $("#table-score-body").append( tablePlayers );
+
+                    self.popup.show();
                 });
 
                 _engine.hideLoadingUI();

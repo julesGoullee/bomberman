@@ -16,7 +16,10 @@ function Popup(){
 
     self.show = function(){
 
-        _container.modal("show");
+        _container.modal({
+            backdrop: 'static',
+            keyboard: false
+        });
     };
 
     self.hide = function(){
@@ -30,7 +33,7 @@ function Popup(){
                 "<div class='modal-dialog'>"+
                     "<div class='modal-content'>"+
                         "<div class='modal-header'>"+
-                            "<button type='button' class='close hideModal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"+
+                            //"<button type='button' class='close hideModal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"+
                         "<div id='popup-header'></div>"+
                     "</div>"+
                         "<div class='modal-body' id='popup-container'>"+
@@ -44,7 +47,7 @@ function Popup(){
 
         $(".hideModal").click(function(){
 
-            _container.modal("hide");
+            self.hide();
         });
     }
 
