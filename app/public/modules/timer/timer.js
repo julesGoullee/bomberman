@@ -55,11 +55,14 @@ function Timer( map ){
         setTimeout(function(){
             _timeValue.text( self.timeInParty / 1000 );
             self.timeInParty = self.timeInParty - 1000;
+
             if( self.timeInParty <= 0 ){
-                _timeLabel.text("A table");
-                _timeUnite.empty();
-                _timeValue.text("Terminé!");
-                _callbackOnEnd();
+                setTimeout(function(){
+                    _timeLabel.text("A table");
+                    _timeUnite.empty();
+                    _timeValue.text("Terminé!");
+                    _callbackOnEnd();
+                }, 1000);
             }
             else {
                 decompteInparty( self.timeInParty );

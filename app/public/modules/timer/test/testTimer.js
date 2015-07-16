@@ -88,6 +88,7 @@ describe( "timer", function() {
             beforeEach( function(){
                 timer.onTimerEnd( spyCallback );
                 jasmine.clock().tick( timeInParty );
+                jasmine.clock().tick( 1000 );
             });
 
             it( "Peut lancer le callback a la fin de la partie", function(){
