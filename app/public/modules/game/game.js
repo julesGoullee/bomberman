@@ -426,23 +426,27 @@ function Game ( canvasId ) {
         document.addEventListener( "webkitpointerlockchange", pointerLockChange, false );
     }
 
+    function replay(){
+        //_engine.displayLoadingUI();
+    }
+
     function showEnd(){
         _isInParty = false;
         _cameraSwitcher.deadView();
         var header = "<h4 class='modal-title' >Partie Terminée!</h4>";
 
+        var footer = "<button type='button' class='btn btn-primary' id='btn-rejouer'>Rejouer!</button>";
+
         var body = "<table class='table table-striped'>"+
             "<thead>"+
-            "<tr>"+
-            "<th>Kills</th>"+
-            "<th>Nom</th>"+
-            "<th>Statu</th>"+
-            "</tr>"+
+                "<tr>"+
+                    "<th>Kills</th>"+
+                    "<th>Nom</th>"+
+                    "<th>Statu</th>"+
+                "</tr>"+
             "</thead>"+
-            "<tbody id='table-score-body'>"+
-
-            "</tbody>"+
-            "</table>";
+            "<tbody id='table-score-body'></tbody>"+
+        "</table>";
 
         var players = _map.getPlayers();
         var tablePlayers = "";
@@ -454,17 +458,24 @@ function Game ( canvasId ) {
         for (var i = 0; i < players.length; i++) {
             var player = players[i];
             var statusString = player.alive ? "alive" : "dead";
+            var kills = player.kills > 0 ? player.kills : "-";
+
             tablePlayers += "<tr>"+
-                "<th>" + player.kills + "</th>"+
+                "<th>" + kills + "</th>"+
                 "<td>" + player.name + "</td>"+
                 "<td>" + statusString + "</td>"+
                 "</tr>";
         }
 
-        _popup.setContent( header, body );
+        _popup.setContent( header, body, footer );
         $("#table-score-body").append( tablePlayers );
 
         _popup.show();
         _timer.hide();
+
+        $("#btn-rejouer").click(function(){
+            _popup.hide();
+            replay();
+        });
     }
 }

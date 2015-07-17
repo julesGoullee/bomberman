@@ -7,11 +7,15 @@ function Popup(){
 
     var _container = $('body');
 
-    self.setContent = function( header, body ){
+    self.setContent = function( header, body, footer){
 
         $("#popup-container").html( body );
 
         $("#popup-header").html( header );
+
+        if( footer ){
+            $("#popup-footer").html( footer );
+        }
     };
 
     self.show = function(){
@@ -34,10 +38,10 @@ function Popup(){
                     "<div class='modal-content'>"+
                         "<div class='modal-header'>"+
                             //"<button type='button' class='close hideModal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"+
-                        "<div id='popup-header'></div>"+
-                    "</div>"+
-                        "<div class='modal-body' id='popup-container'>"+
+                            "<div id='popup-header'></div>"+
                         "</div>"+
+                        "<div class='modal-body' id='popup-container'></div>"+
+                        "<div class='modal-footer' id='popup-footer'></div>"+
                     "</div>"+
                 "</div>"+
             "</div>"
