@@ -29,6 +29,8 @@ function Game ( canvasId ) {
 
     var _isInParty = false;
 
+    var _isfirstLoad = true;
+
     var _blockDim = 8;
 
     //instances
@@ -51,6 +53,8 @@ function Game ( canvasId ) {
     var _cameraSwitcher = new CameraSwitcher( _scene, _canvas );
     var _map;
     var _timer;
+    var _myPlayer;
+
 
     //PUBLIC METHODS//
 
@@ -87,9 +91,9 @@ function Game ( canvasId ) {
 
                 if( !preloadFinish || !getMapFinish ){ return null; }
 
-                _map = new Maps( _assets, _blockDim, mapJson.blockTemp, _scene, _menuPlayers );
+                _map = _map || new Maps( _assets, _blockDim, _scene, _menuPlayers );
 
-                _timer = new Timer( _map );
+                _timer = _timer || new Timer( _map );
 
                 _timer.showTimerToStartParty( mapJson.timerToStart );
 
@@ -100,20 +104,18 @@ function Game ( canvasId ) {
                     var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, _assets, _blockDim );
 
                     if ( playerJson.isMine ) {
+                        if( _isfirstLoad ){
+                            _myPlayer = _myPlayer || new MyPlayer( _scene, playerJson.position, _connector, _cameraSwitcher );
 
-                        var myPlayer = new MyPlayer( _scene, playerJson.position, _connector, _cameraSwitcher );
-                        myPlayer.player = player;
+                        }else{
+                            _myPlayer.position = playerJson.position;
+                        }
+                        _myPlayer.player = player;
                     }
 
                     _map.addObject( player );
                     _menuPlayers.addPlayer( player );
                 }
-
-                _cameraSwitcher.showSwitchButton();
-                _cameraSwitcher.deadView();
-
-                var radius_step = 1;
-                var alpha_step = .01;
 
                 function myAnimation() {
 
@@ -123,7 +125,7 @@ function Game ( canvasId ) {
                     if (camera.radius < 150) {
                         radius_step = 0;
                         camera.alpha -= alpha_step;
-                        if ( _isInParty ) {
+                        if (_isInParty) {
                             _scene.unregisterBeforeRender(myAnimation);
 
                             camera.keysUp = [90]; // Z
@@ -136,177 +138,44 @@ function Game ( canvasId ) {
                         }
                     }
                 }
-                _scene.registerBeforeRender(myAnimation);
 
-                _keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
+                if( _isfirstLoad ) {
+                    _cameraSwitcher.showSwitchButton();
+                    _cameraSwitcher.deadView();
 
-                _map.create();
+                    var radius_step = 1;
+                    var alpha_step = .01;
 
-                //initLightDark( freeCamera.camera );
-                //var restore = new Restore( notifier, map, myPlayer );
-                //restore.showRestartButton();
-                //keyBinder.onRestore( restore.run );
+                    _scene.registerBeforeRender(myAnimation);
 
-                _connector.onReady(function( timeParty ){
+                    _keyBinder.onSwitchCamera(_cameraSwitcher.switchCamera);
 
-                    myPlayer.init();
-                    _timer.startGame( timeParty );
+                    _map.create( mapJson.blockTemp );
+                    initPointerLock();
+                    //initLightDark( freeCamera.camera );
+                    //var restore = new Restore( notifier, map, myPlayer );
+                    //restore.showRestartButton();
+                    //keyBinder.onRestore( restore.run );
 
-                    _isInParty = true;
-                });
+                    _engine.runRenderLoop( function () {
 
-                _keyBinder.onSetBomb( function() {
+                        _scene.render();
 
-                    if ( _pointerLocked && _isInParty ) {
-
-                        if ( myPlayer.player.shouldSetBomb() && !_map.getBombByPosition( myPlayer.player.roundPosition() ) ) {
-
-                            var bombTempId = utils.guid();
-
-                            var bombe = new Bombe( bombTempId, myPlayer.player, player.roundPosition() , _assets, _scene);
-
-                            myPlayer.player.addBomb( bombe );
-                            _connector.setBomb( bombe.id );
+                        if( _isInParty ){
+                            _myPlayer.renderMyPlayer();
                         }
-                    }
-                });
+                        //map.playerLootPowerUp();
 
-                initPointerLock();
+                        document.getElementById( "debug" ).innerHTML = "fps : " + (Math.round(_engine.getFps() * 100) / 100).toFixed(2) +
+                            " <br>Position camera Player: x: " + ( Math.round( _scene.activeCamera.position.x * 100)/100).toFixed(2) +
+                            " | z: " + (Math.round( _scene.activeCamera.position.z * 100)/100).toFixed(2);
+                    });
+                }else{
+                    _map.setTempBlocks( mapJson.blockTemp );
+                }
 
-                _engine.runRenderLoop( function () {
-
-                    _scene.render();
-
-                    if( _isInParty ){
-                        myPlayer.renderMyPlayer();
-                    }
-                    //map.playerLootPowerUp();
-
-                    document.getElementById( "debug" ).innerHTML = "fps : " + (Math.round(_engine.getFps() * 100) / 100).toFixed(2) +
-                        " <br>Position camera Player: x: " + ( Math.round( _scene.activeCamera.position.x * 100)/100).toFixed(2) +
-                        " | z: " + (Math.round( _scene.activeCamera.position.z * 100)/100).toFixed(2);
-                });
-
-                _connector.onPlayerMove( function( id, position ) {
-
-                    var player = _map.getPlayerById( id );
-
-                    if( player) {
-
-                        player.move( position );
-
-                        var animable =  _scene.getAnimatableByTarget( player.meshs.shape);
-
-                        if( player.timeOut ){
-
-                            clearTimeout( player.timeOut );
-                        }
-
-                        if( player.lastAnimRun ){
-
-                            animable && animable.stop();
-                            delete player.lastAnimRun ;
-                        }
-
-                        if( !animable ) {
-
-                            _scene.beginAnimation( player.meshs.shape, 0, 20, false, 1, function(){
-
-                                if( player.timeOut ){
-                                    clearTimeout(player.timeOut );
-                                }
-
-                                player.timeOut = setTimeout( function(){
-
-                                    if( player.lastAnim ) {
-
-                                        player.lastAnimRun = true;
-
-                                        _scene.beginAnimation( player.meshs.shape,308, 458, true, 1 );
-
-                                    }
-                                },100);
-
-                                player.lastAnim = true;
-                            });
-
-                        }
-                    }
-                });
-
-                _connector.onPlayerSetBomb( function( playerId, bombeId, position ) {
-
-                    var player = _map.getPlayerById( playerId );
-                    var bombe = new Bombe( bombeId, player, position , _assets, _scene );
-                    player.addBomb( bombe );
-
-                });
-
-                _connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
-
-                    for ( var i = 0; i < playersIdKilled.length; i++ ) {
-
-                        var playerKilledId = playersIdKilled[i];
-                        _map.killPlayerById( playerKilledId );
-                        //todo score && menu
-                    }
-
-                    for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
-
-                        var blockIdDestroy = blocksIdDestroy[j];
-                        _map.delBlockById( blockIdDestroy );
-                    }
-
-                    for ( var k = 0; k < bombesExplodedId.length; k++ ) {
-
-                        var bombeExplodedId = bombesExplodedId[k];
-                        var bombe = _map.getBombsById( bombeExplodedId );
-                        if( !bombe ){
-                            debugger;
-                        }
-                        bombe.destroy();
-                        bombe.owner.delBombById( bombe.id );
-
-                    }
-                });
-
-                _connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){
-
-                    var player = new Player( id, name, position, powerUp, alive, kills, _assets, _blockDim );
-
-                    _menuPlayers.addPlayer( player );
-
-                    _map.addObject( player );
-
-                });
-
-                _connector.onPlayerDisconnect( function( playerId ){
-
-
-                    if( _isInParty ) {
-                        _menuPlayers.changeStatus("disconnect Dead", playerId);
-                        _map.killPlayerById( playerId );
-                    }
-                    else{
-                        _menuPlayers.delPlayer( playerId );
-                        _map.delPlayerById ( playerId );
-                    }
-
-                });
-
-                _connector.setPermanentBombId( function( tempBombId, bombId ){
-
-                    var bomb = _map.getBombsById( tempBombId );
-                    bomb.id = bombId;
-
-                });
-
-                //_timer.onTimerEnd( showEnd );
-
-                _connector.onEnd(showEnd);
 
                 _engine.hideLoadingUI();
-
 
                 //_scene.beginAnimation( _assets["explosionFlammes"][0], 0, 40, true, 1, function() {
                 //
@@ -314,6 +183,147 @@ function Game ( canvasId ) {
                 //var bot = new Bot(playersSpawnPoint[2], maps, _scene, _blockDim, _assets);
             }
 
+            _connector.onReady(function( timeParty ){
+
+                _myPlayer.attachControl();
+                _timer.startGame( timeParty );
+
+                _isInParty = true;
+            });
+
+            _keyBinder.onSetBomb( function() {
+
+                if ( _pointerLocked && _isInParty ) {
+
+                    if ( _myPlayer.player.shouldSetBomb() && !_map.getBombByPosition( _myPlayer.player.roundPosition() ) ) {
+
+                        var bombTempId = utils.guid();
+
+                        var bombe = new Bombe( bombTempId, _myPlayer.player, _myPlayer.player.roundPosition() , _assets, _scene);
+
+                        _myPlayer.player.addBomb( bombe );
+                        _connector.setBomb( bombe.id );
+                    }
+                }
+            });
+
+            _connector.onPlayerMove( function( id, position ) {
+
+                var player = _map.getPlayerById( id );
+
+                if( player) {
+
+                    player.move( position );
+
+                    var animable =  _scene.getAnimatableByTarget( player.meshs.shape);
+
+                    if( player.timeOut ){
+
+                        clearTimeout( player.timeOut );
+                    }
+
+                    if( player.lastAnimRun ){
+
+                        animable && animable.stop();
+                        delete player.lastAnimRun ;
+                    }
+
+                    if( !animable ) {
+
+                        _scene.beginAnimation( player.meshs.shape, 0, 20, false, 1, function(){
+
+                            if( player.timeOut ){
+                                clearTimeout(player.timeOut );
+                            }
+
+                            player.timeOut = setTimeout( function(){
+
+                                if( player.lastAnim ) {
+
+                                    player.lastAnimRun = true;
+
+                                    _scene.beginAnimation( player.meshs.shape,308, 458, true, 1 );
+
+                                }
+                            },100);
+
+                            player.lastAnim = true;
+                        });
+
+                    }
+                }
+            });
+
+            _connector.onPlayerSetBomb( function( playerId, bombeId, position ) {
+
+                var player = _map.getPlayerById( playerId );
+                var bombe = new Bombe( bombeId, player, position , _assets, _scene );
+                player.addBomb( bombe );
+
+            });
+
+            _connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
+
+                for ( var i = 0; i < playersIdKilled.length; i++ ) {
+
+                    var playerKilledId = playersIdKilled[i];
+                    _map.killPlayerById( playerKilledId );
+                    //todo score && menu
+                }
+
+                for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
+
+                    var blockIdDestroy = blocksIdDestroy[j];
+                    _map.delBlockById( blockIdDestroy );
+                }
+
+                for ( var k = 0; k < bombesExplodedId.length; k++ ) {
+
+                    var bombeExplodedId = bombesExplodedId[k];
+                    var bombe = _map.getBombsById( bombeExplodedId );
+                    if( !bombe ){
+                        debugger;
+                    }
+                    bombe.destroy();
+                    bombe.owner.delBombById( bombe.id );
+
+                }
+            });
+
+            _connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){
+
+                var player = new Player( id, name, position, powerUp, alive, kills, _assets, _blockDim );
+
+                _menuPlayers.addPlayer( player );
+
+                _map.addObject( player );
+
+            });
+
+            _connector.onPlayerDisconnect( function( playerId ){
+
+
+                if( _isInParty ) {
+                    _menuPlayers.changeStatus("disconnect Dead", playerId);
+                    _map.killPlayerById( playerId );
+                }
+                else{
+                    _menuPlayers.delPlayer( playerId );
+                    _map.delPlayerById ( playerId );
+                }
+
+            });
+
+            _connector.setPermanentBombId( function( tempBombId, bombId ){
+
+                var bomb = _map.getBombsById( tempBombId );
+                bomb.id = bombId;
+
+            });
+
+            //_timer.onTimerEnd( showEnd );
+
+            _connector.onEnd(showEnd);
         });
     };
 
@@ -427,7 +437,15 @@ function Game ( canvasId ) {
     }
 
     function replay(){
-        //_engine.displayLoadingUI();
+        _engine.displayLoadingUI();
+        _engine.loadingUIText = "Recherche d'autre joueurs...";
+
+        _isfirstLoad = false;
+        _menuPlayers.delPlayers();
+        _map.delPlayers();
+        _map.delBlocks();
+        _map.delBombs();
+        _connector.ready();
     }
 
     function showEnd(){

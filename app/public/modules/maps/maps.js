@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
+function Maps( assets, blockDim, scene, menuPlayers ) {
 
     var self = this;
 
@@ -40,16 +40,20 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
         }
     ];
 
-    self.create = function () {
+    self.create = function ( blocksTemp ) {
 
         createGroundMeshs();
 
         createPermanentBlock();
 
-        createTemporaireBlock();
+        createTemporaireBlock( blocksTemp );
 
         createPowerUp();
 
+    };
+
+    self.setTempBlocks = function( blocksTemp ){
+        createTemporaireBlock( blocksTemp );
     };
 
     self.addObject = function ( player ) {
@@ -403,11 +407,11 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
         }
     };
 
-    self.restoreBlock = function ( ) {
+    self.restoreBlock = function ( blocksTemp ) {
 
         self.delBlocks();
 
-        createTemporaireBlock();
+        createTemporaireBlock( blocksTemp );
     };
 
     self.delBlocksByPosition = function ( position ) {
@@ -578,7 +582,7 @@ function Maps( assets, blockDim, blocksTemp, scene, menuPlayers ) {
         }
     }
 
-    function createTemporaireBlock (){
+    function createTemporaireBlock ( blocksTemp ){
 
         for ( var i = 0; i < blocksTemp.length; i++ ) {
 

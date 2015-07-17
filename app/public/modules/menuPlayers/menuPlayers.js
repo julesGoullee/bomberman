@@ -31,6 +31,10 @@ function MenuPlayers() {
 
     };
 
+    self.delPlayers = function(){
+        $(".list-player-item").remove();
+    };
+
     self.changeStatus = function( newStatus, idPlayer ) {
 
         $('#menu-player-' + idPlayer).find(".player-status").text( newStatus );

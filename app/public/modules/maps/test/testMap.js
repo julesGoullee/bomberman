@@ -14,7 +14,7 @@ describe( "Maps", function() {
 
     beforeEach( function() {
 
-        maps = new Maps( gameMock.assets, gameMock.blockDim, gameMock.blocksTemp, gameMock.scene, new MenuPlayers() );
+        maps = new Maps( gameMock.assets, gameMock.blockDim, gameMock.scene, new MenuPlayers() );
 
         player = new Player(0, "testPlayer", spawnPoint, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, gameMock.assets, gameMock.blockDim );
     });
@@ -32,7 +32,7 @@ describe( "Maps", function() {
 
             ];
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
             expect( maps.meshGround.length ).toEqual( 1 );
         });
@@ -48,7 +48,7 @@ describe( "Maps", function() {
 
             ];
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
             expect( maps.meshGround.length ).toEqual( 2 );
         });
@@ -69,7 +69,7 @@ describe( "Maps", function() {
 
             ];
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
             expect( maps.meshGround.length ).toEqual( 2 );
         });
@@ -97,7 +97,7 @@ describe( "Maps", function() {
                 }
             ];
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
             expect( maps.meshGround[0].isVisible ).toBe( true );
         });
@@ -112,7 +112,7 @@ describe( "Maps", function() {
                 }
             ];
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
             expect( maps.meshGround[1].isVisible ).toBe( true );
         });
@@ -127,7 +127,7 @@ describe( "Maps", function() {
                 }
             ];
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
             expect (maps.meshGround[0].checkCollisions ).toBe( true );
         });
@@ -147,7 +147,7 @@ describe( "Maps", function() {
                 }
             ];
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
 
             expect( maps.meshGround[0].checkCollisions ).toBe( false );
@@ -161,7 +161,7 @@ describe( "Maps", function() {
 
         beforeEach( function () {
 
-            maps.create();
+            maps.create( gameMock.blocksTemp );
 
         });
 
@@ -212,7 +212,7 @@ describe( "Maps", function() {
 
             expect( maps.getBlocks().length).toEqual( 134 );
 
-            maps.restoreBlock();
+            maps.restoreBlock( gameMock.blocksTemp );
 
             expect( maps.getBlocks().length).toEqual( 135 );
 
@@ -228,7 +228,7 @@ describe( "Maps", function() {
 
             expect( maps.getBlocks().length).toEqual( 132 );
 
-            maps.restoreBlock();
+            maps.restoreBlock( gameMock.blocksTemp );
 
             expect( maps.getBlocks().length).toEqual( 135 );
 
@@ -341,7 +341,7 @@ describe( "Maps", function() {
 
             beforeEach( function() {
 
-                maps = new Maps( gameMock.assets, gameMock.blockDim, gameMock.blocksTemp, gameMock.scene, new MenuPlayers() );
+                maps = new Maps( gameMock.assets, gameMock.blockDim, gameMock.scene, new MenuPlayers() );
                 var bombeP1_1 = new Bombe( utils.guid(), player, player.roundPosition() , gameMock.assets, gameMock.scene);
 
                 maps.addObject( player );
@@ -438,7 +438,7 @@ describe( "Maps", function() {
     //
     //    beforeEach ( function () {
     //
-    //        maps.create();
+    //        maps.create( gameMock.blocksTemp );
     //
     //    });
     //

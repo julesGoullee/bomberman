@@ -23,15 +23,19 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     self.player = null;
 
-    self.init = function(){
-
-        self.camera = initCamera();
+    self.attachControl = function(){
 
         _scene.activeCamera = self.camera;
 
-        cameraPlayerAttach();
+        self.player.position = self.camera.position;
 
-        checkMovePlayer();
+        var pivot = BABYLON.Matrix.Translation(1.3,0,0.2);
+
+        self.player.meshs.colisionBlock.setPivotMatrix( pivot );
+        self.player.meshs.shape.setPivotMatrix( pivot );
+
+        self.player.meshs.colisionBlock.rotationQuaternion = null;
+        self.player.meshs.shape.rotationQuaternion = null;
     };
     //scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true); animRun
 
@@ -122,26 +126,20 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
         return camera;
     }
 
-    function cameraPlayerAttach(){
-
-        self.player.position = self.camera.position;
-
-        var pivot = BABYLON.Matrix.Translation(1.3,0,0.2);
-
-        self.player.meshs.colisionBlock.setPivotMatrix( pivot );
-        self.player.meshs.shape.setPivotMatrix( pivot );
-
-        self.player.meshs.colisionBlock.rotationQuaternion = null;
-        self.player.meshs.shape.rotationQuaternion = null;
-
-
-    }
-
     function checkMovePlayer() {
 
         notifyMovePlayer.notifyNewPosition( self.camera.position );
 
         setTimeout( checkMovePlayer, 100);
     }
+
+    function init(){
+
+        self.camera = initCamera();
+
+        checkMovePlayer();
+    }
+
+    init();
 }
 
