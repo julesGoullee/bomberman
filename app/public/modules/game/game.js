@@ -301,9 +301,9 @@ function Game ( canvasId ) {
 
                 });
 
-                _timer.onTimerEnd( showEnd );
+                //_timer.onTimerEnd( showEnd );
 
-                //_connector.onEnd(showEnd);//TODO ICI!
+                _connector.onEnd(showEnd);
 
                 _engine.hideLoadingUI();
 
@@ -465,5 +465,6 @@ function Game ( canvasId ) {
         $("#table-score-body").append( tablePlayers );
 
         _popup.show();
+        _timer.hide();
     }
 }

@@ -92,12 +92,12 @@ describe("Game", function() {
         mock.socketHandlerOnConnectCallbacks[0]( { name: "j1", socket: socket1, token : "t1" } );
         mock.socketHandlerOnConnectCallbacks[0]( { name: "j2", socket: socket2, token : "t2" } );
 
-        clock.tick( config.timerToStartParty*2 );
+        clock.tick( config.timerToStartParty );
         expect( _game.getRoomList().length ).to.equal( 1 );
 
         mock.socketHandlerOnConnectCallbacks[0]( { name: "j3", socket: utils.clone( mock ).socket, token : "t3" } );
 
-        clock.tick( config.timerToStartParty*2 );
+        clock.tick( 1 );
         expect( _game.getRoomList().length ).to.equal( 2 );
         clock.restore();
     });

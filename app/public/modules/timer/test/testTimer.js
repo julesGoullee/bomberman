@@ -78,7 +78,7 @@ describe( "timer", function() {
         });
 
         it("Peut lancer la partie", function(){
-            expect( timer.timeInParty).toEqual( timeInParty );
+            expect( timer.timeInParty ).toEqual( timeInParty - 1000 );
         });
 
         describe("end", function(){

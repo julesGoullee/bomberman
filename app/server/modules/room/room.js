@@ -234,14 +234,10 @@ function Room() {
 
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 
-            player.socket.removeAllListeners("connection");
-            player.socket.removeAllListeners("ready");
-            player.socket.removeAllListeners("setUser");
-            player.socket.removeAllListeners("myPosition");
-            player.socket.removeAllListeners("setBomb");
+            removeAllListener( player );
 
             if( self.players.length === 0 ){
-                launchDestroyCallback();
+                endPartie();
             }
         });
 
@@ -305,13 +301,20 @@ function Room() {
 
     }
 
+    function removeAllListener( player ){
+        player.socket.removeAllListeners("connection");
+        //player.socket.removeAllListeners("ready");
+        player.socket.removeAllListeners("setUser");
+        player.socket.removeAllListeners("myPosition");
+        player.socket.removeAllListeners("setBomb");
+    }
+
     function startTimer( callback ){
 
         timeoutToStart = setTimeout(function () {
 
-            self.timerToStart = self.timerToStart - 1000;
-
             if( self.timerToStart  > 0 ){
+                self.timerToStart = self.timerToStart - 1000;
 
                 if( self.timerToStart <= _limitToCheckNumberPlayer &&
                     self.players.length < _nbPlayersToStart ) {
@@ -323,11 +326,17 @@ function Room() {
                 if(  self.players.length === 0 ){
                     clearTimeout( timeoutToStart );
 
-                } else{
+                } else if( self.timerToStart  === 0 ){
+                    clearTimeout( timeoutToStart );
+                    callback();
+                }
+                else
+                {
                     startTimer( callback );
                 }
             }
             else{
+                clearTimeout( timeoutToStart );
                 callback();
             }
         }, 1000);
@@ -341,12 +350,29 @@ function Room() {
         }
     }
 
+    function endPartie(){
+        for (var i = 0; i < self.players.length; i++) {
+            var player = self.players[i];
+            removeAllListener( player );
+        }
+        broadcast("endPartie", {});
+        launchDestroyCallback();
+    }
+
+    function launchPartie(){
+
+        self.isStartFrom = config.timerToPlaying;
+
+        setTimeout(function(){
+            endPartie();
+        }, self.isStartFrom );
+    }
+
     function init(){
         _map = new Maps();
         _map.create();
 
         startTimer(function () {
-            self.isStartFrom = config.timerToPlaying;
 
             for ( var i = 0; i < self.players.length; i++ ) {
                 var player = self.players[i];
@@ -355,7 +381,10 @@ function Room() {
                 listenBomb( player );
             }
 
+            launchPartie();
+
             broadcast("ready", { partyTimer : self.isStartFrom } );
+
         });
     }
 

@@ -80,7 +80,7 @@ describe( "Room", function() {
         clock.restore();
     });
 
-    describe("Timer to start", function(){
+    describe("Timer", function(){
 
         it("Ne peut démarrer une partie sans player", function(){
             clock.tick( config.timerToStartParty );
@@ -112,6 +112,9 @@ describe( "Room", function() {
             expect( _room.isStartFrom ).to.equal( config.timerToPlaying );
 
         });
+
+        //TODO ICI
+        // quand tout les players sont mort
 
         it("Peux stoper le decompte puis le relancer", function(){
 
@@ -204,6 +207,11 @@ describe( "Room", function() {
         it("Peut notifier les players que la partie commence", function(){
             expect(spyEmitP1.args[2][0]).to.equal("ready");
             expect(spyEmitP1.args[2][1]).to.deep.equal({ partyTimer : config.timerToPlaying });
+        });
+
+        it("notifier a tout les player la fin de la parti si le temps est écoulé", function(){
+            clock.tick( config.timerToPlaying );
+            expect(spyEmitP1.args[3][0]).to.equal("endPartie");
         });
 
         it( "Peut ajouter deux player a la bonne position et notifier la presence de l'un a l'autre", function(){

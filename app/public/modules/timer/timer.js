@@ -20,8 +20,8 @@ function Timer( map ){
         self.timeToStartParty = timerToStart;
 
         _timeLabel.text("En attente d'autres joueurs");
-        _timeUnite.text("secondes restantes...");
         _timeValue.text( self.timeToStartParty/1000 );
+        _timeUnite.text("secondes restantes...");
         _timeUnite.show();
 
         decompteToStartParty( timerToStart );
@@ -35,6 +35,7 @@ function Timer( map ){
         _timeLabel.text("On mange du chat dans:");
         _timeUnite.show();
         _timeUnite.text("secondes");
+        _timeValue.text( self.timeInParty / 1000 );
         decompteInparty();
     };
 
@@ -51,17 +52,17 @@ function Timer( map ){
     //PRIVATE METHODS//
 
     function decompteInparty(){
-
+        _timeValue.text( self.timeInParty / 1000 );
+        self.timeInParty = self.timeInParty - 1000;
         setTimeout(function(){
-            _timeValue.text( self.timeInParty / 1000 );
-            self.timeInParty = self.timeInParty - 1000;
+
 
             if( self.timeInParty <= 0 ){
                 setTimeout(function(){
                     _timeLabel.text("A table");
                     _timeUnite.empty();
                     _timeValue.text("Terminé!");
-                    _callbackOnEnd();
+                    _callbackOnEnd && _callbackOnEnd();
                 }, 1000);
             }
             else {

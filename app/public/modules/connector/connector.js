@@ -52,6 +52,12 @@ function Connector () {
         });
     };
 
+    self.onEnd = function( callback ){
+        _socket.on( "endPartie", function(  ){
+            callback( );
+        });
+    };
+
     self.sendMyPosition = function( position ) {
 
         _socket.emit( "myPosition", position );
