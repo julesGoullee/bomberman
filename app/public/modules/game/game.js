@@ -273,16 +273,9 @@ function Game ( canvasId ) {
 
                     _map.killPlayerById( playerKilledId, true );
 
-                    if( playerOwner.id === playerKilledId ){
-                        playerOwner.kamicat = "kamicat";
-                        _menuPlayers.changeStatus( "kamicat", playerOwner.id );
-                    }
-                    else{
+                    if( playerOwner.id !== playerKilledId ){
                         playerOwner.kills ++;
-                        _menuPlayers.changeStatus( "dead", playerKilledId );
-
                     }
-
                 }
 
                 for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
@@ -321,7 +314,7 @@ function Game ( canvasId ) {
 
 
                 if( _isInParty ) {
-                    _map.killPlayerById( playerId );
+                    _map.killPlayerById( playerId, true );
                 }
                 else{
                     _menuPlayers.delPlayer( playerId );
