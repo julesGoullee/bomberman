@@ -118,6 +118,8 @@ function Game ( canvasId ) {
                     _map.addObject( player );
                     _menuPlayers.addPlayer( player );
                 }
+                var radius_step = 1;
+                var alpha_step = .01;
 
                 function myAnimation() {
 
@@ -144,9 +146,6 @@ function Game ( canvasId ) {
                 if( _isfirstLoad ) {
                     _cameraSwitcher.showSwitchButton();
                     _cameraSwitcher.deadView();
-
-                    var radius_step = 1;
-                    var alpha_step = .01;
 
                     _scene.registerBeforeRender(myAnimation);
 

@@ -26,9 +26,9 @@ function Bombe ( id, owner, position, assets, scene) {
     self.meshs = {};
 
     self.destroy = function () {
+        self.meshs.shape.dispose();
 
         launchExplosion(function(){
-            self.meshs.shape.dispose();
             self.meshs.colisionBlock.dispose();
         });
 

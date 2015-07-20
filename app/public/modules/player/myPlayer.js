@@ -37,7 +37,6 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
         self.player.meshs.colisionBlock.rotationQuaternion = null;
         self.player.meshs.shape.rotationQuaternion = null;
     };
-    //scene.beginAnimation(self.player.meshs.shape.skeleton, 0, 100, true); animRun
 
     self.renderMyPlayer = function() {
 
