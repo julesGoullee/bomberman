@@ -118,6 +118,8 @@ function Room() {
     self.onDestroy = function ( callback ){
         _callbackDestroy.push( callback );
     };
+
+
     //PRIVATE METHODS
 
     function broadcastWithoutMe ( player, event, params ) {
@@ -236,9 +238,7 @@ function Room() {
 
             removeAllListener( player );
 
-            if( self.players.length === 0 ){
-                endPartie();
-            }
+            checkPlayersAlive();
         });
 
     }
@@ -273,6 +273,8 @@ function Room() {
                 playersIdKilled: playersIdKilled,
                 blocksIdDestroy: blocksIdDestroy
             });
+
+            checkPlayersAlive();
         }
 
         player.socket.on( "setBomb", function( tempId ){
@@ -355,6 +357,7 @@ function Room() {
             var player = self.players[i];
             removeAllListener( player );
         }
+
         broadcast("endPartie", {});
         launchDestroyCallback();
     }
@@ -366,6 +369,12 @@ function Room() {
         setTimeout(function(){
             endPartie();
         }, self.isStartFrom );
+    }
+
+    function checkPlayersAlive(){
+        if( _map.getPlayersAlive().length <=1 ){
+            endPartie();
+        }
     }
 
     function init(){

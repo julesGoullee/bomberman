@@ -113,9 +113,6 @@ describe( "Room", function() {
 
         });
 
-        //TODO ICI
-        // quand tout les players sont mort
-
         it("Peux stoper le decompte puis le relancer", function(){
 
             _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
@@ -207,6 +204,26 @@ describe( "Room", function() {
         it("Peut notifier les players que la partie commence", function(){
             expect(spyEmitP1.args[2][0]).to.equal("ready");
             expect(spyEmitP1.args[2][1]).to.deep.equal({ partyTimer : config.timerToPlaying });
+        });
+
+        it("Peut notifier que la partie est finis suite a une explosion", function(){
+
+            var tempId = utils.guid();
+            callbackSetBombP2( tempId );
+
+            clock.tick( config.bombCountDown );
+
+            expect( spyEmitP1.args[3][0]).to.equal( "setBomb");
+
+            expect( spyEmitP1.args[5][0]).to.deep.equal("endPartie");
+            expect( spyEmitP2.args[4][0]).to.deep.equal("endPartie");
+
+        });
+
+        it("notifier a tout les players la fin de la parti après deconnection", function(){
+            callbackDisconnectP1();
+            expect( spyEmitP2.args[3][0]).to.deep.equal("endPartie");
+
         });
 
         it("notifier a tout les player la fin de la parti si le temps est écoulé", function(){
