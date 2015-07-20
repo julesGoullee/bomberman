@@ -319,6 +319,25 @@ describe( "Maps", function() {
 
         });
 
+        it( "Peut kamicaté un player", function () {
+            jasmine.clock().install();
+
+            maps.addObject( player );
+
+            maps.killPlayerById( player.id, true );
+
+            jasmine.clock().tick( cfg.destroyPlayerTimer );
+
+            expect( maps.getPlayers().length ).toEqual( 1 );
+
+            expect( player.alive ).toBeFalsy();
+
+            expect( player.kamicat ).toEqual("kamicat");
+
+            jasmine.clock().uninstall();
+
+        });
+
         it( "Peut supprimer tous les players", function () {
 
             var player2 = new Player(2, "testPlayer", spawnPoint, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, gameMock.assets, gameMock.blockDim );

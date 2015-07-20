@@ -271,7 +271,7 @@ function Game ( canvasId ) {
 
                     var playerKilledId = playersIdKilled[i];
 
-                    _map.killPlayerById( playerKilledId );
+                    _map.killPlayerById( playerKilledId, true );
 
                     if( playerOwner.id === playerKilledId ){
                         playerOwner.kamicat = "kamicat";
@@ -493,7 +493,7 @@ function Game ( canvasId ) {
 
         for (var i = 0; i < players.length; i++) {
             var player = players[i];
-            var statusString = player.alive ? "alive" : "dead";
+            var statusString = player.alive ? "En vie" : "Mort";
             statusString = player.kamicat || statusString;
             var kills = player.kills > 0 ? player.kills : "-";
             var nbBombe = player.totalNbBombe > 0 ? player.totalNbBombe : "-";

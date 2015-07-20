@@ -125,13 +125,20 @@ function Maps( assets, blockDim, scene, menuPlayers ) {
         return null;
     };
 
-    self.killPlayerById = function( playerId ){
+    self.killPlayerById = function( playerId, isKamiCat ){
         for ( var i = 0; i < _content.length; i++ ) {
 
             if (_content[i].type === "player" && _content[i].id === playerId) {
 
-                menuPlayers.changeStatus( "Mort", _content[i].id );
-
+                if( isKamiCat ){
+                    _content[i].kamicat = "kamicat";
+                    _content[i].alive = false;
+                    menuPlayers.changeStatus( "kamicat", _content[i].id );
+                }
+                else{
+                    menuPlayers.changeStatus( "Mort", _content[i].id );
+                    _content[i].alive = false;
+                }
                 (function( player ){
 
                     scene.beginAnimation( player.meshs.shape, 506, 550, false, 1, function() {
