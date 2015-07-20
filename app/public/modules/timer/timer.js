@@ -43,6 +43,10 @@ function Timer( map ){
         _callbackOnEnd = callback;
     };
 
+    self.show= function(){
+        _timerContainer.show();
+    };
+
     self.hide = function(){
         _timerContainer.hide();
         _timeUnite.empty();

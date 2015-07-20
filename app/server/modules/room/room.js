@@ -13,6 +13,7 @@ function Room() {
     var _nbPlayersToStart = config.nbPlayersToStart;
 
     var _map;
+    var _timeoutPartie;
 
     var _callbackDestroy = [];
 
@@ -225,20 +226,23 @@ function Room() {
 
         player.socket.on( "disconnect", function() {
 
-            if( !self.isStartFrom ){
-                self.delPlayerById( player.id );
-            }
-            else{
-                _map.killPlayerById( player.id );
-            }
-
             log( "Player disconnect: " + player.id + " on room: " + self.id, "info" );
 
             broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 
             removeAllListener( player );
 
-            checkPlayersAlive();
+            if( !self.isStartFrom ){
+                self.delPlayerById( player.id );
+                if( self.players.length === 0 ){
+                    launchDestroyCallback();
+                }
+            }
+            else{
+                _map.killPlayerById( player.id );
+                checkPlayersAlive();
+            }
+
         });
 
     }
@@ -347,6 +351,8 @@ function Room() {
 
     function launchDestroyCallback(){
 
+        clearTimeout(_timeoutPartie);
+
         for ( var i = 0; i < _callbackDestroy.length; i++ ) {
             _callbackDestroy[i]( self );
         }
@@ -366,13 +372,14 @@ function Room() {
 
         self.isStartFrom = config.timerToPlaying;
 
-        setTimeout(function(){
+        _timeoutPartie = setTimeout(function(){
             endPartie();
         }, self.isStartFrom );
     }
 
     function checkPlayersAlive(){
         if( _map.getPlayersAlive().length <=1 ){
+
             endPartie();
         }
     }

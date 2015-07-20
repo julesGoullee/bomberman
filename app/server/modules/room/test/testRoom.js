@@ -231,6 +231,19 @@ describe( "Room", function() {
             expect(spyEmitP1.args[3][0]).to.equal("endPartie");
         });
 
+        it("Peut cancel le timer de fin de partie si mort ou deconnect avant", function(){
+            var tempId = utils.guid();
+            callbackSetBombP2( tempId );
+
+            clock.tick( config.bombCountDown );
+
+            expect( spyEmitP1.args[5][0]).to.equal("endPartie");
+
+            clock.tick( config.timerToPlaying );
+            expect( spyEmitP1.args[6] && spyEmitP1.args[6][0]).not.to.equal( "endPartie" );
+
+        });
+
         it( "Peut ajouter deux player a la bonne position et notifier la presence de l'un a l'autre", function(){
 
             expect(spyEmitP2.args[0][0]).to.equal("map");

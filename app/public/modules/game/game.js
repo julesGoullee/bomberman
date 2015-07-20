@@ -95,6 +95,8 @@ function Game ( canvasId ) {
 
                 _timer = _timer || new Timer( _map );
 
+                _timer.show();
+
                 _timer.showTimerToStartParty( mapJson.timerToStart );
 
                 // Creation des players

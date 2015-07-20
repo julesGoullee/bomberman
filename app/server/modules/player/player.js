@@ -74,6 +74,9 @@ function Player( token, socket, name, room ) {
     self.addBomb = function ( bomb ) {
 
         self.listBombs.push( bomb );
+
+        self.totalNbBombe ++;
+
     };
 
     self.delBombById = function ( Bombid ) {

@@ -110,7 +110,9 @@ describe("Game", function() {
         clock.tick( config.timerToStartParty/2 );
 
         expect( _game.getRoomList().length ).to.equal( 1 );
+
         callbackDisconnectP1();
+
         clock.tick( config.timerToStartParty/2 );
 
         expect( _game.getRoomList().length ).to.equal( 0 );

@@ -86,7 +86,7 @@ describe( "Player", function() {
 
             expect( player.listBombs.length ).to.equal( 1 );
 
-            expect( player.totalNbBombe ).toEqual( 1 )
+            expect( player.totalNbBombe ).to.equal( 1 );
 
         });
 
