@@ -55,7 +55,10 @@ html, body {
     display: inline-block;
 }
 
-
+/*Popup END*/
+#table-score th, #table-score td{
+    text-align: center;
+}
 /*DEBUG*/
 #debug {
     position: absolute;

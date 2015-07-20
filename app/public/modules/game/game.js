@@ -270,8 +270,19 @@ function Game ( canvasId ) {
                 for ( var i = 0; i < playersIdKilled.length; i++ ) {
 
                     var playerKilledId = playersIdKilled[i];
+
                     _map.killPlayerById( playerKilledId );
-                    playerOwner.kills ++;
+
+                    if( playerOwner.id === playerKilledId ){
+                        playerOwner.kamicat = "kamicat";
+                        _menuPlayers.changeStatus( "kamicat", playerOwner.id );
+                    }
+                    else{
+                        playerOwner.kills ++;
+                        _menuPlayers.changeStatus( "dead", playerKilledId );
+
+                    }
+
                 }
 
                 for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
@@ -292,7 +303,7 @@ function Game ( canvasId ) {
                     bombe.owner.delBombById( bombe.id );
 
                 }
-                _menuPlayers.changeScore(playerOwner.kills, playerOwner.id );
+                _menuPlayers.changeScore( playerOwner.kills, playerOwner.id );
 
             });
 
@@ -310,7 +321,6 @@ function Game ( canvasId ) {
 
 
                 if( _isInParty ) {
-                    _menuPlayers.changeStatus("disconnect Dead", playerId);
                     _map.killPlayerById( playerId );
                 }
                 else{
@@ -461,12 +471,14 @@ function Game ( canvasId ) {
 
         var footer = "<button type='button' class='btn btn-primary' id='btn-rejouer'>Rejouer!</button>";
 
-        var body = "<table class='table table-striped'>"+
+        var body = "<table class='table table-striped' id='table-score'>"+
             "<thead>"+
                 "<tr>"+
                     "<th>Kills</th>"+
                     "<th>Nom</th>"+
                     "<th>Statu</th>"+
+                    "<th>Total Bombes</th>"+
+                    "<th>Total blocks</th>"+
                 "</tr>"+
             "</thead>"+
             "<tbody id='table-score-body'></tbody>"+
@@ -482,12 +494,17 @@ function Game ( canvasId ) {
         for (var i = 0; i < players.length; i++) {
             var player = players[i];
             var statusString = player.alive ? "alive" : "dead";
+            statusString = player.kamicat || statusString;
             var kills = player.kills > 0 ? player.kills : "-";
+            var nbBombe = player.totalNbBombe > 0 ? player.totalNbBombe : "-";
+            var nbBlocksDestroy = player.nbBlocksDestroy > 0 ? player.nbBlocksDestroy : "-";
 
             tablePlayers += "<tr>"+
-                "<th>" + kills + "</th>"+
+                "<td>" + kills + "</td>"+
                 "<td>" + player.name + "</td>"+
                 "<td>" + statusString + "</td>"+
+                "<td>" + nbBombe + "</td>"+
+                "<td>" + nbBlocksDestroy + "</td>"+
                 "</tr>";
         }
 
