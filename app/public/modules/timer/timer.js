@@ -91,10 +91,10 @@ function Timer( map ){
                 }
             }
             else{
+                self.timeToStartParty = self.timeToStartParty - 1000;
                 _timeValue.text( self.timeToStartParty/1000 );
                 _timeUnite.show();
-                _timeUnite.text("secondes à attendre...");
-                self.timeToStartParty = self.timeToStartParty - 1000;
+                _timeUnite.text("secondes restantes...");
             }
 
             decompteToStartParty();
