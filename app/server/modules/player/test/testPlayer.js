@@ -85,6 +85,9 @@ describe( "Player", function() {
             player.addBomb( bomb );
 
             expect( player.listBombs.length ).to.equal( 1 );
+
+            expect( player.totalNbBombe ).toEqual( 1 )
+
         });
 
         it( "Peut poser une bombe a la position du player", function () {

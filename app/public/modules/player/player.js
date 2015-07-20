@@ -20,6 +20,10 @@ function Player( id, name, spawnPoint, powerUp, alive, kills, assets, blockDim )
 
     self.kills = kills;
 
+    self.nbBlocksDestroy = 0;
+
+    self.totalNbBombe = 0;
+
     self.listBombs = [];
 
     self.position = new BABYLON.Vector3( 0, 0, 0 );
@@ -115,6 +119,8 @@ function Player( id, name, spawnPoint, powerUp, alive, kills, assets, blockDim )
         }, cfg.timeBetweenTwoBombe );
 
         self.listBombs.push( bomb );
+
+        self.totalNbBombe ++;
     };
 
     self.delBombById = function ( Bombid ) {

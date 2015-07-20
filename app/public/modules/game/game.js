@@ -264,17 +264,19 @@ function Game ( canvasId ) {
 
             _connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
 
+                var playerOwner = _map.getPlayerById( ownerId );
                 for ( var i = 0; i < playersIdKilled.length; i++ ) {
 
                     var playerKilledId = playersIdKilled[i];
                     _map.killPlayerById( playerKilledId );
-                    //todo score && menu
+                    playerOwner.kills ++;
                 }
 
                 for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
 
                     var blockIdDestroy = blocksIdDestroy[j];
                     _map.delBlockById( blockIdDestroy );
+                    playerOwner.nbBlocksDestroy++;
                 }
 
                 for ( var k = 0; k < bombesExplodedId.length; k++ ) {
@@ -288,6 +290,8 @@ function Game ( canvasId ) {
                     bombe.owner.delBombById( bombe.id );
 
                 }
+                _menuPlayers.changeScore(playerOwner.kills, playerOwner.id );
+
             });
 
             _connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){

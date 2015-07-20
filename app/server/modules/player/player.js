@@ -20,6 +20,8 @@ function Player( token, socket, name, room ) {
 
     self.kills = 0;
 
+    self.totalNbBombe = 0;
+
     self.alive = true;
 
     self.listBombs = [];
