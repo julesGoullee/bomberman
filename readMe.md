@@ -5,6 +5,9 @@ require grunt : ------------------------------------------------->npm install -g
 
 ##INSTALL:
 Npm library externe (require Root privilege on linux): ----------> npm install,
-Bower lib && config: --------------------------------------------> npm run postInstall
+Bower lib && config: --------------------------------------------> npm run dev
+
+##Config file:
+In /config dev & prod directory
 
 

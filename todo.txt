@@ -1,1 +1,4 @@
 Gerer un tab de bombe dans la map
+Myplayer spawnPoint a revoir
+Bombe qui explose alors que la partie est finis
+classe qui declare toute les cameras
