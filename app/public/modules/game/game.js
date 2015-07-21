@@ -111,6 +111,7 @@ function Game ( canvasId ) {
 
                         }else{
                             _myPlayer.position = playerJson.position;
+                            _myPlayer.camera.position = _myPlayer.position;
                         }
                         _myPlayer.player = player;
                     }
@@ -187,6 +188,9 @@ function Game ( canvasId ) {
             _connector.onReady(function( timeParty ){
 
                 _myPlayer.attachControl();
+                if( _pointerLocked ){
+                    _myPlayer.camera.attachControl( _canvas );
+                }
                 _timer.startGame( timeParty );
 
                 _isInParty = true;
@@ -408,16 +412,20 @@ function Game ( canvasId ) {
         return scene;
     }
 
+    function requestPointerLock(){
+        _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
+
+        if ( _canvas.requestPointerLock ) {
+
+            _canvas.requestPointerLock();
+        }
+    }
     function initPointerLock() {
 
         // Request pointer lock
         _canvas.addEventListener( "click", function() {
-
-            _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
-
-            if ( _canvas.requestPointerLock ) {
-
-                _canvas.requestPointerLock();
+            if ( !_pointerLocked ) {
+                requestPointerLock();
             }
         }, false);
 

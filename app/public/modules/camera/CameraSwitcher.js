@@ -59,7 +59,7 @@ function CameraSwitcher ( scene , canvas ) {
         _button.find( "span" ).text( "Dead" );
 
         _scene.activeCamera = _scene.getCameraByID( "cameraDead" );
-
-        _scene.activeCamera.attachControl( _canvas );
+        document.exitPointerLock();
+        //_scene.activeCamera.attachControl( _canvas );
     }
 }

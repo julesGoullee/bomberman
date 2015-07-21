@@ -77,8 +77,6 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
         self.camera.setTarget(new BABYLON.Vector3( 0, 4, -65 ));
 
-        cameraPlayerAttach();
-
     };
     
     //PRIVATE METHODS//
