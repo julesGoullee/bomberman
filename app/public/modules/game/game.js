@@ -44,13 +44,16 @@ function Game ( canvasId ) {
 
     var _menuPlayers = new MenuPlayers();
 
-    var _notifier = new Notifier();
-
     var _keyBinder = new KeyBinder();
+
+    var deadView = new DeadView( _scene );
+
+    var freeCamera = new FreeCamera( _scene );
+
+    var _cameraSwitcher = new CameraSwitcher( _scene, _canvas );
 
     var _assets = {};
 
-    var _cameraSwitcher = new CameraSwitcher( _scene, _canvas );
     var _map;
     var _timer;
     var _myPlayer;
@@ -58,7 +61,7 @@ function Game ( canvasId ) {
 
     //PUBLIC METHODS//
 
-    self.init = function () {
+    self.init = function() {
 
         _auth.ready( function( userProfil ) {
 
@@ -66,9 +69,6 @@ function Game ( canvasId ) {
             var getMapFinish = false;
 
             var mapJson;
-
-            var deadView = new DeadView( _scene );
-            var freeCamera = new FreeCamera( _scene );
 
             _engine.displayLoadingUI();
 
@@ -119,6 +119,7 @@ function Game ( canvasId ) {
                     _map.addObject( player );
                     _menuPlayers.addPlayer( player );
                 }
+
                 var radius_step = 1;
                 var alpha_step = .01;
 
@@ -150,7 +151,7 @@ function Game ( canvasId ) {
 
                     _scene.registerBeforeRender(myAnimation);
 
-                    _keyBinder.onSwitchCamera(_cameraSwitcher.switchCamera);
+                    _keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
 
                     _map.create( mapJson.blockTemp );
                     initPointerLock();
@@ -179,10 +180,6 @@ function Game ( canvasId ) {
 
                 _engine.hideLoadingUI();
 
-                //_scene.beginAnimation( _assets["explosionFlammes"][0], 0, 40, true, 1, function() {
-                //
-                //});
-                //var bot = new Bot(playersSpawnPoint[2], maps, _scene, _blockDim, _assets);
             }
 
             _connector.onReady(function( timeParty ){
@@ -198,7 +195,7 @@ function Game ( canvasId ) {
 
             _keyBinder.onSetBomb( function() {
 
-                if ( _pointerLocked && _isInParty ) {
+                if ( _pointerLocked && _isInParty )  {
 
                     if ( _myPlayer.player.shouldSetBomb() && !_map.getBombByPosition( _myPlayer.player.roundPosition() ) ) {
 
@@ -412,20 +409,13 @@ function Game ( canvasId ) {
         return scene;
     }
 
-    function requestPointerLock(){
-        _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
-
-        if ( _canvas.requestPointerLock ) {
-
-            _canvas.requestPointerLock();
-        }
-    }
     function initPointerLock() {
+        _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
 
         // Request pointer lock
         _canvas.addEventListener( "click", function() {
             if ( !_pointerLocked ) {
-                requestPointerLock();
+                _canvas.requestPointerLock();
             }
         }, false);
 
