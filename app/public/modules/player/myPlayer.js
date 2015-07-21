@@ -6,14 +6,6 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     var _scene = scene;
 
-    var _speed = 1;
-
-    var _inertia = 0.9;
-
-    var _angularInertia = 0;
-
-    var angularSensibility = 5000;
-
     var _cameraSwitcher = cameraSwitcher;
 
     var notifyMovePlayer = new NotifyMovePlayer( connector, spawnPoint );
@@ -25,7 +17,10 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     self.attachControl = function(){
 
-        _scene.activeCamera = self.camera;
+        self.camera.position.x = spawnPoint.x;
+        self.camera.position.z = spawnPoint.z;
+
+        self.camera.setTarget( new BABYLON.Vector3( 0, 4, 0) );
 
         self.player.position = self.camera.position;
 
@@ -81,48 +76,6 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
     
     //PRIVATE METHODS//
 
-    function initCamera() {
-
-        var camera = new BABYLON.FreeCamera(
-            "cameraPlayer",
-            new BABYLON.Vector3( spawnPoint.x, 8 , spawnPoint.z ),
-            _scene
-        );
-
-
-        camera.setTarget( new BABYLON.Vector3( 0, 4, -65 ) );
-
-        camera.ellipsoid = new BABYLON.Vector3( 2.5, 3.7, 2.5 );
-
-        camera.ellipsoidOffset = new BABYLON.Vector3( 0, 6, 0);
-
-        camera.keysUp = [90]; // Z
-
-        camera.keysLeft = [81]; // Q
-
-        camera.keysDown = [83]; // S
-
-        camera.keysRight = [68]; // D
-
-        camera.inertia = _inertia;
-
-        camera.speed = _speed;
-
-        camera.applyGravity = true;
-
-        camera.checkCollisions = true;
-
-        camera.angularSensibility = angularSensibility;
-
-        camera.angularInertia = _angularInertia;
-
-        camera.rotation.x = 1;
-
-        camera.noRotationConstraint = false;
-
-        return camera;
-    }
-
     function checkMovePlayer() {
 
         notifyMovePlayer.notifyNewPosition( self.camera.position );
@@ -132,7 +85,7 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     function init(){
 
-        self.camera = initCamera();
+        self.camera =  _scene.getCameraByID( "cameraPlayer" );
 
         checkMovePlayer();
     }

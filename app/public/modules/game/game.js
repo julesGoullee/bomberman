@@ -25,8 +25,6 @@ function Game ( canvasId ) {
         "tourColision"
     ];
 
-    var _pointerLocked = false;
-
     var _isInParty = false;
 
     var _isfirstLoad = true;
@@ -46,9 +44,13 @@ function Game ( canvasId ) {
 
     var _keyBinder = new KeyBinder();
 
-    var deadView = new DeadView( _scene );
+    var _cursorCapture = new CursorCapture( _scene, _canvas);
 
-    var freeCamera = new FreeCamera( _scene );
+    var _deadView = new DeadView( _scene );
+
+    var _freeCamera = new FreeCamera( _scene );
+
+    var _playerCamera = new PlayerCamera ( _scene );
 
     var _cameraSwitcher = new CameraSwitcher( _scene, _canvas );
 
@@ -89,7 +91,7 @@ function Game ( canvasId ) {
 
             function render(){
 
-                if( !preloadFinish || !getMapFinish ){ return null; }
+                if ( !preloadFinish || !getMapFinish ) { return null; }
 
                 _map = _map || new Maps( _assets, _blockDim, _scene, _menuPlayers );
 
@@ -106,12 +108,11 @@ function Game ( canvasId ) {
                     var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, _assets, _blockDim );
 
                     if ( playerJson.isMine ) {
-                        if( _isfirstLoad ){
+                        if ( _isfirstLoad ) {
                             _myPlayer = _myPlayer || new MyPlayer( _scene, playerJson.position, _connector, _cameraSwitcher );
-
-                        }else{
+                        }
+                        else {
                             _myPlayer.position = playerJson.position;
-                            _myPlayer.camera.position = _myPlayer.position;
                         }
                         _myPlayer.player = player;
                     }
@@ -128,10 +129,12 @@ function Game ( canvasId ) {
                     var camera = _scene.activeCamera;
                     camera.radius -= radius_step;
 
-                    if (camera.radius < 150) {
+                    if ( camera.radius < 150) {
+
                         radius_step = 0;
                         camera.alpha -= alpha_step;
-                        if (_isInParty) {
+
+                        if ( _isInParty ) {
                             _scene.unregisterBeforeRender(myAnimation);
 
                             camera.keysUp = [90]; // Z
@@ -146,19 +149,19 @@ function Game ( canvasId ) {
                 }
 
                 if( _isfirstLoad ) {
-                    _cameraSwitcher.showSwitchButton();
+
                     _cameraSwitcher.deadView();
 
                     _scene.registerBeforeRender(myAnimation);
 
-                    _keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
+                    //_keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
 
                     _map.create( mapJson.blockTemp );
-                    initPointerLock();
                     //initLightDark( freeCamera.camera );
                     //var restore = new Restore( notifier, map, myPlayer );
                     //restore.showRestartButton();
                     //keyBinder.onRestore( restore.run );
+                    //_cameraSwitcher.showSwitchButton();
 
                     _engine.runRenderLoop( function () {
 
@@ -173,10 +176,10 @@ function Game ( canvasId ) {
                             " <br>Position camera Player: x: " + ( Math.round( _scene.activeCamera.position.x * 100)/100).toFixed(2) +
                             " | z: " + (Math.round( _scene.activeCamera.position.z * 100)/100).toFixed(2);
                     });
-                }else{
+                }
+                else{
                     _map.setTempBlocks( mapJson.blockTemp );
                 }
-
 
                 _engine.hideLoadingUI();
 
@@ -184,18 +187,21 @@ function Game ( canvasId ) {
 
             _connector.onReady(function( timeParty ){
 
+                _cameraSwitcher.playerView();
+
+                _cursorCapture.autoRequestCapture();
+
                 _myPlayer.attachControl();
-                if( _pointerLocked ){
-                    _myPlayer.camera.attachControl( _canvas );
-                }
+
                 _timer.startGame( timeParty );
 
                 _isInParty = true;
+
             });
 
             _keyBinder.onSetBomb( function() {
 
-                if ( _pointerLocked && _isInParty )  {
+                if ( _cursorCapture.pointerLocked && _isInParty )  {
 
                     if ( _myPlayer.player.shouldSetBomb() && !_map.getBombByPosition( _myPlayer.player.roundPosition() ) ) {
 
@@ -343,7 +349,7 @@ function Game ( canvasId ) {
         _engine && _engine.resize();
     }, false);
 
-    function initLightDark( camera ){
+    function initLightDark( camera ) {
 
         var light = new BABYLON.HemisphericLight("omni", new BABYLON.Vector3(0, 1, 0.1), scene);
         light.diffuse = new BABYLON.Color3(0.1, 0.1, 0.17);
@@ -409,39 +415,6 @@ function Game ( canvasId ) {
         return scene;
     }
 
-    function initPointerLock() {
-        _canvas.requestPointerLock = _canvas.requestPointerLock || _canvas.msRequestPointerLock || _canvas.mozRequestPointerLock || _canvas.webkitRequestPointerLock;
-
-        // Request pointer lock
-        _canvas.addEventListener( "click", function() {
-            if ( !_pointerLocked ) {
-                _canvas.requestPointerLock();
-            }
-        }, false);
-
-        var pointerLockChange = function () {
-
-            var cameraActive = _scene.activeCamera;
-
-            _pointerLocked = document.mozPointerLockElement === _canvas || document.webkitPointerLockElement === _canvas || document.msPointerLockElement === _canvas || document.pointerLockElement === _canvas;
-
-            if ( !_pointerLocked ) {
-
-                cameraActive.detachControl( _canvas );
-
-            } else {
-                if( _isInParty ) {
-                    cameraActive.attachControl(_canvas);
-                }
-            }
-        };
-
-        document.addEventListener( "pointerlockchange", pointerLockChange, false );
-        document.addEventListener( "mspointerlockchange", pointerLockChange, false );
-        document.addEventListener( "mozpointerlockchange", pointerLockChange, false );
-        document.addEventListener( "webkitpointerlockchange", pointerLockChange, false );
-    }
-
     function replay(){
         _engine.displayLoadingUI();
         _engine.loadingUIText = "Recherche d'autre joueurs...";
@@ -455,8 +428,13 @@ function Game ( canvasId ) {
     }
 
     function showEnd(){
+
         _isInParty = false;
+
+        _cursorCapture.stopCapture();
+
         _cameraSwitcher.deadView();
+
         var header = "<h4 class='modal-title' >Partie Terminée!</h4>";
 
         var footer = "<button type='button' class='btn btn-primary' id='btn-rejouer'>Rejouer!</button>";

@@ -54,12 +54,15 @@ function CameraSwitcher ( scene , canvas ) {
 
     };
 
+    self.playerView = function(){
+        _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
+    };
+
     self.deadView = function () {
 
-        _button.find( "span" ).text( "Dead" );
+        //_button.find( "span" ).text( "Dead" );
 
         _scene.activeCamera = _scene.getCameraByID( "cameraDead" );
-        document.exitPointerLock();
-        //_scene.activeCamera.attachControl( _canvas );
+
     }
 }

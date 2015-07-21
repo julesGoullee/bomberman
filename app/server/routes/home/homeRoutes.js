@@ -33,8 +33,8 @@ function homeRoutes( app ){
             "modules/block/block",
             "modules/bomb/bomb",
             "modules/camera/freeCamera",
-            "modules/camera/CameraSwitcher",
-            "modules/camera/DeadView",
+            "modules/camera/cameraSwitcher",
+            "modules/camera/deadView",
             "modules/connector/connector",
             "modules/game/game",
             "modules/maps/maps",
@@ -46,6 +46,7 @@ function homeRoutes( app ){
             "modules/auth/auth",
             "modules/menuPlayers/menuPlayers",
             "modules/timer/timer",
+            "modules/cursorCapture/cursorCapture",
             "main"
         ],
         css:[
