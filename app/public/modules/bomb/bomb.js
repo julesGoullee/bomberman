@@ -102,7 +102,7 @@ function Bombe ( id, owner, position, assets, scene) {
     var launchExplosion = function ( callback ){
 
         // Create a particle system
-        var particleSystem = new BABYLON.ParticleSystem("particles", 3000, scene);
+        var particleSystem = new BABYLON.ParticleSystem("particles", 50, scene);
 
         //Texture of each particle
         particleSystem.particleTexture = new BABYLON.Texture("content/particule.png", scene);
@@ -145,7 +145,7 @@ function Bombe ( id, owner, position, assets, scene) {
         particleSystem.minEmitPower = 14;
         particleSystem.maxEmitPower = 20;
         particleSystem.updateSpeed = 0.008;
-        particleSystem.targetStopDuration = 1.5;
+        particleSystem.targetStopDuration = .5;
 
         // Start the particle system
         var ps2 = particleSystem.clone();
