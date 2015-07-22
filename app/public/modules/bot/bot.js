@@ -95,8 +95,7 @@ function Bot( position, map, scene, blockDim, assets ) {
             if (dCount) return dCount;
 
             // If there is a tie, sort by year
-            var dYear = a.z - b.z;
-            return dYear;
+            return a.z - b.z;
         });
     }
 

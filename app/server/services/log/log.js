@@ -21,7 +21,7 @@ function log( message , status ){
 
 }
 
-function logServ(app){
+function logServ( ){
 
     server.onListenStart(function(){
         log( "server " + config.domaine + "listen on " + config.port + "...", "info");
