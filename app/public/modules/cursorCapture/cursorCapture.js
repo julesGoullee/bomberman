@@ -8,6 +8,10 @@ function CursorCapture ( scene, canvas ) {
 
     var _backDropShow = false;
 
+    var _scene = scene;
+    var _canvas = canvas;
+    
+    //JQ Element
     var _backdrop;
     var _backdropMessage;
 
@@ -31,7 +35,7 @@ function CursorCapture ( scene, canvas ) {
         if ( self.pointerLocked ) {
 
             document.exitPointerLock();
-            detachControlCamera( scene.activeCamera );
+            detachControlCamera( _scene.activeCamera );
         } else {
             hideBackDrop();
         }
@@ -42,14 +46,14 @@ function CursorCapture ( scene, canvas ) {
 
     function pointerLockChange() {
 
-        self.pointerLocked = document.pointerLockElement === canvas ||
-            document.mozPointerLockElement === canvas ||
-            document.webkitPointerLockElement === canvas ||
-            document.msPointerLockElement === canvas;
+        self.pointerLocked = document.pointerLockElement === _canvas ||
+            document.mozPointerLockElement === _canvas ||
+            document.webkitPointerLockElement === _canvas ||
+            document.msPointerLockElement === _canvas;
 
 
         if ( _autoRequestOnRelache ) {
-            var cameraActive = scene.activeCamera;
+            var cameraActive = _scene.activeCamera;
             if ( self.pointerLocked ) {
 
                 attachControlCamera( cameraActive );
@@ -65,7 +69,7 @@ function CursorCapture ( scene, canvas ) {
 
     function detachControlCamera( camera ) {
 
-        camera.detachControl( canvas );
+        camera.detachControl( _canvas );
 
         camera.keysUp = [];
 
@@ -78,7 +82,7 @@ function CursorCapture ( scene, canvas ) {
 
     function attachControlCamera( camera ) {
 
-        camera.attachControl( canvas );
+        camera.attachControl( _canvas );
 
         camera.keysUp = [90]; // Z
 
@@ -90,7 +94,7 @@ function CursorCapture ( scene, canvas ) {
     }
 
     function showBackDrop() {
-        _backdropMessage.css('marginTop', ( $(canvas).height()/2 ) - ( _backdropMessage.height()/2) );
+        _backdropMessage.css('marginTop', ( $(_canvas).height()/2 ) - ( _backdropMessage.height()/2) );
 
         _backdrop.show();
         _backDropShow = true;
@@ -102,17 +106,17 @@ function CursorCapture ( scene, canvas ) {
         _backDropShow = false;
     }
 
-    function init(){
+    function init() {
 
         document.addEventListener( "pointerlockchange", pointerLockChange, false );
         document.addEventListener( "mspointerlockchange", pointerLockChange, false );
         document.addEventListener( "mozpointerlockchange", pointerLockChange, false );
         document.addEventListener( "webkitpointerlockchange", pointerLockChange, false );
 
-        canvas.requestPointerLock = canvas.requestPointerLock ||
-            canvas.mozRequestPointerLock ||
-            canvas.webkitRequestPointerLock ||
-            canvas.msRequestPointerLock;
+        _canvas.requestPointerLock = _canvas.requestPointerLock ||
+            _canvas.mozRequestPointerLock ||
+            _canvas.webkitRequestPointerLock ||
+            _canvas.msRequestPointerLock;
 
         document.exitPointerLock = document.exitPointerLock ||
             document.mozExitPointerLock ||
@@ -140,7 +144,7 @@ function CursorCapture ( scene, canvas ) {
 
             if ( _autoRequestOnRelache ) {
 
-                canvas.requestPointerLock();
+                _canvas.requestPointerLock();
             }
         } );
     }
