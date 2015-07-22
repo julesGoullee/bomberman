@@ -22,7 +22,7 @@ function staticRoutes( app ) {
     function shouldCompress(req, res) {
 
         var contentType = res.getHeader('Content-Type');
-
+        //console.log(contentType, req.url );
         return contentTypeToCompress.indexOf(contentType) !== -1;
     }
 
