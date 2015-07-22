@@ -9,6 +9,9 @@ function CursorCapture ( scene, canvas ) {
     var _backDropShow = false;
 
     var _backdrop;
+    var _backdropMessage;
+
+
     //PUBLIC METHODS//
 
     self.pointerLocked;
@@ -87,6 +90,7 @@ function CursorCapture ( scene, canvas ) {
     }
 
     function showBackDrop() {
+        _backdropMessage.css('marginTop', ( $(canvas).height()/2 ) - ( _backdropMessage.height()/2) );
 
         _backdrop.show();
         _backDropShow = true;
@@ -118,16 +122,17 @@ function CursorCapture ( scene, canvas ) {
         var backdropHtml = "<div id='backdrop' class='row'>" +
             "<div class='panel panel-default' id='backdrop-message'>"+
                 "<div class='panel-body'>"+
-                    "Clique pour prendre le controle du chat !"+
+                    "Clique pour prendre le controle du chat!"+
+                "</div>"+
+                "<div class='panel-footer'>" +
+                    "Utilise Q Z D et ta souris pour te déplacer, la barre d'espace pour poser une bombe!" +
                 "</div>"+
             "</div>"+
         "</div>";
 
         $('body').append( backdropHtml );
 
-        var backdropMessage = $("#backdrop-message");
-
-        backdropMessage.css('marginTop', ( $(canvas).height()/2 ) - ( backdropMessage.height()/2) );
+        _backdropMessage = $("#backdrop-message");
 
         _backdrop = $("#backdrop");
 

@@ -85,7 +85,7 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     function init(){
 
-        self.camera =  _scene.getCameraByID( "cameraPlayer" );
+        self.camera = _scene.getCameraByID( "cameraPlayer" );
 
         checkMovePlayer();
     }
