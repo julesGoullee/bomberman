@@ -2,11 +2,12 @@
 
 describe( "timer", function() {
 
-    cfg.nbPlayersToStart = 2;
     var timer;
     var map;
     var timeToStartParty = 60000;//ms
     var timeInParty = 180000;//ms
+    var limitToCheckNumberPlayer = 5000;
+    var nbPlayersToStart = 2;
 
     beforeEach(function () {
         jasmine.clock().install();
@@ -16,7 +17,11 @@ describe( "timer", function() {
         map.addObject( player );
 
         timer = new Timer(map);
-        timer.showTimerToStartParty( timeToStartParty );
+        timer.timeToStartParty = timeToStartParty;
+        timer.nbPlayersToStart = nbPlayersToStart;
+        timer.limitToCheckNumberPlayer = limitToCheckNumberPlayer;
+
+        timer.showTimerToStartParty();
 
     });
 
@@ -37,7 +42,7 @@ describe( "timer", function() {
         it( "Peut bloquer le timer a la limite si le nombre min de player n'est pas atteind", function () {
 
             jasmine.clock().tick(timeToStartParty*3);
-            expect( timer.timeToStartParty ).toEqual( cfg.limitToCheckNumberPlayer );
+            expect( timer.timeToStartParty ).toEqual( limitToCheckNumberPlayer );
             expect($( "#timer-label").text() ).toEqual("En attente de 1 joueurs...");
         });
 
@@ -47,7 +52,7 @@ describe( "timer", function() {
             map.addObject( player2 );
 
             jasmine.clock().tick(timeToStartParty*3);
-            expect( timer.timeToStartParty ).toEqual( cfg.limitToCheckNumberPlayer );
+            expect( timer.timeToStartParty ).toEqual( limitToCheckNumberPlayer );
             expect($( "#timer-label").text() ).toEqual("Prepare toi !");
 
         });
@@ -55,7 +60,7 @@ describe( "timer", function() {
         it( "Peut bloquer le timer puis attendre si suffisament de joueurs", function () {
 
             jasmine.clock().tick(timeToStartParty*3);
-            expect( timer.timeToStartParty ).toEqual( cfg.limitToCheckNumberPlayer );
+            expect( timer.timeToStartParty ).toEqual( limitToCheckNumberPlayer );
             expect($( "#timer-label").text() ).toEqual("En attente de 1 joueurs...");
 
             var player2 = new Player(1, "testPlayer2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, gameMock.assets, gameMock.blockDim );

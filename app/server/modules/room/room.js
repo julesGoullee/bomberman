@@ -153,20 +153,20 @@ function Room() {
 
     }
 
-    function getOtherPlayer( player ) {
-
-        var players = [];
-
-        for ( var i = 0; i < self.players.length; i++ ) {
-
-            if ( player.id !== self.players[i].id ) {
-
-                players.push( self.players[i] );
-            }
-        }
-
-        return players;
-    }
+    //function getOtherPlayer( player ) {
+    //
+    //    var players = [];
+    //
+    //    for ( var i = 0; i < self.players.length; i++ ) {
+    //
+    //        if ( player.id !== self.players[i].id ) {
+    //
+    //            players.push( self.players[i] );
+    //        }
+    //    }
+    //
+    //    return players;
+    //}
 
 
     //Player event
@@ -209,7 +209,9 @@ function Room() {
         newPlayer.socket.emit("map", {
             players: playersJson,
             blockTemp: blocksTempJson,
-            timerToStart: self.timerToStart
+            timerToStart: self.timerToStart,
+            limitToCheckNumberPlayer: _limitToCheckNumberPlayer,
+            nbPlayersToStart: _nbPlayersToStart
         });
     }
 

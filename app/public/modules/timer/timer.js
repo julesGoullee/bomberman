@@ -17,19 +17,19 @@ function Timer ( map ) {
     //PUBLIC METHODS//
     self.timeToStartParty = 0;
     self.timeInParty = 0;
+    self.limitToCheckNumberPlayer = 0;
+    self.nbPlayersToStart = 0;
 
-    self.showTimerToStartParty = function ( timerToStart ) {
+    self.showTimerToStartParty = function ( ) {
 
         clearTimeout( _timeoutDecompteInParty );
-
-        self.timeToStartParty = timerToStart;
 
         _timeLabel.text("En attente d'autres joueurs");
         _timeValue.text( self.timeToStartParty/1000 );
         _timeUnite.text("secondes restantes...");
         _timeUnite.show();
 
-        decompteToStartParty( timerToStart );
+        decompteToStartParty( self.timeToStartParty );
     };
 
     self.startGame = function ( timeParty ) {
@@ -88,13 +88,13 @@ function Timer ( map ) {
 
         _timeoutDecompteToStartParty = setTimeout( function() {
 
-            if ( self.timeToStartParty <= cfg.limitToCheckNumberPlayer ) {
+            if ( self.timeToStartParty <= self.limitToCheckNumberPlayer ) {
 
                 $("#time-unite").hide();
 
-                if ( map.getPlayers().length < cfg.nbPlayersToStart ) {
+                if ( map.getPlayers().length < self.nbPlayersToStart ) {
 
-                    _timeLabel.text( "En attente de " + ( cfg.nbPlayersToStart - map.getPlayers().length ) + " joueurs..." );
+                    _timeLabel.text( "En attente de " + ( self.nbPlayersToStart - map.getPlayers().length ) + " joueurs..." );
                     _timeValue.text("Invite des amis !");
                 }
                 else{

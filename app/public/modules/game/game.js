@@ -132,10 +132,13 @@ function Game ( canvasId ) {
         _map = _map || new Maps( _assets, _blockDim, _scene, _menuPlayers );
 
         _timer = _timer || new Timer( _map );
+        _timer.timeToStartParty = mapJson.timerToStart;
+        _timer.limitToCheckNumberPlayer = mapJson.limitToCheckNumberPlayer;
+        _timer.nbPlayersToStart = mapJson.nbPlayersToStart;
 
         _timer.show();
 
-        _timer.showTimerToStartParty( mapJson.timerToStart );
+        _timer.showTimerToStartParty();
 
         // Creation des players
         for ( var i = 0; i < mapJson.players.length; i++ ) {
