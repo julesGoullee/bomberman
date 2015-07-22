@@ -459,7 +459,7 @@ function Game ( canvasId ) {
             return a.kills <= b.kills;
         });
 
-        for (var i = 0; i < players.length; i++) {
+        for ( var i = 0; i < players.length; i++ ) {
             var player = players[i];
             var statusString = player.alive ? "En vie" : "Mort";
             statusString = player.kamicat || statusString;

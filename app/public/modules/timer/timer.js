@@ -16,7 +16,7 @@ function Timer( map ){
     self.timeToStartParty = 0;
     self.timeInParty = 0;
 
-    self.showTimerToStartParty = function( timerToStart ){
+    self.showTimerToStartParty = function( timerToStart ) {
         self.timeToStartParty = timerToStart;
 
         _timeLabel.text("En attente d'autres joueurs");
@@ -27,7 +27,7 @@ function Timer( map ){
         decompteToStartParty( timerToStart );
     };
 
-    self.startGame = function( timeParty ){
+    self.startGame = function( timeParty ) {
         self.timeInParty = timeParty;
 
         clearTimeout( _timeoutDecompteToStartParty );
@@ -39,7 +39,7 @@ function Timer( map ){
         decompteInparty();
     };
 
-    self.onTimerEnd = function( callback ){
+    self.onTimerEnd = function( callback ) {
         _callbackOnEnd = callback;
     };
 
@@ -48,6 +48,7 @@ function Timer( map ){
     };
 
     self.hide = function(){
+
         _timerContainer.hide();
         _timeUnite.empty();
         _timeValue.empty();
@@ -56,13 +57,15 @@ function Timer( map ){
     //PRIVATE METHODS//
 
     function decompteInparty(){
+
         _timeValue.text( self.timeInParty / 1000 );
         self.timeInParty = self.timeInParty - 1000;
-        setTimeout(function(){
 
+        setTimeout(function() {
 
-            if( self.timeInParty <= 0 ){
-                setTimeout(function(){
+            if ( self.timeInParty <= 0 ) {
+                setTimeout( function() {
+
                     _timeLabel.text("A table");
                     _timeUnite.empty();
                     _timeValue.text("Terminé!");
@@ -70,6 +73,7 @@ function Timer( map ){
                 }, 1000);
             }
             else {
+
                 decompteInparty( self.timeInParty );
             }
         },1000);
@@ -77,20 +81,25 @@ function Timer( map ){
 
     function decompteToStartParty(){
 
-        _timeoutDecompteToStartParty = setTimeout(function(){
-            if(  self.timeToStartParty <= cfg.limitToCheckNumberPlayer ) {
+        _timeoutDecompteToStartParty = setTimeout( function() {
+
+            if ( self.timeToStartParty <= cfg.limitToCheckNumberPlayer ) {
+
                 $("#time-unite").hide();
 
-                if( map.getPlayers().length < cfg.nbPlayersToStart ) {
-                    _timeLabel.text("En attente de " + ( cfg.nbPlayersToStart - map.getPlayers().length ) + " joueurs...");
+                if ( map.getPlayers().length < cfg.nbPlayersToStart ) {
+
+                    _timeLabel.text( "En attente de " + ( cfg.nbPlayersToStart - map.getPlayers().length ) + " joueurs..." );
                     _timeValue.text("Invite des amis !");
                 }
                 else{
+
                     $("#timer-label").text("Prepare toi !");
                     _timeValue.text("la partie va démarrer !");
                 }
             }
             else{
+
                 self.timeToStartParty = self.timeToStartParty - 1000;
                 _timeValue.text( self.timeToStartParty/1000 );
                 _timeUnite.show();
@@ -102,6 +111,7 @@ function Timer( map ){
     }
 
     function init (){
+
         var timerHtml = "<div class='panel panel-default container-fluid' id='timer-container'>"+
             "<div class='panel-heading'>"+
                 "<span class='panel-title' id='timer-label'></span>"+
