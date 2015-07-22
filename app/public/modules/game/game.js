@@ -31,7 +31,7 @@ function Game ( canvasId ) {
 
     var _blockDim = 8;
 
-    //instances
+    //Instances
     var _scene = initScene();
 
     var _popup = new Popup();
@@ -73,84 +73,20 @@ function Game ( canvasId ) {
                 _connector.ready();
                 _engine.loadingUIText = "Recherche d'autre joueurs...";
                 preloadFinish = true;
-                render();
+
+                if ( preloadFinish && getMapFinish ) {
+                    render( mapJson );
+                }
+
             });
 
             _connector.getMap( function( data ) {
                 mapJson = data;
                 getMapFinish = true;
-                render();
+                if ( preloadFinish && getMapFinish ) {
+                    render( mapJson );
+                }
             });
-
-
-            function render(){
-
-                if ( !preloadFinish || !getMapFinish ) { return null; }
-
-                _map = _map || new Maps( _assets, _blockDim, _scene, _menuPlayers );
-
-                _timer = _timer || new Timer( _map );
-
-                _timer.show();
-
-                _timer.showTimerToStartParty( mapJson.timerToStart );
-
-                // Creation des players
-                for ( var i = 0; i < mapJson.players.length; i++ ) {
-
-                    var playerJson = mapJson.players[i];
-                    var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, _assets, _blockDim );
-
-                    if ( playerJson.isMine ) {
-                        if ( _isFirstLoad ) {
-                            _myPlayer = _myPlayer || new MyPlayer( _scene, playerJson.position, _connector, _cameraSwitcher );
-                        }
-                        else {
-                            _myPlayer.position = playerJson.position;
-                        }
-                        _myPlayer.player = player;
-                    }
-
-                    _map.addObject( player );
-                    _menuPlayers.addPlayer( player );
-                }
-
-                if( _isFirstLoad ) {
-
-                    _cameraSwitcher.deadView();
-
-                    _scene.registerBeforeRender(StandingStartAnimation);
-
-                    //_keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
-
-                    _map.create( mapJson.blockTemp );
-                    //initLightDark( freeCamera.camera );
-                    //var restore = new Restore( notifier, map, myPlayer );
-                    //restore.showRestartButton();
-                    //keyBinder.onRestore( restore.run );
-                    //_cameraSwitcher.showSwitchButton();
-
-                    _engine.runRenderLoop( function () {
-
-                        _scene.render();
-
-                        if( _isInParty ){
-                            _myPlayer.renderMyPlayer();
-                        }
-                        //map.playerLootPowerUp();
-
-                        document.getElementById( "debug" ).innerHTML = "fps : " + (Math.round(_engine.getFps() * 100) / 100).toFixed(2) +
-                            " <br>Position camera Player: x: " + ( Math.round( _scene.activeCamera.position.x * 100)/100).toFixed(2) +
-                            " | z: " + (Math.round( _scene.activeCamera.position.z * 100)/100).toFixed(2);
-                    });
-                }
-                else{
-                    _map.setTempBlocks( mapJson.blockTemp );
-                }
-
-                _engine.hideLoadingUI();
-
-            }
 
             _connector.onReady(function( timeParty ){
 
@@ -182,174 +118,84 @@ function Game ( canvasId ) {
                 }
             });
 
-            _connector.onPlayerMove( function( id, position ) {
-
-                var player = _map.getPlayerById( id );
-
-                if( player) {
-
-                    player.move( position );
-
-                    var animable =  _scene.getAnimatableByTarget( player.meshs.shape);
-
-                    if( player.timeOut ){
-
-                        clearTimeout( player.timeOut );
-                    }
-
-                    if( player.lastAnimRun ){
-
-                        animable && animable.stop();
-                        delete player.lastAnimRun ;
-                    }
-
-                    if( !animable ) {
-
-                        _scene.beginAnimation( player.meshs.shape, 0, 20, false, 1, function(){
-
-                            if( player.timeOut ){
-                                clearTimeout(player.timeOut );
-                            }
-
-                            player.timeOut = setTimeout( function(){
-
-                                if( player.lastAnim ) {
-
-                                    player.lastAnimRun = true;
-
-                                    _scene.beginAnimation( player.meshs.shape,308, 458, true, 1 );
-
-                                }
-                            },100);
-
-                            player.lastAnim = true;
-                        });
-
-                    }
-                }
-            });
-
-            _connector.onPlayerSetBomb( function( playerId, bombeId, position ) {
-
-                var player = _map.getPlayerById( playerId );
-                var bombe = new Bombe( bombeId, player, position , _assets, _scene );
-                player.addBomb( bombe );
-
-            });
-
-            _connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
-
-                var playerOwner = _map.getPlayerById( ownerId );
-                for ( var i = 0; i < playersIdKilled.length; i++ ) {
-
-                    var playerKilledId = playersIdKilled[i];
-
-                    _map.killPlayerById( playerKilledId, true );
-
-                    if( playerOwner.id !== playerKilledId ){
-                        playerOwner.kills ++;
-                    }
-                }
-
-                for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
-
-                    var blockIdDestroy = blocksIdDestroy[j];
-                    _map.delBlockById( blockIdDestroy );
-                    playerOwner.nbBlocksDestroy++;
-                }
-
-                for ( var k = 0; k < bombesExplodedId.length; k++ ) {
-
-                    var bombeExplodedId = bombesExplodedId[k];
-                    var bombe = _map.getBombsById( bombeExplodedId );
-                    if( !bombe ){
-                        debugger;
-                    }
-                    bombe.destroy();
-                    bombe.owner.delBombById( bombe.id );
-
-                }
-                _menuPlayers.changeScore( playerOwner.kills, playerOwner.id );
-
-            });
-
-            _connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){
-
-                var player = new Player( id, name, position, powerUp, alive, kills, _assets, _blockDim );
-
-                _menuPlayers.addPlayer( player );
-
-                _map.addObject( player );
-
-            });
-
-            _connector.onPlayerDisconnect( function( playerId ){
-
-
-                if( _isInParty ) {
-                    _map.killPlayerById( playerId, true );
-                }
-                else{
-                    _menuPlayers.delPlayer( playerId );
-                    _map.delPlayerById ( playerId );
-                }
-
-            });
-
-            _connector.setPermanentBombId( function( tempBombId, bombId ){
-
-                var bomb = _map.getBombsById( tempBombId );
-                bomb.id = bombId;
-
-            });
-
-            //_timer.onTimerEnd( showEnd );
-
-            _connector.onEnd(showEnd);
+            listenEvents();
         });
     };
 
 
     //PRIVATE METHODS//
+    function render( mapJson ){
 
-    window.addEventListener( "resize", function () {
+        _map = _map || new Maps( _assets, _blockDim, _scene, _menuPlayers );
 
-        _engine && _engine.resize();
-    }, false);
+        _timer = _timer || new Timer( _map );
 
-    function initLightDark( camera ) {
+        _timer.show();
 
-        var light = new BABYLON.HemisphericLight("omni", new BABYLON.Vector3(0, 1, 0.1), scene);
-        light.diffuse = new BABYLON.Color3(0.1, 0.1, 0.17);
-        light.specular = new BABYLON.Color3(0.1, 0.1, 0.1);
-        var light2 = new BABYLON.HemisphericLight("dirlight", new BABYLON.Vector3(1, -0.75, 0.25), scene);
-        light2.diffuse = new BABYLON.Color3(0.95, 0.7, 0.4);
-        light.specular = new BABYLON.Color3(0.7, 0.7, 0.4);
+        _timer.showTimerToStartParty( mapJson.timerToStart );
 
-        var lensEffect = new BABYLON.LensRenderingPipeline('lens', {
-            edge_blur: 1.0,
-            chromatic_aberration: 1.0,
-            distortion: 1.0,
-            dof_focus_distance: 50,
-            dof_aperture: 6.0,			// set this very high for tilt-shift effect
-            grain_amount: 1.0,
-            dof_pentagon: true,
-            dof_gain: 1.0,
-            dof_threshold: 1.0,
-            dof_darken: 0.25
-        }, _scene, 1.0, camera);
+        // Creation des players
+        for ( var i = 0; i < mapJson.players.length; i++ ) {
+
+            var playerJson = mapJson.players[i];
+            var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, _assets, _blockDim );
+
+            if ( playerJson.isMine ) {
+                if ( _isFirstLoad ) {
+                    _myPlayer = _myPlayer || new MyPlayer( _scene, playerJson.position, _connector, _cameraSwitcher );
+                }
+                else {
+                    _myPlayer.position = playerJson.position;
+                }
+                _myPlayer.player = player;
+            }
+
+            _map.addObject( player );
+            _menuPlayers.addPlayer( player );
+        }
+
+        if ( _isFirstLoad ) {
+
+            _cameraSwitcher.deadView();
+
+            _scene.registerBeforeRender(StandingStartAnimation);
+
+            _keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
+
+            _map.create( mapJson.blockTemp );
+
+            _engine.runRenderLoop( function () {
+
+                _scene.render();
+
+                if( _isInParty ){
+                    _myPlayer.renderMyPlayer();
+                }
+                //map.playerLootPowerUp();
+
+                document.getElementById( "debug" ).innerHTML = "fps : " + (Math.round(_engine.getFps() * 100) / 100).toFixed(2) +
+                    " <br>Position camera Player: x: " + ( Math.round( _scene.activeCamera.position.x * 100)/100).toFixed(2) +
+                    " | z: " + (Math.round( _scene.activeCamera.position.z * 100)/100).toFixed(2);
+            });
+        }
+        else {
+            _map.setTempBlocks( mapJson.blockTemp );
+        }
+
+        _engine.hideLoadingUI();
+
     }
 
     function initScene () {
 
-        function enableLight(){
+        function enableLight() {
 
             var light = new BABYLON.HemisphericLight( "light1", new BABYLON.Vector3( 0, 1, 0 ), scene );
 
             light.intensity = 0.8;
         }
 
-        function enableSkybox(){
+        function enableSkybox() {
 
             var skybox = BABYLON.Mesh.CreateBox( "skyBox", 1000.0, scene );
 
@@ -370,6 +216,13 @@ function Game ( canvasId ) {
             skybox.material = skyboxMaterial;
         }
 
+        function enableAutoResize() {
+            window.addEventListener( "resize", function () {
+
+                _engine && _engine.resize();
+            }, false);
+        }
+
         var scene = new BABYLON.Scene( _engine );
 
         //scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
@@ -379,6 +232,8 @@ function Game ( canvasId ) {
         enableLight();
 
         enableSkybox();
+
+        enableAutoResize();
 
         return scene;
     }
@@ -395,6 +250,132 @@ function Game ( canvasId ) {
             radius_step = 0;
             camera.alpha -= alpha_step;
         }
+    }
+
+    function listenEvents() {
+
+        _connector.onPlayerMove( function( id, position ) {
+
+            var player = _map.getPlayerById( id );
+
+            if( player) {
+
+                player.move( position );
+
+                var animable =  _scene.getAnimatableByTarget( player.meshs.shape);
+
+                if( player.timeOut ){
+
+                    clearTimeout( player.timeOut );
+                }
+
+                if( player.lastAnimRun ){
+
+                    animable && animable.stop();
+                    delete player.lastAnimRun ;
+                }
+
+                if( !animable ) {
+
+                    _scene.beginAnimation( player.meshs.shape, 0, 20, false, 1, function(){
+
+                        if( player.timeOut ){
+                            clearTimeout(player.timeOut );
+                        }
+
+                        player.timeOut = setTimeout( function(){
+
+                            if( player.lastAnim ) {
+
+                                player.lastAnimRun = true;
+
+                                _scene.beginAnimation( player.meshs.shape,308, 458, true, 1 );
+
+                            }
+                        },100);
+
+                        player.lastAnim = true;
+                    });
+
+                }
+            }
+        });
+
+        _connector.onPlayerSetBomb( function( playerId, bombeId, position ) {
+
+            var player = _map.getPlayerById( playerId );
+            var bombe = new Bombe( bombeId, player, position , _assets, _scene );
+            player.addBomb( bombe );
+
+        });
+
+        _connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
+
+            var playerOwner = _map.getPlayerById( ownerId );
+            for ( var i = 0; i < playersIdKilled.length; i++ ) {
+
+                var playerKilledId = playersIdKilled[i];
+
+                _map.killPlayerById( playerKilledId, true );
+
+                if( playerOwner.id !== playerKilledId ){
+                    playerOwner.kills ++;
+                }
+            }
+
+            for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
+
+                var blockIdDestroy = blocksIdDestroy[j];
+                _map.delBlockById( blockIdDestroy );
+                playerOwner.nbBlocksDestroy++;
+            }
+
+            for ( var k = 0; k < bombesExplodedId.length; k++ ) {
+
+                var bombeExplodedId = bombesExplodedId[k];
+                var bombe = _map.getBombsById( bombeExplodedId );
+                if( !bombe ){
+                    debugger;
+                }
+                bombe.destroy();
+                bombe.owner.delBombById( bombe.id );
+
+            }
+            _menuPlayers.changeScore( playerOwner.kills, playerOwner.id );
+
+        });
+
+        _connector.onNewPlayer( function( id,  name, position, powerUp, alive, kills ){
+
+            var player = new Player( id, name, position, powerUp, alive, kills, _assets, _blockDim );
+
+            _menuPlayers.addPlayer( player );
+
+            _map.addObject( player );
+
+        });
+
+        _connector.onPlayerDisconnect( function( playerId ){
+
+
+            if( _isInParty ) {
+                _map.killPlayerById( playerId, true );
+            }
+            else{
+                _menuPlayers.delPlayer( playerId );
+                _map.delPlayerById ( playerId );
+            }
+
+        });
+
+        _connector.setPermanentBombId( function( tempBombId, bombId ){
+
+            var bomb = _map.getBombsById( tempBombId );
+            bomb.id = bombId;
+
+        });
+
+        _connector.onEnd(showEnd);
     }
 
     function replay(){
