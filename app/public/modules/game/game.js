@@ -121,38 +121,15 @@ function Game ( canvasId ) {
                     _menuPlayers.addPlayer( player );
                 }
 
-                var radius_step = 1;
-                var alpha_step = .01;
 
-                function myAnimation() {
 
-                    var camera = _scene.activeCamera;
-                    camera.radius -= radius_step;
 
-                    if ( camera.radius < 150) {
-
-                        radius_step = 0;
-                        camera.alpha -= alpha_step;
-
-                        if ( _isInParty ) {
-                            _scene.unregisterBeforeRender(myAnimation);
-
-                            camera.keysUp = [90]; // Z
-
-                            camera.keysLeft = [81]; // Q
-
-                            camera.keysDown = [83]; // S
-
-                            camera.keysRight = [68]; // D
-                        }
-                    }
-                }
 
                 if( _isfirstLoad ) {
 
                     _cameraSwitcher.deadView();
 
-                    _scene.registerBeforeRender(myAnimation);
+                    _scene.registerBeforeRender(StandingStartAniamtion);
 
                     //_keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
 
@@ -187,15 +164,15 @@ function Game ( canvasId ) {
 
             _connector.onReady(function( timeParty ){
 
-                _cameraSwitcher.playerView();
-
-                _cursorCapture.autoRequestCapture();
-
-                _myPlayer.attachControl();
-
                 _timer.startGame( timeParty );
+                _scene.unregisterBeforeRender( StandingStartAniamtion );
 
-                _isInParty = true;
+                _cameraSwitcher.playerView( _myPlayer.player.position, function(){
+                    _isInParty = true;
+
+                    _cursorCapture.autoRequestCapture();
+                    _myPlayer.attachControl();
+                });
 
             });
 
@@ -413,6 +390,20 @@ function Game ( canvasId ) {
         enableSkybox();
 
         return scene;
+    }
+
+    var radius_step = 1;
+    var alpha_step = .01;
+
+    function StandingStartAniamtion() {
+
+        var camera = _scene.activeCamera;
+        camera.radius -= radius_step;
+
+        if ( camera.radius < 150) {
+            radius_step = 0;
+            camera.alpha -= alpha_step;
+        }
     }
 
     function replay(){

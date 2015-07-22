@@ -54,8 +54,31 @@ function CameraSwitcher ( scene , canvas ) {
 
     };
 
-    self.playerView = function(){
-        _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
+    self.playerView = function( position, callback ){
+
+        var cameraDead = _scene.getCameraByID( "cameraDead" );
+
+        cameraDead.target = new BABYLON.Vector3( position.x, 1, position.z) ;
+
+        var animationAlpha = new BABYLON.Animation( cameraDead, "radius", 30,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
+
+        var keysAnimAlpha = [];
+        var newAlpha = 50;
+
+        keysAnimAlpha.push( { frame: 0, value: cameraDead.radius } );
+        keysAnimAlpha.push( { frame: 50, value: newAlpha/2 } );
+        keysAnimAlpha.push( { frame: 100, value: newAlpha } );
+
+        animationAlpha.setKeys( keysAnimAlpha );
+        cameraDead.animations.push(animationAlpha);
+
+        _scene.beginAnimation( cameraDead, 0, 100, false, 1, function(){
+            _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
+            //_scene.collisionsEnabled = true;
+            //cameraDead.checkCollisions = true;
+            callback();
+        });
     };
 
     self.deadView = function () {
