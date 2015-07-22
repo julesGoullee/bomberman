@@ -40,7 +40,7 @@ function EndGame( popup ){
                 "</tr>";
         }
 
-        _popup.setContent( _header, body, _footer );
+        _popup.setContent( _header, _body, _footer );
         $("#table-score-body").append( tablePlayers );
 
         _popup.show();

@@ -69,7 +69,7 @@ function CameraSwitcher ( scene , canvas ) {
     self.deadView = function () {
         _cameraDead.radius = 400;
         _cameraDead.alpha = 1;
-
+        _cameraDead.target = new BABYLON.Vector3( 0, 1, 0 );
         _scene.activeCamera = _scene.getCameraByID( "cameraDead" );
 
     };

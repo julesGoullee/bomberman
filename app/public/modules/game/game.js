@@ -244,8 +244,8 @@ function Game ( canvasId ) {
         return scene;
     }
 
-    var radius_step = 1;
-    var alpha_step = .01;
+    var radius_step = 0.8;
+    var alpha_step = .02;
 
     function StandingStartAnimation() {
 
