@@ -76,7 +76,7 @@ function Maps(){
 
         for ( var i = 0; i < tabPlayers.length; i++ ){
 
-            if(tabPlayers[i].alive) {
+            if ( tabPlayers[i].alive ) {
 
                 playersAlive.push(tabPlayers[i]);
 

@@ -320,15 +320,22 @@ function Game ( canvasId ) {
         _connector.onExplosion( function( ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy ) {
 
             var playerOwner = _map.getPlayerById( ownerId );
+
             for ( var i = 0; i < playersIdKilled.length; i++ ) {
 
                 var playerKilledId = playersIdKilled[i];
 
-                _map.killPlayerById( playerKilledId, true );
+                var isKamiCat = false;
 
-                if( playerOwner.id !== playerKilledId ){
+                if ( playerOwner.id === playerKilledId ) {
+                    isKamiCat = true;
+                }
+                else {
                     playerOwner.kills ++;
                 }
+
+                _map.killPlayerById( playerKilledId, isKamiCat );
+
             }
 
             for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
@@ -349,6 +356,7 @@ function Game ( canvasId ) {
                 bombe.owner.delBombById( bombe.id );
 
             }
+
             _menuPlayers.changeScore( playerOwner.kills, playerOwner.id );
 
         });
