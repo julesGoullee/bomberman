@@ -309,6 +309,7 @@ function Game ( canvasId ) {
         });
     };
 
+
     //PRIVATE METHODS//
 
     window.addEventListener( "resize", function () {
