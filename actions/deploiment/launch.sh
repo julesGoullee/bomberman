@@ -5,7 +5,7 @@ mkdir -p log
 echo "Update sources..." &&
 git pull &&
 echo "Config prod" &&
-npm run prod &&
+grunt config_prod &&
 echo "Stop all nodeapp" &&
 forever stopall &&
 echo "Start node app" &&
