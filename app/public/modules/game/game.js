@@ -31,6 +31,9 @@ function Game ( canvasId ) {
 
     var _blockDim = 8;
 
+    var radius_step = 0.8;
+    var alpha_step = .02;
+
     //Instances
     var _scene = initScene();
 
@@ -93,7 +96,8 @@ function Game ( canvasId ) {
             _connector.onReady(function( timeParty ){
 
                 _timer.startGame( timeParty );
-                _scene.unregisterBeforeRender( StandingStartAnimation );
+
+                _scene.unregisterBeforeRender( standingStartAnimation );
 
                 _cameraSwitcher.playerView( _myPlayer.player.position, function(){
                     _isInParty = true;
@@ -160,11 +164,12 @@ function Game ( canvasId ) {
             _menuPlayers.addPlayer( player );
         }
 
+        radius_step = 0.8;
+        _scene.registerBeforeRender( standingStartAnimation );
+
         if ( _isFirstLoad ) {
 
             _cameraSwitcher.deadView();
-
-            _scene.registerBeforeRender(StandingStartAnimation);
 
             _keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
 
@@ -244,10 +249,7 @@ function Game ( canvasId ) {
         return scene;
     }
 
-    var radius_step = 0.8;
-    var alpha_step = .02;
-
-    function StandingStartAnimation() {
+    function standingStartAnimation() {
 
         var camera = _scene.activeCamera;
         camera.radius -= radius_step;

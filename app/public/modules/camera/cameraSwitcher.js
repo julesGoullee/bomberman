@@ -42,8 +42,15 @@ function CameraSwitcher ( scene , canvas ) {
 
     self.playerView = function ( position, callback ) {
 
+        var cameraLastPosition = {
+            x: _cameraDead.position.x,
+            y: _cameraDead.position.y,
+            z: _cameraDead.position.z
+        };
 
-        _cameraDead.target = new BABYLON.Vector3( position.x, 1, position.z) ;
+        _cameraDead.target = new BABYLON.Vector3( position.x, 0, position.z);
+
+        _cameraDead.setPosition( new BABYLON.Vector3( cameraLastPosition.x, cameraLastPosition.y, cameraLastPosition.z));
 
         var animationAlpha = new BABYLON.Animation( _cameraDead, "radius", 30,
             BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
@@ -52,13 +59,13 @@ function CameraSwitcher ( scene , canvas ) {
         var newAlpha = 50;
 
         keysAnimAlpha.push( { frame: 0, value: _cameraDead.radius } );
-        keysAnimAlpha.push( { frame: 50, value: newAlpha/2 } );
-        keysAnimAlpha.push( { frame: 100, value: newAlpha } );
+        keysAnimAlpha.push( { frame: 25, value: newAlpha/2 } );
+        keysAnimAlpha.push( { frame: 50, value: newAlpha } );
 
         animationAlpha.setKeys( keysAnimAlpha );
         _cameraDead.animations.push(animationAlpha);
 
-        _scene.beginAnimation( _cameraDead, 0, 100, false, 1, function(){
+        _scene.beginAnimation( _cameraDead, 0, 50, false, 1, function(){
             _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
             //_scene.collisionsEnabled = true;
             //cameraDead.checkCollisions = true;
@@ -68,7 +75,7 @@ function CameraSwitcher ( scene , canvas ) {
 
     self.deadView = function () {
         _cameraDead.radius = 400;
-        _cameraDead.alpha = 1;
+        _cameraDead.alpha = 800;
         _cameraDead.target = new BABYLON.Vector3( 0, 1, 0 );
         _scene.activeCamera = _scene.getCameraByID( "cameraDead" );
 
@@ -83,7 +90,7 @@ function CameraSwitcher ( scene , canvas ) {
         var inertia = 0.9;
         var angularSensibility = 3000;
 
-        var camera = new BABYLON.ArcRotateCamera( "cameraDead", 1, 0.8, 400, new BABYLON.Vector3( 0, 0, 0 ), _scene );
+        var camera = new BABYLON.ArcRotateCamera( "cameraDead", 800, 0.8, 400, new BABYLON.Vector3( 0, 0, 0 ), _scene );
 
         camera.inertia = inertia;
 
@@ -126,7 +133,7 @@ function CameraSwitcher ( scene , canvas ) {
             _scene
         );
 
-        camera.setTarget( new BABYLON.Vector3( 0, 4, 0 ) );
+        camera.setTarget( new BABYLON.Vector3( 0, 6, 0 ) );
 
         camera.ellipsoid = new BABYLON.Vector3( 2.5, 3.7, 2.5 );
 

@@ -5,7 +5,7 @@ module.exports = {
     port : 3000,
     domaine: "localhost",
     maxPlayerPeerParty : 4,
-    timerToStartParty: 4000,
+    timerToStartParty: 10000,
     timerToPlaying: 10000,
     limitToCheckNumberPlayer: 2000,
     nbPlayersToStart: 1,
