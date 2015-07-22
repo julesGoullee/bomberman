@@ -11,6 +11,7 @@ function Timer ( map ) {
     var _timeLabel;
 
     var _timeoutDecompteToStartParty;
+    var _timeoutDecompteInParty;
     var _callbackOnEnd;
 
     //PUBLIC METHODS//
@@ -18,6 +19,9 @@ function Timer ( map ) {
     self.timeInParty = 0;
 
     self.showTimerToStartParty = function ( timerToStart ) {
+
+        clearTimeout( _timeoutDecompteInParty );
+
         self.timeToStartParty = timerToStart;
 
         _timeLabel.text("En attente d'autres joueurs");
