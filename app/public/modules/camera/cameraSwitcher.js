@@ -8,20 +8,12 @@ function CameraSwitcher ( scene , canvas ) {
 
     var _canvas = canvas;
 
-    var _button;
+    var _cameraFree;
+    var _cameraPlayer;
+    var _cameraDead;
+
+
     //PUBLIC METHODS//
-
-    self.showSwitchButton = function () {
-
-        $( "body" ).append( "<button class='btn btn-default' id='switchCameraButton'>Change view or press key C (actual : camera <span>" + _scene.activeCamera.id + "</span>)</button>" );
-
-        _button = $( "#switchCameraButton" );
-
-        _button.click( function() {
-
-            self.switchCamera();
-        });
-    };
 
     self.switchCamera = function () {
 
@@ -31,22 +23,16 @@ function CameraSwitcher ( scene , canvas ) {
 
         if ( activeCamera.id === "cameraPlayer" ) {
 
-            _button.find( "span" ).text( "Free" );
-
             _scene.activeCamera = _scene.getCameraByID( "cameraFree" );
 
         } else if( activeCamera.id === "cameraFree" ) {
-
-            _button.find( "span" ).text( "Player" );
 
             _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
 
         }
         else if( activeCamera.id === "cameraDead" ) {
 
-            _button.find( "span" ).text( "Player" );
-
-            _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
+            _scene.activeCamera = _scene.getCameraByID( "cameraFree" );
 
         }
 
@@ -54,7 +40,7 @@ function CameraSwitcher ( scene , canvas ) {
 
     };
 
-    self.playerView = function( position, callback ){
+    self.playerView = function ( position, callback ) {
 
         var cameraDead = _scene.getCameraByID( "cameraDead" );
 
@@ -83,9 +69,134 @@ function CameraSwitcher ( scene , canvas ) {
 
     self.deadView = function () {
 
-        //_button.find( "span" ).text( "Dead" );
-
         _scene.activeCamera = _scene.getCameraByID( "cameraDead" );
 
+    };
+
+
+    //PRIVATE METHODS//
+
+    function initCameraDead() {
+
+        var speed = 1;
+        var inertia = 0.9;
+        var angularSensibility = 3000;
+
+        var camera = new BABYLON.ArcRotateCamera( "cameraDead", 1, 0.8, 400, new BABYLON.Vector3( 0, 0, 0 ), _scene );
+
+        camera.inertia = inertia;
+
+        camera.speed = speed;
+
+        camera.angularSensibility = angularSensibility;
+
+        camera.lowerRadiusLimit = 5;
+
+        camera.upperRadiusLimit = 400;
+
+        camera.lowerBetaLimit = 0.1;
+
+        camera.upperBetaLimit = (Math.PI / 2) * 0.9;
+
+        camera.keysUp = [];
+
+        camera.keysLeft = [];
+
+        camera.keysDown = [];
+
+        camera.keysRight = [];
+
+        return camera;
     }
+
+    function initCameraPlayer() {
+
+        var speed = 1;
+
+        var inertia = 0.9;
+
+        var angularInertia = 0;
+
+        var angularSensibility = 5000;
+
+        var camera = new BABYLON.FreeCamera(
+            "cameraPlayer",
+            new BABYLON.Vector3( 0, 8 , 0 ),
+            _scene
+        );
+
+        camera.setTarget( new BABYLON.Vector3( 0, 4, 0 ) );
+
+        camera.ellipsoid = new BABYLON.Vector3( 2.5, 3.7, 2.5 );
+
+        camera.ellipsoidOffset = new BABYLON.Vector3( 0, 6, 0);
+
+        camera.inertia = inertia;
+
+        camera.speed = speed;
+
+        camera.applyGravity = true;
+
+        camera.checkCollisions = true;
+
+        camera.angularSensibility = angularSensibility;
+
+        camera.angularInertia = angularInertia;
+
+        camera.rotation.x = 1;
+
+        camera.noRotationConstraint = false;
+
+        camera.keysUp = [];
+
+        camera.keysLeft = [];
+
+        camera.keysDown = [];
+
+        camera.keysRight = [];
+
+        return camera;
+
+    }
+
+    function initCameraFree() {
+
+        var speed = 1;
+        var inertia = 0.9;
+        var angularSensibility = 3000;
+
+        var camera = new BABYLON.FreeCamera(
+            "cameraFree",
+            new BABYLON.Vector3( 0, 60, 0 ),
+            _scene
+        );
+
+        camera.setTarget( new BABYLON.Vector3( 0, 15, 0 ) );
+
+        camera.keysUp = [90]; // Z
+
+        camera.keysLeft = [81]; // Q
+
+        camera.keysDown = [83]; // S
+
+        camera.keysRight = [68]; // D
+
+        camera.inertia = inertia;
+
+        camera.speed = speed;
+
+        camera.angularSensibility = angularSensibility;
+
+        return camera;
+
+    }
+
+
+    function init() {
+        _cameraDead = initCameraDead();
+        _cameraPlayer = initCameraPlayer();
+        _cameraFree = initCameraFree();
+    }
+
+    init();
 }

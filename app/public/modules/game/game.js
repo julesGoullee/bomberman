@@ -27,7 +27,7 @@ function Game ( canvasId ) {
 
     var _isInParty = false;
 
-    var _isfirstLoad = true;
+    var _isFirstLoad = true;
 
     var _blockDim = 8;
 
@@ -45,12 +45,6 @@ function Game ( canvasId ) {
     var _keyBinder = new KeyBinder();
 
     var _cursorCapture = new CursorCapture( _scene, _canvas);
-
-    var _deadView = new DeadView( _scene );
-
-    var _freeCamera = new FreeCamera( _scene );
-
-    var _playerCamera = new PlayerCamera ( _scene );
 
     var _cameraSwitcher = new CameraSwitcher( _scene, _canvas );
 
@@ -108,7 +102,7 @@ function Game ( canvasId ) {
                     var player = new Player( playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, _assets, _blockDim );
 
                     if ( playerJson.isMine ) {
-                        if ( _isfirstLoad ) {
+                        if ( _isFirstLoad ) {
                             _myPlayer = _myPlayer || new MyPlayer( _scene, playerJson.position, _connector, _cameraSwitcher );
                         }
                         else {
@@ -121,15 +115,11 @@ function Game ( canvasId ) {
                     _menuPlayers.addPlayer( player );
                 }
 
-
-
-
-
-                if( _isfirstLoad ) {
+                if( _isFirstLoad ) {
 
                     _cameraSwitcher.deadView();
 
-                    _scene.registerBeforeRender(StandingStartAniamtion);
+                    _scene.registerBeforeRender(StandingStartAnimation);
 
                     //_keyBinder.onSwitchCamera( _cameraSwitcher.switchCamera );
 
@@ -165,7 +155,7 @@ function Game ( canvasId ) {
             _connector.onReady(function( timeParty ){
 
                 _timer.startGame( timeParty );
-                _scene.unregisterBeforeRender( StandingStartAniamtion );
+                _scene.unregisterBeforeRender( StandingStartAnimation );
 
                 _cameraSwitcher.playerView( _myPlayer.player.position, function(){
                     _isInParty = true;
@@ -395,7 +385,7 @@ function Game ( canvasId ) {
     var radius_step = 1;
     var alpha_step = .01;
 
-    function StandingStartAniamtion() {
+    function StandingStartAnimation() {
 
         var camera = _scene.activeCamera;
         camera.radius -= radius_step;
@@ -410,7 +400,7 @@ function Game ( canvasId ) {
         _engine.displayLoadingUI();
         _engine.loadingUIText = "Recherche d'autre joueurs...";
 
-        _isfirstLoad = false;
+        _isFirstLoad = false;
         _menuPlayers.delPlayers();
         _map.delPlayers();
         _map.delBlocks();
