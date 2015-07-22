@@ -48,6 +48,8 @@ function Game ( canvasId ) {
 
     var _cameraSwitcher = new CameraSwitcher( _scene, _canvas );
 
+    var _endGame = new EndGame( _popup );
+
     var _assets = {};
 
     var _map;
@@ -124,6 +126,7 @@ function Game ( canvasId ) {
 
 
     //PRIVATE METHODS//
+
     function render( mapJson ){
 
         _map = _map || new Maps( _assets, _blockDim, _scene, _menuPlayers );
@@ -375,10 +378,25 @@ function Game ( canvasId ) {
 
         });
 
-        _connector.onEnd(showEnd);
+        _connector.onEnd(function(){
+
+            _isInParty = false;
+
+            _cursorCapture.stopCapture();
+
+            _cameraSwitcher.deadView();
+
+            _timer.hide();
+
+            _endGame.showEndPopup( _map );
+        });
+
+        _endGame.onReplay( replay );
+
     }
 
     function replay(){
+
         _engine.displayLoadingUI();
         _engine.loadingUIText = "Recherche d'autre joueurs...";
 
@@ -390,64 +408,4 @@ function Game ( canvasId ) {
         _connector.ready();
     }
 
-    function showEnd(){
-
-        _isInParty = false;
-
-        _cursorCapture.stopCapture();
-
-        _cameraSwitcher.deadView();
-
-        var header = "<h4 class='modal-title' >Partie Terminée!</h4>";
-
-        var footer = "<button type='button' class='btn btn-primary' id='btn-rejouer'>Rejouer!</button>";
-
-        var body = "<table class='table table-striped' id='table-score'>"+
-            "<thead>"+
-                "<tr>"+
-                    "<th>Kills</th>"+
-                    "<th>Nom</th>"+
-                    "<th>Statu</th>"+
-                    "<th>Total Bombes</th>"+
-                    "<th>Total blocks</th>"+
-                "</tr>"+
-            "</thead>"+
-            "<tbody id='table-score-body'></tbody>"+
-        "</table>";
-
-        var players = _map.getPlayers();
-        var tablePlayers = "";
-
-        players.sort(function( a, b ){
-            return a.kills <= b.kills;
-        });
-
-        for ( var i = 0; i < players.length; i++ ) {
-            var player = players[i];
-            var statusString = player.alive ? "En vie" : "Mort";
-            statusString = player.kamicat || statusString;
-            var kills = player.kills > 0 ? player.kills : "-";
-            var nbBombe = player.totalNbBombe > 0 ? player.totalNbBombe : "-";
-            var nbBlocksDestroy = player.nbBlocksDestroy > 0 ? player.nbBlocksDestroy : "-";
-
-            tablePlayers += "<tr>"+
-                "<td>" + kills + "</td>"+
-                "<td>" + player.name + "</td>"+
-                "<td>" + statusString + "</td>"+
-                "<td>" + nbBombe + "</td>"+
-                "<td>" + nbBlocksDestroy + "</td>"+
-                "</tr>";
-        }
-
-        _popup.setContent( header, body, footer );
-        $("#table-score-body").append( tablePlayers );
-
-        _popup.show();
-        _timer.hide();
-
-        $("#btn-rejouer").click(function(){
-            _popup.hide();
-            replay();
-        });
-    }
 }

@@ -47,6 +47,7 @@ function homeRoutes( app ){
             "modules/menuPlayers/menuPlayers",
             "modules/timer/timer",
             "modules/cursorCapture/cursorCapture",
+            "modules/endGame/endGame",
             "main"
         ],
         css:[
