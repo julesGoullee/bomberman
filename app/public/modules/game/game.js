@@ -59,7 +59,7 @@ function Game ( canvasId ) {
 
     self.init = function() {
 
-        _auth.ready( function( userProfil ) {
+        _auth.ready( function() {
 
             var preloadFinish = false;
             var getMapFinish = false;

@@ -1,6 +1,7 @@
 "use strict";
 
-function Timer( map ){
+function Timer ( map ) {
+
     var self = this;
 
     //JQ elements
@@ -16,7 +17,7 @@ function Timer( map ){
     self.timeToStartParty = 0;
     self.timeInParty = 0;
 
-    self.showTimerToStartParty = function( timerToStart ) {
+    self.showTimerToStartParty = function ( timerToStart ) {
         self.timeToStartParty = timerToStart;
 
         _timeLabel.text("En attente d'autres joueurs");
@@ -27,7 +28,7 @@ function Timer( map ){
         decompteToStartParty( timerToStart );
     };
 
-    self.startGame = function( timeParty ) {
+    self.startGame = function ( timeParty ) {
         self.timeInParty = timeParty;
 
         clearTimeout( _timeoutDecompteToStartParty );
@@ -36,18 +37,18 @@ function Timer( map ){
         _timeUnite.show();
         _timeUnite.text("secondes");
         _timeValue.text( self.timeInParty / 1000 );
-        decompteInparty();
+        decompteInParty();
     };
 
-    self.onTimerEnd = function( callback ) {
+    self.onTimerEnd = function ( callback ) {
         _callbackOnEnd = callback;
     };
 
-    self.show= function(){
+    self.show= function () {
         _timerContainer.show();
     };
 
-    self.hide = function(){
+    self.hide = function () {
 
         _timerContainer.hide();
         _timeUnite.empty();
@@ -56,7 +57,7 @@ function Timer( map ){
 
     //PRIVATE METHODS//
 
-    function decompteInparty(){
+    function decompteInParty() {
 
         _timeValue.text( self.timeInParty / 1000 );
         self.timeInParty = self.timeInParty - 1000;
@@ -74,12 +75,12 @@ function Timer( map ){
             }
             else {
 
-                decompteInparty( self.timeInParty );
+                decompteInParty( self.timeInParty );
             }
         },1000);
     }
 
-    function decompteToStartParty(){
+    function decompteToStartParty() {
 
         _timeoutDecompteToStartParty = setTimeout( function() {
 
@@ -110,7 +111,7 @@ function Timer( map ){
         },1000);
     }
 
-    function init (){
+    function init() {
 
         var timerHtml = "<div class='panel panel-default container-fluid' id='timer-container'>"+
             "<div class='panel-heading'>"+
