@@ -361,7 +361,8 @@ function Room() {
     }
 
     function endPartie(){
-        for (var i = 0; i < self.players.length; i++) {
+
+        for ( var i = 0; i < self.players.length; i++ ) {
             var player = self.players[i];
             removeAllListener( player );
         }

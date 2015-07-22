@@ -50,23 +50,23 @@ function CameraSwitcher ( scene , canvas ) {
 
         _cameraDead.target = new BABYLON.Vector3( position.x, 0, position.z);
 
+        //TODO pas sur de ça
         _cameraDead.setPosition( new BABYLON.Vector3( cameraLastPosition.x, cameraLastPosition.y, cameraLastPosition.z));
 
-        var animationAlpha = new BABYLON.Animation( _cameraDead, "radius", 30,
+        var animationRaduis = new BABYLON.Animation( _cameraDead, "radius", 30,
             BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
 
-        var keysAnimAlpha = [];
-        var newAlpha = 50;
+        var keysAnimRaduis = [];
+        var newRaduis = 50;
 
-        keysAnimAlpha.push( { frame: 0, value: _cameraDead.radius } );
-        keysAnimAlpha.push( { frame: 25, value: newAlpha/2 } );
-        keysAnimAlpha.push( { frame: 50, value: newAlpha } );
+        keysAnimRaduis.push( { frame: 0, value: _cameraDead.radius } );
+        keysAnimRaduis.push( { frame: 25, value: newRaduis/2 } );
+        keysAnimRaduis.push( { frame: 50, value: newRaduis } );
 
-        animationAlpha.setKeys( keysAnimAlpha );
-        _cameraDead.animations.push(animationAlpha);
+        animationRaduis.setKeys( keysAnimRaduis );
 
-        _scene.beginAnimation( _cameraDead, 0, 50, false, 1, function(){
-            _scene.activeCamera = _scene.getCameraByID( "cameraPlayer" );
+        _scene.beginDirectAnimation( _cameraDead, [animationRaduis], 0, 50, false, 1, function(){
+            _scene.activeCamera = _cameraPlayer;
             //_scene.collisionsEnabled = true;
             //cameraDead.checkCollisions = true;
             callback();
@@ -74,13 +74,36 @@ function CameraSwitcher ( scene , canvas ) {
     };
 
     self.deadView = function () {
-        _cameraDead.radius = 400;
+
         _cameraDead.alpha = 800;
+        _cameraDead.radius = 400;
         _cameraDead.target = new BABYLON.Vector3( 0, 1, 0 );
-        _scene.activeCamera = _scene.getCameraByID( "cameraDead" );
+        _scene.activeCamera = _cameraDead;
 
     };
 
+    self.animFromPlayerToDeadView = function( playerPosition, callback ){
+
+        //_cameraDead.alpha = 10;
+        _cameraDead.target = new BABYLON.Vector3( playerPosition.x, 8, playerPosition.z );
+        _scene.activeCamera = _cameraDead;
+
+        var animationRaduis = new BABYLON.Animation( _cameraDead, "radius", 30,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
+
+        var keysAnimRaduis = [];
+        var newRaduis = 400;
+
+        keysAnimRaduis.push( { frame: 0, value: 10 } );
+        keysAnimRaduis.push( { frame: 50, value: newRaduis/2 } );
+        keysAnimRaduis.push( { frame: 100, value: newRaduis } );
+
+        animationRaduis.setKeys( keysAnimRaduis );
+
+        _scene.beginDirectAnimation( _cameraDead, [animationRaduis], 0, 100, false, 1, function(){
+            callback && callback();
+        });
+    };
 
     //PRIVATE METHODS//
 

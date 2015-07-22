@@ -179,7 +179,7 @@ function Game ( canvasId ) {
 
                 _scene.render();
 
-                if( _isInParty ){
+                if( _isInParty && _myPlayer.player.alive ){
                     _myPlayer.renderMyPlayer();
                 }
                 //map.playerLootPowerUp();
@@ -336,6 +336,15 @@ function Game ( canvasId ) {
 
                 _map.killPlayerById( playerKilledId, isKamiCat );
 
+                if( playerKilledId === _myPlayer.player.id ){
+
+                    _cameraSwitcher.animFromPlayerToDeadView( _myPlayer.player.position, function(){
+                        _cameraSwitcher.deadView();
+                        _cursorCapture.stopCapture();
+                        radius_step = 0.8;
+                        _scene.registerBeforeRender( standingStartAnimation );
+                    });
+                }
             }
 
             for ( var j = 0; j < blocksIdDestroy.length; j++ ) {
@@ -395,9 +404,11 @@ function Game ( canvasId ) {
 
             _isInParty = false;
 
-            _cursorCapture.stopCapture();
+            if ( _myPlayer.player.alive ) {
 
-            _cameraSwitcher.deadView();
+                _cursorCapture.stopCapture();
+                _cameraSwitcher.deadView();
+            }
 
             _timer.hide();
 
@@ -418,6 +429,7 @@ function Game ( canvasId ) {
         _map.delPlayers();
         _map.delBlocks();
         _map.delBombs();
+        _scene.unregisterBeforeRender( standingStartAnimation );
         _connector.ready();
     }
 

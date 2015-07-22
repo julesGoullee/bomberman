@@ -35,31 +35,25 @@ function MyPlayer( scene, spawnPoint, connector, cameraSwitcher ) {
 
     self.renderMyPlayer = function() {
 
-        if( self.player.alive == true ){
+        if ( self.camera.rotation.x <  -0.5 ) {
 
-            if ( self.camera.rotation.x <  -0.5 ) {
-
-                self.camera.rotation.x = -0.5;
-            }
-
-            if ( self.camera.rotation.x > 1.4 ) {
-
-                self.camera.rotation.x = 1.4;
-            }
-            self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
-            self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
-
-            self.player.meshs.colisionBlock.position.x = self.camera.position.x;
-            self.player.meshs.colisionBlock.position.z = self.camera.position.z;
-            self.player.meshs.shape.position.x = self.camera.position.x ;
-            self.player.meshs.shape.position.z = self.camera.position.z;
-            self.player.position.x = self.camera.position.x ;
-            self.player.position.z = self.camera.position.z;
-
-        }else{
-
-            _cameraSwitcher.deadView();
+            self.camera.rotation.x = -0.5;
         }
+
+        if ( self.camera.rotation.x > 1.4 ) {
+
+            self.camera.rotation.x = 1.4;
+        }
+        self.player.meshs.shape.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
+        self.player.meshs.colisionBlock.rotationQuaternion = BABYLON.Quaternion.RotationAxis( BABYLON.Axis.Y, self.camera.rotation.y + Math.PI/2);
+
+        self.player.meshs.colisionBlock.position.x = self.camera.position.x;
+        self.player.meshs.colisionBlock.position.z = self.camera.position.z;
+        self.player.meshs.shape.position.x = self.camera.position.x ;
+        self.player.meshs.shape.position.z = self.camera.position.z;
+        self.player.position.x = self.camera.position.x ;
+        self.player.position.z = self.camera.position.z;
+
     };
 
     self.restoreInit = function () {
