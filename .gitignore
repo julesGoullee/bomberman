@@ -1,11 +1,11 @@
 .idea/
 node_modules/
 bower_components/
-app/public/external/
-!app/public/external/babylonjs/
-app/public/fonts/
-app/public/content/common.babylon.manifest
-app/server/config/config.js
-app/public/modules/config/config.js
+public/external/
+!public/external/babylonjs/
+public/fonts/
+public/content/common.babylon.manifest
+app/modules/config/config.js
+public/modules/config/config.js
 log/out.log
 log/err.log

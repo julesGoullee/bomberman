@@ -9,6 +9,6 @@ grunt config_prod &&
 echo "Stop all nodeapp" &&
 forever stopall &&
 echo "Start node app" &&
-forever -o log/out.log -e log/err.log  --minUptime 500 --spinSleepTime 500 start app/server/index.js &&
+forever -o log/out.log -e log/err.log  --minUptime 500 --spinSleepTime 500 start bin/www.js &&
 echo "Bombeman start :)"
 exit

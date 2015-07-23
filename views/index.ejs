@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!--meta common-->
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="content/favicon.ico">
+    <title><%- title %></title>
+    <!--Script Module-->
+    <% dependances.scripts.forEach(function(script, index) { %>
+    <script type="application/javascript" src="<%= script %>.js"></script>
+    <% }); %>
+
+    <!--CSS Module-->
+    <% dependances.css.forEach(function(css, index) { %>
+    <link rel="stylesheet" type="text/css" href="<%= css %>.css">
+    <% }); %>
+
+</head>
+<body>
+    <div id="debug"></div>
+
+    <canvas id="renderCanvas"></canvas>
+
+    <div id="menuPlayers">
+        <ul class="list-group text-center"></ul>
+    </div>
+</body>
+</html>
