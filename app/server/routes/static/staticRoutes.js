@@ -7,7 +7,7 @@ var compress = require('compression');
 var contentTypeToCompress = [
     'application/octet-stream',
     'application/javascript',
-    'text/css',
+    'text/css; charset=UTF-8',
     'application/json'
 ];
 
@@ -21,13 +21,18 @@ function staticRoutes( app ) {
 
     function shouldCompress(req, res) {
 
-        var contentType = res.getHeader('Content-Type');
-        //console.log(contentType, req.url );
-        return contentTypeToCompress.indexOf(contentType) !== -1;
+        if( res.statusCode === 200 ){
+            var contentType = res.getHeader('Content-Type');
+            console.log(contentType, req.url );
+            return contentTypeToCompress.indexOf(contentType) !== -1;
+        }
+        else {
+            return false;
+        }
     }
 
     app.use( express.static( rootPathPublic, {
-        CacheControl: 'public, max-age=' + oneDay
+        maxage: oneDay
     }));
 
 }
