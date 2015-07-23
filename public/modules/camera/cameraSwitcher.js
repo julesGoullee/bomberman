@@ -225,6 +225,7 @@ function CameraSwitcher ( scene , canvas ) {
     function init() {
         _cameraDead = initCameraDead();
         _cameraPlayer = initCameraPlayer();
+        //initLightDark( _cameraPlayer );
         _cameraFree = initCameraFree();
     }
 
