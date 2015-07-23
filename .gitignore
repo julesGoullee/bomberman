@@ -1,8 +1,8 @@
 .idea/
 node_modules/
 bower_components/
+!public/babylonjs/
 public/external/
-!public/external/babylonjs/
 public/fonts/
 public/content/common.babylon.manifest
 public/modules/config/config.js
