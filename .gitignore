@@ -5,7 +5,7 @@ public/external/
 !public/external/babylonjs/
 public/fonts/
 public/content/common.babylon.manifest
-app/modules/config/config.js
 public/modules/config/config.js
 log/out.log
 log/err.log
+config/config.js
