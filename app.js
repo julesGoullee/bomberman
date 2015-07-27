@@ -52,10 +52,10 @@ app.use(compress({filter: shouldCompress}));
 app.use(function (req, res, next) {
     if (req.url.indexOf(".js") !== -1) {
         res.setHeader('Cache-Control', 'public, max-age=3600');
-        log("match " + req.url);
+        //log("match " + req.url);
 
     }else{
-        log("NOT match " + req.url);
+        //log("NOT match " + req.url);
     }
     next();
 });
@@ -68,9 +68,8 @@ app.use(express.static( config.rootPathPublic , {
 
 // catch 404
 app.use(function( req, res ){
-    console.log( "Not Found url: " + req.originalUrl );
     res.status( 404 );
-    res.send("File not found!");
+    res.send("File not found!" + req.originalUrl);
 });
 
 module.exports = app;

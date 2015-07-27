@@ -13,5 +13,6 @@ module.exports = {
     showBlockTemp : true,
     bombCountDown : 3000,
     showPowerUp : false,
-    nbPowerUp : 50
+    nbPowerUp : 50,
+    track: true
 };

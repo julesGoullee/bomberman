@@ -4,6 +4,7 @@ var config = require("../../config/config.js");
 var Player = require("../player/player.js");
 var utils = require("../utils/utils.js");
 var Maps = require("../maps/maps.js");
+var ga = require("../analitics/analitics.js");
 
 function Room() {
 
@@ -369,6 +370,10 @@ function Room() {
 
         broadcast("endPartie", {});
         launchDestroyCallback();
+
+        ga.event("partie", "end", self.isStartFrom)
+            .event("partie", "nbPlayer", self.players.length )
+            .send();
     }
 
     function launchPartie(){
@@ -405,6 +410,8 @@ function Room() {
             broadcast("ready", { partyTimer : self.isStartFrom } );
 
         });
+
+        ga.event("partie", "new", utils.dateToString( new Date() ) );
     }
 
     init();

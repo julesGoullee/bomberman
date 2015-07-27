@@ -1,7 +1,7 @@
 "use strict";
 
 var auth = require("../auth/auth.js");
-
+var ga = require("../analitics/analitics.js");
 var _callbackConnect = [];
 
 module.exports = {
@@ -29,6 +29,7 @@ module.exports = {
 
                         socket.emit( "setUser", { name: name, token: token , err: null } );
 
+                        ga.event("auth", "setUser").send();
                     }
                     else{
                         socket.emit( "setUser", { err: err } );
@@ -52,6 +53,7 @@ module.exports = {
                             }
                         });
 
+                        ga.event("auth", "setToken").send();
                     }
                     else{
 
