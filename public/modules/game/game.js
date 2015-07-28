@@ -32,7 +32,7 @@ function Game ( canvasId ) {
     var _blockDim = 8;
 
     var radius_step = 0.8;
-    var alpha_step = .02;
+    var alpha_step = .005;
 
     //Instances
     var _scene = initScene();
