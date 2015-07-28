@@ -1,4 +1,5 @@
 "use strict";
+
 function Analitics(){
 
     if( cfg.analitics ){
