@@ -66,7 +66,7 @@ function Timer ( map ) {
         _timeValue.text( self.timeInParty / 1000 );
         self.timeInParty = self.timeInParty - 1000;
 
-        setTimeout(function() {
+        _timeoutDecompteInParty = setTimeout(function() {
 
             if ( self.timeInParty <= 0 ) {
                 setTimeout( function() {
@@ -81,7 +81,7 @@ function Timer ( map ) {
 
                 decompteInParty( self.timeInParty );
             }
-        },1000);
+        }, 1000);
     }
 
     function decompteToStartParty() {
