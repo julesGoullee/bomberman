@@ -14,5 +14,5 @@ module.exports = {
     bombCountDown : 3000,
     showPowerUp : false,
     nbPowerUp : 50,
-    track: true
+    analitics: false
 };

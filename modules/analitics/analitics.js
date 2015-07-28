@@ -19,6 +19,6 @@ function event(){
     };
 }
 
-var appTracker =  config.track ? ua( "UA-65547748-3", "appTracker" ) : mock;
+var appTracker =  config.analitics ? ua( "UA-65547748-3", "appTracker" ) : mock;
 
 module.exports = appTracker;

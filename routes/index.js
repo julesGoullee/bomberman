@@ -40,6 +40,7 @@ var dependances = {
         "modules/timer/timer",
         "modules/cursorCapture/cursorCapture",
         "modules/endGame/endGame",
+        "modules/analitics/analitics",
         "main"
     ],
     css:[

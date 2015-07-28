@@ -48,7 +48,12 @@ function EndGame( popup ){
         $("#btn-rejouer").click(function(){
             _popup.hide();
             _replayCallback && _replayCallback();
+            ga('send', 'event', 'replay');
         });
+
+        ga('send', 'event', 'blocksDestroy', nbBlocksDestroy);
+        ga('send', 'event', 'nbBombs', nbBombe);
+
     };
 
     self.onReplay = function( callback ){
