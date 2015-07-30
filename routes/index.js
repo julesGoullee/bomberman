@@ -55,8 +55,5 @@ router.get("/", function (req, res, next) {
     res.render("index", {dependances: dependances, title: "Bomberman"});
 });
 
-router.get("/form", function (req, res, next) {
-    res.render("form", { title: "Bomberman"});
-});
 
 module.exports = router;
