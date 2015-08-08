@@ -5,9 +5,14 @@ var io = require("socket.io");
 var https = require('https');
 
 var fs = require('fs');
-var privateKey  = fs.readFileSync( __dirname + "/../config/ssl/bomberman-key.pem", "utf8");
-var certificate = fs.readFileSync( __dirname + "/../config/ssl/bomberman-cert.pem", "utf8");
-var credentials = {key: privateKey, cert: certificate};
+
+var sslOptions = {
+    key: fs.readFileSync( __dirname + "/../config/ssl/server.key"),
+    cert: fs.readFileSync( __dirname + "/../config/ssl/server.crt"),
+    ca: fs.readFileSync( __dirname + "/../config/ssl/ca.crt"),
+    requestCert: true,
+    rejectUnauthorized: false
+};
 
 var config = require("../config/config.js");
 require("../modules/log/log.js");
@@ -17,7 +22,7 @@ var socketHandler = require("../modules/socketHandler/socketHandler.js");
 
 app.set( "port", config.port );
 
-var server = https.createServer( credentials, app );
+var server = https.createServer( sslOptions, app );
 var _io = io( server );
 
 server.listen( config.port, "0.0.0.0" );
