@@ -1,20 +1,23 @@
-describe( "Block" , function() {
 
-    var block;
+define(["block/block", "utils", "mock"], function( Block, utils, mock ){
+    describe( "Block" , function() {
 
-    beforeEach( function() {
+        var block;
 
-        block = new Block( utils.guid(), { x: 1, z: 0}, gameMock.assets );
+        beforeEach( function() {
+
+            block = new Block( utils.guid(), { x: 1, z: 0}, mock.Game.assets );
+        });
+
+        it( "Peut créer un block temp a la bonne position", function() {
+            expect( block.position ).toEqual( { x: 1, y: 0, z:0 } );
+        });
+
+        it( "Peut créer un block ayant un shape et un block temp", function() {
+
+            expect(block.meshs.shape).not.toBeUndefined();
+
+            expect(block.meshs.colisionBlock).not.toBeUndefined();
+        })
     });
-
-    it( "Peut creer un block temp a la bonne position", function() {
-        expect( block.position ).toEqual( { x: 1, y: 0, z:0 } );
-    });
-
-    it( "Peut creer un block ayant un shape et un block temp", function() {
-
-        expect(block.meshs.shape).not.toBeUndefined();
-
-        expect(block.meshs.colisionBlock).not.toBeUndefined();
-    })
 });

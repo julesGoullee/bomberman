@@ -1,5 +1,5 @@
 "use strict";
-define(["jquery"], function($){
+define(["jquery"], function( $ ){
     return function Auth( connector, popup ){
 
         var self = this;

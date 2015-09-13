@@ -1,6 +1,6 @@
 "use strict";
 
-define(["modules/auth/auth", "mock"],function( Auth,mock ) {
+define(["auth/auth", "mock"], function( Auth,mock ) {
 
     describe("Auth", function () {
         var auth;

@@ -1,11 +1,13 @@
-describe ( " PowerUp ", function() {
+define(["maps/maps", "menuPlayers/menuPlayers", "mock"], function(Maps, MenuPlayers, mock){
+    describe( "PowerUp", function() {
 
-    var maps;
+        var maps;
 
-    beforeEach ( function() {
+        beforeEach ( function() {
 
-       maps = new Maps( gameMock.assets, gameMock.blockDim, new MenuPlayers() );
+            maps = new Maps( mock.Game.assets, mock.Game.blockDim, new MenuPlayers() );
+
+        });
 
     });
-
 });

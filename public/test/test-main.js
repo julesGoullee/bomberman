@@ -8,22 +8,26 @@ Object.keys(window.__karma__.files).forEach(function(file) {
     }
 });
 
-
 requirejs.config({
-    baseUrl: '/base',
+    baseUrl: "/base/modules",
     shim : {
-        bootstrap: {deps: ['jquery']},
-        babylonjs: {
+        bootstrap: {deps: ["jquery"]},
+        babylon: {
             exports: "BABYLON"
+        },
+        jquery: {
+            exports: "$"
         }
     },
     paths: {
-        mock: "test/mock",
-        babylonjs: "external/babylonjs/babylon",
-        jquery: "external/jquery"
+        cfg: "config/config",
+        utils: "utils/utils",
+        mock: "../test/mock",
+        babylon: "../external/babylonjs/babylon",
+        jquery: "../external/jquery"
     },
 
-    deps: ['/base/modules/auth/test/testAuth.js'],
+    deps: allTestFiles,
 
     callback: window.__karma__.start
 });

@@ -1,6 +1,6 @@
 "use strict";
 
-define(['socketIo'], function(io) {
+define(['socketIo'], function( io ) {
     return function Connector() {
 
         var self = this;
@@ -116,5 +116,5 @@ define(['socketIo'], function(io) {
 
         //PRIVATE METHODS//
 
-    }
+    };
 });

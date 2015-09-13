@@ -1,75 +1,77 @@
 "use strict";
 
-function Preloader ( scene, meshList, assets ) {
+define(["babylon"], function(BABYLON) {
+    return function Preloader(scene, meshList, assets) {
 
-    var self = this;
+        var self = this;
 
-    var _onFinishCallbacks = [];
+        var _onFinishCallbacks = [];
 
-    var _loader;
-
-
-    /*PUBLIC METHODS*/
-
-    self.onFinish = function ( callback ) {
-        _onFinishCallbacks.push( callback );
-    };
+        var _loader;
 
 
-    /*PRIVATE METHODS*/
+        /*PUBLIC METHODS*/
 
-    function init() {
-
-        _loader = new BABYLON.AssetsManager( scene );
-        _loader.useDefaultLoadingScreen = false;
-
-        scene._engine.loadingUIBackgroundColor = "#271204";
-        scene._engine.loadingUIText = "Loading 0%";
-        loopInitMeshs();
-
-        _loader.load();
-
-        _loader.onFinish = function(){
-            //scene._engine.loadingUIText = "Loading 100%";
-            for ( var i = 0 ; i < _onFinishCallbacks.length ; i++ ){
-                _onFinishCallbacks[i]();
-            }
+        self.onFinish = function (callback) {
+            _onFinishCallbacks.push(callback);
         };
 
-    }
 
-    function loopInitMeshs (){
+        /*PRIVATE METHODS*/
 
-        function initMesh ( task ) {
-            assets[task.name] = task.loadedMeshes;
+        function init() {
 
-            for ( var i=0 ; i < task.loadedMeshes.length ; i++ ) {
+            _loader = new BABYLON.AssetsManager(scene);
+            _loader.useDefaultLoadingScreen = false;
 
-                var mesh = task.loadedMeshes[i];
+            scene._engine.loadingUIBackgroundColor = "#271204";
+            scene._engine.loadingUIText = "Loading 0%";
+            loopInitMeshs();
 
-                mesh.useOctreeForCollisions = true;
+            _loader.load();
 
-                mesh.checkCollisions = false;
-
-                mesh.isVisible = false;
-            }
-        }
-
-        for ( var iMesh = 0 ; iMesh < meshList.length ; iMesh++ ) {
-            var currentMeshs = _loader.addMeshTask( meshList[iMesh], "", "/content/", meshList[iMesh] + ".babylon" );
-
-            currentMeshs.onSuccess = function( task ) {
-                var progression = 100 - ( ( _loader._waitingTasksCount/  meshList.length ) * 100);
-                scene._engine.loadingUIText = "Loading " + Math.round( progression ) + "%";
-                initMesh( task );
+            _loader.onFinish = function () {
+                //scene._engine.loadingUIText = "Loading 100%";
+                for (var i = 0; i < _onFinishCallbacks.length; i++) {
+                    _onFinishCallbacks[i]();
+                }
             };
 
-            currentMeshs.onError = function ( task ){
+        }
 
-                throw new Error( "Mesh " + task.name + " as error on preloading." );
+        function loopInitMeshs() {
+
+            function initMesh(task) {
+                assets[task.name] = task.loadedMeshes;
+
+                for (var i = 0; i < task.loadedMeshes.length; i++) {
+
+                    var mesh = task.loadedMeshes[i];
+
+                    mesh.useOctreeForCollisions = true;
+
+                    mesh.checkCollisions = false;
+
+                    mesh.isVisible = false;
+                }
+            }
+
+            for (var iMesh = 0; iMesh < meshList.length; iMesh++) {
+                var currentMeshs = _loader.addMeshTask(meshList[iMesh], "", "/content/", meshList[iMesh] + ".babylon");
+
+                currentMeshs.onSuccess = function (task) {
+                    var progression = 100 - ( ( _loader._waitingTasksCount / meshList.length ) * 100);
+                    scene._engine.loadingUIText = "Loading " + Math.round(progression) + "%";
+                    initMesh(task);
+                };
+
+                currentMeshs.onError = function (task) {
+
+                    throw new Error("Mesh " + task.name + " as error on preloading.");
+                }
             }
         }
-    }
 
-    init();
-}
+        init();
+    };
+});

@@ -1,70 +1,73 @@
 "use strict";
 
-function KeyBinder(){
-
-    var self = this;
-
-    var _callbackSetBombe = [];
-
-    var _callbackCameraSwitch = [];
-
-    var _callbackRestore = [];
-
-    /*PUBLIC METHODS*/
-
-    self.onSetBomb = function ( callback ) {
-
-        _callbackSetBombe.push( callback );
-    };
-
-    self.onSwitchCamera = function ( callback ) {
-
-        _callbackCameraSwitch.push( callback );
-    };
-
-    self.onRestore = function( callback ) {
-
-        _callbackRestore.push( callback );
-    };
+define([], function() {
+    return function KeyBinder() {
 
 
-    /*PRIVATE METHODS*/
+        var self = this;
 
-    function init(){
+        var _callbackSetBombe = [];
 
-        listenKeyDown();
-    }
+        var _callbackCameraSwitch = [];
 
-    function listenKeyDown () {
+        var _callbackRestore = [];
 
-        function launchCallbackEvent( callbackList ){
+        /*PUBLIC METHODS*/
 
-            for ( var i = 0 ; i < callbackList.length ; i++ ) {
+        self.onSetBomb = function (callback) {
 
-                callbackList[i]();
-            }
+            _callbackSetBombe.push(callback);
+        };
+
+        self.onSwitchCamera = function (callback) {
+
+            _callbackCameraSwitch.push(callback);
+        };
+
+        self.onRestore = function (callback) {
+
+            _callbackRestore.push(callback);
+        };
+
+
+        /*PRIVATE METHODS*/
+
+        function init() {
+
+            listenKeyDown();
         }
 
-        document.addEventListener( "keydown", function( e ) {
+        function listenKeyDown() {
 
-            switch ( e.which ) {
+            function launchCallbackEvent(callbackList) {
 
-                case 32:
-                    
-                    launchCallbackEvent( _callbackSetBombe );
-                    break;
+                for (var i = 0; i < callbackList.length; i++) {
 
-                case 67:
-
-                    launchCallbackEvent( _callbackCameraSwitch );
-                    break;
-
-                case 82:
-                    launchCallbackEvent( _callbackRestore );
+                    callbackList[i]();
+                }
             }
 
-        }, false);
-    }
+            document.addEventListener("keydown", function (e) {
 
-    init();
-}
+                switch (e.which) {
+
+                    case 32:
+
+                        launchCallbackEvent(_callbackSetBombe);
+                        break;
+
+                    case 67:
+
+                        launchCallbackEvent(_callbackCameraSwitch);
+                        break;
+
+                    case 82:
+                        launchCallbackEvent(_callbackRestore);
+                }
+
+            }, false);
+        }
+
+        init();
+    };
+});

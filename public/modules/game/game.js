@@ -7,8 +7,16 @@ define(["popup/popup",
         "keyBinder/keyBinder",
         "cursorCapture/cursorCapture",
         "camera/cameraSwitcher",
-        "babylonjs"
-    ], function(Popup, Connector, Auth, MenuPlayers, KeyBinder, CursorCapture, CameraSwitcher, EndGame){
+        "endGame/endGame",
+        "preloader/preloader",
+        "maps/maps",
+        "timer/timer",
+        "player/player",
+        "player/myPlayer",
+        "bomb/bomb",
+        "utils",
+        "babylon"
+    ], function(Popup, Connector, Auth, MenuPlayers, KeyBinder, CursorCapture, CameraSwitcher, EndGame, Preloader, Maps, Timer, Player, MyPlayer, Bombe, utils, BABYLON){
     return function Game ( canvasId ) {
 
         var self = this;

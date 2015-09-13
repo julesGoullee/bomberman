@@ -1,15 +1,23 @@
 "use strict";
 
 requirejs.config({
-    baseUrl: "modules",
+    baseUrl: "/modules",
     shim : {
-        "bootstrap" : { "deps" :['jquery'] }
+        bootstrap: {deps: ["jquery"]},
+        babylon: {
+            exports: "BABYLON"
+        },
+        jquery: {
+            exports: "$"
+        }
     },
     paths: {
         cfg: "config/config",
-        babylonjs: "../external/babylonjs/babylon",
+        utils: "utils/utils",
+        socketIo: "../socket.io/socket.io",
+        babylon: "../external/babylonjs/babylon",
         jquery: "../external/jquery",
-        socketIo: "../socket.io/socket.io"
+        bootstrap: "../external/bootstrap"
     }
 });
 

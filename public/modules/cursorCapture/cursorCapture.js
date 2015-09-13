@@ -1,153 +1,156 @@
 "use strict";
 
-function CursorCapture ( scene, canvas ) {
-
-    var self = this;
-
-    var _autoRequestOnRelache = false;
-
-    var _backDropShow = false;
-
-    var _scene = scene;
-    var _canvas = canvas;
-    
-    //JQ Element
-    var _backdrop;
-    var _backdropMessage;
+define(["jquery"], function($) {
+    return function CursorCapture(scene, canvas) {
 
 
-    //PUBLIC METHODS//
+        var self = this;
 
-    self.pointerLocked;
+        var _autoRequestOnRelache = false;
 
-    self.autoRequestCapture = function() {
+        var _backDropShow = false;
 
-        _autoRequestOnRelache = true;
+        var _scene = scene;
+        var _canvas = canvas;
 
-        showBackDrop();
-    };
-
-    self.stopCapture = function() {
-
-
-        _autoRequestOnRelache = false;
-
-        if ( self.pointerLocked ) {
-
-            document.exitPointerLock();
-            detachControlCamera( _scene.activeCamera );
-        } else {
-            hideBackDrop();
-        }
-    };
+        //JQ Element
+        var _backdrop;
+        var _backdropMessage;
 
 
-    //PRIVATE METHODS//
+        //PUBLIC METHODS//
 
-    function pointerLockChange() {
+        self.pointerLocked;
 
-        self.pointerLocked = document.pointerLockElement === _canvas ||
-            document.mozPointerLockElement === _canvas ||
-            document.webkitPointerLockElement === _canvas ||
-            document.msPointerLockElement === _canvas;
+        self.autoRequestCapture = function () {
+
+            _autoRequestOnRelache = true;
+
+            showBackDrop();
+        };
+
+        self.stopCapture = function () {
 
 
-        if ( _autoRequestOnRelache ) {
-            var cameraActive = _scene.activeCamera;
-            if ( self.pointerLocked ) {
+            _autoRequestOnRelache = false;
 
-                attachControlCamera( cameraActive );
-                hideBackDrop();
+            if (self.pointerLocked) {
 
+                document.exitPointerLock();
+                detachControlCamera(_scene.activeCamera);
             } else {
+                hideBackDrop();
+            }
+        };
 
-                showBackDrop();
-                detachControlCamera( cameraActive );
+
+        //PRIVATE METHODS//
+
+        function pointerLockChange() {
+
+            self.pointerLocked = document.pointerLockElement === _canvas ||
+                document.mozPointerLockElement === _canvas ||
+                document.webkitPointerLockElement === _canvas ||
+                document.msPointerLockElement === _canvas;
+
+
+            if (_autoRequestOnRelache) {
+                var cameraActive = _scene.activeCamera;
+                if (self.pointerLocked) {
+
+                    attachControlCamera(cameraActive);
+                    hideBackDrop();
+
+                } else {
+
+                    showBackDrop();
+                    detachControlCamera(cameraActive);
+                }
             }
         }
-    }
 
-    function detachControlCamera( camera ) {
+        function detachControlCamera(camera) {
 
-        camera.detachControl( _canvas );
+            camera.detachControl(_canvas);
 
-        camera.keysUp = [];
+            camera.keysUp = [];
 
-        camera.keysLeft = [];
+            camera.keysLeft = [];
 
-        camera.keysDown = [];
+            camera.keysDown = [];
 
-        camera.keysRight = [];
-    }
+            camera.keysRight = [];
+        }
 
-    function attachControlCamera( camera ) {
+        function attachControlCamera(camera) {
 
-        camera.attachControl( _canvas );
+            camera.attachControl(_canvas);
 
-        camera.keysUp = [90]; // Z
+            camera.keysUp = [90]; // Z
 
-        camera.keysLeft = [81]; // Q
+            camera.keysLeft = [81]; // Q
 
-        camera.keysDown = [83]; // S
+            camera.keysDown = [83]; // S
 
-        camera.keysRight = [68]; // D
-    }
+            camera.keysRight = [68]; // D
+        }
 
-    function showBackDrop() {
-        _backdropMessage.css('marginTop', ( $(_canvas).height()/2 ) - ( _backdropMessage.height()/2) );
+        function showBackDrop() {
+            _backdropMessage.css('marginTop', ( $(_canvas).height() / 2 ) - ( _backdropMessage.height() / 2));
 
-        _backdrop.show();
-        _backDropShow = true;
-    }
+            _backdrop.show();
+            _backDropShow = true;
+        }
 
-    function hideBackDrop() {
+        function hideBackDrop() {
 
-        _backdrop.hide();
-        _backDropShow = false;
-    }
+            _backdrop.hide();
+            _backDropShow = false;
+        }
 
-    function init() {
+        function init() {
 
-        document.addEventListener( "pointerlockchange", pointerLockChange, false );
-        document.addEventListener( "mspointerlockchange", pointerLockChange, false );
-        document.addEventListener( "mozpointerlockchange", pointerLockChange, false );
-        document.addEventListener( "webkitpointerlockchange", pointerLockChange, false );
+            document.addEventListener("pointerlockchange", pointerLockChange, false);
+            document.addEventListener("mspointerlockchange", pointerLockChange, false);
+            document.addEventListener("mozpointerlockchange", pointerLockChange, false);
+            document.addEventListener("webkitpointerlockchange", pointerLockChange, false);
 
-        _canvas.requestPointerLock = _canvas.requestPointerLock ||
-            _canvas.mozRequestPointerLock ||
-            _canvas.webkitRequestPointerLock ||
-            _canvas.msRequestPointerLock;
+            _canvas.requestPointerLock = _canvas.requestPointerLock ||
+                _canvas.mozRequestPointerLock ||
+                _canvas.webkitRequestPointerLock ||
+                _canvas.msRequestPointerLock;
 
-        document.exitPointerLock = document.exitPointerLock ||
-            document.mozExitPointerLock ||
-            document.msExitPointerLock ||
-            document.webkitExitPointerLock;
+            document.exitPointerLock = document.exitPointerLock ||
+                document.mozExitPointerLock ||
+                document.msExitPointerLock ||
+                document.webkitExitPointerLock;
 
-        var backdropHtml = "<div id='backdrop' class='row'>" +
-            "<div class='panel panel-default' id='backdrop-message'>"+
-                "<div class='panel-body'>"+
-                    "Clique pour prendre le controle du chat!"+
-                "</div>"+
+            var backdropHtml = "<div id='backdrop' class='row'>" +
+                "<div class='panel panel-default' id='backdrop-message'>" +
+                "<div class='panel-body'>" +
+                "Clique pour prendre le controle du chat!" +
+                "</div>" +
                 "<div class='panel-footer'>" +
-                    "Utilise Q Z D et ta souris pour te déplacer, la barre d'espace pour poser une bombe!" +
-                "</div>"+
-            "</div>"+
-        "</div>";
+                "Utilise Q Z D et ta souris pour te déplacer, la barre d'espace pour poser une bombe!" +
+                "</div>" +
+                "</div>" +
+                "</div>";
 
-        $('body').append( backdropHtml );
+            $('body').append(backdropHtml);
 
-        _backdropMessage = $("#backdrop-message");
+            _backdropMessage = $("#backdrop-message");
 
-        _backdrop = $("#backdrop");
+            _backdrop = $("#backdrop");
 
-        _backdrop.click( function() {
+            _backdrop.click(function () {
 
-            if ( _autoRequestOnRelache ) {
+                if (_autoRequestOnRelache) {
 
-                _canvas.requestPointerLock();
-            }
-        } );
-    }
+                    _canvas.requestPointerLock();
+                }
+            });
+        }
 
-    init();
-}
+        init();
+    };
+});

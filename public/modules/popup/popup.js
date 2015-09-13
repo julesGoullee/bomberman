@@ -1,5 +1,5 @@
 "use strict";
-define(["jquery"], function($) {
+define(["jquery", "bootstrap"], function($) {
 
     return function Popup() {
 
