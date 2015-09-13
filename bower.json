@@ -2,8 +2,9 @@
   "name": "Bomberman",
   "version": "0.0.1",
   "dependencies": {
-    "jquery": "latest",
     "bootstrap": "latest",
-    "bootstrap-growl": "latest"
+    "bootstrap-growl": "latest",
+    "jquery": "latest",
+    "requirejs": "~2.1.20"
   }
 }

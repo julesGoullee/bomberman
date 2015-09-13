@@ -49,9 +49,11 @@ function shouldCompress(req, res) {
 }
 app.use(compress({filter: shouldCompress}));
 
+
 app.use(function (req, res, next) {
+    res.setHeader('Cache-Control', 'no-cache');
+
     if (req.url.indexOf(".js") !== -1) {
-        res.setHeader('Cache-Control', 'public, max-age=3600');
         //log("match " + req.url);
 
     }else{

@@ -6,10 +6,11 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="content/favicon.ico">
     <title><%- title %></title>
+    <script data-main="main" type="application/javascript" src="external/require.js"></script>
     <!--Script Module-->
-    <% dependances.scripts.forEach(function(script, index) { %>
-    <script type="application/javascript" src="<%= script %>.js"></script>
-    <% }); %>
+    <!--<% dependances.scripts.forEach(function(script, index) { %>-->
+    <!--<script type="application/javascript" src="<%= script %>.js"></script>-->
+    <!--<% }); %>-->
 
     <!--CSS Module-->
     <% dependances.css.forEach(function(css, index) { %>

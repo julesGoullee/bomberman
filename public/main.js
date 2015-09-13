@@ -1,9 +1,16 @@
 "use strict";
 
-document.addEventListener( "DOMContentLoaded", function () {
+requirejs.config({
+    baseUrl: "modules",
+    shim : {
+        "bootstrap" : { "deps" :['jquery'] }
+    },
+    paths: {
+        cfg: "config/config",
+        babylonjs: "../external/babylonjs/babylon",
+        jquery: "../external/jquery",
+        socketIo: "../socket.io/socket.io"
+    }
+});
 
-    new Analitics();
-
-    new Game( "renderCanvas" ).init();
-
-}, false );
+requirejs(["app"]);

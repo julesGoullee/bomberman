@@ -21,23 +21,15 @@ module.exports = function(grunt) {
         karma: {
             autoRun: {
                 basePath: "public",
-                frameworks: ["jasmine"],
+                frameworks: ["jasmine", "requirejs"],
                 options:{
                     files: [
-                        //external
-                        "external/jquery.js",
-                        "external/bootstrap.js",
-                        "external/babylonjs/babylon.js",
-                        //utils
-                        "modules/utils/*.js",
-                        //MOCK
-                        "modules/test/mock.js",
-                        //config
-                        "modules/config/config.js",
-                        //modules
-                        "modules/**/test/*.js",
-                        "modules/**/*.js"
-                    ]
+                        {pattern: 'external/**/*.js', included: false},
+                        {pattern: 'modules/**/*.js', included: false},
+                        {pattern: 'test/mock.js', included: false},
+                        'test/test-main.js'
+                    ],
+                    exclude:['main.js','modules/app.js']
                 },
                 // available reporters: https://npmjs.org/browse/keyword/karma-reporter
                 reporters: ["dots", "ubuntu"],
@@ -185,6 +177,10 @@ module.exports = function(grunt) {
                     {
                         src: "config/dev/commonDev.babylon.manifest",
                         dest: "public/content/common.babylon.manifest"
+                    },
+                    {
+                        src: "bower_components/requirejs/require.js",
+                        dest: "public/external/require.js"
                     }
 
                 ]
