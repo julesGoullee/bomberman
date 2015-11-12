@@ -15,7 +15,7 @@ var paths = {
   },
   manifest: production ? "config/prod/commonProd.babylon.manifest" : "config/dev/commonDev.babylon.manifest",
   configFront: "client/src/modules/config",
-  configBack: "config",
+  configBack: "serve/config",
   index: "client/index.html",
   externals: {
     js:[

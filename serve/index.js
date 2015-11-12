@@ -2,7 +2,7 @@
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var app = require("../app");
+var app = require("./app");
 var io = require("socket.io");
 var https = require('https');
 
@@ -16,11 +16,11 @@ var sslOptions = {
   rejectUnauthorized: false
 };
 
-var config = require("../config/config.js");
-require("../modules/log/log.js");
+var config = require("./config/config.js");
+require("./modules/log/log.js");
 
-var game = require("../modules/game/game.js");
-var socketHandler = require("../modules/socketHandler/socketHandler.js");
+var game = require("./modules/game/game.js");
+var socketHandler = require("./modules/socketHandler/socketHandler.js");
 
 app.set( "port", config.port );
 

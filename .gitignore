@@ -1,9 +1,9 @@
+/serve/config/config.js
 .idea/
 node_modules/
 /npm-debug.log
 bower_components/
 log/out.log
 log/err.log
-config/config.js
 /client/src/modules/config/config.js
 /client/dist

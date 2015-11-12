@@ -9,22 +9,19 @@ var compress = require('compression');
 //var logger = require("morgan");
 //app.use(logger("dev"));
 
-var routes = require("./routes/index");
-
 var app = express();
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-app.use(favicon(__dirname + "/client/dist/assets/favicon.ico"));
-
-//routes
-app.use("/", routes);
+app.use(favicon(__dirname + "/../client/dist/assets/favicon.ico"));
 
 //Common response BabylonjsManifest
 app.use( "/*babylon.manifest*", function ( req, res ) {
-    res.sendFile( "/assets/common.manifest", { "root": config.rootPathPublic } );
+  res.sendFile( "/assets/common.manifest", { "root": config.rootPathPublic } );
 });
 
+//routes
+app.get("/", function(req, res){
+    res.sendFile(config.rootPathPublic + "/index.html");
+});
 var oneDay = 86400000;
 
 app.use(compress({filter: shouldCompress}));
