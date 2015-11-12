@@ -1,0 +1,28 @@
+{
+  "bitwise": true,
+  "browser": true,
+  "curly": true,
+  "eqeqeq": true,
+  "esnext": true,
+  "latedef": true,
+  "noarg": true,
+  "node": true,
+  "strict": true,
+  "undef": true,
+  "unused": true,
+  "globals": {
+    "define": false,
+    "jasmine": false,
+    "BABYLON": false,
+    "$": false,
+    "it": false,
+    "expect": false,
+    "before": false,
+    "after": false,
+    "afterEach": false,
+    "beforeEach": false,
+    "describe": false,
+    "requirejs": false,
+    "ga": false
+  }
+}

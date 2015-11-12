@@ -2,7 +2,7 @@
 
 var express = require("express");
 var router = express.Router();
-//var config = require("../config/config.js");
+var config = require("../config/config.js");
 
 var dependances = {
 
@@ -52,7 +52,7 @@ var dependances = {
 };
 
 router.get("/", function (req, res, next) {
-    res.render("index", {dependances: dependances, title: "Bomberman"});
+    res.sendFile(config.rootPathPublic + "/index.html");
 });
 
 

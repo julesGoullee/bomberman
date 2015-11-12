@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         },
         karma: {
             autoRun: {
-                basePath: "public",
+                basePath: "client",
                 frameworks: ["jasmine", "requirejs"],
                 options:{
                     files: [
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
                 browsers: ["PhantomJS"]
             },
             singleRun: {
-                basePath: "public",
+                basePath: "client",
                 frameworks: ["jasmine"],
                 options:{
                     files: [
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
                     },
                     {
                         src: "config/prod/configClient_prod.js",
-                        dest: "public/modules/config/config.js"
+                        dest: "client/modules/config/config.js"
                     }
                 ]
             },
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
                     },
                     {
                         src: "config/dev/configClient_dev.js",
-                        dest: "public/modules/config/config.js"
+                        dest: "client/modules/config/config.js"
                     }
                 ]
             },
@@ -94,39 +94,39 @@ module.exports = function(grunt) {
                 files : [
                     {
                         src: "bower_components/bootstrap/dist/css/bootstrap.min.css",
-                        dest: "public/external/bootstrap.css"
+                        dest: "client/external/bootstrap.css"
                     },
                     {
                         src: "bower_components/bootstrap/dist/css/bootstrap-theme.min.css",
-                        dest: "public/external/bootstrap-theme.css"
+                        dest: "client/external/bootstrap-theme.css"
                     },
                     {
                         src: "bower_components/bootstrap/dist/js/bootstrap.min.js",
-                        dest: "public/external/bootstrap.js"
+                        dest: "client/external/bootstrap.js"
                     },
                     {
                         src: "bower_components/bootstrap-growl/jquery.bootstrap-growl.min.js",
-                        dest: "public/external/jquery.bootstrap-growl.js"
+                        dest: "client/external/jquery.bootstrap-growl.js"
                     },
                     {
                         src: "bower_components/jquery/dist/jquery.min.js",
-                        dest: "public/external/jquery.js"
+                        dest: "client/external/jquery.js"
                     },
                     {
                         src: "bower_components/jquery/dist/jquery.min.map",
-                        dest: "public/external/jquery.min.map"
+                        dest: "client/external/jquery.min.map"
                     },
                     {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
-                        dest: "public/fonts/glyphicons-halflings-regular.ttf"
+                        dest: "client/fonts/glyphicons-halflings-regular.ttf"
                     },
                     {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff",
-                        dest: "public/fonts/glyphicons-halflings-regular.woff"
+                        dest: "client/fonts/glyphicons-halflings-regular.woff"
                     },
                     {
                         src: "config/prod/commonProd.babylon.manifest",
-                        dest: "public/content/common.babylon.manifest"
+                        dest: "client/content/common.babylon.manifest"
                     }
 
                 ]
@@ -135,51 +135,51 @@ module.exports = function(grunt) {
                 files : [
                     {
                         src: "bower_components/bootstrap/dist/css/bootstrap.css",
-                        dest: "public/external/bootstrap.css"
+                        dest: "client/external/bootstrap.css"
                     },
                     {
                         src: "bower_components/bootstrap/dist/css/bootstrap.css.map",
-                        dest: "public/external/bootstrap.css.map"
+                        dest: "client/external/bootstrap.css.map"
                     },
                     {
                         src: "bower_components/bootstrap/dist/css/bootstrap-theme.css.map",
-                        dest: "public/external/bootstrap-theme.css.map"
+                        dest: "client/external/bootstrap-theme.css.map"
                     },
                     {
                         src: "bower_components/bootstrap/dist/css/bootstrap-theme.css",
-                        dest: "public/external/bootstrap-theme.css"
+                        dest: "client/external/bootstrap-theme.css"
                     },
                     {
                         src: "bower_components/bootstrap/dist/js/bootstrap.js",
-                        dest: "public/external/bootstrap.js"
+                        dest: "client/external/bootstrap.js"
                     },
                     {
                         src: "bower_components/bootstrap-growl/jquery.bootstrap-growl.js",
-                        dest: "public/external/jquery.bootstrap-growl.js"
+                        dest: "client/external/jquery.bootstrap-growl.js"
                     },
                     {
                         src: "bower_components/jquery/dist/jquery.js",
-                        dest: "public/external/jquery.js"
+                        dest: "client/external/jquery.js"
                     },
                     {
                         src: "bower_components/jquery/dist/jquery.min.map",
-                        dest: "public/external/jquery.min.map"
+                        dest: "client/external/jquery.min.map"
                     },
                     {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf",
-                        dest: "public/fonts/glyphicons-halflings-regular.ttf"
+                        dest: "client/fonts/glyphicons-halflings-regular.ttf"
                     },
                     {
                         src: "bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff",
-                        dest: "public/fonts/glyphicons-halflings-regular.woff"
+                        dest: "client/fonts/glyphicons-halflings-regular.woff"
                     },
                     {
                         src: "config/dev/commonDev.babylon.manifest",
-                        dest: "public/content/common.babylon.manifest"
+                        dest: "client/content/common.babylon.manifest"
                     },
                     {
                         src: "bower_components/requirejs/require.js",
-                        dest: "public/external/require.js"
+                        dest: "client/external/require.js"
                     }
 
                 ]

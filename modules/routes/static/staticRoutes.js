@@ -13,7 +13,7 @@ var contentTypeToCompress = [
 
 function staticRoutes( app ) {
 
-    var rootPathPublic = "app/public" ;
+    var rootPathPublic = "app/client" ;
 
     var oneDay = 86400000;
 

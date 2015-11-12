@@ -15,14 +15,14 @@ var app = express();
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-app.use(favicon(__dirname + "/public/content/favicon.ico"));
+app.use(favicon(__dirname + "/client/dist/assets/favicon.ico"));
 
 //routes
 app.use("/", routes);
 
 //Common response BabylonjsManifest
 app.use( "/*babylon.manifest*", function ( req, res ) {
-    res.sendFile( "/content/common.babylon.manifest", { "root": config.rootPathPublic } );
+    res.sendFile( "/assets/common.babylon.manifest", { "root": config.rootPathPublic } );
 });
 
 var oneDay = 86400000;
