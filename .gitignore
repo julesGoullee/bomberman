@@ -1,9 +1,11 @@
-/serve/config/config.js
-.idea/
 node_modules/
-/npm-debug.log
 bower_components/
-log/out.log
-log/err.log
+/serve/config/config.js
 /client/src/modules/config/config.js
 /client/dist
+/config/nginx/ssl/nginx.crt
+/config/nginx/ssl/nginx.key
+log/out.log
+log/err.log
+/npm-debug.log
+.idea/
