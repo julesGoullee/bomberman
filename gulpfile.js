@@ -3,10 +3,9 @@
 var gulp = require("gulp");
 var $ = require("gulp-load-plugins")();
 var webpack = require("webpack");
-var gutil = require("gulp-util");
+var del = require("del");
+var Server = require("karma").Server;
 var production = process.argv.indexOf("--production") > -1;
-var del = require('del');
-var Server = require('karma').Server;
 
 var paths = {
     dist: "client/dist",
@@ -18,7 +17,7 @@ var paths = {
     configFront: "client/src/modules/config",
     configBack: "config",
     index: "client/index.html",
-    externals: { 
+    externals: {
         js:[
             "client/external/babylon.js",
             "client/external/iomo.js",
@@ -34,25 +33,36 @@ var paths = {
     assets: "client/assets/**",
     css: "client/css/app.css"
 };
-gulp.task("test", function(callback){
+
+gulp.task("mocha", function() {
+    return gulp
+      .src("./modules/**/test/*.js", { read: false })
+      .pipe($.mocha({
+          timeout: 3000,
+          ignoreLeaks: true,
+          reporter: "progress",
+          tdd: "tdd"
+      }));
+});
+
+gulp.task("karma", function(callback){
 
     new Server({
         basePath: "client/src/modules",
-        frameworks: ['jasmine'],
+        frameworks: ["jasmine"],
         files: [
-            '../../dist/scripts/external.js',
-            {pattern: './**/*.js', included: false},
-            {pattern: 'testConfig/mock.js', included: false},
-            'testConfig/test-main.js'
+            "../../dist/scripts/external.js",
+            {pattern: "./**/*.js", included: false},
+            "testConfig/test-main.js"
         ],
         preprocessors: {
-            'testConfig/test-main.js': ['webpack']
+            "testConfig/test-main.js": ["webpack"]
         },
         plugins: [
             "karma-webpack",
-            'karma-jasmine',
-            'karma-ubuntu-reporter',
-            'karma-phantomjs-launcher'
+            "karma-jasmine",
+            "karma-ubuntu-reporter",
+            "karma-phantomjs-launcher"
         ],
         webpack: {
             resolve: {
@@ -68,11 +78,9 @@ gulp.task("test", function(callback){
             noInfo: false
         },
         reporters: ["dots","ubuntu"],
-        //reporters: ["dots", "growl"],
-        //autoWatch: true,
         singleRun: true,
         browsers: ["PhantomJS"]
-    }, callback).start(); 
+    }, callback).start();
 });
 
 gulp.task("clean", function( callback) {
@@ -87,16 +95,16 @@ gulp.task("clean", function( callback) {
 
 gulp.task("copyConfig", function(callback) {
     gulp.src(paths.configSrc.front)
-        .pipe($.rename("config.js"))
-        .pipe(gulp.dest(paths.configFront));
-    
+      .pipe($.rename("config.js"))
+      .pipe(gulp.dest(paths.configFront));
+
     gulp.src(paths.configSrc.back)
-        .pipe($.rename("config.js"))
-        .pipe(gulp.dest(paths.configBack));
-    
+      .pipe($.rename("config.js"))
+      .pipe(gulp.dest(paths.configBack));
+
     gulp.src(paths.manifest)
-        .pipe($.rename("common.manifest"))
-        .pipe(gulp.dest(paths.dist + "/assets"));
+      .pipe($.rename("common.manifest"))
+      .pipe(gulp.dest(paths.dist + "/assets"));
     return callback();
 });
 
@@ -105,8 +113,8 @@ gulp.task("jshint", function() {
         "./client/**/*.js",
         "!./client/external/**/*.js"
     ])
-    .pipe($.jshint())
-    .pipe($.jshint.reporter(require("jshint-stylish")));
+      .pipe($.jshint())
+      .pipe($.jshint.reporter(require("jshint-stylish")));
 });
 
 gulp.task("webpack", function(callback) {
@@ -131,16 +139,16 @@ gulp.task("webpack", function(callback) {
         },
         plugins: [
             //common plugins
-        ].concat( production ? [ 
-            new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    warnings: false
-                }
-            })] : [])
-        
+        ].concat( production ? [
+              new webpack.optimize.UglifyJsPlugin({
+                  compress: {
+                      warnings: false
+                  }
+              })] : [])
+
     }, function(err, stats) {
-        if(err) throw new gutil.PluginError("webpack", err);
-        gutil.log("[webpack]", stats.toString({
+        if(err) throw new $.util.PluginError("webpack", err);
+        $.util.log("[webpack]", stats.toString({
             // output options
         }));
         callback();
@@ -149,34 +157,45 @@ gulp.task("webpack", function(callback) {
 
 gulp.task("build", ["clean", "copyConfig", "webpack"], function(callback){
     gulp.src(paths.externals.js)
-        .pipe($.concat("external.js"))
-        .pipe(gulp.dest(paths.dist + "/scripts/"));
+      .pipe($.concat("external.js"))
+      .pipe(gulp.dest(paths.dist + "/scripts/"));
 
     gulp.src(paths.externals.css)
-        .pipe($.concat("external.css"))
-        .pipe(gulp.dest(paths.dist + "/css"));
+      .pipe($.concat("external.css"))
+      .pipe(gulp.dest(paths.dist + "/css"));
 
     gulp.src(paths.assets)
-        .pipe(gulp.dest(paths.dist + "/assets"));
+      .pipe(gulp.dest(paths.dist + "/assets"));
 
     gulp.src(paths.css)
-        .pipe(gulp.dest(paths.dist + '/css'));
+      .pipe(gulp.dest(paths.dist + "/css"));
 
     gulp.src(paths.index)
-        .pipe(gulp.dest(paths.dist));
+      .pipe(gulp.dest(paths.dist));
     return callback();
 });
 
-gulp.task("watch", ["clean", "build"], function() {
+gulp.task("watch", function() {
     gulp.watch([
         "client/src/**/*.js"
-    ], ["webpack", "test"]);
-    
+    ], ["karma", "build"]);
+
+    gulp.watch([
+        "modules/**/*.js"
+    ], ["mocha"]);
+
     gulp.watch([
         paths.configSrc.front,
         paths.configSrc.back
-    ], ["copyConfig", "webpack", "test"]);
+    ], ["copyConfig"]);
 });
 
-//// The default task - run with `gulp`
-gulp.task("default", ["watch"]);
+gulp.task("test", function(){
+   gulp.run("karma",function(){
+       gulp.run("mocha",function(){
+           process.exit();
+       });
+   });
+});
+
+gulp.task("default", ["build", "watch"]);
