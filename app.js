@@ -22,7 +22,7 @@ app.use("/", routes);
 
 //Common response BabylonjsManifest
 app.use( "/*babylon.manifest*", function ( req, res ) {
-    res.sendFile( "/assets/common.babylon.manifest", { "root": config.rootPathPublic } );
+    res.sendFile( "/assets/common.manifest", { "root": config.rootPathPublic } );
 });
 
 var oneDay = 86400000;

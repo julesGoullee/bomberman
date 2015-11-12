@@ -34,7 +34,7 @@ var paths = {
   css: "client/css/app.css"
 };
 
-gulp.task("mocha", function() {
+gulp.task("mocha", ["karma"], function() {
   return gulp
     .src("./modules/**/test/*.js", { read: false })
     .pipe($.mocha({
@@ -45,7 +45,7 @@ gulp.task("mocha", function() {
     }));
 });
 
-gulp.task("karma", function(callback){
+gulp.task("karma", ["jshint"], function(callback){
 
   new Server({
     basePath: "client/src/modules",
@@ -93,7 +93,7 @@ gulp.task("clean", function( callback) {
   return callback();
 });
 
-gulp.task("copyConfig", function(callback) {
+gulp.task("copyConfig", ["clean"], function(callback) {
   gulp.src(paths.configSrc.front)
     .pipe($.rename("config.js"))
     .pipe(gulp.dest(paths.configFront));
@@ -110,16 +110,14 @@ gulp.task("copyConfig", function(callback) {
 
 gulp.task("jshint", function() {
   return gulp.src([
-    "client/**/*.js",
-    "!client/external/**/*.js",
-    "!client/dist/**",
+    "client/src/**/*.js",
     "modules/**/*.js"
   ])
     .pipe($.jshint())
     .pipe($.jshint.reporter(require("jshint-stylish")));
 });
 
-gulp.task("webpack", function(callback) {
+gulp.task("webpack", ["copyConfig"], function(callback) {
   webpack({
     entry: {
       index: [
@@ -157,7 +155,7 @@ gulp.task("webpack", function(callback) {
   });
 });
 
-gulp.task("build", ["clean", "copyConfig", "webpack"], function(callback){
+gulp.task("build", ["webpack"], function(callback){
   gulp.src(paths.externals.js)
     .pipe($.concat("external.js"))
     .pipe(gulp.dest(paths.dist + "/scripts/"));
@@ -177,31 +175,33 @@ gulp.task("build", ["clean", "copyConfig", "webpack"], function(callback){
   return callback();
 });
 
-gulp.task("watch",["karma", "mocha"], function() {
+gulp.task("watch", ["build"], function() {
   gulp.watch([
     "client/src/**/*.js"
-  ], ["jshint","karma"]);
+  ], ["build"]);
+
+  gulp.watch([
+    "client/src/**/*.js"
+  ], ["karma"]);
 
   gulp.watch([
     "modules/**/*.js"
-  ], ["jshint","mocha"]);
+  ], ["mocha"]);
 
   gulp.watch([
     paths.configSrc.front,
     paths.configSrc.back
-  ], ["copyConfig"]);
+  ], ["webpack"]);
 });
 
-gulp.task("test", ["jshint", "karma"], function(){
+gulp.task("test", ["build"], function(){
   gulp.run("mocha", function () {
     process.exit();
   });
 });
 
 gulp.task("lint", ['jshint'], function(){
-  gulp.watch(["client/**/*.js",
-    "!client/external/**/*.js",
-    "!client/dist/**",
+  gulp.watch(["client/src/**/*.js",
     "modules/**/*.js"], ["jshint"])
 });
 
