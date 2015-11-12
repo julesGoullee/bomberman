@@ -2,7 +2,7 @@ var path = require("path");
 
 module.exports = {
     rootPathPublic : path.resolve( __dirname + "/../client/dist" ),
-    port : 4430,
+    port : 3000,
     domaine: "monchezmoi.no-ip.org",
     maxPlayerPeerParty : 4,
     timerToStartParty: 20000,

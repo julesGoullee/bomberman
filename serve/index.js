@@ -4,7 +4,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = require("./app");
 var io = require("socket.io");
-var https = require('https');
+var http = require('http');
 
 var fs = require('fs');
 
@@ -24,7 +24,7 @@ var socketHandler = require("./modules/socketHandler/socketHandler.js");
 
 app.set( "port", config.port );
 
-var server = https.createServer( sslOptions, app );
+var server = http.createServer( app );
 var _io = io( server );
 
 server.listen( config.port, "0.0.0.0" );
