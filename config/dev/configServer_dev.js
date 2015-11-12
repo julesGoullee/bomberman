@@ -1,9 +1,9 @@
 var path = require("path");
 
 module.exports = {
-    rootPathPublic : path.resolve( __dirname + "/../client/dist" ),
+    rootPathPublic : path.resolve( __dirname + "/../../client/dist" ),
     port : 3000,
-    domaine: "192.168.0.17",
+    domaine: "bombercat.io",
     maxPlayerPeerParty : 4,
     timerToStartParty: 20000,
     timerToPlaying: 360000,
