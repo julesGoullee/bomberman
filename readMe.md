@@ -1,11 +1,10 @@
 ##Bomberman:
-require nodeJS : http://nodejs.org/
-[optional][windows only] require growl for toast notify test : http://www.growlforwindows.com/
-require grunt : ------------------------------------------------->npm install -g grunt-cli
+
+### Test && Build
+[![Build Status](https://travis-ci.org/julesGoullee/bomberman.png)](https://travis-ci.org/julesGoullee/bomberman)
 
 ##INSTALL:
-Npm library externe (require Root privilege on linux): ----------> npm install,
-Bower lib && config: --------------------------------------------> npm run dev
+ npm i
 
 ##Config file:
 In /config dev & prod directory
