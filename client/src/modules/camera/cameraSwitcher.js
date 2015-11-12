@@ -103,7 +103,7 @@ define( function() {
             animationRaduis.setKeys(keysAnimRaduis);
 
             _scene.beginDirectAnimation(_cameraDead, [animationRaduis], 0, 100, false, 1, function () {
-                callback && callback();
+                return typeof callback === "function" && callback();
             });
         };
 
@@ -231,28 +231,28 @@ define( function() {
             _cameraFree = initCameraFree();
         }
 
-        function initLightDark(camera) {
-
-            var light = new BABYLON.HemisphericLight("omni", new BABYLON.Vector3(0, 1, 0.1), _scene);
-            light.diffuse = new BABYLON.Color3(0.1, 0.1, 0.17);
-            light.specular = new BABYLON.Color3(0.1, 0.1, 0.1);
-            var light2 = new BABYLON.HemisphericLight("dirlight", new BABYLON.Vector3(1, -0.75, 0.25), _scene);
-            light2.diffuse = new BABYLON.Color3(0.95, 0.7, 0.4);
-            light.specular = new BABYLON.Color3(0.7, 0.7, 0.4);
-
-            var lensEffect = new BABYLON.LensRenderingPipeline('lens', {
-                edge_blur: 1.0,
-                chromatic_aberration: 1.0,
-                distortion: 1.0,
-                dof_focus_distance: 50,
-                dof_aperture: 6.0,			// set this very high for tilt-shift effect
-                grain_amount: 1.0,
-                dof_pentagon: true,
-                dof_gain: 1.0,
-                dof_threshold: 1.0,
-                dof_darken: 0.25
-            }, _scene, 1.0, camera);
-        }
+        //function initLightDark(camera) {
+        //
+        //    var light = new BABYLON.HemisphericLight("omni", new BABYLON.Vector3(0, 1, 0.1), _scene);
+        //    light.diffuse = new BABYLON.Color3(0.1, 0.1, 0.17);
+        //    light.specular = new BABYLON.Color3(0.1, 0.1, 0.1);
+        //    var light2 = new BABYLON.HemisphericLight("dirlight", new BABYLON.Vector3(1, -0.75, 0.25), _scene);
+        //    light2.diffuse = new BABYLON.Color3(0.95, 0.7, 0.4);
+        //    light.specular = new BABYLON.Color3(0.7, 0.7, 0.4);
+        //
+        //    var lensEffect = new BABYLON.LensRenderingPipeline('lens', {
+        //        edge_blur: 1.0,
+        //        chromatic_aberration: 1.0,
+        //        distortion: 1.0,
+        //        dof_focus_distance: 50,
+        //        dof_aperture: 6.0,			// set this very high for tilt-shift effect
+        //        grain_amount: 1.0,
+        //        dof_pentagon: true,
+        //        dof_gain: 1.0,
+        //        dof_threshold: 1.0,
+        //        dof_darken: 0.25
+        //    }, _scene, 1.0, camera);
+        //}
 
         init();
     };

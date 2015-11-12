@@ -362,7 +362,7 @@ describe( "Maps", function() {
                 player.position.x = 0;
                 player.position.z = 0;
 
-                maps.setBomb( player, function( degats ){
+                maps.setBomb( player, function( /*degats*/ ){
                     //TODO element different a cause des stubs donc on peu pas array.unique()
                     //expect( degats.blocks.length ).to.deep.equal(4);
                     //expect( degats.players.length ).to.deep.equal(4);

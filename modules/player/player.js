@@ -49,12 +49,12 @@ function Player( token, socket, name, room ) {
         return {
             x: roundValue( self.position.x ),
             z: roundValue( self.position.z )
-        }
+        };
     };
 
     self.shouldSetBomb = function () {
 
-        return ( self.alive == true ) && (self.listBombs.length < self.powerUp.bombs );
+        return ( self.alive === true ) && (self.listBombs.length < self.powerUp.bombs );
 
     };
 

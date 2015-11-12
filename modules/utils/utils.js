@@ -10,14 +10,14 @@ module.exports = {
 
         var clone = {};
 
-        if( obj == null || typeof( obj ) !== "object" ){
+        if( obj === null || typeof( obj ) !== "object" ){
 
             return obj;
         }
 
         for( var i in obj ){
 
-            if( obj.hasOwnProperty( i ) && typeof( obj[i] ) === "object" && obj[i] != null ){
+            if( obj.hasOwnProperty( i ) && typeof( obj[i] ) === "object" && obj[i] !== null ){
 
                 clone[i] = this.clone( obj[i] );
             }
@@ -33,17 +33,17 @@ module.exports = {
 
         for( var i = 0; i < arrayToAdd.length; i++ ){
             var item = arrayToAdd[i];
-
+            var isNew = false;
             if( arrayUnique.length === 0 ){
                 arrayUnique.push( item );
             }
             else {
-                var isNew = true;
+                isNew = true;
                 for( var j = 0; j < arrayUnique.length; j++ ){
 
                     var uniqueItem = arrayUnique[j];
 
-                    if( uniqueItem.id == item.id ){
+                    if( uniqueItem.id === item.id ){
                         isNew = false;
                     }
                 }

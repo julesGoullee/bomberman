@@ -75,7 +75,7 @@ define(function() {
                         _timeLabel.text("A table");
                         _timeUnite.empty();
                         _timeValue.text("Terminé!");
-                        _callbackOnEnd && _callbackOnEnd();
+                        return typeof _callbackOnEnd === "function" && _callbackOnEnd();
                     }, 1000);
                 }
                 else {

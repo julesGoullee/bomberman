@@ -1,30 +1,32 @@
+"use strict";
+
 var config = require("../../config/config.js");
 
 var _socketHandlerOnConnectCallbacks = [];
 
 module.exports={
 
-    socketHandler: {
+  socketHandler: {
 
-        newConnect: function ( callback ) {
-            _socketHandlerOnConnectCallbacks.push(callback);
-        },
-        launch: function(){
-
-        }
+    newConnect: function ( callback ) {
+      _socketHandlerOnConnectCallbacks.push(callback);
     },
-    socketHandlerOnConnectCallbacks : _socketHandlerOnConnectCallbacks,
-    socket : {
-        emit: function(){
+    launch: function(){
 
-        },
-        on: function(){
-
-        },
-        removeAllListeners: function(){
-
-        }
     }
+  },
+  socketHandlerOnConnectCallbacks : _socketHandlerOnConnectCallbacks,
+  socket : {
+    emit: function(){
+
+    },
+    on: function(){
+
+    },
+    removeAllListeners: function(){
+
+    }
+  }
 };
 
 global.log = function(){};

@@ -1,5 +1,5 @@
 "use strict";
-
+/*jshint -W079 */
 var auth = require("../auth/auth.js");
 var ga = require("../analitics/analitics.js");
 var _callbackConnect = [];

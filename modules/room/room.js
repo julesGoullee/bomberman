@@ -1,5 +1,5 @@
 "use strict";
-
+/*jshint -W079 */
 var config = require("../../config/config.js");
 var Player = require("../player/player.js");
 var utils = require("../utils/utils.js");

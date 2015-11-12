@@ -10,7 +10,7 @@ var utils = require("./../utils.js");
 
 describe( "Utils", function() {
     beforeEach(function () {
-        var utils = require("./../utils.js");
+        utils = require("./../utils.js");
     });
 
     describe("uniqueElementById", function(){
@@ -42,5 +42,5 @@ describe( "Utils", function() {
             utils.uniqueElementById(l1, l2);
             expect(l1.length).to.equal(5);
         });
-    })
+    });
 });

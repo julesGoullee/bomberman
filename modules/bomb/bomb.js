@@ -1,6 +1,5 @@
 "use strict";
 var config = require("./../../config/config.js");
-var utils = require("../utils/utils.js");
 
 function Bombe ( id, owner, position ) {
 

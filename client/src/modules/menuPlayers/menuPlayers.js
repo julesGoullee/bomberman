@@ -12,15 +12,15 @@ define(function() {
 
         self.addPlayer = function (player) {
 
-            var status = player.alive == true ? "En vie" : "Mort";
+            var status = player.alive === true ? "En vie" : "Mort";
 
             var playerHTML = "<li class='list-group-item list-inline list-player-item' id='menu-player-" + player.id + "'>" +
-                "<ul class='list-group'>" +
-                "<li class='list-group-item'>" + player.name + "</li>" +
-                "<li class='list-group-item player-status'>" + status + "</li>" +
-                "<li class='list-group-item player-score'> Score : " + player.kills + "</li>" +
-                "</ul>" +
-                "</li>";
+              "<ul class='list-group'>" +
+              "<li class='list-group-item'>" + player.name + "</li>" +
+              "<li class='list-group-item player-status'>" + status + "</li>" +
+              "<li class='list-group-item player-score'> Score : " + player.kills + "</li>" +
+              "</ul>" +
+              "</li>";
 
             _playersContainer.append(playerHTML);
 

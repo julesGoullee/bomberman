@@ -20,7 +20,7 @@ define(function() {
 
         //PUBLIC METHODS//
 
-        self.pointerLocked;
+        self.pointerLocked = false;
 
         self.autoRequestCapture = function () {
 

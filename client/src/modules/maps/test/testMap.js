@@ -362,7 +362,7 @@ define(["config/config", "testConfig/mock", "maps/maps", "player/player", "menuP
 
                 expect(maps.getPlayers().length).toEqual(0);
 
-            })
+            });
 
         });
 

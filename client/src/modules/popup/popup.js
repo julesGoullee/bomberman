@@ -57,5 +57,5 @@ define( function() {
         }
 
         init();
-    }
+    };
 });

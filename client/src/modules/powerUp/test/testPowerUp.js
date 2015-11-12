@@ -1,13 +1,15 @@
+"use strict";
+
 define(["maps/maps", "menuPlayers/menuPlayers", "testConfig/mock"], function(Maps, MenuPlayers, mock){
-    describe( "PowerUp", function() {
+  describe( "PowerUp", function() {
 
-        var maps;
+    var maps;
 
-        beforeEach ( function() {
+    beforeEach ( function() {
 
-            maps = new Maps( mock.Game.assets, mock.Game.blockDim, new MenuPlayers() );
-
-        });
+      maps = new Maps( mock.Game.assets, mock.Game.blockDim, new MenuPlayers() );
 
     });
+
+  });
 });

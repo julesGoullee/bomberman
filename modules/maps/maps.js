@@ -60,7 +60,7 @@ function Maps(){
 
         for ( i; i < size; i++ ) {
 
-            if ( _content[i].type == "player" ) {
+            if ( _content[i].type === "player" ) {
 
                 tabPlayer.push(_content[i]);
             }
@@ -94,7 +94,7 @@ function Maps(){
 
         for ( var i = 0; i < size; i++ ) {
 
-            if ( players[i].id == id ) {
+            if ( players[i].id === id ) {
 
                 return players[i];
             }
@@ -281,7 +281,7 @@ function Maps(){
                 player.delBombById( bomb.id );
 
                 explosion( bomb, player, function( degats ){
-                    callback && callback( degats );
+                    return typeof callback === "function" && callback( degats );
                 });
 
             });
@@ -326,7 +326,7 @@ function Maps(){
 
         for ( var i = 0; i < size; i++ ) {
 
-            if ( bombs[i].id == id ) {
+            if ( bombs[i].id === id ) {
 
                 return bombs[i];
             }
@@ -341,7 +341,7 @@ function Maps(){
 
         for ( var i = 0; i<tabBombs.length; i++ ) {
 
-            if (position.z == tabBombs[i].position.z && position.x == tabBombs[i].position.x) {
+            if (position.z === tabBombs[i].position.z && position.x === tabBombs[i].position.x) {
 
                 return tabBombs[i];
 
@@ -540,30 +540,6 @@ function Maps(){
             bombes: []
         };
 
-
-        calcDegat(degats, bomb, function(){
-
-            // parcours les cases touché par la bombe pour les suprimmées
-            for ( var iBlocks = 0; iBlocks < degats.blocks.length; iBlocks++ ) {
-
-                self.delBlockById( degats.blocks[iBlocks].id );
-            }
-
-            // parcours les players touchés par la bombe pour les suprimmées
-            for ( var iPlayer = 0; iPlayer < degats.players.length; iPlayer++ ) {
-
-                if ( player.id !== degats.players[iPlayer].id ) {
-
-                    player.kills ++;
-
-                }
-
-                self.killPlayerById( degats.players[iPlayer].id );
-
-            }
-            callback( degats );
-        });
-
         function calcDegat(tabDegats, bomb, callback){
 
             var caseAffectedByBomb = [];
@@ -757,6 +733,30 @@ function Maps(){
                 }
             }
         }
+
+        calcDegat(degats, bomb, function(){
+
+            // parcours les cases touché par la bombe pour les suprimmées
+            for ( var iBlocks = 0; iBlocks < degats.blocks.length; iBlocks++ ) {
+
+                self.delBlockById( degats.blocks[iBlocks].id );
+            }
+
+            // parcours les players touchés par la bombe pour les suprimmées
+            for ( var iPlayer = 0; iPlayer < degats.players.length; iPlayer++ ) {
+
+                if ( player.id !== degats.players[iPlayer].id ) {
+
+                    player.kills ++;
+
+                }
+
+                self.killPlayerById( degats.players[iPlayer].id );
+
+            }
+            callback( degats );
+        });
+
     }
 
 }

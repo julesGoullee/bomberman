@@ -275,7 +275,7 @@ describe( "Room", function() {
             expect( _room.players[2].position.x ).to.equal( _room.playersSpawnPoint[2].x );
             expect( _room.players[2].position.z ).to.equal( _room.playersSpawnPoint[2].z );
 
-            expect( _room.player)
+            expect( _room.player);
         });
 
         it( "Peut déplacer le player 1 et notifier au deuxieme", function() {

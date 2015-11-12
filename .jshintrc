@@ -12,17 +12,20 @@
   "unused": true,
   "globals": {
     "define": false,
-    "jasmine": false,
     "BABYLON": false,
     "$": false,
+    "ga": false,
     "it": false,
+    "jasmine": false,
+    "assert": false,
     "expect": false,
     "before": false,
     "after": false,
     "afterEach": false,
     "beforeEach": false,
     "describe": false,
-    "requirejs": false,
-    "ga": false
+    "sinon": false,
+    "log": false,
+    "io": false
   }
 }

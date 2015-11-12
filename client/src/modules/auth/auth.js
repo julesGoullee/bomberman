@@ -105,5 +105,5 @@ define(function(){
                 connector.setUser( $("#input-pseudo").val());
             });
         }
-    }
+    };
 });

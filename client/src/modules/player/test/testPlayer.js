@@ -7,7 +7,7 @@ define(["player/player", "bomb/bomb", "testConfig/mock", "utils/utils", "config/
 
         var spawnPoint = { x:48, z:-64};
 
-        var deathCam = { x : 65, y: 147, z: 0 };
+        //var deathCam = { x : 65, y: 147, z: 0 };
 
         beforeEach( function() {
 
@@ -63,7 +63,7 @@ define(["player/player", "bomb/bomb", "testConfig/mock", "utils/utils", "config/
 
                 expect( player.listBombs.length ).toEqual( 1 );
 
-                expect( player.totalNbBombe ).toEqual( 1 )
+                expect( player.totalNbBombe ).toEqual( 1 );
             });
 
             it( "Peut poser une bombe a la position du player", function () {

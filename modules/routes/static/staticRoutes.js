@@ -1,7 +1,6 @@
 "use strict";
 
 var express = require( "express" );
-var config = require( "../../config/config.js" );
 var compress = require('compression');
 
 var contentTypeToCompress = [
@@ -11,6 +10,18 @@ var contentTypeToCompress = [
     'application/json'
 ];
 
+function shouldCompress(req, res) {
+
+    if( res.statusCode === 200 ){
+        var contentType = res.getHeader('Content-Type');
+        console.log(contentType, req.url );
+        return contentTypeToCompress.indexOf(contentType) !== -1;
+    }
+    else {
+        return false;
+    }
+}
+
 function staticRoutes( app ) {
 
     var rootPathPublic = "app/client" ;
@@ -19,17 +30,7 @@ function staticRoutes( app ) {
 
     app.use(compress({filter: shouldCompress}));
 
-    function shouldCompress(req, res) {
 
-        if( res.statusCode === 200 ){
-            var contentType = res.getHeader('Content-Type');
-            console.log(contentType, req.url );
-            return contentTypeToCompress.indexOf(contentType) !== -1;
-        }
-        else {
-            return false;
-        }
-    }
 
     app.use( express.static( rootPathPublic, {
         maxage: oneDay
