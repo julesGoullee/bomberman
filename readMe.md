@@ -15,11 +15,11 @@ node@5 (use nvm [https://github.com/creationix/nvm](https://github.com/creationi
 ##Config:
 - Generate ssl cert :
 ```bash
-    sudo openssl  req -x509 -nodes -days 365 -newkey rsa:2048 -keyout config/nginx/ssl/nginx.key -out config/nginx/ssl/nginx.crt0
+    sudo openssl  req -x509 -nodes -days 365 -newkey rsa:2048 -keyout config/nginx/ssl/nginx.key -out config/nginx/ssl/nginx.crt
 ```
-- Copy in nginx directory:
+- Copy in nginx directory and restart service:
 ```bash
-sudo cp -R config/nginx/ /etc/nginx/
+sudo cp -R config/nginx/. /etc/nginx/ && sudo service nginx restart
 ```
 - Ignore changed git: 
 ```bash
