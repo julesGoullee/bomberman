@@ -19,16 +19,16 @@ var paths = {
   configBack: "serve/config",
   index: "client/index.html",
   externals: {
-    js:[
+    js: [
       "client/external/babylon.js",
       "client/external/iomo.js",
-      "bower_components/jquery/dist/jquery.min.js",
-      "bower_components/bootstrap/dist/js/bootstrap.min.js",
-      "bower_components/bootstrap-growl/jquery.bootstrap-growl.min.js"
+      "client/bower_components/jquery/dist/jquery.min.js",
+      "client/bower_components/bootstrap/dist/js/bootstrap.min.js",
+      "client/bower_components/bootstrap-growl/jquery.bootstrap-growl.min.js"
     ],
     css:[
-      "bower_components/bootstrap/dist/css/bootstrap.min.css",
-      "bower_components/bootstrap/dist/css/bootstrap-theme.min.css"
+      "client/bower_components/bootstrap/dist/css/bootstrap.min.css",
+      "client/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"
     ]
   },
   assets: "client/assets/**",
@@ -112,36 +112,40 @@ gulp.task("clean", function() {
 
 
 gulp.task("copyConfig", ["clean"], function() {
-  return merge(gulp.src(paths.configSrc.front)
-    .pipe($.rename("config.js"))
-    .pipe(gulp.dest(paths.configFront)),
+  return merge(
+    gulp.src(paths.configSrc.front)
+      .pipe($.rename("config.js"))
+      .pipe(gulp.dest(paths.configFront)),
 
-  gulp.src(paths.configSrc.back)
-    .pipe($.rename("config.js"))
-    .pipe(gulp.dest(paths.configBack)),
-
-  gulp.src(paths.manifest)
-    .pipe($.rename("common.manifest"))
-    .pipe(gulp.dest(paths.dist + "/assets")));
+    gulp.src(paths.configSrc.back)
+      .pipe($.rename("config.js"))
+      .pipe(gulp.dest(paths.configBack)),
+  
+    gulp.src(paths.manifest)
+      .pipe($.rename("common.manifest"))
+      .pipe(gulp.dest(paths.dist + "/assets"))
+  );
 });
 
 gulp.task("assets", ["clean"], function(){
-  return merge(gulp.src(paths.externals.js)
-    .pipe($.concat("external.js"))
-    .pipe(gulp.dest(paths.dist + "/scripts/")),
+  return merge(
+    gulp.src(paths.externals.js)
+      .pipe($.concat("external.js"))
+      .pipe(gulp.dest(paths.dist + "/scripts/")),
 
-  gulp.src(paths.externals.css)
-    .pipe($.concat("external.css"))
-    .pipe(gulp.dest(paths.dist + "/css")),
-
-  gulp.src(paths.assets)
-    .pipe(gulp.dest(paths.dist + "/assets")),
-
-  gulp.src(paths.css)
-    .pipe(gulp.dest(paths.dist + "/css")),
-
-  gulp.src(paths.index)
-    .pipe(gulp.dest(paths.dist)));
+    gulp.src(paths.externals.css)
+      .pipe($.concat("external.css"))
+      .pipe(gulp.dest(paths.dist + "/css")),
+  
+    gulp.src(paths.assets)
+      .pipe(gulp.dest(paths.dist + "/assets")),
+  
+    gulp.src(paths.css)
+      .pipe(gulp.dest(paths.dist + "/css")),
+  
+    gulp.src(paths.index)
+      .pipe(gulp.dest(paths.dist))
+  );
 });
 
 
