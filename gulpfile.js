@@ -3,8 +3,9 @@
 var gulp = require("gulp");
 var $ = require("gulp-load-plugins")();
 var webpack = require("webpack");
-var del = require("del");
 var Server = require("karma").Server;
+var merge = require("merge-stream");
+
 var production = process.argv.indexOf("--production") > -1;
 
 var paths = {
@@ -34,18 +35,34 @@ var paths = {
   css: "client/css/app.css"
 };
 
-gulp.task("mocha", ["karma"], function() {
+
+gulp.task("jshint", ["build"], function() {
+  return gulp.src([
+    "client/src/**/*.js",
+    "modules/**/*.js"
+  ])
+    .pipe($.jshint())
+    .pipe($.jshint.reporter(require("jshint-stylish")))
+    .pipe($.jshint.reporter('fail'));
+});
+
+gulp.task("mocha", ["build", "jshint"], function(cb) {
   return gulp
-    .src("./modules/**/test/*.js", { read: false })
+    .src("serve/modules/**/test/*.js")
     .pipe($.mocha({
       timeout: 3000,
       ignoreLeaks: true,
       reporter: "progress",
       tdd: "tdd"
-    }));
+    })).once("error", function(){
+      process.exit(1);
+    })
+    .once("end", function(){
+      process.exit();
+    });
 });
 
-gulp.task("karma", ["jshint"], function(callback){
+gulp.task("karma", ["build", "jshint"], function(callback){
 
   new Server({
     basePath: "client/src/modules",
@@ -83,41 +100,52 @@ gulp.task("karma", ["jshint"], function(callback){
   }, callback).start();
 });
 
-gulp.task("clean", function( callback) {
-  del.sync([
+
+gulp.task("clean", function() {
+  return gulp.src([
     paths.configBack + "/config.js",
     paths.configFront + "/config.js",
     paths.dist,
     "./client/src/assets/common.manifest"
-  ]);
-  return callback();
+  ]).pipe($.rimraf());
 });
 
-gulp.task("copyConfig", ["clean"], function(callback) {
-  gulp.src(paths.configSrc.front)
+
+gulp.task("copyConfig", ["clean"], function() {
+  return merge(gulp.src(paths.configSrc.front)
     .pipe($.rename("config.js"))
-    .pipe(gulp.dest(paths.configFront));
+    .pipe(gulp.dest(paths.configFront)),
 
   gulp.src(paths.configSrc.back)
     .pipe($.rename("config.js"))
-    .pipe(gulp.dest(paths.configBack));
+    .pipe(gulp.dest(paths.configBack)),
 
   gulp.src(paths.manifest)
     .pipe($.rename("common.manifest"))
-    .pipe(gulp.dest(paths.dist + "/assets"));
-  return callback();
+    .pipe(gulp.dest(paths.dist + "/assets")));
 });
 
-gulp.task("jshint", function() {
-  return gulp.src([
-    "client/src/**/*.js",
-    "modules/**/*.js"
-  ])
-    .pipe($.jshint())
-    .pipe($.jshint.reporter(require("jshint-stylish")));
+gulp.task("assets", ["clean"], function(){
+  return merge(gulp.src(paths.externals.js)
+    .pipe($.concat("external.js"))
+    .pipe(gulp.dest(paths.dist + "/scripts/")),
+
+  gulp.src(paths.externals.css)
+    .pipe($.concat("external.css"))
+    .pipe(gulp.dest(paths.dist + "/css")),
+
+  gulp.src(paths.assets)
+    .pipe(gulp.dest(paths.dist + "/assets")),
+
+  gulp.src(paths.css)
+    .pipe(gulp.dest(paths.dist + "/css")),
+
+  gulp.src(paths.index)
+    .pipe(gulp.dest(paths.dist)));
 });
 
-gulp.task("webpack", ["copyConfig"], function(callback) {
+
+gulp.task("webpack", ["copyConfig", "assets"], function(callback) {
   webpack({
     entry: {
       index: [
@@ -147,62 +175,32 @@ gulp.task("webpack", ["copyConfig"], function(callback) {
         })] : [])
 
   }, function(err, stats) {
-    if(err) throw new $.util.PluginError("webpack", err);
-    $.util.log("[webpack]", stats.toString({
-      // output options
-    }));
+    if(err){
+      throw new $.util.PluginError("webpack", err);
+    }
+    $.util.log("[webpack]", stats.toString());
     callback();
   });
 });
 
-gulp.task("build", ["webpack"], function(callback){
-  gulp.src(paths.externals.js)
-    .pipe($.concat("external.js"))
-    .pipe(gulp.dest(paths.dist + "/scripts/"));
+gulp.task("build", ["clean", "copyConfig", "assets", "webpack"]);
 
-  gulp.src(paths.externals.css)
-    .pipe($.concat("external.css"))
-    .pipe(gulp.dest(paths.dist + "/css"));
 
-  gulp.src(paths.assets)
-    .pipe(gulp.dest(paths.dist + "/assets"));
+gulp.task("watch", function() {
+  gulp.watch([
+    "client/src/**/*.js",
+    "serve/modules/**/*.js"
+  ], ["test"]);
 
-  gulp.src(paths.css)
-    .pipe(gulp.dest(paths.dist + "/css"));
+  //gulp.watch([
+  //], ["mocha"]);
 
-  gulp.src(paths.index)
-    .pipe(gulp.dest(paths.dist));
-  return callback();
+  //gulp.watch([
+  //  paths.configSrc.front,
+  //  paths.configSrc.back
+  //], ["copyConfig"]);
 });
 
-gulp.task("watch", ["build"], function() {
-  gulp.watch([
-    "client/src/**/*.js"
-  ], ["build"]);
-
-  gulp.watch([
-    "client/src/**/*.js"
-  ], ["karma"]);
-
-  gulp.watch([
-    "modules/**/*.js"
-  ], ["mocha"]);
-
-  gulp.watch([
-    paths.configSrc.front,
-    paths.configSrc.back
-  ], ["webpack"]);
-});
-
-gulp.task("test", ["build"], function(){
-  gulp.run("mocha", function () {
-    process.exit();
-  });
-});
-
-gulp.task("lint", ['jshint'], function(){
-  gulp.watch(["client/src/**/*.js",
-    "modules/**/*.js"], ["jshint"])
-});
+gulp.task("test", ["karma", "mocha"]);
 
 gulp.task("default", ["watch"]);
