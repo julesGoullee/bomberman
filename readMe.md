@@ -21,10 +21,6 @@ npm run crt-generate-local
 ```bash
 npm run deploy-nginx-local-crt
 ```
-- Ignore cert in changelist git(dev): 
-```bash
-git update-index --assume-unchanged config/nginx/ssl/**
-```
 
 ##Config Nginx:
 - Deploy local nginx config and restart service:
