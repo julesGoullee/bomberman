@@ -12,32 +12,43 @@ sudo apt-get install openssl nginx
 ```
 node@5 (use nvm [https://github.com/creationix/nvm](https://github.com/creationix/nvm))
 
-##Config:
+##Config ssl cert for Nginx:
 - Generate ssl cert :
 ```bash
-    sudo openssl  req -x509 -nodes -days 365 -newkey rsa:2048 -keyout config/nginx/ssl/nginx.key -out config/nginx/ssl/nginx.crt
+npm run crt-generate-local
 ```
-- Copy in nginx directory and restart service:
+- Deploy local cert on nginx:
 ```bash
-sudo cp -R config/nginx/. /etc/nginx/ &&
-sudo ln -s /etc/nginx/sites-available/** &&
-sudo ln -s /etc/nginx/sites-enable/** && sudo service nginx restart
+npm run deploy-nginx-local-crt
 ```
-- Ignore changed git: 
+- Ignore cert in changelist git(dev): 
 ```bash
 git update-index --assume-unchanged config/nginx/ssl/**
 ```
-- Edit In /config development & production directory
+
+##Config Nginx:
+- Deploy local nginx config and restart service:
+```bash
+npm run deploy-nginx-config
+```
 
 ##INSTALL:
 - Npm Dependencies:
 ```bash
 npm install
 ```
-- Gulp task Build: copy config, externals bower, Webpack bundle
+
+##Developpement
+- Gulp task Build: copy app config, externals bower, Webpack bundle
 ```bash 
 npm run dev 
 ```
+- Add app domain to resolve host:
+Add in /etc/hosts :
+```bash
+127.0.0.0.1    bombercat.io
+```
+
 - Test:
 ```bash 
 npm test
