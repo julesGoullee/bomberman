@@ -6,16 +6,6 @@ var app = require("./app");
 var io = require("socket.io");
 var http = require('http');
 
-var fs = require('fs');
-
-var sslOptions = {
-  key: fs.readFileSync( __dirname + "/../config/ssl/server.key"),
-  cert: fs.readFileSync( __dirname + "/../config/ssl/server.crt"),
-  ca: fs.readFileSync( __dirname + "/../config/ssl/ca.crt"),
-  requestCert: true,
-  rejectUnauthorized: false
-};
-
 var config = require("./config/config.js");
 require("./modules/log/log.js");
 
