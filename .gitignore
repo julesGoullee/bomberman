@@ -2,9 +2,9 @@ node_modules/
 bower_components/
 /serve/config/config.js
 /client/src/modules/config/config.js
-/client/dist
-/config/nginx/ssl/nginx.crt
-/config/nginx/ssl/nginx.key
+/client/dist/*
+/config/nginx/ssl/*
+!/config/nginx/ssl/.gitkeep
 log/out.log
 log/err.log
 /npm-debug.log

@@ -19,7 +19,9 @@ node@5 (use nvm [https://github.com/creationix/nvm](https://github.com/creationi
 ```
 - Copy in nginx directory and restart service:
 ```bash
-sudo cp -R config/nginx/. /etc/nginx/ && sudo service nginx restart
+sudo cp -R config/nginx/. /etc/nginx/ &&
+sudo ln -s /etc/nginx/sites-available/** &&
+sudo ln -s /etc/nginx/sites-enable/** && sudo service nginx restart
 ```
 - Ignore changed git: 
 ```bash
