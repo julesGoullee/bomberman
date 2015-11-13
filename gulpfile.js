@@ -39,14 +39,14 @@ var paths = {
 gulp.task("jshint", ["build"], function() {
   return gulp.src([
     "client/src/**/*.js",
-    "modules/**/*.js"
+    "serve/modules/**/*.js"
   ])
     .pipe($.jshint())
     .pipe($.jshint.reporter(require("jshint-stylish")))
     .pipe($.jshint.reporter('fail'));
 });
 
-gulp.task("mocha", ["build", "jshint"], function(cb) {
+gulp.task("mocha", ["build", "jshint"], function() {
   return gulp
     .src("serve/modules/**/test/*.js")
     .pipe($.mocha({
