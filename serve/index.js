@@ -12,9 +12,6 @@ require("./modules/log/log.js");
 var game = require("./modules/game/game.js");
 var socketHandler = require("./modules/socketHandler/socketHandler.js");
 
-app.set( "port", config.port );
-app.set("etag", "strong");
-
 var server = http.createServer( app );
 var _io = io( server );
 
@@ -24,8 +21,7 @@ server.on( "error", onError );
 server.on( "listening", onListening );
 
 function onListening(){
-  var addr = server.address();
-  log("Listening on port " + addr.port);
+  log("Listening on port " + server.address().port );
   game.launch();
   socketHandler.launch( _io );
 }
