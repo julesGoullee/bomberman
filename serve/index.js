@@ -13,11 +13,12 @@ var game = require("./modules/game/game.js");
 var socketHandler = require("./modules/socketHandler/socketHandler.js");
 
 app.set( "port", config.port );
+app.set("etag", "strong");
 
 var server = http.createServer( app );
 var _io = io( server );
 
-server.listen( config.port, "0.0.0.0" );
+server.listen( config.port, config.domaine );
 
 server.on( "error", onError );
 server.on( "listening", onListening );

@@ -1,7 +1,7 @@
 {
   "name": "Bomberman",
   "scripts": {
-    "start": "node serve/index.js",
+    "start": "node serve/index.js --production",
     "test": "gulp test",
     "build": "gulp build",
     "prod": "gulp build --production",
