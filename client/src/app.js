@@ -1,8 +1,7 @@
 "use strict";
 
-define(["analitics/analitics", "game/game", "auth/facebook"],function ( Analitics, Game, AuthFb ) {
+define(["analitics/analitics", "game/game"],function ( Analitics, Game ) {
   new Analitics();
-  new AuthFb();
   new Game("renderCanvas").init();
   
 });

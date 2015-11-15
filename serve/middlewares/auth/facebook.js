@@ -38,7 +38,10 @@ passport.use(new FacebookTokenStrategy({
 module.exports = function(app) {
   app.get('/auth/facebook/token', passport.authenticate('facebook-token'), function(req, res) {
     res.status(201);
-    res.send("Facebook Oauth [OK]");
+    res.json({
+      id: req.user._id,
+      name: req.user.fb.username
+    });
   });
 
   //app.get('/auth/facebook/token', function(req, res) {
@@ -62,7 +65,8 @@ module.exports = function(app) {
   app.use(function (err, req, res, next) {
     if(err){
       res.status(400);
-      res.send("Facebook Oauth [ERROR]");
+      res.send("Facebook Oauth [ERROR]" + err);
     }
   });
+  
 };

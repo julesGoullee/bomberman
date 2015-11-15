@@ -62,7 +62,7 @@ gulp.task("mocha", ["build", "jshint"], function() {
     });
 });
 
-gulp.task("karma", ["build", "jshint"], function(callback){
+gulp.task("karma", ["jshint"], function(callback){
 
   new Server({
     basePath: "client/src/modules",
@@ -162,7 +162,7 @@ gulp.task("webpack", ["copyConfig", "assets"], function(callback) {
       publicPath: "./client/src/modules"
     },
     resolve: {
-      modulesDirectories: ["./client/src/modules"],
+      modulesDirectories: ["./client/src/modules", "./client/bower_components"],
       extensions: [
         "",
         ".js",

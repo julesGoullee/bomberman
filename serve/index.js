@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-//process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-var passport = require("passport");
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
+var passport = require("passport"); 
 var app = require("./app");
 var io = require("socket.io");
-var http = require('http');
+var http = require("http");
 
 var config = require("./config/config.js");
 require("./modules/log/log.js");
@@ -13,13 +13,13 @@ var game = require("./modules/game/game.js");
 var socketHandler = require("./modules/socketHandler/socketHandler.js");
 
 var server = http.createServer( app );
-//var _io = io( server );
 var _io = io( server ).use(function( socket, next ){
 
   require("./middlewares/auth/session").prototype.getMiddleware()( socket.request, {}, function(){
     passport.initialize()(socket.request, {}, function(){
       passport.session()(socket.request, {}, function(){
-        console.log('logg: ',socket.request.isAuthenticated());
+        log("Check cookie: x" + socket.request.isAuthenticated(), "ws-auth");
+
         if(socket.request.isAuthenticated()){
           next();
         }
@@ -36,7 +36,7 @@ server.on( "error", onError );
 server.on( "listening", onListening );
 
 function onListening(){
-  log("Listening on port " + server.address().port );
+  log("Listening on port " + server.address().port ,"srv");
   game.launch();
   socketHandler.launch( _io );
 }

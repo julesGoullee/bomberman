@@ -13,7 +13,7 @@ passport.serializeUser(function( user, done ){
 passport.deserializeUser(function( id, done ){
 
   User.findById(id, function (err, user) {
-    done(err , id);
+    done(err , user);
   });
 });
 
@@ -22,13 +22,15 @@ module.exports = function(app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.get("/auth/token", function(req, res, next){
+  app.get("/auth/token", function(req, res){
     if(req.isAuthenticated()) {
-      res.sendStatus(200);
-    
+      res.json({
+        id: req.user._id,
+        name: req.user.fb.username
+      });
     }else{
       res.sendStatus(401);
     }
-  });
+  }); 
 
 };

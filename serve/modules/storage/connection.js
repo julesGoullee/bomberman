@@ -5,10 +5,10 @@ var config = require("../../config/config.js");
 mongoose.connect( "mongodb://" + config.storage.mongo.ip + "/" + config.storage.mongo.base, function( err ){
 
   if( err ){
-    log("Mongo connection [FAIL]: " + err.message );
+    log("Connection [FAIL]: " + err.message, "mongo" );
   }
   else{
-    log("Mongo connection [OK]");
+    log("Connection [OK]", "mongo");
   }
 });
 

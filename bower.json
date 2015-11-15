@@ -4,6 +4,7 @@
   "dependencies": {
     "bootstrap": "latest",
     "bootstrap-growl": "latest",
-    "jquery": "latest"
+    "jquery": "latest",
+    "js-cookie": "~2.0.4"
   }
 }

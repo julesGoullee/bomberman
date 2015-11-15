@@ -7,14 +7,14 @@ var MongoStore = require("connect-mongo")(session);
 var sessionMiddleware = session({
   secret: "keyboard cat",
   name: "token",
-  proxy: true,
+  proxy: false,
   resave: true,
   store: new MongoStore({
     mongooseConnection: mongoConnector.getConnection(),
     stringify: false
   }),
   saveUninitialized: false,
-  cookie: {secure: false}
+  cookie: {httpOnly: false, secure: false}  
 });
 
 
