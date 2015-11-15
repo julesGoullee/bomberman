@@ -1,7 +1,7 @@
 'use strict';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
+//process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var passport = require("passport");
 var app = require("./app");
 var io = require("socket.io");
 var http = require('http');
@@ -13,8 +13,23 @@ var game = require("./modules/game/game.js");
 var socketHandler = require("./modules/socketHandler/socketHandler.js");
 
 var server = http.createServer( app );
-var _io = io( server );
+//var _io = io( server );
+var _io = io( server ).use(function( socket, next ){
 
+  require("./middlewares/auth/session").prototype.getMiddleware()( socket.request, {}, function(){
+    passport.initialize()(socket.request, {}, function(){
+      passport.session()(socket.request, {}, function(){
+        console.log('logg: ',socket.request.isAuthenticated());
+        if(socket.request.isAuthenticated()){
+          next();
+        }
+        else{
+          socket.disconnect();
+        }
+      });
+    });
+  });//GET session for websocket
+});
 server.listen( config.port, config.domaine );
 
 server.on( "error", onError );
@@ -27,7 +42,7 @@ function onListening(){
 }
 
 function onError( error ){
-
+  
   if( error.syscall !== "listen" ){
     throw error;
   }

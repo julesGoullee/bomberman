@@ -26,6 +26,7 @@
     "describe": false,
     "sinon": false,
     "log": false,
-    "io": false
+    "io": false,
+    "FB": false
   }
 }
