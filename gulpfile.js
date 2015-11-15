@@ -187,14 +187,14 @@ gulp.task("webpack", ["copyConfig", "assets"], function(callback) {
   });
 });
 
-gulp.task("build", ["clean", "copyConfig", "assets", "webpack"]);
+gulp.task("build", ["copyConfig", "assets", "webpack"]);
 
 
 gulp.task("watch", function() {
   gulp.watch([
     "client/src/**/*.js",
     "serve/modules/**/*.js"
-  ], ["test"]);
+  ], ["karma"]);
 
   //gulp.watch([
   //], ["mocha"]);
