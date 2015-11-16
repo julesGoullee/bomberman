@@ -1,6 +1,6 @@
 "use strict";
 define(function() {
-    function loadFbScript( callback ){
+  function loadFbScript( callback ){
     /* jshint ignore:start */
     // Load the SDK asynchronously
     (function (d, s, id) {
@@ -12,7 +12,7 @@ define(function() {
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
     /* jshint ignore:end */
-    
+
     window.fbAsyncInit = function () {
       FB.init({
         appId: '1562153034052094',
@@ -34,7 +34,7 @@ define(function() {
       }
     });
   }
-  
+
   function showLogin( callback ){
     FB.login(function(res) {
       if (res.status === 'connected') {
@@ -45,7 +45,7 @@ define(function() {
       }
     }, {scope: 'user_friends, email'});
   }
-  
+
   return {
     loadFbScript: loadFbScript,
     connect: connect

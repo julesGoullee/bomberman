@@ -57,7 +57,7 @@ function onPlayerConnectionRoom( socket ) {
   var room = getFirstRoomForPlayer( socket );
 
   room.addPlayer( socket );
-  
+
 }
 
 

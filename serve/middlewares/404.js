@@ -2,8 +2,6 @@
 
 module.exports = function(app) {
   app.use(function( req, res ){
-    //if (!res.statusCode) {
-      res.sendStatus(404);
-    //}
+    res.sendStatus(404);
   });
 };

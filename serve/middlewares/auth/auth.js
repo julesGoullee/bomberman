@@ -31,6 +31,6 @@ module.exports = function(app) {
     }else{
       res.sendStatus(401);
     }
-  }); 
+  });
 
 };

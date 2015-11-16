@@ -7,6 +7,7 @@ var merge = require("merge-stream");
 var runSequence = require("run-sequence");
 var production = process.argv.indexOf("--production") > -1;
 console.log(production,"production");
+
 var paths = {
   dist: "client/dist",
   configSrc:{
@@ -44,9 +45,9 @@ gulp.task("jshint", function() {
     "serve/**/*.js",
     "config/**/*.js"
   ])
-  .pipe($.jshint())
-  .pipe($.jshint.reporter(require("jshint-stylish")))
-  .pipe($.jshint.reporter("fail"));
+    .pipe($.jshint())
+    .pipe($.jshint.reporter(require("jshint-stylish")))
+    .pipe($.jshint.reporter("fail"));
 });
 
 gulp.task("mocha", function() {
@@ -58,17 +59,17 @@ gulp.task("mocha", function() {
     "!serve/modules/bomb/test/*.js",
     "!serve/modules/room/test/*.js"
   ])
-  .pipe($.mocha({
-    timeout: 3000,
-    ignoreLeaks: true,
-    reporter: "progress",
-    tdd: "tdd"
-  }));
+    .pipe($.mocha({
+      timeout: 3000,
+      ignoreLeaks: true,
+      reporter: "progress",
+      tdd: "tdd"
+    }));
 });
 
 gulp.task("karma", function(callback){
 
-  new require("karma").Server({
+  new (require("karma")).Server({
     basePath: "client/src/modules",
     frameworks: ["jasmine"],
     files: [
@@ -117,7 +118,7 @@ gulp.task("copyConfig", function() {
     gulp.src(paths.configSrc.back)
       .pipe($.rename("config.js"))
       .pipe(gulp.dest(paths.configBack)),
-  
+
     gulp.src(paths.manifest)
       .pipe($.rename("common.manifest"))
       .pipe(gulp.dest(paths.dist + "/assets"))
@@ -133,13 +134,13 @@ gulp.task("assets", function(){
     gulp.src(paths.externals.css)
       .pipe($.concat("external.css"))
       .pipe(gulp.dest(paths.dist + "/css")),
-  
+
     gulp.src(paths.assets)
       .pipe(gulp.dest(paths.dist + "/assets")),
-  
+
     gulp.src(paths.css)
       .pipe(gulp.dest(paths.dist + "/css")),
-  
+
     gulp.src(paths.index)
       .pipe(gulp.dest(paths.dist))
   );

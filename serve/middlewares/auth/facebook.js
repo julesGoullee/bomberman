@@ -1,8 +1,8 @@
 "use strict";
-var FacebookTokenStrategy = require('passport-facebook-token');
+var FacebookTokenStrategy = require("passport-facebook-token");
 var passport = require("passport");
-var User = require('../../modules/storage/models/user');
-//var jf = require('jsonfile');
+var User = require("../../modules/storage/models/user");
+//var jf = require("jsonfile");
 //var accounts = jf.readFileSync( __dirname + "/config/account.json");
 
 passport.use(new FacebookTokenStrategy({
@@ -36,7 +36,7 @@ passport.use(new FacebookTokenStrategy({
 ));
 
 module.exports = function(app) {
-  app.get('/auth/facebook/token', passport.authenticate('facebook-token'), function(req, res) {
+  app.get("/auth/facebook/token", passport.authenticate("facebook-token"), function(req, res) {
     res.status(201);
     res.json({
       id: req.user._id,
@@ -44,12 +44,12 @@ module.exports = function(app) {
     });
   });
 
-  
+
   app.use(function (err, req, res/*, next*/) {
     if(err){
       res.status(400);
       res.send("Facebook Oauth [ERROR]" + err);
     }
   });
-  
+
 };

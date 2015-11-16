@@ -4,23 +4,23 @@ var utils = require("../utils/utils.js");
 
 function Block ( position ) {
 
-    var self = this;
+  var self = this;
 
-    //PUBLIC METHODS//
+  //PUBLIC METHODS//
 
-    self.id = utils.guid();
+  self.id = utils.guid();
 
-    self.type = "block";
+  self.type = "block";
 
-    self.position = { x: position.x, z: position.z };
+  self.position = { x: position.x, z: position.z };
 
-    //PRIVATE METHODS//
+  //PRIVATE METHODS//
 
-    function init() {
+  function init() {
 
-    }
+  }
 
-    init();
+  init();
 }
 
 module.exports = Block;

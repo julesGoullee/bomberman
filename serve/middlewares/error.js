@@ -1,9 +1,9 @@
 "use strict";
 module.exports = function(app) {
-  if (app.get('env') === 'development') {
+  if (app.get("env") === "development") {
 
     app.use(function (err, req, res/*, next*/) {
-      console.log('development');
+      console.log("development");
 
       res.status(500);
 
@@ -16,8 +16,8 @@ module.exports = function(app) {
   }
 
 //No stack in production
-  if (app.get('env') === 'production') {
-    
+  if (app.get("env") === "production") {
+
     app.use(function (err, req, res/*, next*/) {
       if (!res.statusCode) {
         res.status(500);
@@ -25,7 +25,7 @@ module.exports = function(app) {
 
       res.json({
         code: res.statusCode,
-        data: 'internal server error'
+        data: "internal server error"
       });
     });
   }

@@ -14,7 +14,7 @@ var sessionMiddleware = session({
     stringify: false
   }),
   saveUninitialized: false,
-  cookie: {httpOnly: false, secure: false}  
+  cookie: {httpOnly: false, secure: false}
 });
 
 
