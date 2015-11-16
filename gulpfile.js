@@ -3,11 +3,10 @@
 var gulp = require("gulp");
 var $ = require("gulp-load-plugins")();
 var webpack = require("webpack");
-var Server = require("karma").Server;
 var merge = require("merge-stream");
-var runSequence = require('run-sequence');
+var runSequence = require("run-sequence");
 var production = process.argv.indexOf("--production") > -1;
-var del = require('del');
+console.log(production,"production");
 var paths = {
   dist: "client/dist",
   configSrc:{
@@ -47,7 +46,7 @@ gulp.task("jshint", function() {
   ])
   .pipe($.jshint())
   .pipe($.jshint.reporter(require("jshint-stylish")))
-  .pipe($.jshint.reporter('fail'));
+  .pipe($.jshint.reporter("fail"));
 });
 
 gulp.task("mocha", function() {
@@ -69,7 +68,7 @@ gulp.task("mocha", function() {
 
 gulp.task("karma", function(callback){
 
-  new Server({
+  new require("karma").Server({
     basePath: "client/src/modules",
     frameworks: ["jasmine"],
     files: [
@@ -145,7 +144,6 @@ gulp.task("assets", function(){
       .pipe(gulp.dest(paths.dist))
   );
 });
-
 
 gulp.task("webpack", ["copyConfig"], function(cb) {
   webpack({
