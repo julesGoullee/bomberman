@@ -7,5 +7,5 @@ define(function () {
         timeBetweenTwoBombe: 500,
         pasToSendPosition: 0.6,
         analitics: true
-    }
+    };
 });

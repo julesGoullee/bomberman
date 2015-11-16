@@ -2,7 +2,7 @@
 module.exports = function(app) {
   if (app.get('env') === 'development') {
 
-    app.use(function (err, req, res, next) {
+    app.use(function (err, req, res/*, next*/) {
       console.log('development');
 
       res.status(500);
@@ -15,14 +15,10 @@ module.exports = function(app) {
     });
   }
 
-// production error handler
-
-// no stacktraces leaked to user
+//No stack in production
   if (app.get('env') === 'production') {
-
-    app.set('x-powered-by', false);
-
-    app.use(function (err, req, res, next) {
+    
+    app.use(function (err, req, res/*, next*/) {
       if (!res.statusCode) {
         res.status(500);
       }

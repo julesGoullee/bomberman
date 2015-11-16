@@ -44,25 +44,8 @@ module.exports = function(app) {
     });
   });
 
-  //app.get('/auth/facebook/token', function(req, res) {
-  //  passport.authenticate('facebook-token', function(err, user, info) {
-  //      if(err){
-  //        res.status(400);
-  //        res.send(err);
-  //      }
-  //      else if( user === false){
-  //        res.status(400);
-  //        res.send();
-  //      }
-  //      else{
-  //        res.json({"res" :req.user});
-  //        return true;
-  //      }
-  //
-  //  })(req, res);
-  //});
   
-  app.use(function (err, req, res, next) {
+  app.use(function (err, req, res/*, next*/) {
     if(err){
       res.status(400);
       res.send("Facebook Oauth [ERROR]" + err);

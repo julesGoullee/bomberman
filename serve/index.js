@@ -30,10 +30,7 @@ var _io = io( server ).use(function( socket, next ){
     });
   });//GET session for websocket
 });
-server.listen( config.port, config.domaine );
 
-server.on( "error", onError );
-server.on( "listening", onListening );
 
 function onListening(){
   log("Listening on port " + server.address().port ,"srv");
@@ -47,20 +44,22 @@ function onError( error ){
     throw error;
   }
 
-  var bind = typeof config.port === "string"
-    ? "Pipe " + config.port
-    : "Port " + config.port;
-
   switch( error.code ){
     case "EACCES":
-      console.error( bind + " requires root privileges" );
+      console.error( config.port + " requires root privileges" );
       process.exit(1);
       break;
     case "EADDRINUSE":
-      console.error( bind + " is already in use" );
+      console.error( config.port + " is already in use" );
       process.exit(1);
       break;
     default:
       throw error;
   }
 }
+
+
+server.listen( config.port, config.domaine );
+
+server.on( "error", onError );
+server.on( "listening", onListening );

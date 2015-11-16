@@ -1,4 +1,4 @@
-"use strict";
+"use strict";/* globals io */
 
 define(["js-cookie/src/js.cookie"], function(Cookies) {
   return function Connector(popup) {
