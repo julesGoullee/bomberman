@@ -5,6 +5,7 @@
     "test": "gulp test",
     "prod": "gulp build --production",
     "build": "gulp build",
+    "postinstall": "bower i",
     "crt-generate-local": "npm run _crt-clean-local && sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout config/nginx/ssl/nginx-bombercat.key -out config/nginx/ssl/nginx-bombercat.crt",
     "_crt-clean-local": "sudo rm -rf config/nginx/ssl/nginx-bombercat.key config/nginx/ssl/nginx-bombercat.crt",
     "deploy-nginx-config": "npm run _nginx-clean-config && npm run _nginx-copy-config && npm run _nginx-symbolic-link && npm run _nginx-restart",
@@ -14,8 +15,7 @@
     "deploy-nginx-local-crt": "npm run _nginx-clean-crt && npm run _nginx-copy-crt && npm run _nginx-restart",
     "_nginx-copy-crt": "sudo cp -R config/nginx/ssl/ /etc/nginx",
     "_nginx-clean-crt": "sudo rm -rf /etc/nginx/ssl/nginx-bombercat.crt /etc/nginx/ssl/nginx-bombercat.key",
-    "_nginx-restart": "sudo service nginx restart",
-    "postinstall": "bower i"
+    "_nginx-restart": "sudo service nginx restart"
   },
   "engines": {
     "node": "~5.0.0"

@@ -11,6 +11,11 @@ app.set( "port", config.port );
 app.set("etag", "strong");
 app.set('x-powered-by', false);
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 
 require("./middlewares/compress")(app);
