@@ -10,12 +10,12 @@ module.exports = function(app) {
   app.use(favicon(config.rootPathPublic + "/assets/favicon.ico"));
 
   //Common response BabylonjsManifest
-  app.use( "/*babylon.manifest*", function ( req, res ) {
+  app.get( "/*babylon.manifest*", function ( req, res ) {
     res.sendFile( "/assets/common.manifest", { "root": config.rootPathPublic } );
   });
 
   //routes
-  app.get("/", function(req, res){
+  app.all("/", function(req, res){
     res.sendFile( "/index.html", { "root": config.rootPathPublic });
   });
 

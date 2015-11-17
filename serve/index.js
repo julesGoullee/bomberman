@@ -33,18 +33,18 @@ var _io = io( server ).use(function( socket, next ){
 
 
 function onListening(){
-  log("Listening on port " + server.address().port ,"srv");
+  log("Listening on port " + server.address().port , "srv");
   game.launch();
   socketHandler.launch( _io );
 }
 
-function onError( error ){
+function onError( err ){
   
-  if( error.syscall !== "listen" ){
-    throw error;
+  if( err.syscall !== "listen" ){
+    throw err;
   }
 
-  switch( error.code ){
+  switch( err.code ){
     case "EACCES":
       console.error( config.port + " requires root privileges" );
       process.exit(1);
@@ -54,7 +54,7 @@ function onError( error ){
       process.exit(1);
       break;
     default:
-      throw error;
+      throw err;
   }
 }
 

@@ -45,7 +45,7 @@ module.exports = function(app) {
   });
 
 
-  app.use(function (err, req, res/*, next*/) {
+  app.use(function (err, req, res, next) {
     if(err){
       res.status(400);
       res.send("Facebook Oauth [ERROR]" + err);

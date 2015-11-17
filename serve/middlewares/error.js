@@ -1,9 +1,9 @@
-"use strict";
-module.exports = function(app) {
-  if (app.get("env") === "development") {
+"use strict"; /* jshint unused: false */
 
-    app.use(function (err, req, res/*, next*/) {
-      console.log("development");
+module.exports = function(app) {
+  if (process.env.NODE_ENV === "development") {
+
+    app.use(function (err, req, res, next) {
 
       res.status(500);
 
@@ -15,10 +15,10 @@ module.exports = function(app) {
     });
   }
 
-//No stack in production
-  if (app.get("env") === "production") {
+  //No stack in production
+  if (process.env.NODE_ENV === "production") {
 
-    app.use(function (err, req, res/*, next*/) {
+    app.use(function (err, req, res, next) {
       if (!res.statusCode) {
         res.status(500);
       }
