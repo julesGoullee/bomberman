@@ -67,7 +67,7 @@ gulp.task("mocha", function() {
     }));
 });
 
-gulp.task("karma", function(callback){
+gulp.task("karma", function(cb){
 
   new (require("karma")).Server({
     basePath: "client/src/modules",
@@ -95,7 +95,7 @@ gulp.task("karma", function(callback){
     reporters: ["dots","ubuntu"],
     singleRun: true,
     browsers: ["PhantomJS"]
-  }, callback).start();
+  }, cb).start();
 });
 
 
@@ -184,8 +184,13 @@ gulp.task("build", function(cb){
   runSequence("clean", ["assets", "webpack"], cb);
 });
 
+gulp.task("test", function(cb){
+  return runSequence("jshint", "mocha", "karma", cb);
+});
+
+
 gulp.task("dev", function(cb){
-  runSequence("test", "webpack", cb);
+  runSequence("jshint", "mocha", cb);
 });
 
 gulp.task("watch", ["dev"], function() {
@@ -196,8 +201,5 @@ gulp.task("watch", ["dev"], function() {
 
 });
 
-gulp.task("test", function(cb){
-  return runSequence("jshint", "karma", "mocha", cb);
-});
 
 gulp.task("default", ["watch"]);
