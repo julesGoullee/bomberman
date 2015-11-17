@@ -1,4 +1,4 @@
-"use strict";
+"use strict";/* jshint unused: false */
 var FacebookTokenStrategy = require("passport-facebook-token");
 var passport = require("passport");
 var User = require("../../modules/storage/models/user");

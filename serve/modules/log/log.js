@@ -1,12 +1,10 @@
 "use strict";
 
-var utils = require("../utils/utils.js");
+var manager = require('simple-node-logger').createLogManager();
+var serveLogger = manager.createLogger('Serve');
+var bddLogger = manager.createLogger('Serve');
 
-function log( message , status ){
-  var date = utils.dateToString( new Date() );
-  var statusString = status ? "[" + status.toUpperCase() + "]" : "";
-  console.log( statusString + "[" + date + "] "  + message );
-
-}
-
-global.log = log;
+module.exports = {
+  serve: serveLogger,
+  bdd: bddLogger
+};

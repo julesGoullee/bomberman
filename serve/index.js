@@ -6,11 +6,11 @@ var app = require("./app");
 var io = require("socket.io");
 var http = require("http");
 
-var config = require("./config/config.js");
-require("./modules/log/log.js");
+var config = require("./config/config");
+var serveLog = require("./modules/log/log").serve;
 
-var game = require("./modules/game/game.js");
-var socketHandler = require("./modules/socketHandler/socketHandler.js");
+var game = require("./modules/game/game");
+var socketHandler = require("./modules/socketHandler/socketHandler");
 
 var server = http.createServer( app );
 var _io = io( server ).use(function( socket, next ){
@@ -33,7 +33,7 @@ var _io = io( server ).use(function( socket, next ){
 
 
 function onListening(){
-  log("Listening on port " + server.address().port , "srv");
+  serveLog.info("Listening on port " + server.address().port );
   game.launch();
   socketHandler.launch( _io );
 }

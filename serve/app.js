@@ -4,14 +4,13 @@ var config = require("./config/config");
 
 var express = require("express");
 
-
 var app = express();
 
 app.set( "port", config.port );
 app.set("etag", "strong");
 app.set('x-powered-by', false);
 
-require("./middlewares/logger")(app);
+require("./middlewares/logRequest")(app);
 require("./middlewares/cors")(app);
 require("./middlewares/compress")(app);
 
