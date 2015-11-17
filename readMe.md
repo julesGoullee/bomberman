@@ -44,15 +44,18 @@ Add in /etc/hosts :
 ```bash
 127.0.0.0.1    bombercat.io
 ```
-
-##Deploiement
-```bash 
-npm i --production
-```
-
 - Test:
 ```bash 
 npm test
+```
+
+##Deploiement
+```bash 
+NODE_ENV=production npm i --production
+```
+launch:
+```bash 
+NODE_ENV=production npm start
 ```
 
 ##Demo:

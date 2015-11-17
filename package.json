@@ -1,11 +1,10 @@
 {
   "name": "Bomberman",
   "scripts": {
-    "start": "NODE_ENV=production node serve/index.js --production",
+    "start": "NODE_ENV=production node serve/index.js",
     "test": "gulp test",
-    "prod": "gulp build --production",
     "build": "gulp build",
-    "postinstall": "bower i",
+    "postinstall": "bower i && gulp build",
     "crt-generate-local": "npm run _crt-clean-local && sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout config/nginx/ssl/nginx-bombercat.key -out config/nginx/ssl/nginx-bombercat.crt",
     "_crt-clean-local": "sudo rm -rf config/nginx/ssl/nginx-bombercat.key config/nginx/ssl/nginx-bombercat.crt",
     "deploy-nginx-config": "npm run _nginx-clean-config && npm run _nginx-copy-config && npm run _nginx-symbolic-link && npm run _nginx-restart",
