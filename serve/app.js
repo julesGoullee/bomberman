@@ -15,10 +15,9 @@ require("./middlewares/cors")(app);
 require("./middlewares/compress")(app);
 
 require("./routes/static")(app);
+require("./middlewares/auth.es6").initialize(app);
 
-require("./middlewares/auth/session")(app);
-require("./middlewares/auth/auth")(app);
-require("./middlewares/auth/facebook")(app);
+new (require("./routes/auth.es6"))(app);
 
 require("./middlewares/404")(app);
 

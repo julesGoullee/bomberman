@@ -14,6 +14,7 @@ var paths = {
     front: production ? "config/prod/configClient_prod.js" : "config/dev/configClient_dev.js",
     back: production ? "config/prod/configServer_prod.js": "config/dev/configServer_dev.js"
   },
+  accountSrc: production ? "config/prod/accountProd.json" : "config/dev/accountDev.json",
   manifest: production ? "config/prod/commonProd.babylon.manifest" : "config/dev/commonDev.babylon.manifest",
   configFront: "client/src/modules/config",
   configBack: "serve/config",
@@ -111,17 +112,23 @@ gulp.task("clean", function() {
 
 gulp.task("copyConfig", function() {
   return merge(
+    //FRONT
     gulp.src(paths.configSrc.front)
       .pipe($.rename("config.js"))
       .pipe(gulp.dest(paths.configFront)),
 
+    gulp.src(paths.manifest)
+      .pipe($.rename("common.manifest"))
+      .pipe(gulp.dest(paths.dist + "/assets")),
+
+    //BACK
     gulp.src(paths.configSrc.back)
       .pipe($.rename("config.js"))
       .pipe(gulp.dest(paths.configBack)),
 
-    gulp.src(paths.manifest)
-      .pipe($.rename("common.manifest"))
-      .pipe(gulp.dest(paths.dist + "/assets"))
+    gulp.src(paths.accountSrc)
+      .pipe($.rename("account.json"))
+      .pipe(gulp.dest(paths.configBack))
   );
 });
 

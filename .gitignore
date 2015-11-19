@@ -1,6 +1,6 @@
 node_modules/
 bower_components/
-/serve/config/config.js
+/serve/config/
 /client/src/modules/config/config.js
 /client/dist/*
 /config/nginx/ssl/*
