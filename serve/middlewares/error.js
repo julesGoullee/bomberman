@@ -1,10 +1,12 @@
 "use strict"; /* jshint unused: false */
+var errorLog = require("../modules/log/log").error;
 
 module.exports = function(app) {
   if (process.env.NODE_ENV === "development") {
 
     app.use(function (err, req, res, next) {
 
+      throw err;
       res.status(500);
 
       res.json({
@@ -19,9 +21,10 @@ module.exports = function(app) {
   if (process.env.NODE_ENV === "production") {
 
     app.use(function (err, req, res, next) {
-      if (!res.statusCode) {
-        res.status(500);
-      }
+
+      errorLog.error(err.stack);
+
+      res.status(500);
 
       res.json({
         code: res.statusCode,
