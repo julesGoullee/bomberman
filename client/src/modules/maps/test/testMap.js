@@ -1,5 +1,5 @@
 "use strict";
-define(["config/config", "testConfig/mock", "maps/maps", "player/player", "menuPlayers/menuPlayers", "block/block", "utils/utils", "bomb/bomb"], function( cfg, mock, Maps, Player, MenuPlayers, Block, utils, Bombe) {
+define(["config/config", "testConfig/mock", "maps/maps", "player/player", "menuPlayers/menuPlayers", "block/block.es6", "utils/utils", "bomb/bomb"], function( cfg, mock, Maps, Player, MenuPlayers, Block, utils, Bombe) {
     describe("Maps", function () {
 
         cfg.showBlockColision = true;

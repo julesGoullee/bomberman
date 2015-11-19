@@ -6,7 +6,6 @@ var webpack = require("webpack");
 var merge = require("merge-stream");
 var runSequence = require("run-sequence");
 var production = process.argv.indexOf("--production") > -1;
-console.log(production,"production");
 
 var paths = {
   dist: "client/dist",
@@ -90,6 +89,11 @@ gulp.task("karma", function(cb){
       resolve: {
         modulesDirectories: paths.webpack.rootDir,
         extensions: ["", ".js", ".json"]
+      },
+      module: {
+        loaders: [
+          { test: /src\/.*\.es6\.js$/, loader: 'babel?presets[]=es2015,cacheDirectory' }
+        ]
       }
     },
     webpackMiddleware: { noInfo: true},
@@ -169,6 +173,11 @@ gulp.task("webpack", ["copyConfig"], function(cb) {
       modulesDirectories: paths.webpack.rootDir,
       extensions: ["", ".js", ".json"]
     },
+    module: {
+      loaders: [
+        { test: /src\/.*\.es6\.js$/, loader: 'babel?presets[]=es2015,cacheDirectory' }
+      ]
+    },
     plugins: [
       new webpack.optimize.DedupePlugin()
     ].concat( production ? [
@@ -197,7 +206,7 @@ gulp.task("test", function(cb){
 
 
 gulp.task("dev", function(cb){
-  runSequence("jshint", "mocha", cb);
+  runSequence("jshint", "karma", "webpack", cb);
 });
 
 gulp.task("watch", ["dev"], function() {
