@@ -11,9 +11,10 @@ module.exports = function(app) {
       res.json({
         code: res.statusCode,
         data: err.data,
+        message: err.message,
         stack: err.stack
       });
-      throw err;
+      errorLog.error(err);
 
     });
   }
@@ -23,7 +24,7 @@ module.exports = function(app) {
 
     app.use(function (err, req, res, next) {
 
-      errorLog.error(err.stack);
+      errorLog.error(err);
 
       res.status(500);
 
