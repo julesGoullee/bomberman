@@ -32,7 +32,7 @@ var paths = {
     ]
   },
   webpack:{
-    rootDir: ["./client/src/modules", "./client/bower_components"]
+    rootDir: ["./client/src/modules", "./client/bower_components", "./node_modules"]
   },
   assets: "client/assets/**",
   css: "client/css/app.css"
@@ -161,7 +161,7 @@ gulp.task("webpack", ["copyConfig"], function(cb) {
   webpack({
     entry: {
       index: [
-        "./client/src/app.js"
+        "./client/src/app.es6.js"
       ]
     },
     output: {
