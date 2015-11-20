@@ -4,17 +4,18 @@ var config = require("../../config/config.js");
 var ua = require("universal-analytics");
 
 var mock = {
-    event: function event(){
-        return {
-            send: function () {
-            },
-            event: function(){
-                return mock;
-            }
-        };
-    },
-    send: function () {
-    }
+
+  event: function event(){
+    return {
+      send: function () {
+      },
+      event: function(){
+        return mock;
+      }
+    };
+  },
+  send: function () {
+  }
 };
 
 

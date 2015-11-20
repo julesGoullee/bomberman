@@ -1,12 +1,14 @@
 "use strict";
 
-var utils = require("../utils/utils.js");
+var manager = require('simple-node-logger').createLogManager();
+var serveLogger = manager.createLogger('Serve');
+var bddLogger = manager.createLogger('Serve');
+var authLogger = manager.createLogger('Auth');
+var errorRequestHandlerLogger = manager.createLogger('Request handler');
 
-function log( message , status ){
-    var date = utils.dateToString( new Date() );
-    var statusString = status ? "[" + status.toUpperCase() + "]" : "";
-    console.log( statusString + "[" + date + "] "  + message );
-
-}
-
-global.log = log;
+module.exports = {
+  serve: serveLogger,
+  bdd: bddLogger,
+  auth: authLogger,
+  error: errorRequestHandlerLogger
+};

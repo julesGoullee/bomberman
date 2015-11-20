@@ -56,9 +56,9 @@ define(["popup/popup",
 
     var _popup = new Popup();
 
-    var _connector = new Connector();
+    var _connector = new Connector(_popup);
 
-    var _auth = new Auth( _connector, _popup );
+    var _auth = new Auth( _connector );
 
     var _menuPlayers = new MenuPlayers();
 

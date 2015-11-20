@@ -1,8 +1,10 @@
 "use strict";
 
-define(["config/config"], function (cfg) {
-  return function Analitics() {
+var cfg = require("config/config");
 
+class Analitics {
+
+  constructor(){
     if (cfg.analitics) {
       /* jshint ignore:start */
       (function (i, s, o, g, r, a, m) {
@@ -24,5 +26,7 @@ define(["config/config"], function (cfg) {
       window.ga = function () {
       };
     }
-  };
-});
+  }
+}
+
+module.exports = Analitics;

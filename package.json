@@ -1,10 +1,10 @@
 {
   "name": "Bomberman",
   "scripts": {
-    "start": "node serve/index.js --production",
+    "start": "NODE_ENV=production node serve/index.js",
     "test": "gulp test",
     "build": "gulp build",
-    "prod": "gulp build --production",
+    "postinstall": "bower i && gulp build",
     "crt-generate-local": "npm run _crt-clean-local && sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout config/nginx/ssl/nginx-bombercat.key -out config/nginx/ssl/nginx-bombercat.crt",
     "_crt-clean-local": "sudo rm -rf config/nginx/ssl/nginx-bombercat.key config/nginx/ssl/nginx-bombercat.crt",
     "deploy-nginx-config": "npm run _nginx-clean-config && npm run _nginx-copy-config && npm run _nginx-symbolic-link && npm run _nginx-restart",
@@ -14,8 +14,7 @@
     "deploy-nginx-local-crt": "npm run _nginx-clean-crt && npm run _nginx-copy-crt && npm run _nginx-restart",
     "_nginx-copy-crt": "sudo cp -R config/nginx/ssl/ /etc/nginx",
     "_nginx-clean-crt": "sudo rm -rf /etc/nginx/ssl/nginx-bombercat.crt /etc/nginx/ssl/nginx-bombercat.key",
-    "_nginx-restart": "sudo service nginx restart",
-    "postinstall": "bower i"
+    "_nginx-restart": "sudo service nginx restart"
   },
   "engines": {
     "node": "~5.0.0"
@@ -28,18 +27,31 @@
   "readme": "Bomberman",
   "version": "0.0.1",
   "dependencies": {
+    "babel-core": "^6.2.0",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
     "bower": "^1.6.5",
     "compression": "^1.6.0",
-    "ejs": "^2.3.4",
+    "connect-mongo": "^0.8.2",
+    "cookie-parser": "^1.4.0",
     "express": "^4.13.3",
+    "express-session": "^1.12.1",
+    "global-tunnel": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-load-plugins": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-rimraf": "^0.2.0",
     "gulp-util": "^3.0.7",
+    "kerberos": "0.0.17",
     "merge-stream": "^1.0.0",
+    "mongoose": "^4.2.5",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.2",
+    "passport-facebook-token": "^3.0.5",
+    "run-sequence": "^1.1.4",
     "serve-favicon": "^2.3.0",
+    "simple-node-logger": "^0.92.21",
     "socket.io": "^1.3.7",
     "universal-analytics": "^0.3.9",
     "webpack": "^1.12.4"

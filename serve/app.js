@@ -3,72 +3,24 @@
 var config = require("./config/config");
 
 var express = require("express");
-var path = require("path");
-var favicon = require("serve-favicon");
-var compress = require('compression');
-//var logger = require("morgan");
-//app.use(logger("dev"));
 
 var app = express();
 
-app.use(favicon(__dirname + "/../client/dist/assets/favicon.ico"));
+app.set( "port", config.port );
+app.set("etag", "strong");
+app.set('x-powered-by', false);
 
-//Common response BabylonjsManifest
-app.use( "/*babylon.manifest*", function ( req, res ) {
-  res.sendFile( "/assets/common.manifest", { "root": config.rootPathPublic } );
-});
+require("./middlewares/logRequest")(app);
+require("./middlewares/cors")(app);
+require("./middlewares/compress")(app);
 
-//routes
-app.get("/", function(req, res){
-    res.sendFile(config.rootPathPublic + "/index.html");
-});
-var oneDay = 86400000;
+require("./routes/static")(app);
+require("./middlewares/auth.es6").initialize(app);
 
-app.use(compress({filter: shouldCompress}));
+new (require("./routes/auth.es6"))(app);
 
-var contentTypeToCompress = [
-    'application/octet-stream',
-    'application/javascript',
-    'text/css; charset=UTF-8',
-    'application/json'
-];
+require("./middlewares/404")(app);
 
-function shouldCompress(req, res) {
-
-    if( res.statusCode === 200 ){
-        var contentType = res.getHeader('Content-Type');
-        //console.log(contentType, req.url );
-        return contentTypeToCompress.indexOf(contentType) !== -1;
-    }
-    else {
-        return false;
-    }
-}
-app.use(compress({filter: shouldCompress}));
-
-
-app.use(function (req, res, next) {
-    res.setHeader('Cache-Control', 'no-cache');
-
-    if (req.url.indexOf(".js") !== -1) {
-        //log("match " + req.url);
-
-    }else{
-        //log("NOT match " + req.url);
-    }
-    next();
-});
-
-
-//Static files
-app.use(express.static( config.rootPathPublic , {
-    maxage: oneDay
-}));
-
-// catch 404
-app.use(function( req, res ){
-    res.status( 404 );
-    res.send("File not found!" + req.originalUrl);
-});
+require("./middlewares/error")(app);
 
 module.exports = app;

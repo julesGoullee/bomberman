@@ -35,19 +35,27 @@ npm install
 ```
 
 ##Developpement
-- Gulp task Build: copy app config, externals bower, Webpack bundle
+- Watch task ( jshint, config, mocha, karma, webpack bundle)
 ```bash 
-npm run dev 
+gulp
 ```
 - Add app domain to resolve host:
 Add in /etc/hosts :
 ```bash
 127.0.0.0.1    bombercat.io
 ```
-
 - Test:
 ```bash 
 npm test
+```
+
+##Deploiement
+```bash 
+NODE_ENV=production npm i --production
+```
+launch:
+```bash 
+NODE_ENV=production npm start
 ```
 
 ##Demo:

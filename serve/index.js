@@ -1,55 +1,59 @@
-'use strict';
+"use strict";
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
 var app = require("./app");
 var io = require("socket.io");
-var http = require('http');
+var http = require("http");
 
-var config = require("./config/config.js");
-require("./modules/log/log.js");
+var config = require("./config/config");
+var serveLog = require("./modules/log/log").serve;
 
-var game = require("./modules/game/game.js");
-var socketHandler = require("./modules/socketHandler/socketHandler.js");
-
-app.set( "port", config.port );
-app.set("etag", "strong");
+var game = require("./modules/game/game");
+var socketHandler = require("./modules/socketHandler/socketHandler");
 
 var server = http.createServer( app );
-var _io = io( server );
+
+var _io = io( server ).use(function( socket, next ){
+  //GET session for websocket
+  require("./middlewares/auth").check( socket.request, {}, function(err){
+    if(err){
+      socket.disconnect();
+    }
+    else{
+      next();
+    }
+  });
+});
+
+
+function onListening(){
+  serveLog.info("Listening on port " + server.address().port );
+  game.launch();
+  socketHandler.launch( _io );
+}
+
+function onError( err ){
+
+  if( err.syscall !== "listen" ){
+    throw err;
+  }
+
+  switch( err.code ){
+    case "EACCES":
+      console.error( config.port + " requires root privileges" );
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error( config.port + " is already in use" );
+      process.exit(1);
+      break;
+    default:
+      throw err;
+  }
+}
+
 
 server.listen( config.port, config.domaine );
 
 server.on( "error", onError );
 server.on( "listening", onListening );
-
-function onListening(){
-  var addr = server.address();
-  log("Listening on port " + addr.port);
-  game.launch();
-  socketHandler.launch( _io );
-}
-
-function onError( error ){
-
-  if( error.syscall !== "listen" ){
-    throw error;
-  }
-
-  var bind = typeof config.port === "string"
-    ? "Pipe " + config.port
-    : "Port " + config.port;
-
-  switch( error.code ){
-    case "EACCES":
-      console.error( bind + " requires root privileges" );
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error( bind + " is already in use" );
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}

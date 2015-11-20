@@ -1,8 +1,7 @@
 "use strict";
 
-define(["analitics/analitics", "game/game"],function ( Analitics, Game ) {
-  new Analitics();
+var Analitics = require("analitics/analitics");
+var Game = require("game/game");
 
-  new Game("renderCanvas").init();
-
-});
+new Analitics();
+new Game("renderCanvas").init();

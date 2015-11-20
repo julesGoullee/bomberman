@@ -1,53 +1,51 @@
 "use strict";
-define(function(){
-  return function Auth( connector, popup ){
+define(["auth/facebook"], function(authFb){
+  return function Auth( connectors ){
 
     var self = this;
 
     /*PUBLIC METHODS*/
 
     self.ready = function( callback ) {
-
-      var token = getTokenLS();
-
-      if ( getTokenLS() ){
-
-        connector.setTokenAndReturnUseProfil( token, function( userProfil ) {
-
-          if(  userProfil && !userProfil.err && userProfil.name && userProfil.token ) {
-
-            callback( userProfil );
-          }
-          else{
-
-            console.log( "Token err: " + userProfil.err );
-
-            showForm( function( userProfil ){
-
-              popup.hide();
-              callback( userProfil );
+      authFb.loadFbScript(function(){
+        authFb.connect(function(data) {
+          connectors.signIn(function( userProfil ) {
+            if( !userProfil ) {
+              connectors.signUp(data.accessToken, function (userProfil) {
+                connectors.launch(function(){
+                  callback( userProfil );
+                });
+              });
+            }
+            else{
+                connectors.launch(function(){
+                  callback( userProfil );
+                });
+              }
             });
-          }
         });
-
-      }
-      else{
-
-        showForm( function( userProfil ){
-
-          popup.hide();
-          callback( userProfil );
-        });
-      }
+      });
+        //else{
+        //  authFb.connect(function(data){
+        //    connectors.signUp(data.accessToken, function(userProfil){
+        //      if(userProfil){
+        //        callback( userProfil );
+        //      }
+        //    });
+        //showForm( function( userProfil ){
+        //  popup.hide();
+        //  callback( userProfil );
+        //});
     };
 
     /*PRIVATE METHODS*/
 
-    function getTokenLS(){
+    
+    /*function getTokenLS(){
 
       return sessionStorage.getItem( "token" );
     }
-
+    
     function setTokenLS( token ){
 
       sessionStorage.setItem( "token", token );
@@ -105,6 +103,7 @@ define(function(){
 
         connector.setUser( $("#input-pseudo").val());
       });
-    }
+    }*/
+
   };
 });

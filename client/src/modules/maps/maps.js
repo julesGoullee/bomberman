@@ -1,7 +1,7 @@
 "use strict";
 /*jshint -W083 */
 
-define(["block/block", "powerUp/powerUp", "config/config"], function( Block, PowerUp, cfg ) {
+define(["block/block.es6", "powerUp/powerUp", "config/config"], function( Block, PowerUp, cfg ) {
   return function Maps(assets, blockDim, scene, menuPlayers) {
 
 
