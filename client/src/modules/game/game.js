@@ -1,8 +1,9 @@
 "use strict";
 /*jshint -W083, latedef: nofunc*/
 
-define(["connector/connector",
-  "auth/auth",
+define(["popup/popup.es6",
+  "connector/connector",
+  "auth/auth.es6",
   "menuPlayers/menuPlayers",
   "keyBinder/keyBinder",
   "cursorCapture/cursorCapture",
@@ -15,7 +16,7 @@ define(["connector/connector",
   "player/myPlayer",
   "bomb/bomb",
   "utils/utils"
-], function(Connector, Auth, MenuPlayers, KeyBinder, CursorCapture, CameraSwitcher, EndGame, Preloader, Maps, Timer, Player, MyPlayer, Bombe, utils){
+], function(Popup, Connector, Auth, MenuPlayers, KeyBinder, CursorCapture, CameraSwitcher, EndGame, Preloader, Maps, Timer, Player, MyPlayer, Bombe, utils){
   return function Game ( canvasId ) {
 
     var self = this;
@@ -53,7 +54,9 @@ define(["connector/connector",
     //Instances
     var _scene = initScene();
 
-    var _connector = new Connector();
+    var _popup = new Popup();
+
+    var _connector = new Connector(_popup);
 
     var _auth = new Auth( _connector );
 
@@ -65,7 +68,7 @@ define(["connector/connector",
 
     var _cameraSwitcher = new CameraSwitcher( _scene, _canvas );
 
-    var _endGame = new EndGame();
+    var _endGame = new EndGame( _popup );
 
     var _assets = {};
 

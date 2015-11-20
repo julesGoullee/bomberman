@@ -24,13 +24,10 @@ class Block {
   }
 
   destroy () {
-  let a = () => {
 
-  };
-  a+=1;
-  this.meshs.shape.dispose();
+    this.meshs.shape.dispose();
 
-  this.meshs.colisionBlock.dispose();
+    this.meshs.colisionBlock.dispose();
 
   }
 

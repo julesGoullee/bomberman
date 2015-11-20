@@ -1,7 +1,7 @@
 "use strict";/* globals io */
 
-define(["js-cookie/src/js.cookie"], function(Cookies) {
-  return function Connector(popup) {
+define(["js-cookie/src/js.cookie", "popup/popup.es6"], function(Cookies, Popup) {
+  return function Connector() {
 
     var self = this;
 
@@ -17,38 +17,45 @@ define(["js-cookie/src/js.cookie"], function(Cookies) {
         callback();
       });
       _socket.on('disconnect', function () {
-        popup.setContent("Error", "Disconnect game, you have already connection active");
-        popup.show();
-        console.error("Disconnect game, you have already connection active");
+        var errorMsg = "Disconnect game, probably you loose internet access or you have already connection active";
+        Popup.setContent("Error", errorMsg).show();
+        console.error(errorMsg);
       });
     };
 
     //Authentification
-    
+
     self.signUp = function (token, callback){
-      $.get("/auth/facebook/token?access_token=" + token)
-        .done(function(userProfile) {
-            callback(userProfile);
-        })
-        .fail(function(res) {
-          console.error("[Auth] " + res);
-          callback(false);
-        });
+      var req = $.get("/auth/facebook/token?access_token=" + token);
+      var ttlReq = timeOutReq(req);
+
+      req.done(function(userProfile) {
+        clearTimeout(ttlReq);
+        callback(userProfile);
+      });
+
+      req.fail(function(res) {
+        if(res.statusText === "abort"){
+          Popup.setContent("Error", "API authentification Facebook not available, please try later").show();
+        }
+        console.error("[Auth] " + JSON.stringify(res));
+      });
     };
 
     self.signIn = function (callback){
-      if(Cookies.get("token")){
-        $.get("/auth/token")
-          .done(function(userProfile){
-            callback(userProfile);
-          })
-          .fail(function() {
-            Cookies.remove('token');
-            callback(false);
-          });
-      }else{
+      var req = $.get("/auth/token");
+      var ttlReq = timeOutReq(req);
+      req.done(function(userProfile){
+        clearTimeout(ttlReq);
+        callback(userProfile);
+      });
+
+      req.fail(function(res) {
+        Popup.setContent("Error", "API authentification not available, please try later").show();
+        console.info("[Auth] " + JSON.stringify(res));
+        Cookies.remove('token');
         callback(false);
-      }
+      });
     };
 
     //Game
@@ -133,6 +140,10 @@ define(["js-cookie/src/js.cookie"], function(Cookies) {
     };
 
     //PRIVATE METHODS//
-
+    function timeOutReq(req){
+      return setTimeout(function() {
+        req.abort();
+      }, 2000);
+    }
   };
 });

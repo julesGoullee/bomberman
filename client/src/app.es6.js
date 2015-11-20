@@ -1,11 +1,20 @@
 "use strict";
 
-var Analitics = require("analitics/analitics");
-var Game = require("game/game");
-var checkWebGl = require("checkWebGL/checkWebGl.es6");
-
+const Analitics = require("analitics/analitics.es6");
+//var checkWebGl = require("checkWebGL/checkWebGl.es6");
+const Auth = require("auth/auth.es6");
+const Connector = require("connector/connector");
 new Analitics();
 
-checkWebGl( () => {
-  new Game("renderCanvas").init();
-});
+//checkWebGl( () => {
+  const connector = new Connector();
+
+  const auth = new Auth(connector, () => {
+    auth.ready( () => {
+      var Game = require("game/game");
+
+      new Game("renderCanvas").init();
+    });
+  });
+
+//});

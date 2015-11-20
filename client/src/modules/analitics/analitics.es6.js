@@ -6,6 +6,7 @@ class Analitics {
 
   constructor(){
     if (cfg.analitics) {
+
       /* jshint ignore:start */
       (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
@@ -19,12 +20,12 @@ class Analitics {
         m.parentNode.insertBefore(a, m)
       })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
       /* jshint ignore:end */
+
       ga('create', 'UA-65547748-3', 'auto');
       ga('send', 'pageview', '/home');
     }
     else {
-      window.ga = function () {
-      };
+      window.ga = () => {};
     }
   }
 }

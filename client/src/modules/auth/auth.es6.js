@@ -1,30 +1,41 @@
 "use strict";
-var authFb = require("auth/facebook");
+const AuthFb = require("auth/facebook.es6");
+const Cookies = require("js-cookie/src/js.cookie");
+
 class Auth {
-  constructor (connectors) {
+
+  constructor (connectors, cb) {
     this.connectors = connectors;
+    this.authFb = new AuthFb(cb);
   }
+
   ready (cb) {
-    authFb.loadFbScript(function () {
-      authFb.connect(function (data) {
-        connectors.signIn(function (userProfil) {
+    this.authFb.connect( (data) => {
+      const apiToken = Cookies.get("token");
+      if( apiToken ){
+        this.connectors.signIn( (userProfil) => {
           if (!userProfil) {
-            connectors.signUp(data.accessToken, function (userProfil) {
-              connectors.launch(function () {
-                callback(userProfil);
+            this.connectors.signUp( data.accessToken, (userProfil) => {
+              this.connectors.launch( () => {
+                cb(userProfil);
               });
             });
-          }
-          else {
-            connectors.launch(function () {
-              callback(userProfil);
-            });
+          }else{
+            cb(userProfil);
           }
         });
-      });
+      } else {
+        this.connectors.signUp(data.accessToken, (userProfil) => {
+          this.connectors.launch( () => {
+            cb(userProfil);
+          });
+        });
+      }
     });
   }
 }
+
+module.exports = Auth;
 /*function getTokenLS(){
 
   return sessionStorage.getItem( "token" );
