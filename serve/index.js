@@ -15,12 +15,12 @@ var server = http.createServer( app );
 
 var _io = io( server ).use(function( socket, next ){
   //GET session for websocket
-  require("./middlewares/auth").check( socket.request, {}, function(err){
-    if(err){
-      socket.disconnect();
+  require("./middlewares/auth.es6").check( socket.request, {}, function(isLog){
+    if(isLog){
+      next();
     }
     else{
-      next();
+      socket.disconnect();
     }
   });
 });

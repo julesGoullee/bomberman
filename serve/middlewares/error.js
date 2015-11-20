@@ -6,7 +6,6 @@ module.exports = function(app) {
 
     app.use(function (err, req, res, next) {
 
-      throw err;
       res.status(500);
 
       res.json({
@@ -14,6 +13,8 @@ module.exports = function(app) {
         data: err.data,
         stack: err.stack
       });
+      throw err;
+
     });
   }
 

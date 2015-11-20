@@ -1,6 +1,13 @@
 "use strict";
 const passport = require("passport");
 
+//var globalTunnel = require('global-tunnel');
+//
+//globalTunnel.initialize({
+//  host: 'devproxy.etf1.tf1.fr',
+//  port: 3128
+//});
+
 class Auth {
 
   constructor (app) {

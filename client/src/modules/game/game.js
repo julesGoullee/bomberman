@@ -1,9 +1,9 @@
 "use strict";
 /*jshint -W083, latedef: nofunc*/
 
-define(["popup/popup",
+define(["popup/popup.es6",
   "connector/connector",
-  "auth/auth",
+  "auth/auth.es6",
   "menuPlayers/menuPlayers",
   "keyBinder/keyBinder",
   "cursorCapture/cursorCapture",
