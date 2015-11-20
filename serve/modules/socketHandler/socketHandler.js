@@ -3,6 +3,7 @@
 //var ga = require("../analitics/analitics.js");
 var _callbackConnect = [];
 var _activeConnection = [];
+var authLog = require("../log/log").socket;
 
 var haveActiveConnection = function( id ) {
 
@@ -20,7 +21,7 @@ module.exports = {
   launch : function( io ) {
 
     io.on("connection", function( socket ) {
-      //log("Connection", "ws");
+      authLog.info("Connection " + socket.request.user.fb.username);
       if(!haveActiveConnection(socket.request.user._id)){
         _activeConnection.push(socket.request.user._id);
         socket.on( "ready", function() {
@@ -34,7 +35,7 @@ module.exports = {
       }
       
       socket.on( "disconnect", function() {
-        log("Disconnect for" + socket.request.user._id, "ws");
+        authLog.info("Disconnect for" + socket.request.user._id, "ws");
 
         for (var iConnection = 0; iConnection < _activeConnection.length; iConnection++){ 
           if( _activeConnection[iConnection] === socket.request.user._id){
