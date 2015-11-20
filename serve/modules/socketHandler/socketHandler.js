@@ -20,7 +20,7 @@ module.exports = {
   launch : function( io ) {
 
     io.on("connection", function( socket ) {
-      log("Connection", "ws");
+      //log("Connection", "ws");
       if(!haveActiveConnection(socket.request.user._id)){
         _activeConnection.push(socket.request.user._id);
         socket.on( "ready", function() {

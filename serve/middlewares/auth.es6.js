@@ -78,7 +78,7 @@ module.exports = {
       passport.initialize()(req, res, function(){
         passport.session()(req, res, function(){
           authLog.info("Check cookie: " + req.isAuthenticated());
-          cb(req.isAuthenticated() ? null: false);
+          cb( req.isAuthenticated());
         });
       });
     });
