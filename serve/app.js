@@ -7,6 +7,7 @@ var express = require("express");
 var app = express();
 
 app.set( "port", config.port );
+app.set('host', config.domaine );
 app.set("etag", "strong");
 app.set('x-powered-by', false);
 

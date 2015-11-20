@@ -47,6 +47,9 @@ function onError( err ){
       console.error( config.port + " is already in use" );
       process.exit(1);
       break;
+    case "EADDRNOTAVAIL":
+      console.error( config.domaine + " is not valid" );
+      break;
     default:
       throw err;
   }
