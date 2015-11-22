@@ -1,10 +1,11 @@
-"use strict";
+'use strict';
 
-var utils = require("../../utils/utils.js");
-var Player = require("./../player.js");
-var Bombe = require("./../../bomb/bomb.js");
+const utils = require('../../utils/utils');
+const Player = require('./../player');
+const Bombe = require('./../../bomb/bomb');
+const MockSocket = require('../../socketHandler/test/mockSocket');
 
-describe( "Player", () => {
+describe('Player', () => {
 
   var player;
 
@@ -16,42 +17,32 @@ describe( "Player", () => {
     }
   };
 
-  sinon.stub(mockRoom.playersSpawnPoint,"getFreePosition", () => {
+  sinon.stub(mockRoom.playersSpawnPoint,'getFreePosition', () => {
     return spawnPoint;
   });
 
   beforeEach( () => {
 
-    var mockSocket = {};
-    var mockUser = {
-      _id: {
-        toString: () => {
-          return "idP1";
-        }
-      },
-      fb: {
-        username: "testPlayer"
-      }
-    };
+    let mockSocket1 = new MockSocket('1');
 
-    player = new Player( mockSocket, mockUser, mockRoom );
+    player = new Player( mockSocket1, mockSocket1.request.user, mockRoom );
 
   });
 
-  it( "Peut créer un player a la bonne position", () =>{
+  it('Peut créer un player a la bonne position', () =>{
 
-    var expectPosition = { x: spawnPoint.x, z: spawnPoint.z};
+    let expectPosition = { x: spawnPoint.x, z: spawnPoint.z};
 
     expect( expectPosition).to.deep.equal( player.position );
   });
 
-  it( "Peut recuperer la position arrondie en dessus", () => {
+  it('Peut recuperer la position arrondie en dessus', () => {
 
     player.position.x = 26.456345;
 
     player.position.z = -10.557235;
 
-    var expectedPosition = {
+    let expectedPosition = {
       x: 24,
       z: -8
     };
@@ -59,13 +50,13 @@ describe( "Player", () => {
     expect( player.roundPosition() ).to.deep.equal( expectedPosition );
   });
 
-  it( "Peut recuperer la position arrondie au dessus", () => {
+  it('Peut recuperer la position arrondie au dessus', () => {
 
     player.position.x = 28.456345;
 
     player.position.z = -13.557235;
 
-    var expectedPosition = {
+    let expectedPosition = {
       x: 32,
       z: -16
     };
@@ -73,16 +64,16 @@ describe( "Player", () => {
     expect( player.roundPosition() ).to.deep.equal( expectedPosition );
   });
 
-  describe( "Bombe", () => {
+  describe( 'Bombe', () => {
 
-    var bomb;
+    let bomb;
 
     beforeEach( () => {
 
       bomb = new Bombe( utils.guid(), player, player.roundPosition() );
     });
 
-    it( "Peut ajouter une bombe", () => {
+    it('Peut ajouter une bombe', () => {
 
       player.addBomb( bomb );
 
@@ -92,7 +83,7 @@ describe( "Player", () => {
 
     });
 
-    it( "Peut poser une bombe a la position du player", () => {
+    it('Peut poser une bombe a la position du player', () => {
 
       player.addBomb( bomb );
 
@@ -100,7 +91,7 @@ describe( "Player", () => {
       expect( player.listBombs[0].position.z ).to.equal( player.position.z);
     });
 
-    it( "Peut poser une bombe a la position arrondie au dessus du player", () => {
+    it('Peut poser une bombe a la position arrondie au dessus du player', () => {
 
       player.position.x = 28.456345;
 
@@ -114,7 +105,7 @@ describe( "Player", () => {
       expect( player.listBombs[0].position.z).to.equal( -16 );
     });
 
-    it( "Peut poser une bombe a la position arrondie en dessous du player", () => {
+    it('Peut poser une bombe a la position arrondie en dessous du player', () => {
 
       player.position.x = 26.456345;
 
@@ -128,9 +119,9 @@ describe( "Player", () => {
       expect( player.listBombs[0].position.z ).to.equal( -8 );
     });
 
-    it( "Peut dire quand le nombre de bombe max est atteind", () => {
+    it('Peut dire quand le nombre de bombe max est atteind', () => {
 
-      var nbBombeMax = player.powerUp.bombs;
+      let nbBombeMax = player.powerUp.bombs;
 
       for ( var i = 0; i < nbBombeMax; i++ ) {
         player.addBomb( bomb );
@@ -142,7 +133,7 @@ describe( "Player", () => {
 
     });
 
-    it( "Peut détruire une bombe par son id ", () => {
+    it('Peut détruire une bombe par son id ', () => {
 
       player.addBomb( bomb );
 
@@ -151,14 +142,14 @@ describe( "Player", () => {
       expect( player.listBombs.length ).to.equal( 0 );
     });
 
-    it( "Peut detruire toutes les bombes", () => {
+    it('Peut detruire toutes les bombes', () => {
 
       player.addBomb( bomb );
 
-      var bomb2 = new Bombe( utils.guid(), player, player.roundPosition() );
+      let bomb2 = new Bombe( utils.guid(), player, player.roundPosition() );
 
       player.addBomb( bomb2 );
-      var bomb3 = new Bombe( utils.guid(), player, player.roundPosition() );
+      let bomb3 = new Bombe( utils.guid(), player, player.roundPosition() );
 
       player.addBomb( bomb3 );
       player.delBombs();
@@ -169,7 +160,7 @@ describe( "Player", () => {
 
   });
 
-  it( "Peut tuer un player", () =>{
+  it('Peut tuer un player', () => {
 
     player.destroy();
 

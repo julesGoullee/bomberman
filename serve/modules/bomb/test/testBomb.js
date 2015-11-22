@@ -1,8 +1,9 @@
 "use strict";
 
-var utils = require("../../utils/utils.js");
-var Player = require("../../player/player.js");
-var Bombe = require("./../bomb.js");
+var utils = require("../../utils/utils");
+var Player = require("../../player/player");
+var Bombe = require("./../bomb");
+const MockSocket = require('../../socketHandler/test/mockSocket');
 
 describe( "Bombe" ,function() {
 
@@ -21,21 +22,11 @@ describe( "Bombe" ,function() {
     });
 
     beforeEach( function() {
-        var mockSocket = {};
-        var mockUser = {
-            _id: {
-                toString: () => {
-                    return "idP1";
-                }
-            },
-            fb: {
-                username: "testPlayer"
-            }
-        };
-
+        var mockSocket = new MockSocket('1');
+        
         clock = sinon.useFakeTimers();
 
-        player = new Player( mockSocket, mockUser, mockRoom );
+        player = new Player( mockSocket, mockSocket.request.user, mockRoom );
 
         bombe = new Bombe( utils.guid(), player, player.position );
     });

@@ -1,9 +1,10 @@
 "use strict";
-var config = require("../../../config/config.js");
+var config = require("../../../config/config");
 
-var Maps = require("./../maps.js");
-var Player = require("../../player/player.js");
-var Block = require("./../../block/block.js");
+var Maps = require("./../maps");
+var Player = require("../../player/player");
+var Block = require("./../../block/block");
+const MockSocket = require('../../socketHandler/test/mockSocket');
 
 describe( "Maps", function() {
 
@@ -25,23 +26,13 @@ describe( "Maps", function() {
 
   beforeEach(function(){
 
-    var mockSocket = {};
-    var mockUser = {
-      _id: {
-        toString: () => {
-          return "idP1";
-        }
-      },
-      fb: {
-        username: "testPlayer"
-      }
-    };
+    var mockSocket = new MockSocket('1');
 
     maps = new Maps();
 
     maps.create();
 
-    player = new Player( mockSocket, mockUser, mockRoom );
+    player = new Player( mockSocket, mockSocket.request.user, mockRoom );
   });
 
   describe( "Temps blocks methods", function() {
@@ -133,19 +124,9 @@ describe( "Maps", function() {
 
     it( "Peut récuperer les players alive", function () {
 
-      var mockSocket2 = {};
-      var mockUser2 = {
-        _id: {
-          toString: () => {
-            return "idP2";
-          }
-        },
-        fb: {
-          username: "testPlayer"
-        }
-      };
+      let mockSocket2 = new MockSocket('2');
       
-      var player2 =  new Player( mockSocket2, mockUser2, mockRoom);
+      var player2 =  new Player( mockSocket2, mockSocket2.request.user, mockRoom);
 
       var tab1 = maps.getPlayersAlive();
 
@@ -190,19 +171,9 @@ describe( "Maps", function() {
 
     it( "Peut supprimer tous les players", function () {
 
-      var mockSocket2 = {};
-      var mockUser2 = {
-        _id: {
-          toString: () => {
-            return "idP2";
-          }
-        },
-        fb: {
-          username: "testPlayer"
-        }
-      };
+      var mockSocket2 = new MockSocket('2');
       
-      var player2 =  new Player( mockSocket2, mockUser2, mockRoom);
+      var player2 =  new Player( mockSocket2, mockSocket2.request.user, mockRoom);
 
       maps.addObject( player2 );
 
@@ -245,29 +216,19 @@ describe( "Maps", function() {
       it( "Peut récupérer les bombes de deux players", function () {
 
         var spawnPoint2 = {x:0, z: 0};
-        var mockSocket2 = {};
         var mockRoom2 = {
           playersSpawnPoint: {
             getFreePosition: function(){}
           }
         };
-        
-        var mockUser2 = {
-          _id: {
-            toString: () => {
-              return "idP2";
-            }
-          },
-          fb: {
-            username: "testPlayer"
-          }
-        };
+
+        var mockSocket2 = new MockSocket('2');
 
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
+        var player2 =  new Player( mockSocket2, mockSocket2.request.user, mockRoom2);
 
         maps.addObject( player );
 
@@ -283,27 +244,18 @@ describe( "Maps", function() {
 
       it( "Peut récupérer deux bombes de deux players", function () {
         var spawnPoint2 = {x:0, z: 0};
-        var mockSocket2 = {};
         var mockRoom2 = {
           playersSpawnPoint: {
             getFreePosition: function(){}
           }
         };
-        var mockUser2 = {
-          _id: {
-            toString: () => {
-              return "idP2";
-            }
-          },
-          fb: {
-            username: "testPlayer"
-          }
-        };
+        var mockSocket2 = new MockSocket('2');
+        
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
+        var player2 =  new Player( mockSocket2, mockSocket2.request.user, mockRoom2);
 
         maps.addObject( player );
 
@@ -599,27 +551,18 @@ describe( "Maps", function() {
       it( "Peut annulé l'explosion de plusieur joueurs", function () {
 
         var spawnPoint2 = {x:0, z: 0};
-        var mockSocket2 = {};
         var mockRoom2 = {
           playersSpawnPoint: {
             getFreePosition: function(){}
           }
         };
-        var mockUser2 = {
-          _id: {
-            toString: () => {
-              return "idP2";
-            }
-          },
-          fb: {
-            username: "testPlayer"
-          }
-        };
+        var mockSocket2 = new MockSocket('2');
+        
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
+        var player2 =  new Player( mockSocket2, mockSocket2.request.user, mockRoom2);
 
 
         maps.addObject( player2 );
@@ -661,27 +604,18 @@ describe( "Maps", function() {
         player.position.z = 64;
 
         var spawnPoint2 = {x:40, z:64};
-        var mockSocket2 = {};
         var mockRoom2 = {
           playersSpawnPoint: {
             getFreePosition: function(){}
           }
         };
-        var mockUser2 = {
-          _id: {
-            toString: () => {
-              return "idP2";
-            }
-          },
-          fb: {
-            username: "testPlayer"
-          }
-        };
+        var mockSocket2 = new MockSocket('2');
+        
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
+        var player2 =  new Player( mockSocket2, mockSocket2.request.user, mockRoom2);
 
         maps.addObject( player2 );
 

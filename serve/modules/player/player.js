@@ -32,6 +32,8 @@ function Player( socket, user, room ) {
   };
 
   self.name = user.fb.username;
+  
+  self.picture = user.fb.photo.url;
 
   self.type = "player";
 
