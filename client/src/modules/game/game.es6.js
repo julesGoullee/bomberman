@@ -45,8 +45,7 @@ function initScene(engine) {
 
   function enableAutoResize() {
     window.addEventListener("resize",() => {
-
-      return typeof engine === "function" && engine.resize();
+      return engine.resize();
     }, false);
   }
 
@@ -268,7 +267,7 @@ class Game {
 
         if (player.lastAnimRun) {
           delete player.lastAnimRun;
-          return typeof animable === "function" && animable.stop();
+          return typeof animable === "object" && animable.stop();
         }
 
         if (!animable) {
@@ -400,7 +399,7 @@ class Game {
       this._endGame.showEndPopup(this._map);
     });
 
-    this._endGame.onReplay(this._replay);
+    this._endGame.onReplay( () => { this._replay(); });
 
   }
 
