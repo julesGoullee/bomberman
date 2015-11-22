@@ -70,6 +70,7 @@
     "karma-phantomjs-launcher": "^0.2.1",
     "karma-ubuntu-reporter": "^0.0.3",
     "karma-webpack": "^1.7.0",
+    "mock-require": "^1.2.0",
     "phantomjs": "^1.9.18",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"

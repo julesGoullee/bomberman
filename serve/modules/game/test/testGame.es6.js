@@ -4,8 +4,10 @@ const mock = require('../../test/mock.js');
 const utils = require('../../utils/utils.js');
 const config = require('../../../config/config.js');
 
+const MockSocketHandler = require('../../socketHandler/test/mockSocketHandler');
+const Game = require('../game.es6');
 
-describe('Game', function() {
+describe('Game', () => {
   var _clock;
   var _game;
   var socket1 ;
@@ -16,6 +18,7 @@ describe('Game', function() {
   var callbackDisconnectP2;
 
   beforeEach( () => {
+    new MockSocketHandler();
     _clock = sinon.useFakeTimers();
     socket1 = utils.clone( mock ).socket;
     socket1.request = {
@@ -60,15 +63,13 @@ describe('Game', function() {
       }
     });
 
-    _game = require( '../game.js' );
-    _game.mockSocketHandler( mock.socketHandler );
+    _game = new Game({});
 
-    _game.launch();
   });
 
   it( 'Peut creer une room quand premier player connect', () => {
 
-    mock.socketHandlerOnConnectCallbacks[0]( socket1 );
+    MockSocketHandler.onConnectCallbacks[0]( socket1 );
 
     expect( _game.getRoomList().length ).to.equal( 1 );
   });
@@ -91,7 +92,7 @@ describe('Game', function() {
         }
       };
       
-      mock.socketHandlerOnConnectCallbacks[0]( socket );
+      MockSocketHandler.onConnectCallbacks[0]( socket );
     }
 
     expect( _game.getRoomList().length ).to.equal( 1 );
@@ -116,7 +117,7 @@ describe('Game', function() {
         }
       };
 
-      mock.socketHandlerOnConnectCallbacks[0]( socket );
+      MockSocketHandler.onConnectCallbacks[0]( socket );
     }
 
     expect( _game.getRoomList().length ).to.equal( 2 );
@@ -138,7 +139,7 @@ describe('Game', function() {
         }
       }
     };
-    mock.socketHandlerOnConnectCallbacks[0]( socketDoublon );
+    MockSocketHandler.onConnectCallbacks[0]( socketDoublon );
     assert( _game.getRoomList()[0].alreadyJoined('idP1') );
 
     expect( _game.getRoomList().length ).to.equal( 1 );
@@ -148,9 +149,9 @@ describe('Game', function() {
   it( 'Ne peux ajouter un player dans une partie commencé', () =>{
     var clock = sinon.useFakeTimers();
     
-    mock.socketHandlerOnConnectCallbacks[0]( socket1 );
+    MockSocketHandler.onConnectCallbacks[0]( socket1 );
    
-    mock.socketHandlerOnConnectCallbacks[0]( socket2 );
+    MockSocketHandler.onConnectCallbacks[0]( socket2 );
 
     clock.tick( config.timerToStartParty );
     expect( _game.getRoomList().length ).to.equal( 1 );
@@ -168,7 +169,7 @@ describe('Game', function() {
         }
       }
     };
-    mock.socketHandlerOnConnectCallbacks[0]( socketAdd );
+    MockSocketHandler.onConnectCallbacks[0]( socketAdd );
 
     clock.tick( 1 );
     expect( _game.getRoomList().length ).to.equal( 2 );
@@ -179,7 +180,7 @@ describe('Game', function() {
 
     var clock = sinon.useFakeTimers();
     
-    mock.socketHandlerOnConnectCallbacks[0]( socket1 );
+    MockSocketHandler.onConnectCallbacks[0]( socket1 );
     clock.tick( config.timerToStartParty/2 );
 
     expect( _game.getRoomList().length ).to.equal( 1 );
