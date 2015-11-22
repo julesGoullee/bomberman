@@ -51,18 +51,18 @@ class AuthFb {
       if (res.status === 'connected') {
         cb(res.authResponse);
       } else {
-        this.showLogin(cb);
+        this._showLogin(cb);
       }
     });
   }
 
-  showLogin (cb) {
+  _showLogin (cb) {
     FB.login( (res) => {
       if (res.status === 'connected') {
         cb(res.authResponse);
       }
       else{
-        this.showLogin(cb);
+        this._showLogin(cb);
       }
     }, {scope: 'user_friends, email'});
   }

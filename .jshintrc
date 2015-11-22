@@ -24,6 +24,8 @@
     "afterEach": false,
     "beforeEach": false,
     "describe": false,
+    "fdescribe": false,
+    "spyOn": false,
     "sinon": false,
     "FB": false
   }
