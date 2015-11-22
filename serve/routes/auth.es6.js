@@ -1,5 +1,5 @@
-"use strict";
-const passport = require("passport");
+'use strict';
+const passport = require('passport');
 
 //var globalTunnel = require('global-tunnel');
 //
@@ -17,13 +17,13 @@ class Auth {
   }
 
   signIn() {
-    this.app.get("/auth/token", (req, res) => {
-      if(req.isAuthenticated()) {
+    this.app.get('/auth/token', (req, res) => {
+      if (req.isAuthenticated()) {
         res.json({
           id: req.user._id,
           name: req.user.fb.username
         });
-      }else{
+      }else {
         res.sendStatus(401);
       }
     });
@@ -31,7 +31,7 @@ class Auth {
 
   signUp() {
     
-    this.app.get("/auth/facebook/token", passport.authenticate("facebook-token"), (req, res) => {
+    this.app.get('/auth/facebook/token', passport.authenticate('facebook-token'), (req, res) => {
       res.status(201);
       res.json({
         id: req.user._id,
