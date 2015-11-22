@@ -1,22 +1,22 @@
-"use strict";
-var Block = require("block/block.es6");
-var utils = require("utils/utils");
-var mock = require("testConfig/mock");
+'use strict';
+var Block = require('block/block.es6');
+var utils = require('utils/utils');
+var GameMock = require('testConfig/gameMock.es6');
 
-describe( "Block" , function() {
+describe( 'Block' , function() {
 
   var block;
 
   beforeEach( function() {
 
-    block = new Block( utils.guid(), { x: 1, z: 0}, mock.Game.assets );
+    block = new Block( utils.guid(), { x: 1, z: 0}, GameMock.assets );
   });
 
-  it( "Peut créer un block temp a la bonne position", function() {
+  it( 'Peut créer un block temp a la bonne position', function() {
     expect( block.position ).toEqual( { x: 1, y: 0, z:0 } );
   });
 
-  it( "Peut créer un block ayant un shape et un block temp", function() {
+  it( 'Peut créer un block ayant un shape et un block temp', function() {
 
     expect(block.meshs.shape).not.toBeUndefined();
 
