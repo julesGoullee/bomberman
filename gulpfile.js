@@ -205,17 +205,29 @@ gulp.task("test", function(cb){
 });
 
 
-gulp.task("dev", function(cb){
+gulp.task("dev-front", function(cb){
   runSequence("jshint", "karma", "webpack", cb);
 });
 
-gulp.task("watch", ["dev"], function() {
+gulp.task("dev-front-w", ["dev-front"], function() {
   gulp.watch([
     "client/src/**/*.js",
     "serve/modules/**/*.js"
-  ], ["dev"]);
+  ], ["dev-front"]);
+
+});
+
+gulp.task("dev-back", function(cb){
+  runSequence("jshint", "mocha", cb);
+});
+
+gulp.task("dev-back-w", ["dev-back"], function() {
+  gulp.watch([
+    "client/src/**/*.js",
+    "serve/modules/**/*.js"
+  ], ["dev-back"]);
 
 });
 
 
-gulp.task("default", ["watch"]);
+gulp.task("default", ["test"]);
