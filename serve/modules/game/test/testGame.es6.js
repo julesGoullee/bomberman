@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-var mock = require("../../test/mock.js");
-var utils = require("../../utils/utils.js");
-var config = require("../../../config/config.js");
+const mock = require('../../test/mock.js');
+const utils = require('../../utils/utils.js');
+const config = require('../../../config/config.js');
 
 
-describe("Game", function() {
-
+describe('Game', function() {
+  var _clock;
   var _game;
   var socket1 ;
   var socket2 ;
@@ -15,25 +15,26 @@ describe("Game", function() {
   var callbackDisconnectP1;
   var callbackDisconnectP2;
 
-  beforeEach( function() {
+  beforeEach( () => {
+    _clock = sinon.useFakeTimers();
     socket1 = utils.clone( mock ).socket;
     socket1.request = {
       user : {
         _id: {
           toString: () => {
-            return "idP1";
+            return 'idP1';
           }
         },
         fb: {
-          username: "testPlayer1"
+          username: 'testPlayer1'
         }
       }
     };
-    stubOnP1 = sinon.stub(socket1, "on", function( event, callback ){
-      if( event === "disconnect" ){
-
+    stubOnP1 = sinon.stub(socket1, 'on', (event, callback) => {
+      if( event === 'disconnect' ){
+    
         callbackDisconnectP1 = callback;
-
+    
       }
     });
     
@@ -42,37 +43,37 @@ describe("Game", function() {
       user : {
         _id: {
           toString: () => {
-            return "idP2";
+            return 'idP2';
           }
         },
         fb: {
-          username: "testPlayer2"
+          username: 'testPlayer2'
         }
       }
     };
-    stubOnP2 = sinon.stub( socket2, "on", function( event, callback ) {
-
-      if( event === "disconnect"){
-
+    stubOnP2 = sinon.stub( socket2, 'on', (event, callback) => {
+    
+      if( event === 'disconnect'){
+    
         callbackDisconnectP2 = callback;
-
+    
       }
     });
 
-    _game = require( "../game.js" );
+    _game = require( '../game.js' );
     _game.mockSocketHandler( mock.socketHandler );
 
     _game.launch();
   });
 
-  it( "Peut creer une room quand premier player connect", function() {
+  it( 'Peut creer une room quand premier player connect', () => {
 
     mock.socketHandlerOnConnectCallbacks[0]( socket1 );
 
     expect( _game.getRoomList().length ).to.equal( 1 );
   });
 
-  it( "Peut creer une seul room si max player peer party connecter", function() {
+  it( 'Peut creer une seul room si max player peer party connecter', () => {
 
     for ( var i = 0 ; i < config.maxPlayerPeerParty; i ++ ) {
       var socket = utils.clone( mock ).socket;
@@ -81,11 +82,11 @@ describe("Game", function() {
         user : {
           _id: {
             toString: () => {
-              return "idP" + i;
+              return 'idP' + i;
             }
           },
           fb: {
-            username: "testPlayer" + i
+            username: 'testPlayer' + i
           }
         }
       };
@@ -97,7 +98,7 @@ describe("Game", function() {
 
   });
 
-  it( "Peut creer deux rooms si PLUS max player peer room connecter", function() {
+  it( 'Peut creer deux rooms si PLUS max player peer room connecter', () => {
     
     for ( var i = 0 ; i < config.maxPlayerPeerParty + 1; i ++ ) {
       var socket = utils.clone( mock ).socket;
@@ -106,11 +107,11 @@ describe("Game", function() {
         user : {
           _id: {
             toString: () => {
-              return "idP_" + i;
+              return 'idP_' + i;
             }
           },
           fb: {
-            username: "testPlayer_" + i
+            username: 'testPlayer_' + i
           }
         }
       };
@@ -122,29 +123,29 @@ describe("Game", function() {
 
   });
 
-  it( "Ne Peux ajouter le meme player dans la meme partis", function() {
+  it( 'Ne Peux ajouter le meme player dans la meme partis', () => {
     var socketDoublon = utils.clone( mock ).socket;
 
     socketDoublon.request = {
       user : {
         _id: {
           toString: () => {
-            return "idP1";
+            return 'idP1';
           }
         },
         fb: {
-          username: "testPlayer1"
+          username: 'testPlayer1'
         }
       }
     };
     mock.socketHandlerOnConnectCallbacks[0]( socketDoublon );
-    assert( _game.getRoomList()[0].alreadyJoined("idP1") );
+    assert( _game.getRoomList()[0].alreadyJoined('idP1') );
 
     expect( _game.getRoomList().length ).to.equal( 1 );
 
   });
 
-  it( "Ne peux ajouter un player dans une partie commencé", function(){
+  it( 'Ne peux ajouter un player dans une partie commencé', () =>{
     var clock = sinon.useFakeTimers();
     
     mock.socketHandlerOnConnectCallbacks[0]( socket1 );
@@ -159,11 +160,11 @@ describe("Game", function() {
       user : {
         _id: {
           toString: () => {
-            return "idP3";
+            return 'idP3';
           }
         },
         fb: {
-          username: "testPlayer3"
+          username: 'testPlayer3'
         }
       }
     };
@@ -174,7 +175,7 @@ describe("Game", function() {
     clock.restore();
   });
 
-  it( "Peux supprimer une room si onDestroy callback", function(){
+  it( 'Peux supprimer une room si onDestroy callback', () => {
 
     var clock = sinon.useFakeTimers();
     
@@ -190,5 +191,9 @@ describe("Game", function() {
     expect( _game.getRoomList().length ).to.equal( 0 );
 
     clock.restore();
+  });
+  
+  afterEach( ()=> {
+    _clock.restore();
   });
 });
