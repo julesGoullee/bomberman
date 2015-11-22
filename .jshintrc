@@ -25,7 +25,6 @@
     "beforeEach": false,
     "describe": false,
     "sinon": false,
-    "log": false,
     "FB": false
   }
 }
