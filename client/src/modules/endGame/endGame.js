@@ -32,7 +32,7 @@ module.exports =  function EndGame() {
 
       tablePlayers += "<tr>" +
         "<td>" + kills + "</td>" +
-        "<td>" + player.name + "</td>" +
+        "<td><img src='" + player.picture + "' alt='userPicture' class='img-circle fb-picture'>" + player.name + "</td>" +
         "<td>" + statusString + "</td>" +
         "<td>" + nbBombe + "</td>" +
         "<td>" + nbBlocksDestroy + "</td>" +

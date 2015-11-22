@@ -17,7 +17,7 @@ define(function() {
       var playerHTML = "<li class='list-group-item list-inline list-player-item' id='menu-player-" + player.id + "'>" +
         "<ul class='list-group'>" +
         "<li class='list-group-item'>" + player.name + "</li>" +
-        "<li class='list-group-item'><img src='" + player.picturex + "' alt='userPicture' class='img-circle'></li>" +
+        "<li class='list-group-item'><img src='" + player.picture + "' alt='userPicture' class='img-circle fb-picture'></li>" +
         "<li class='list-group-item player-status'>" + status + "</li>" +
         "<li class='list-group-item player-score'> Score : " + player.kills + "</li>" +
         "</ul>" +
