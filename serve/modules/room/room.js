@@ -149,7 +149,8 @@ function Room() {
       alive: player.alive,
       position: player.position,
       powerUp: player.powerUp,
-      name: player.name
+      name: player.name,
+      picture: player.picture
     });
 
   }
@@ -188,7 +189,8 @@ function Room() {
         alive: player.alive,
         position: player.position,
         powerUp: player.powerUp,
-        name: player.name
+        name: player.name,
+        picture: player.picture
       };
 
       if( player.id === newPlayer.id ){

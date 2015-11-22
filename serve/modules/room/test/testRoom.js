@@ -130,12 +130,18 @@ describe( 'Room', () => {
     expect( _room.players[0].position.z ).to.equal( _room.playersSpawnPoint[0].z );
   });
 
-  it('Peut notifier la map au player', () => {
+  it('Peut notifier la map', () => {
     _room.addPlayer( _socket1 );
     expect(spyEmitP1.args[0][0]).to.equal('map');
     let jsonMap = spyEmitP1.args[0][1];
     expect(jsonMap.players.length).to.equal(1);
     expect(jsonMap.players[0].isMine).to.equal(true);
+    expect(jsonMap.players[0].id).to.equal('1');
+    expect(jsonMap.players[0].kills).to.equal(0);
+    expect(jsonMap.players[0].alive).to.equal(true);
+    expect(jsonMap.players[0].powerUp).to.deep.equal({ speed: 0.45, shoot: false, bombs: 2 });
+    expect(jsonMap.players[0].name).to.equal(_socket1.request.user.fb.username);
+    expect(jsonMap.players[0].picture).to.equal(_socket1.request.user.fb.photo.url);
     expect(jsonMap.blockTemp.length).to.equal(135);
 
   });
@@ -195,20 +201,44 @@ describe( 'Room', () => {
   
     });
   
-    it('Peut ajouter deux player a la bonne position et notifier la presence de l\'un a l\'autre', () => {
+    it('Peut ajouter deux player a la bonne position et notifier le profil de l\'un a l\'autre', () => {
   
       expect(spyEmitP2.args[0][0]).to.equal('map');
       let jsonMap = spyEmitP2.args[0][1];
       expect(jsonMap.players.length).to.equal(2);
-  
-      expect(jsonMap.players[0].isMine).to.equal(undefined);
+      
+      //j2 reçoit la carte contenant les anciens players
+        //P1
+      expect(jsonMap.players[0].id).to.equal('1');
       expect(jsonMap.players[0].name).to.equal('testPlayer_1');
+      expect(jsonMap.players[0].kills).to.equal(0);
+      expect(jsonMap.players[0].alive).to.equal(true);
+      expect(jsonMap.players[0].powerUp).to.deep.equal({ speed: 0.45, shoot: false, bombs: 2 });
+      expect(jsonMap.players[0].name).to.equal(_socket1.request.user.fb.username);
+      expect(jsonMap.players[0].picture).to.equal(_socket1.request.user.fb.photo.url);
+        
+        //ME (P2)
       expect(jsonMap.players[1].isMine).to.equal(true);
+      expect(jsonMap.players[1].id).to.equal('2');
+      expect(jsonMap.players[1].name).to.equal('testPlayer_2');
+      expect(jsonMap.players[1].kills).to.equal(0);
+      expect(jsonMap.players[1].alive).to.equal(true);
+      expect(jsonMap.players[1].powerUp).to.deep.equal({ speed: 0.45, shoot: false, bombs: 2 });
+      expect(jsonMap.players[1].name).to.equal(_socket2.request.user.fb.username);
+      expect(jsonMap.players[1].picture).to.equal(_socket2.request.user.fb.photo.url);
+      
       expect(jsonMap.blockTemp.length).to.equal(135);
   
-  
+      //J1 reçoit un event avec le nouveau player
       expect(spyEmitP1.args[1][0]).to.equal('newPlayer');
-      expect(spyEmitP1.args[1][1].name).to.equal('testPlayer_2');
+      expect(spyEmitP1.args[1][1].id).to.equal('2');
+      expect(spyEmitP1.args[1][1].name).to.equal('testPlayer_2');      
+      expect(spyEmitP1.args[1][1].kills).to.equal(0);
+      expect(spyEmitP1.args[1][1].alive).to.equal(true);
+      expect(spyEmitP1.args[1][1].powerUp).to.deep.equal({ speed: 0.45, shoot: false, bombs: 2 });
+      expect(spyEmitP1.args[1][1].name).to.equal(_socket2.request.user.fb.username);
+      expect(spyEmitP1.args[1][1].picture).to.equal(_socket2.request.user.fb.photo.url);
+      
   
     });
   

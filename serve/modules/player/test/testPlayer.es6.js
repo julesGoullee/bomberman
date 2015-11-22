@@ -29,7 +29,7 @@ describe('Player', () => {
 
   });
 
-  it('Peut créer un player a la bonne position', () =>{
+  it('Peut créer un player a la bonne position', () => {
 
     let expectPosition = { x: spawnPoint.x, z: spawnPoint.z};
 
@@ -166,8 +166,5 @@ describe('Player', () => {
 
     expect( player.alive ).to.equal( false );
   });
-
-
-  //todo test myPlayer
 
 });
