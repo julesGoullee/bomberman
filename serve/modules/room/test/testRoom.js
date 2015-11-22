@@ -1,11 +1,5 @@
 "use strict";
 
-var chai = require('chai');
-var sinonChai = require("sinon-chai");
-global.sinon = require('sinon');
-global.expect = chai.expect;
-global.assert = chai.assert;
-chai.use( sinonChai );
 var config = require("./../../../config/config.js");
 
 var utils = require("../../utils/utils.js");
@@ -35,8 +29,33 @@ describe( "Room", function() {
     clock = sinon.useFakeTimers();
 
     socket1 = utils.clone( mock ).socket;
+    socket1.request = {
+      user : {
+        _id: {
+          toString: () => {
+            return "idP1";
+          }
+        },
+        fb: {
+          username: "testPlayer1"
+        }
+      }
+    };
+    
     socket2 = utils.clone( mock ).socket;
-
+    socket2.request = {
+      user : {
+        _id: {
+          toString: () => {
+            return "idP2";
+          }
+        },
+        fb: {
+          username: "testPlayer2"
+        }
+      }
+    };
+    
     stubOnP1 = sinon.stub(socket1, "on", function( event, callback ){
 
       if( event === "myPosition" ){
@@ -90,7 +109,7 @@ describe( "Room", function() {
     });
 
     it("Ne peut démarrer une partie avec un player", function(){
-      _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+      _room.addPlayer( socket1 );
 
       clock.tick( config.timerToStartParty );
 
@@ -102,8 +121,8 @@ describe( "Room", function() {
 
     it("Peux démarrer une partie avec deux player", function(){
 
-      _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
-      _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+      _room.addPlayer( socket1 );
+      _room.addPlayer( socket2 );
 
       clock.tick( config.timerToStartParty );
 
@@ -115,13 +134,13 @@ describe( "Room", function() {
 
     it("Peux stoper le decompte puis le relancer", function(){
 
-      _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+      _room.addPlayer( socket1 );
 
       clock.tick( config.timerToStartParty );
 
       expect( _room.timerToStart ).to.equal( config.limitToCheckNumberPlayer  );
 
-      _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+      _room.addPlayer( socket2 );
 
       clock.tick( config.timerToStartParty );
 
@@ -133,13 +152,13 @@ describe( "Room", function() {
 
     it("Peux stoper le decompte puis le relancer apres deconnection d'un player", function(){
 
-      _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+      _room.addPlayer( socket1 );
 
       clock.tick( config.timerToStartParty );
 
       expect( _room.timerToStart).to.equal( config.limitToCheckNumberPlayer  );
 
-      _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+      _room.addPlayer( socket2 );
 
       clock.tick( 2000 );
 
@@ -149,7 +168,7 @@ describe( "Room", function() {
 
       expect( _room.timerToStart ).to.equal( config.limitToCheckNumberPlayer );
 
-      _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+      _room.addPlayer( socket2 );
 
       clock.tick( config.timerToStartParty );
 
@@ -164,7 +183,7 @@ describe( "Room", function() {
       var callbackDestroy = { call:function(){} };
       var spyDestroy = sinon.spy( callbackDestroy, "call" );
       _room.onDestroy(callbackDestroy.call);
-      _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+      _room.addPlayer( socket1 );
       callbackDisconnectP1();
 
       assert(spyDestroy.calledWith( _room ));
@@ -172,7 +191,7 @@ describe( "Room", function() {
   });
 
   it( "Peut ajouter un player dans une room à la bonne position", function () {
-    _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+    _room.addPlayer( socket1 );
     expect( _room.players.length ).to.equal( 1 );
 
     expect( _room.players[0].position.x ).to.equal( _room.playersSpawnPoint[0].x );
@@ -180,7 +199,7 @@ describe( "Room", function() {
   });
 
   it( "Peut notifier la map au player", function(){
-    _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+    _room.addPlayer( socket1 );
     expect(spyEmitP1.args[0][0]).to.equal("map");
     var jsonMap = spyEmitP1.args[0][1];
     expect(jsonMap.players.length).to.equal(1);
@@ -193,9 +212,9 @@ describe( "Room", function() {
 
     beforeEach(function () {
 
-      _room.addPlayer( { socket : socket1, name: "player1" , token: "t1"} );
+      _room.addPlayer( socket1 );
 
-      _room.addPlayer( { socket : socket2, name: "player2", token: "t2" } );
+      _room.addPlayer( socket2 );
 
       clock.tick( config.timerToStartParty );
 
@@ -251,13 +270,13 @@ describe( "Room", function() {
       expect(jsonMap.players.length).to.equal(2);
 
       expect(jsonMap.players[0].isMine).to.equal(undefined);
-      expect(jsonMap.players[0].name).to.equal("player1");
+      expect(jsonMap.players[0].name).to.equal("testPlayer1");
       expect(jsonMap.players[1].isMine).to.equal(true);
       expect(jsonMap.blockTemp.length).to.equal(135);
 
 
       expect(spyEmitP1.args[1][0]).to.equal("newPlayer");
-      expect(spyEmitP1.args[1][1].name).to.equal("player2");
+      expect(spyEmitP1.args[1][1].name).to.equal("testPlayer2");
 
     });
 
@@ -266,11 +285,22 @@ describe( "Room", function() {
       callbackDisconnectP1();
 
       expect( _room.players[0].alive ).to.equal( false );
-      var socket3 = utils.clone( mock.socket );
+      var socket3 = utils.clone( mock ).socket;
+      socket3.request = {
+        user : {
+          _id: {
+            toString: () => {
+              return "idP3";
+            }
+          },
+          fb: {
+            username: "testPlayer3"
+          }
+        }
+      };
+      _room.addPlayer( socket3 );
 
-      _room.addPlayer( { socket : socket3, name: "player3" , token: "t2"} );
-
-      expect( _room.players[2].name ).to.equal( "player3");
+      expect( _room.players[2].name ).to.equal( "testPlayer3");
 
       expect( _room.players[2].position.x ).to.equal( _room.playersSpawnPoint[2].x );
       expect( _room.players[2].position.z ).to.equal( _room.playersSpawnPoint[2].z );

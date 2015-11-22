@@ -1,9 +1,5 @@
 "use strict";
 
-var chai = require('chai');
-global.expect = chai.expect;
-
-
 describe("Auth", function(){
 
   var _auth;

@@ -1,12 +1,5 @@
 "use strict";
 
-var chai = require('chai');
-var sinonChai = require("sinon-chai");
-global.sinon = require('sinon');
-global.expect = chai.expect;
-global.assert = chai.assert;
-chai.use( sinonChai );
-
 var utils = require("../../utils/utils.js");
 var Player = require("../../player/player.js");
 var Bombe = require("./../bomb.js");
@@ -29,11 +22,20 @@ describe( "Bombe" ,function() {
 
     beforeEach( function() {
         var mockSocket = {};
-        var mockToken = "t1";
+        var mockUser = {
+            _id: {
+                toString: () => {
+                    return "idP1";
+                }
+            },
+            fb: {
+                username: "testPlayer"
+            }
+        };
 
         clock = sinon.useFakeTimers();
 
-        player = new Player( mockToken, mockSocket, "testPlayer", mockRoom );
+        player = new Player( mockSocket, mockUser, mockRoom );
 
         bombe = new Bombe( utils.guid(), player, player.position );
     });

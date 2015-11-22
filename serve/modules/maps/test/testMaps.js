@@ -1,12 +1,4 @@
 "use strict";
-
-var chai = require('chai');
-var sinonChai = require("sinon-chai");
-global.sinon = require('sinon');
-global.expect = chai.expect;
-global.assert = chai.assert;
-chai.use( sinonChai );
-
 var config = require("../../../config/config.js");
 
 var Maps = require("./../maps.js");
@@ -34,13 +26,22 @@ describe( "Maps", function() {
   beforeEach(function(){
 
     var mockSocket = {};
-    var mockToken = "t1";
+    var mockUser = {
+      _id: {
+        toString: () => {
+          return "idP1";
+        }
+      },
+      fb: {
+        username: "testPlayer"
+      }
+    };
 
     maps = new Maps();
 
     maps.create();
 
-    player = new Player( mockToken, mockSocket, "testPlayer", mockRoom );
+    player = new Player( mockSocket, mockUser, mockRoom );
   });
 
   describe( "Temps blocks methods", function() {
@@ -133,8 +134,18 @@ describe( "Maps", function() {
     it( "Peut récuperer les players alive", function () {
 
       var mockSocket2 = {};
-      var mockToken2 = "t2";
-      var player2 =  new Player( mockToken2, mockSocket2, "testPlayer", mockRoom);
+      var mockUser2 = {
+        _id: {
+          toString: () => {
+            return "idP2";
+          }
+        },
+        fb: {
+          username: "testPlayer"
+        }
+      };
+      
+      var player2 =  new Player( mockSocket2, mockUser2, mockRoom);
 
       var tab1 = maps.getPlayersAlive();
 
@@ -180,8 +191,18 @@ describe( "Maps", function() {
     it( "Peut supprimer tous les players", function () {
 
       var mockSocket2 = {};
-      var mockToken2 = "t2";
-      var player2 =  new Player( mockToken2, mockSocket2, "testPlayer", mockRoom);
+      var mockUser2 = {
+        _id: {
+          toString: () => {
+            return "idP2";
+          }
+        },
+        fb: {
+          username: "testPlayer"
+        }
+      };
+      
+      var player2 =  new Player( mockSocket2, mockUser2, mockRoom);
 
       maps.addObject( player2 );
 
@@ -230,13 +251,23 @@ describe( "Maps", function() {
             getFreePosition: function(){}
           }
         };
-        var mockToken2 = "t2";
+        
+        var mockUser2 = {
+          _id: {
+            toString: () => {
+              return "idP2";
+            }
+          },
+          fb: {
+            username: "testPlayer"
+          }
+        };
 
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
+        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
 
         maps.addObject( player );
 
@@ -258,12 +289,21 @@ describe( "Maps", function() {
             getFreePosition: function(){}
           }
         };
-        var mockToken2 = "t2";
+        var mockUser2 = {
+          _id: {
+            toString: () => {
+              return "idP2";
+            }
+          },
+          fb: {
+            username: "testPlayer"
+          }
+        };
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
+        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
 
         maps.addObject( player );
 
@@ -565,12 +605,21 @@ describe( "Maps", function() {
             getFreePosition: function(){}
           }
         };
-        var mockToken2 = "t2";
+        var mockUser2 = {
+          _id: {
+            toString: () => {
+              return "idP2";
+            }
+          },
+          fb: {
+            username: "testPlayer"
+          }
+        };
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
+        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
 
 
         maps.addObject( player2 );
@@ -618,12 +667,21 @@ describe( "Maps", function() {
             getFreePosition: function(){}
           }
         };
-        var mockToken2 = "t2";
+        var mockUser2 = {
+          _id: {
+            toString: () => {
+              return "idP2";
+            }
+          },
+          fb: {
+            username: "testPlayer"
+          }
+        };
         sinon.stub( mockRoom2.playersSpawnPoint, "getFreePosition", function() {
           return spawnPoint2;
         });
 
-        var player2 =  new Player( mockToken2, mockSocket2, "testPlayer2", mockRoom2);
+        var player2 =  new Player( mockSocket2, mockUser2, mockRoom2);
 
         maps.addObject( player2 );
 

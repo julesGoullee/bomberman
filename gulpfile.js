@@ -52,12 +52,7 @@ gulp.task("jshint", function() {
 
 gulp.task("mocha", function() {
   return gulp.src([
-    "serve/modules/**/test/*.js",
-    "!serve/modules/player/test/*.js",
-    "!serve/modules/maps/test/*.js",
-    "!serve/modules/game/test/*.js",
-    "!serve/modules/bomb/test/*.js",
-    "!serve/modules/room/test/*.js"
+    "serve/modules/**/test/*.js"
   ])
     .pipe($.mocha({
       timeout: 3000,
