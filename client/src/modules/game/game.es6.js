@@ -8,9 +8,9 @@ const EndGame =   require("endGame/endGame");
 const Preloader =   require("preloader/preloader");
 const Maps =   require("maps/maps");
 const Timer =   require("timer/timer");
-const Player =   require("player/player");
+const Player =   require("player/player.es6");
 const MyPlayer =   require("player/myPlayer");
-const Bombe =   require("bomb/bomb");
+const Bombe =   require("bomb/bomb.es6");
 const utils =   require("utils/utils");
 
 function initScene(engine) {
@@ -189,7 +189,7 @@ class Game {
     for (var i = 0; i < this._mapJson.players.length; i++) {
 
       let playerJson = this._mapJson.players[i];
-      let player = new Player(playerJson.id, playerJson.name, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, this._assets, this._blockDim);
+      let player = new Player(playerJson.id, playerJson.name, playerJson.picture, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, this._assets, this._blockDim);
 
       if (playerJson.isMine) {
         if (this._isFirstLoad) {
@@ -354,9 +354,9 @@ class Game {
 
     });
 
-    this._connector.onNewPlayer( (id, name, position, powerUp, alive, kills) => {
+    this._connector.onNewPlayer( (id, name, picture, position, powerUp, alive, kills) => {
 
-      var player = new Player(id, name, position, powerUp, alive, kills, this._assets, this._blockDim);
+      var player = new Player(id, name, picture, position, powerUp, alive, kills, this._assets, this._blockDim);
 
       this._menuPlayers.addPlayer(player);
 

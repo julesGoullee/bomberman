@@ -1,7 +1,7 @@
 'use strict';
 
-const Bombe = require('bomb/bomb');
-const Player = require('player/player');
+const Bombe = require('bomb/bomb.es6');
+const Player = require('player/player.es6');
 const utils = require('utils/utils');
 var GameMock = require('testConfig/gameMock.es6');
 
@@ -13,7 +13,7 @@ describe( 'Bombe', () => {
 
   beforeEach( () =>  {
 
-    player = new Player(0, 'testPlayer', spawnPoint, {'speed':0.45,'shoot':false,'bombs':2}, true, 0, GameMock.assets, GameMock.blockDim );
+    player = new Player(0, 'testPlayer', 'testUrl', spawnPoint, {'speed':0.45,'shoot':false,'bombs':2}, true, 0, GameMock.assets, GameMock.blockDim );
 
     bombe = new Bombe( utils.guid(), player, player.position,  GameMock.assets, GameMock.blockDim );
   });

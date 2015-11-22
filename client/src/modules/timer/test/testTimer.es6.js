@@ -1,7 +1,7 @@
 "use strict";
 const Maps = require('maps/maps');
 const MenuPlayers = require('menuPlayers/menuPlayers');
-const Player = require('player/player');
+const Player = require('player/player.es6');
 const Timer = require('timer/timer');
 var GameMock = require('testConfig/gameMock.es6');
 
@@ -18,7 +18,7 @@ describe( "timer", () => {
     jasmine.clock().install();
 
     map = new Maps( GameMock.assets, GameMock.blockDim, new MenuPlayers() );
-    var player = new Player(0, "testPlayer", {x :50, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
+    var player = new Player(0, "testPlayer", "testUrl", {x :50, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
     map.addObject( player );
 
     timer = new Timer(map);
@@ -53,7 +53,7 @@ describe( "timer", () => {
 
     it( "Peut se préparer au lancement de la partie si le nombre de joueur est suffisant", () => {
 
-      var player2 = new Player(1, "testPlayer2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
+      var player2 = new Player(1, "testPlayer2", "testUrl2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
       map.addObject( player2 );
 
       jasmine.clock().tick(timeToStartParty*3);
@@ -68,7 +68,7 @@ describe( "timer", () => {
       expect( timer.timeToStartParty ).toEqual( limitToCheckNumberPlayer );
       expect($( "#timer-label").text() ).toEqual("En attente de 1 joueurs...");
 
-      var player2 = new Player(1, "testPlayer2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
+      var player2 = new Player(1, "testPlayer2", "testUrl2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
       map.addObject( player2 );
       jasmine.clock().tick(timeToStartParty*3);
 
@@ -81,7 +81,7 @@ describe( "timer", () => {
 
     beforeEach(() => {
 
-      var player2 = new Player(1, "testPlayer2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
+      var player2 = new Player(1, "testPlayer2", "testUrl2", {x :0, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
       map.addObject( player2 );
       jasmine.clock().tick(timeToStartParty);
       timer.startGame( timeInParty );

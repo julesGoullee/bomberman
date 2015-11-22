@@ -75,7 +75,7 @@ define(["player/notifyMovePlayer"], function(NotifyMovePlayer) {
 
             notifyMovePlayer.notifyNewPosition(self.camera.position);
 
-            setTimeout(checkMovePlayer, 100);
+            setTimeout(function(){checkMovePlayer();}, 100);
         }
 
         function init() {

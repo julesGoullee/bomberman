@@ -1,9 +1,13 @@
 "use strict";
 
 const cfg = require('config/config');
-const Bombe = require('bomb/bomb');
+//cfg.timerToStartParty = 5000;
+//cfg.limitToCheckNumberPlayer = 4000;
+//cfg.nbPlayersToStart = 2;
+//cfg.analitics = false;
+const Bombe = require('bomb/bomb.es6');
 var GameMock = require('testConfig/gameMock.es6');
-const Player = require('player/player');
+const Player = require('player/player.es6');
 const utils = require('utils/utils');
 
 describe( "Player", () => {
@@ -16,7 +20,7 @@ describe( "Player", () => {
 
   beforeEach( () => {
 
-    player = new Player(0, "testPlayer", spawnPoint, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
+    player = new Player(0, "testPlayer", "testUrl", spawnPoint, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
   });
 
   it( "Peut créer un player a la bonne position", () => {

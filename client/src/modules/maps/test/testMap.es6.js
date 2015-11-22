@@ -2,8 +2,8 @@
 
 const cfg = require('config/config');
 const Block = require('block/block.es6');
-const Bombe = require('bomb/bomb');
-const Player = require('player/player');
+const Bombe = require('bomb/bomb.es6');
+const Player = require('player/player.es6');
 const Maps = require('maps/maps');
 const MenuPlayers = require('menuPlayers/menuPlayers');
 const utils = require('utils/utils');
@@ -25,7 +25,7 @@ describe("Maps", () => {
 
     maps = new Maps(GameMock.assets, GameMock.blockDim, GameMock.scene, new MenuPlayers());
 
-    player = new Player(0, "testPlayer", spawnPoint, {
+    player = new Player(0, "testPlayer", "testUrl", spawnPoint, {
       "speed": 0.45,
       "shoot": false,
       "bombs": 2
@@ -263,7 +263,7 @@ describe("Maps", () => {
 
       maps.addObject(player);
 
-      var player2 = new Player(0, "testPlayer", spawnPoint, {
+      var player2 = new Player(0, "testPlayer", "testUrl", spawnPoint, {
         "speed": 0.45,
         "shoot": false,
         "bombs": 2
@@ -357,7 +357,7 @@ describe("Maps", () => {
 
     it("Peut supprimer tous les players", () => {
 
-      var player2 = new Player(2, "testPlayer", spawnPoint, {
+      var player2 = new Player(2, "testPlayer", "testUrl", spawnPoint, {
         "speed": 0.45,
         "shoot": false,
         "bombs": 2
@@ -407,7 +407,7 @@ describe("Maps", () => {
 
       it("Peut récupérer les bombes de deux players", () => {
 
-        var player2 = new Player(2, "testPlayer2", {x: 0, z: 0}, {
+        var player2 = new Player(2, "testPlayer2", "testUrl2", {x: 0, z: 0}, {
           "speed": 0.45,
           "shoot": false,
           "bombs": 2
@@ -423,7 +423,7 @@ describe("Maps", () => {
       });
 
       it("Peut récupérer deux bombes de deux players", () => {
-        var player2 = new Player(2, "testPlayer2", {x: 0, z: 0}, {
+        var player2 = new Player(2, "testPlayer2", "testUrl2", {x: 0, z: 0}, {
           "speed": 0.45,
           "shoot": false,
           "bombs": 2

@@ -95,7 +95,7 @@ define(["js-cookie/src/js.cookie", "popup/popup.es6"], function(Cookies, Popup) 
 
       _socket.on("newPlayer", function (playerData) {
 
-        callback(playerData.id, playerData.name, playerData.position, playerData.powerUp, playerData.alive, playerData.kills);
+        callback(playerData.id, playerData.name, playerData.picture, playerData.position, playerData.powerUp, playerData.alive, playerData.kills);
       });
     };
 

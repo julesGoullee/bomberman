@@ -146,7 +146,7 @@ define(["block/block.es6", "powerUp/powerUp", "config/config"], function( Block,
 
             scene.beginAnimation(player.meshs.shape, 506, 550, false, 1, function () {
 
-              setTimeout(player.destroy, cfg.destroyPlayerTimer);
+              setTimeout(function(){player.destroy();}, cfg.destroyPlayerTimer);
             });
 
           })(_content[i]);
@@ -520,7 +520,7 @@ define(["block/block.es6", "powerUp/powerUp", "config/config"], function( Block,
 
         if (_powerUps[i].id === powerUpId) {
 
-          setTimeout(_powerUps[i].destroy, 500);
+          setTimeout(function(){_powerUps[i].destroy();}, 500);
 
           _powerUps.splice(i, 1);
 
