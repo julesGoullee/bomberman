@@ -30,7 +30,7 @@ module.exports = {
           }
         });
       }else{
-        log("Error connection already active for" + socket.request.user._id, "ws");
+        authLog.info("Error connection already active for" + socket.request.user._id);
         socket.disconnect();
       }
       

@@ -13,13 +13,15 @@ define(["js-cookie/src/js.cookie", "popup/popup.es6"], function(Cookies, Popup) 
 
     self.launch = function (callback) {
       _socket = io();
+      
       _socket.on('connect', function(){
         callback();
       });
+      
       _socket.on('disconnect', function () {
         var errorMsg = "Disconnect game, probably you loose internet access or you have already connection active";
         Popup.setContent("Error", errorMsg).show();
-        console.error(errorMsg);
+        throw  Error(errorMsg);
       });
     };
 

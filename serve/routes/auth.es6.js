@@ -30,6 +30,7 @@ class Auth {
   }
 
   signUp() {
+    
     this.app.get("/auth/facebook/token", passport.authenticate("facebook-token"), (req, res) => {
       res.status(201);
       res.json({
@@ -37,6 +38,16 @@ class Auth {
         name: req.user.fb.username
       });
     });
+    
+    //this.app.use((err, req, res, next) => {
+    //  if(err){
+    //    res.status(400);
+    //    res.send(err);
+    //  }
+    //  else{
+    //    next();
+    //  }
+    //});
   }
 }
 

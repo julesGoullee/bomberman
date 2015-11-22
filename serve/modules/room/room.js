@@ -82,7 +82,7 @@ function Room() {
 
     _map.addObject( player );
 
-    log( "Player connected: " + player.id + " on room: " + self.id, "info" );
+    //log( "Player connected: " + player.id + " on room: " + self.id, "info" );
 
     self.players.push( player );
 
@@ -229,7 +229,7 @@ function Room() {
 
     player.socket.on( "disconnect", function() {
 
-      log( "Player disconnect: " + player.id + " on room: " + self.id, "info" );
+      //log( "Player disconnect: " + player.id + " on room: " + self.id, "info" );
 
       broadcastWithoutMe( player, "playerDisconnect", { id: player.id } );
 
@@ -303,7 +303,7 @@ function Room() {
           id: bombe.id
         });
       }else{
-        log("peut pas poser " + tempId, "err");
+        //log("peut pas poser " + tempId, "err");
       }
 
     });

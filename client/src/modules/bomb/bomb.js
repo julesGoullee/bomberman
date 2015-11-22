@@ -105,7 +105,7 @@ define(["config/config", "utils/utils"], function( cfg, utils ) {
       var particleSystem = new BABYLON.ParticleSystem("particles", 50, scene);
 
       //Texture of each particle
-      particleSystem.particleTexture = new BABYLON.Texture("content/particule.png", scene);
+      particleSystem.particleTexture = new BABYLON.Texture("assets/particule.png", scene);
 
       // Where the particles come from
       particleSystem.emitter = self.meshs.shape; // the starting object, the emitter
