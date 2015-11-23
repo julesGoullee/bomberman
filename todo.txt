@@ -2,8 +2,9 @@ Gerer un tab de bombe dans la map
 Myplayer spawnPoint a revoir
 Bombe qui explose alors que la partie est finis
 classe qui declare toute les cameras
-blockDim, declaration( config ? servce -> client ? )
 
+blockDim, declaration( config ? servce -> client ? )
+replay partie refresh page
 
 
 forever -o log/out.log -e log/err.log  --minUptime 500 --spinSleepTime 500 start bin/www.js &&
