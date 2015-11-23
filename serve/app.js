@@ -11,6 +11,9 @@ app.set('host', config.domaine );
 app.set('etag', 'strong');
 app.set('x-powered-by', false);
 
+//var globalTunnel = require('global-tunnel');
+//globalTunnel.initialize();
+
 require('./middlewares/logRequest')(app);
 require('./middlewares/cors')(app);
 require('./middlewares/compress')(app);

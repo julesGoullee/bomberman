@@ -40,6 +40,10 @@ class Connectors {
 
     req.fail((res) =>{
       if(res.statusText === 'abort'){
+        Popup.setContent('Error', 'Failed to connect API authentification Facebook, please try later').show();
+      }
+      if (res.status === 500 ) {
+        clearTimeout(ttlReq);
         Popup.setContent('Error', 'API authentification Facebook not available, please try later').show();
       }
       console.error('[Auth] ' + JSON.stringify(res));
