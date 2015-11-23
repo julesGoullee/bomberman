@@ -3,6 +3,10 @@
 var _tokenValue = null;
 
 class CookieMock {
+  constructor(){
+    _tokenValue = null;
+  }
+
   static get (key){
     if( key === 'token'){
       return _tokenValue;

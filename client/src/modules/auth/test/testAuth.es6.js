@@ -8,22 +8,23 @@ const CookieMock = require('testConfig/cookieMock.es6');
 
 const Auth = injector({
   'auth/facebook.es6': AuthFbMock,
-  'js-cookie/src/js.cookie': CookieMock
+  'js-cookie/src/js.cookie': CookieMock,
+  'connectors/connectors.es6': ConnectorsMock
 });
 
 describe('Auth', () => {
   var _auth;
-  var _connectorsMock;
   var _spyCbLoadScript;
   
   beforeEach( () => {
     _spyCbLoadScript = jasmine.createSpy('spy');
-    _connectorsMock = new ConnectorsMock();
-    _auth = new Auth(ConnectorsMock, _spyCbLoadScript);
+    new ConnectorsMock();
+    new CookieMock();
+    _auth = new Auth(_spyCbLoadScript);
   });
   
   it('Peut instancier auth et appeler le callback après load fbScript', () => {
-    _auth._authFb.cbLoadScript();
+    AuthFbMock.__test_cbLoadScript();
     expect(_spyCbLoadScript).toHaveBeenCalled();
   });
   
@@ -37,21 +38,21 @@ describe('Auth', () => {
     it('Call signIn connector', () => {
       spyOn(ConnectorsMock, 'signIn');
       _auth.ready(cbReady);
-      _auth._authFb.cbConnect('accessTokenValide');
+      AuthFbMock.__test_cbLoadScript('accessTokenValide');
       
       expect(ConnectorsMock.signIn).toHaveBeenCalled();
     });
 
     it('SignIn call connector valide user', () => {
       _auth.ready(cbReady);
-      _auth._authFb.cbConnect({accessToken: 'accessTokenValide'});
+      AuthFbMock.__test_cbLoadScript({accessToken: 'accessTokenValide'});
 
-      expect(_connectorsMock.isValide() ).toBeTruthy();
+      expect(ConnectorsMock._test_isValide() ).toBeTruthy();
     });
     
     it('Call launch connector for webSocket', () => {
       _auth.ready(cbReady);
-      _auth._authFb.cbConnect({accessToken: 'accessTokenValide'});
+      AuthFbMock.__test_cbLoadScript({accessToken: 'accessTokenValide'});
       
       expect(cbReady ).toHaveBeenCalledWith({ id: '1', name: 'test1' });
     });
@@ -72,13 +73,13 @@ describe('Auth', () => {
     it('Call signUp connector', () => {
       spyOn(ConnectorsMock, 'signUp');
       _auth.ready(cbReady);
-      _auth._authFb.cbConnect('accessTokenValide');
+      AuthFbMock.__test_cbLoadScript('accessTokenValide');
       expect(ConnectorsMock.signUp ).toHaveBeenCalled();
     });
 
     it('Call launch connector for webSocket', () => {
       _auth.ready(cbReady);
-      _auth._authFb.cbConnect({accessToken: 'accessTokenValide'});
+      AuthFbMock.__test_cbLoadScript({accessToken: 'accessTokenValide'});
 
       expect(cbReady).toHaveBeenCalledWith({ id: '1', name: 'test1' });
     });

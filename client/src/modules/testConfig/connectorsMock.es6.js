@@ -4,9 +4,7 @@ const CookieMock = require('testConfig/cookieMock.es6');
 
 class ConnectorsMock{
   constructor(){
-    this.isValide = () => {
-      return _isValide;
-    };
+    _isValide = false;
   }
   
   static signUp(accessToken, cb){
@@ -39,6 +37,10 @@ class ConnectorsMock{
     if(_isValide){
       cb();
     }
+  }
+
+  static _test_isValide (){
+    return _isValide;
   }
 }
 

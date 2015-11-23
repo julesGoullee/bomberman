@@ -1,11 +1,11 @@
 'use strict';
 const AuthFb = require('auth/facebook.es6');
 const Cookies = require('js-cookie/src/js.cookie');
+const Connectors = require('connectors/connectors.es6');
 
 class Auth {
 
-  constructor (connectors, cb) {
-    this._connectors = connectors;
+  constructor (cb) {
     this._authFb = new AuthFb(cb);
   }
 
@@ -13,18 +13,18 @@ class Auth {
     this._authFb.connect( (data) => {
       const apiToken = Cookies.get('token');
       if( apiToken ){
-        this._connectors.signIn( (userProfil) => {
+        Connectors.signIn( (userProfil) => {
           if (!userProfil) {
-            this._connectors.signUp( data.accessToken, (userProfil) => {
-              this._connectors.launch( () => { cb(userProfil); });
+            Connectors.signUp( data.accessToken, (userProfil) => {
+              Connectors.launch( () => { cb(userProfil); });
             });
           }else{
-            this._connectors.launch( () => { cb(userProfil); });
+            Connectors.launch( () => { cb(userProfil); });
           }
         });
       } else {
-        this._connectors.signUp(data.accessToken, (userProfil) => {
-          this._connectors.launch( () => { cb(userProfil); });
+        Connectors.signUp(data.accessToken, (userProfil) => {
+          Connectors.launch( () => { cb(userProfil); });
         });
       }
     });

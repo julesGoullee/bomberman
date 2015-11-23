@@ -1,12 +1,18 @@
 'use strict';
 
+var _cbLoadScript = null;
+
 class AuthFbMock {
   constructor(cb){
-    this.cbLoadScript = cb;
+    _cbLoadScript = cb;
   }
 
   connect(cb){
-    this.cbConnect = cb;
+    _cbLoadScript = cb;
+  }
+
+  static __test_cbLoadScript(accessToken){
+    return _cbLoadScript(accessToken);
   }
 }
 
