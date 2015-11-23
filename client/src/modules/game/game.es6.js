@@ -11,62 +11,11 @@ const MenuPlayers = require("menuPlayers/menuPlayers");
 const MyPlayer = require("player/myPlayer");
 const Player = require("player/player.es6");
 const Preloader = require("preloader/preloader");
+const Environnement = require("environnement/environnement.es6");
 const Timer = require("timer/timer");
 const utils = require("utils/utils");
 
 const __BLOCK_DIM = 8;
-
-
-function initScene(engine) {
-
-  function enableLight() {
-
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-
-    light.intensity = 0.8;
-  }
-
-  function enableSkybox() {
-
-    var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
-
-    skybox.position = new BABYLON.Vector3(0, 100, 0);
-
-    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-
-    skyboxMaterial.backFaceCulling = false;
-
-    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("assets/skybox/skybox", scene);
-
-    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-
-    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-
-    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-
-    skybox.material = skyboxMaterial;
-  }
-
-  function enableAutoResize() {
-    window.addEventListener("resize",() => {
-      return engine.resize();
-    }, false);
-  }
-
-  var scene = new BABYLON.Scene(engine);
-
-  //scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
-
-  scene.collisionsEnabled = true;
-
-  enableLight();
-
-  enableSkybox();
-
-  enableAutoResize();
-
-  return scene;
-}
 
 class Game {
   constructor ( canvasId ){
@@ -84,9 +33,13 @@ class Game {
     this._canvas = document.getElementById(canvasId);
 
     this._engine = new BABYLON.Engine(this._canvas, true);
-
-    this._scene = initScene(this._engine);
-
+    
+    this.environnement = new Environnement(this._engine);
+    
+    this._scene = this.environnement.getScene();
+    
+    this._preloader = new Preloader(this._scene);
+    
     this._menuPlayers = new MenuPlayers();
 
     this._keyBinder = new KeyBinder();
@@ -104,7 +57,7 @@ class Game {
 
     this._preloadFinish = false;
     this._getMapFinish = false;
-    new Preloader(this._scene).onFinish( () => {
+    this._preloader.onFinish( () => {
       this._engine.loadingUIText = "Recherche d'autre joueurs...";
       this._preloadFinish = true;
 

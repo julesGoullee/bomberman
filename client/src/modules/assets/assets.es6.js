@@ -6,7 +6,7 @@ class Assets {
     _assets[name] = data;
   }
   static get (name){
-    if (isUndefined(_assets[name])) {
+    if (_assets[name] === void 0) {
       throw new Error('Mesh ' + name + 'is not preload');
     }
 
