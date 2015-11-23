@@ -1,8 +1,30 @@
 "use strict";
 /*jshint -W083 */
 
-define(function() {
-  return function Preloader(scene, meshList, assets) {
+const assets = require('assets/assets.es6');
+
+const meshPreload = [
+  "ground",
+  "permanentBlocks",
+  "permanentBlocksColision",
+  "tempBlock",
+  "tempBlockColision",
+  "tour",
+  "bomb",
+  //"explosionFlammes",
+  //"animBombTest",
+  "bombColision",
+  "powerUpBallon",
+  "persocourse",
+  "personnageColision",
+  "tourColision"
+];
+
+class Preloader {
+
+}
+
+function Preloader(scene, meshList, assets) {
 
     var self = this;
 
@@ -74,4 +96,5 @@ define(function() {
 
     init();
   };
-});
+
+module.exports = Preloader;

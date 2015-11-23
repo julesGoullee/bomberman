@@ -1,17 +1,21 @@
-/*jshint -W083, latedef: nofunc*/
-"use strict";
-const MenuPlayers =   require("menuPlayers/menuPlayers");
-const KeyBinder =   require("keyBinder/keyBinder");
-const CursorCapture =   require("cursorCapture/cursorCapture");
-const CameraSwitcher =   require("camera/cameraSwitcher");
-const EndGame =   require("endGame/endGame");
-const Preloader =   require("preloader/preloader");
-const Maps =   require("maps/maps");
-const Timer =   require("timer/timer");
-const Player =   require("player/player.es6");
-const MyPlayer =   require("player/myPlayer");
-const Bombe =   require("bomb/bomb.es6");
-const utils =   require("utils/utils");
+"use strict";/*jshint -W083, latedef: nofunc*/
+
+const Bombe = require("bomb/bomb.es6");
+const CameraSwitcher = require("camera/cameraSwitcher");
+const Connectors = require("connectors/connectors.es6");
+const CursorCapture = require("cursorCapture/cursorCapture");
+const EndGame = require("endGame/endGame");
+const KeyBinder = require("keyBinder/keyBinder");
+const Maps = require("maps/maps");
+const MenuPlayers = require("menuPlayers/menuPlayers");
+const MyPlayer = require("player/myPlayer");
+const Player = require("player/player.es6");
+const Preloader = require("preloader/preloader");
+const Timer = require("timer/timer");
+const utils = require("utils/utils");
+
+const __BLOCK_DIM = 8;
+
 
 function initScene(engine) {
 
@@ -65,24 +69,8 @@ function initScene(engine) {
 }
 
 class Game {
-  constructor ( connector, canvasId ){
-    const meshPreload = [
-      "ground",
-      "permanentBlocks",
-      "permanentBlocksColision",
-      "tempBlock",
-      "tempBlockColision",
-      "tour",
-      "bomb",
-      //"explosionFlammes",
-      //"animBombTest",
-      "bombColision",
-      "powerUpBallon",
-      "persocourse",
-      "personnageColision",
-      "tourColision"
-    ];
-    this._blockDim = 8;
+  constructor ( canvasId ){
+
     this._radius_step = 0.8;
     this._alpha_step = 0.005;
 
@@ -92,10 +80,6 @@ class Game {
     this._mapJson = null;
     this._timer = null;
     this._myPlayer = null;
-    this._assets = {};
-
-
-    this._connector = connector;
 
     this._canvas = document.getElementById(canvasId);
 
@@ -116,11 +100,11 @@ class Game {
     this._engine.displayLoadingUI();
 
 
+    Connectors.ready();
+
     this._preloadFinish = false;
     this._getMapFinish = false;
-    new Preloader(this._scene, meshPreload, this._assets).onFinish( () => {
-
-      this._connector.ready();
+    new Preloader(this._scene).onFinish( () => {
       this._engine.loadingUIText = "Recherche d'autre joueurs...";
       this._preloadFinish = true;
 
@@ -130,15 +114,16 @@ class Game {
 
     });
 
-    this._connector.getMap( (data) => {
+    Connectors.getMap( (data) => {
       this._mapJson = data;
       this._getMapFinish = true;
+      this._engine.loadingUIText = "Téléchargement du contenu...";
       if (this._preloadFinish && this._getMapFinish) {
         this._render();
       }
     });
 
-    this._connector.onReady( (timeParty) => {
+    Connectors.onReady( (timeParty) => {
 
       this._timer.startGame(timeParty);
 
@@ -164,7 +149,7 @@ class Game {
           var bombe = new Bombe(bombTempId, this._myPlayer.player, this._myPlayer.player.roundPosition(), this._assets, this._scene);
 
           this._myPlayer.player.addBomb(bombe);
-          this._connector.setBomb(bombe.id);
+          Connectors.setBomb(bombe.id);
         }
       }
     });
@@ -174,7 +159,7 @@ class Game {
 
   _render() {
 
-    this._map = this._map || new Maps(this._assets, this._blockDim, this._scene, this._menuPlayers);
+    this._map = this._map || new Maps(this._assets, __BLOCK_DIM, this._scene, this._menuPlayers);
 
     this._timer = this._timer || new Timer(this._map);
     this._timer.timeToStartParty = this._mapJson.timerToStart;
@@ -189,11 +174,11 @@ class Game {
     for (var i = 0; i < this._mapJson.players.length; i++) {
 
       let playerJson = this._mapJson.players[i];
-      let player = new Player(playerJson.id, playerJson.name, playerJson.picture, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, this._assets, this._blockDim);
+      let player = new Player(playerJson.id, playerJson.name, playerJson.picture, playerJson.position, playerJson.powerUp, playerJson.alive, playerJson.kills, this._assets, __BLOCK_DIM);
 
       if (playerJson.isMine) {
         if (this._isFirstLoad) {
-          this._myPlayer = this._myPlayer || new MyPlayer(this._scene, playerJson.position, this._connector, this._cameraSwitcher);
+          this._myPlayer = this._myPlayer || new MyPlayer(this._scene, playerJson.position, Connectors, this._cameraSwitcher);
         }
         else {
           this._myPlayer.position = playerJson.position;
@@ -250,7 +235,7 @@ class Game {
 
   _listenEvents() {
 
-    this._connector.onPlayerMove( (id, position) => {
+    Connectors.onPlayerMove( (id, position) => {
 
       var player = this._map.getPlayerById(id);
 
@@ -296,7 +281,7 @@ class Game {
       }
     });
 
-    this._connector.onPlayerSetBomb((playerId, bombeId, position) => {
+    Connectors.onPlayerSetBomb((playerId, bombeId, position) => {
 
       var player = this._map.getPlayerById(playerId);
       var bombe = new Bombe(bombeId, player, position, this._assets, this._scene);
@@ -304,7 +289,7 @@ class Game {
 
     });
 
-    this._connector.onExplosion( (ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy) => {
+    Connectors.onExplosion( (ownerId, bombesExplodedId, playersIdKilled, blocksIdDestroy) => {
 
       var playerOwner = this._map.getPlayerById(ownerId);
 
@@ -354,9 +339,9 @@ class Game {
 
     });
 
-    this._connector.onNewPlayer( (id, name, picture, position, powerUp, alive, kills) => {
+    Connectors.onNewPlayer( (id, name, picture, position, powerUp, alive, kills) => {
 
-      var player = new Player(id, name, picture, position, powerUp, alive, kills, this._assets, this._blockDim);
+      var player = new Player(id, name, picture, position, powerUp, alive, kills, this._assets, __BLOCK_DIM);
 
       this._menuPlayers.addPlayer(player);
 
@@ -364,7 +349,7 @@ class Game {
 
     });
 
-    this._connector.onPlayerDisconnect( (playerId) => {
+    Connectors.onPlayerDisconnect( (playerId) => {
 
 
       if (this._isInParty) {
@@ -377,14 +362,14 @@ class Game {
 
     });
 
-    this._connector.setPermanentBombId( (tempBombId, bombId) => {
+    Connectors.setPermanentBombId( (tempBombId, bombId) => {
 
       var bomb = this._map.getBombsById(tempBombId);
       bomb.id = bombId;
 
     });
 
-    this._connector.onEnd( () => {
+    Connectors.onEnd( () => {
 
       this._isInParty = false;
 
@@ -414,7 +399,7 @@ class Game {
     this._map.delBlocks();
     this._map.delBombs();
     this._scene.unregisterBeforeRender( () => { this._standingStartAnimation(); });
-    this._connector.ready();
+    Connectors.ready();
   }
 }
 
