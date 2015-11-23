@@ -1,7 +1,9 @@
 'use strict';
-var Block = require('block/block.es6');
-var utils = require('utils/utils');
-var GameMock = require('testConfig/gameMock.es6');
+
+const AssetsMock = require('testConfig/assetsMock.es6');
+const utils = require('utils/utils');
+
+const Block = require('inject!block/block.es6')({'assets/assets.es6': AssetsMock});
 
 describe( 'Block' , function() {
 
@@ -9,7 +11,7 @@ describe( 'Block' , function() {
 
   beforeEach( function() {
 
-    block = new Block( utils.guid(), { x: 1, z: 0}, GameMock.assets );
+    block = new Block( utils.guid(), { x: 1, z: 0} );
   });
 
   it( 'Peut créer un block temp a la bonne position', function() {

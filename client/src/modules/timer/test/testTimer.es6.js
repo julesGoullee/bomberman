@@ -1,23 +1,33 @@
 "use strict";
-const Maps = require('maps/maps');
+
 const MenuPlayers = require('menuPlayers/menuPlayers');
-const Player = require('player/player.es6');
 const Timer = require('timer/timer');
-var GameMock = require('testConfig/gameMock.es6');
+const GameMock = require('testConfig/gameMock.es6');
+
+const AssetsMock = require('testConfig/assetsMock.es6');
+
+const Block = require('inject!block/block.es6')({'assets/assets.es6': AssetsMock});
+
+const Maps = require('inject!maps/maps.es6')({
+  'assets/assets.es6': AssetsMock,
+  'block/block.es6': Block
+});
+
+const Player = require('inject!player/player.es6')({'assets/assets.es6': AssetsMock});
 
 describe( "timer", () => {
 
-  var timer;
-  var map;
-  var timeToStartParty = 60000;//ms
-  var timeInParty = 180000;//ms
-  var limitToCheckNumberPlayer = 5000;
-  var nbPlayersToStart = 2;
+  let timer;
+  let map;
+  let timeToStartParty = 60000;//ms
+  let timeInParty = 180000;//ms
+  let limitToCheckNumberPlayer = 5000;
+  let nbPlayersToStart = 2;
 
   beforeEach(() => {
     jasmine.clock().install();
 
-    map = new Maps( GameMock.assets, GameMock.blockDim, new MenuPlayers() );
+    map = new Maps({}, new MenuPlayers() );
     var player = new Player(0, "testPlayer", "testUrl", {x :50, z:-65}, {"speed":0.45,"shoot":false,"bombs":2}, true, 0, GameMock.assets, GameMock.blockDim );
     map.addObject( player );
 

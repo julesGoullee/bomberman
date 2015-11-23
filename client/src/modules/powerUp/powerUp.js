@@ -38,14 +38,9 @@ define(["config.es6", "utils/utils"], function(cfg, utils) {
 
     function createMesh() {
 
-      if (assets.powerUpBallon === undefined) {
+      var meshPowerUp = assets.get('powerUpBallon')[0].clone();
 
-        throw new Error("Mesh powerUpBallon is not preload");
-      }
-
-      var meshPowerUp = assets.powerUpBallon[0].clone();
-
-      meshPowerUp.skeleton = assets.powerUpBallon[0].skeleton.clone();
+      meshPowerUp.skeleton = assets.get('powerUpBallon')[0].skeleton.clone();
 
       meshPowerUp.checkCollisions = false;
 
@@ -62,7 +57,7 @@ define(["config.es6", "utils/utils"], function(cfg, utils) {
 
     function createMeshColision() {
 
-      var meshTempColision = assets.tempBlockColision[0].clone();
+      var meshTempColision = assets.get('tempBlockColision')[0].clone();
 
       meshTempColision.isVisible = cfg.showBlockColision;
 

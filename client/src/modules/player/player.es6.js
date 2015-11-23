@@ -1,8 +1,9 @@
 "use strict";
 const cfg = require('config.es6');
+const Assets = require('assets/assets.es6');
 
 class Player{
-  constructor(id, name, picture, spawnPoint, powerUp, alive, kills, assets, blockDim){
+  constructor(id, name, picture, spawnPoint, powerUp, alive, kills){
 
     this.id = id;
     this.name = name;
@@ -11,8 +12,6 @@ class Player{
     this.powerUp = powerUp;
     this.alive = alive;
     this.kills = kills;
-    this._assets = assets;
-    this._blockDim = blockDim;
     this._spawnPoint = spawnPoint;
     this._isReadyForSetBomb = true;
     this.nbBlocksDestroy = 0;
@@ -27,7 +26,7 @@ class Player{
 
   roundPosition () {
     const roundValue = (value) => {
-      return Math.round(Math.round(value) / this._blockDim) * this._blockDim;
+      return Math.round(Math.round(value) / cfg.blockDim) * cfg.blockDim;
     };
       
     return {
@@ -139,14 +138,9 @@ class Player{
 
   _createMesh() {
 
-    if (this._assets.persocourse === undefined) {
+    var meshPlayer = Assets.get('persocourse')[0].clone();
 
-      throw new Error("Mesh persocourse is not preload");
-    }
-
-    var meshPlayer = this._assets.persocourse[0].clone();
-
-    meshPlayer.skeleton = this._assets.persocourse[0].skeleton.clone();
+    meshPlayer.skeleton = Assets.get('persocourse')[0].skeleton.clone();
 
     var pivot = BABYLON.Matrix.RotationY(-Math.PI / 2);
 
@@ -163,7 +157,7 @@ class Player{
 
   _createMeshColision() {
 
-    var meshTempColision = this._assets.tempBlockColision[0].clone();
+    var meshTempColision = Assets.get('tempBlockColision')[0].clone();
 
     meshTempColision.isVisible = cfg.showBlockColision;
 

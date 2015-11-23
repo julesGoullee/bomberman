@@ -1,12 +1,10 @@
 'use strict';
 
-var injector = require('inject!auth/auth.es6');
-
 const ConnectorsMock = require('testConfig/connectorsMock.es6');
 const AuthFbMock = require('testConfig/facebookMock.es6');
 const CookieMock = require('testConfig/cookieMock.es6');
 
-const Auth = injector({
+const Auth = require('inject!auth/auth.es6')({
   'auth/facebook.es6': AuthFbMock,
   'js-cookie/src/js.cookie': CookieMock,
   'connectors/connectors.es6': ConnectorsMock

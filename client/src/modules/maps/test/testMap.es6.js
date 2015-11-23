@@ -1,15 +1,26 @@
-"use strict";
+'use strict';
 
-const cfg = require('config.js');
-const Block = require('block/block.es6');
-const Bombe = require('bomb/bomb.es6');
-const Player = require('player/player.es6');
-const Maps = require('maps/maps');
-const MenuPlayers = require('menuPlayers/menuPlayers');
+const cfg = require('config.es6');
 const utils = require('utils/utils');
-var GameMock = require('testConfig/gameMock.es6');
 
-describe("Maps", () => {
+const MenuPlayers = require('menuPlayers/menuPlayers');
+const GameMock = require('testConfig/gameMock.es6');
+
+const AssetsMock = require('testConfig/assetsMock.es6');
+
+const Block = require('inject!block/block.es6')({'assets/assets.es6': AssetsMock});
+
+const Maps = require('inject!maps/maps.es6')({
+  'assets/assets.es6': AssetsMock,
+  'block/block.es6': Block
+});
+
+const Player = require('inject!player/player.es6')({'assets/assets.es6': AssetsMock});
+
+const Bombe = require('inject!bomb/bomb.es6')({'assets/assets.es6': AssetsMock});
+
+
+describe('Maps', () => {
 
   cfg.showBlockColision = true;
 
@@ -23,22 +34,22 @@ describe("Maps", () => {
 
   beforeEach(() => {
 
-    maps = new Maps(GameMock.assets, GameMock.blockDim, GameMock.scene, new MenuPlayers());
+    maps = new Maps(GameMock.scene, new MenuPlayers());
 
-    player = new Player(0, "testPlayer", "testUrl", spawnPoint, {
-      "speed": 0.45,
-      "shoot": false,
-      "bombs": 2
-    }, true, 0, GameMock.assets, GameMock.blockDim);
+    player = new Player(0, 'testPlayer', 'testUrl', spawnPoint, {
+      'speed': 0.45,
+      'shoot': false,
+      'bombs': 2
+    }, true, 0);
   });
+  
+  describe('Create & import mesh', () => {
 
-  describe("Create & import mesh", () => {
-
-    it("Peut importer un mesh sans son calque de colision", () => {
+    it('Peut importer un mesh sans son calque de colision', () => {
 
       maps.meshsData = [
         {
-          name: "ground",
+          name: 'ground',
 
           colisionCase: false
         }
@@ -49,128 +60,128 @@ describe("Maps", () => {
 
       expect(maps.meshGround.length).toEqual(1);
     });
-
-    it("Peut importer un mesh avec son calque de colision", () => {
-
+    
+    it('Peut importer un mesh avec son calque de colision', () => {
+    
       maps.meshsData = [
         {
-          name: "permanentBlocks",
-
+          name: 'permanentBlocks',
+    
           colisionCase: true
         }
-
+    
       ];
-
+    
       maps.create(GameMock.blocksTemp);
-
+    
       expect(maps.meshGround.length).toEqual(2);
     });
-
-    it("Peut importer deux mesh sans calque", () => {
-
+    
+    it('Peut importer deux mesh sans calque', () => {
+    
       maps.meshsData = [
         {
-          name: "ground",
-
+          name: 'ground',
+    
           colisionCase: false
         },
         {
-          name: "permanentBlocks",
-
+          name: 'permanentBlocks',
+    
           colisionCase: false
         }
-
+    
       ];
-
+    
       maps.create(GameMock.blocksTemp);
-
+    
       expect(maps.meshGround.length).toEqual(2);
     });
-
-    it("Peut lever une erreur si mesh n'est pas preload", () => {
-
+    
+    it('Peut lever une erreur si mesh n\'est pas preload', () => {
+    
       maps.meshsData = [
         {
-          name: "meshNonLoad",
-
+          name: 'meshNonLoad',
+    
           colisionCase: false
         }
       ];
-
-      expect(maps.create).toThrow(Error("Mesh is not preload"));
+    
+      expect(maps.create).toThrow(Error('Mesh meshNonLoad is not preload[MOCK]'));
     });
-
-    it("Peut rendre visible le mesh", () => {
-
+    
+    it('Peut rendre visible le mesh', () => {
+    
       maps.meshsData = [
         {
-          name: "permanentBlocks",
-
+          name: 'permanentBlocks',
+    
           colisionCase: false
         }
       ];
-
+    
       maps.create(GameMock.blocksTemp);
-
+    
       expect(maps.meshGround[0].isVisible).toBe(true);
     });
-
-    it("Peut rendre visible le calque du mesh", () => {
-
+    
+    it('Peut rendre visible le calque du mesh', () => {
+    
       maps.meshsData = [
         {
-          name: "permanentBlocks",
-
+          name: 'permanentBlocks',
+    
           colisionCase: true
         }
       ];
-
+    
       maps.create(GameMock.blocksTemp);
-
+    
       expect(maps.meshGround[1].isVisible).toBe(true);
     });
-
-    it("Peut checkCollisions si mesh sans calque", () => {
-
+    
+    it('Peut checkCollisions si mesh sans calque', () => {
+    
       maps.meshsData = [
         {
-          name: "permanentBlocks",
-
+          name: 'permanentBlocks',
+    
           colisionCase: false
         }
       ];
-
+    
       maps.create(GameMock.blocksTemp);
-
+    
       expect(maps.meshGround[0].checkCollisions).toBe(true);
     });
-
-    it("Peut checkCollisions le calque du mesh", () => {
-
+    
+    it('Peut checkCollisions le calque du mesh', () => {
+    
       maps.meshsData = [
         {
-          name: "permanentBlocks",
-
+          name: 'permanentBlocks',
+    
           colisionCase: true
         },
         {
-          name: "tempBlock",
-
+          name: 'tempBlock',
+    
           colisionCase: true
         }
       ];
-
+    
       maps.create(GameMock.blocksTemp);
-
-
+    
+    
       expect(maps.meshGround[0].checkCollisions).toBe(false);
-
+    
       expect(maps.meshGround[1].checkCollisions).toBe(true);
     });
 
   });
 
-  describe("Temps blocks methods", () => {
+  describe('Temps blocks methods', () => {
 
     beforeEach(() => {
 
@@ -178,80 +189,80 @@ describe("Maps", () => {
 
     });
 
-    it("Peut ajouter les blocks temp recuperer", () => {
+    it('Peut ajouter les blocks temp recuperer', () => {
 
       expect(maps.getBlocks().length).toEqual(135);
     });
-
-    it("Peut suprimmer tout les blocks", () => {
-
+    
+    it('Peut suprimmer tout les blocks', () => {
+    
       maps.delBlocks();
-
+    
       expect(maps.getBlocks().length).toEqual(0);
     });
-
-    it("Peut recuperer un block par sa position", () => {
-
+    
+    it('Peut recuperer un block par sa position', () => {
+    
       var position = {x: -24, y: 0, z: -64};
-
+    
       expect(maps.getBlockByPosition(position).position).toEqual(position);
     });
-
-    it("Peut suprimmer un block par son id", () => {
-
+    
+    it('Peut suprimmer un block par son id', () => {
+    
       var block = maps.getBlockByPosition({x: -24, y: 0, z: -64});
-
+    
       expect(maps.delBlockById(block.id)).toEqual(true);
-
+    
     });
-
-    it("Peut supprimer un block par sa position", () => {
-
+    
+    it('Peut supprimer un block par sa position', () => {
+    
       var block = maps.getBlockByPosition({x: -24, y: 0, z: -64});
-
+    
       expect(maps.delBlocksByPosition({x: -24, y: 0, z: -64})).toEqual(true);
-
+    
       expect(maps.getBlockByPosition(block.position)).toEqual(null);
-
+    
     });
-
-    it("Peut supprimer un bloc et le restaurer", () => {
-
+    
+    it('Peut supprimer un bloc et le restaurer', () => {
+    
       var block = maps.getBlockByPosition({x: -24, y: 0, z: -64});
-
+    
       expect(maps.delBlocksByPosition({x: -24, y: 0, z: -64})).toEqual(true);
-
+    
       expect(maps.getBlockByPosition(block.position)).toEqual(null);
-
+    
       expect(maps.getBlocks().length).toEqual(134);
-
+    
       maps.restoreBlock(GameMock.blocksTemp);
-
+    
       expect(maps.getBlocks().length).toEqual(135);
-
+    
     });
-
-    it("Peut supprimer plusieurs blocs et les restaurer", () => {
-
+    
+    it('Peut supprimer plusieurs blocs et les restaurer', () => {
+    
       expect(maps.delBlocksByPosition({x: -24, y: 0, z: -64})).toEqual(true);
-
+    
       expect(maps.delBlocksByPosition({x: -16, y: 0, z: -64})).toEqual(true);
-
+    
       expect(maps.delBlocksByPosition({x: -8, y: 0, z: -64})).toEqual(true);
-
+    
       expect(maps.getBlocks().length).toEqual(132);
-
+    
       maps.restoreBlock(GameMock.blocksTemp);
-
+    
       expect(maps.getBlocks().length).toEqual(135);
-
+    
     });
 
   });
 
-  describe("Player methods", () => {
+  describe('Player methods', () => {
 
-    it("Peut ajouter et recuperer player", () => {
+    it('Peut ajouter et recuperer player', () => {
 
       maps.addObject(player);
 
@@ -259,15 +270,15 @@ describe("Maps", () => {
 
     });
 
-    it("Peut récuperer les players alive", () => {
+    it('Peut récuperer les players alive', () => {
 
       maps.addObject(player);
 
-      var player2 = new Player(0, "testPlayer", "testUrl", spawnPoint, {
-        "speed": 0.45,
-        "shoot": false,
-        "bombs": 2
-      }, true, 0, GameMock.assets, GameMock.blockDim);
+      var player2 = new Player(0, 'testPlayer', 'testUrl', spawnPoint, {
+        'speed': 0.45,
+        'shoot': false,
+        'bombs': 2
+      }, true, 0);
 
       maps.addObject(player2);
 
@@ -281,7 +292,7 @@ describe("Maps", () => {
 
     });
 
-    it("Peut ajouter un player et un block et récupérer uniquement le player", () => {
+    it('Peut ajouter un player et un block et récupérer uniquement le player', () => {
 
       var block = new Block(utils.guid(), {x: 0, z: 0}, GameMock.assets);
 
@@ -293,7 +304,7 @@ describe("Maps", () => {
 
     });
 
-    it("Peut recuperer un player avec son ID", () => {
+    it('Peut recuperer un player avec son ID', () => {
 
       maps.addObject(player);
 
@@ -301,7 +312,7 @@ describe("Maps", () => {
 
     });
 
-    it("Peut recuperer un player avec sa position", () => {
+    it('Peut recuperer un player avec sa position', () => {
 
       maps.addObject(player);
 
@@ -309,7 +320,7 @@ describe("Maps", () => {
 
     });
 
-    it("Peut supprimer un player", () => {
+    it('Peut supprimer un player', () => {
 
       maps.addObject(player);
 
@@ -319,7 +330,7 @@ describe("Maps", () => {
 
     });
 
-    it("Peut tuer un player", () => {
+    it('Peut tuer un player', () => {
       jasmine.clock().install();
 
       maps.addObject(player);
@@ -336,7 +347,7 @@ describe("Maps", () => {
 
     });
 
-    it("Peut kamicaté un player", () => {
+    it('Peut kamicaté un player', () => {
       jasmine.clock().install();
 
       maps.addObject(player);
@@ -349,19 +360,19 @@ describe("Maps", () => {
 
       expect(player.alive).toBeFalsy();
 
-      expect(player.kamicat).toEqual("kamicat");
+      expect(player.kamicat).toEqual('kamicat');
 
       jasmine.clock().uninstall();
 
     });
 
-    it("Peut supprimer tous les players", () => {
+    it('Peut supprimer tous les players', () => {
 
-      var player2 = new Player(2, "testPlayer", "testUrl", spawnPoint, {
-        "speed": 0.45,
-        "shoot": false,
-        "bombs": 2
-      }, true, 0, GameMock.assets, GameMock.blockDim);
+      var player2 = new Player(2, 'testPlayer', 'testUrl', spawnPoint, {
+        'speed': 0.45,
+        'shoot': false,
+        'bombs': 2
+      }, true, 0);
 
       maps.addObject(player);
 
@@ -375,78 +386,78 @@ describe("Maps", () => {
 
   });
 
-  describe("Bombs methods", () => {
+  describe('Bombs methods', () => {
 
-    describe("Get", () => {
+    describe('Get', () => {
 
       beforeEach(() => {
 
         maps = new Maps(GameMock.assets, GameMock.blockDim, GameMock.scene, new MenuPlayers());
-        var bombeP1_1 = new Bombe(utils.guid(), player, player.roundPosition(), GameMock.assets, GameMock.scene);
+        var bombeP1_1 = new Bombe(utils.guid(), player, player.roundPosition() );
 
         maps.addObject(player);
         player.addBomb(bombeP1_1);
       });
 
-      it("Peut récupérer la bombe d'un player", () => {
+      it('Peut récupérer la bombe d\'un player', () => {
 
         expect(maps.getBombs().length).toEqual(1);
 
       });
 
-      it("Peut récupérer deux bombes d'un player", () => {
+      it('Peut récupérer deux bombes d\'un player', () => {
 
         player.position.x = 16;
 
-        var bombe = new Bombe(utils.guid(), player, player.roundPosition(), GameMock.assets, GameMock.scene);
+        var bombe = new Bombe(utils.guid(), player, player.roundPosition() );
         player.addBomb(bombe);
 
         expect(maps.getBombs().length).toEqual(2);
 
       });
 
-      it("Peut récupérer les bombes de deux players", () => {
+      it('Peut récupérer les bombes de deux players', () => {
 
-        var player2 = new Player(2, "testPlayer2", "testUrl2", {x: 0, z: 0}, {
-          "speed": 0.45,
-          "shoot": false,
-          "bombs": 2
-        }, true, 0, GameMock.assets);
+        var player2 = new Player(2, 'testPlayer2', 'testUrl2', {x: 0, z: 0}, {
+          'speed': 0.45,
+          'shoot': false,
+          'bombs': 2
+        }, true, 0);
 
 
         maps.addObject(player2);
-        var bombe = new Bombe(utils.guid(), player2, player2.roundPosition(), GameMock.assets, GameMock.scene);
+        var bombe = new Bombe(utils.guid(), player2, player2.roundPosition() );
         player2.addBomb(bombe);
 
         expect(maps.getBombs().length).toEqual(2);
 
       });
 
-      it("Peut récupérer deux bombes de deux players", () => {
-        var player2 = new Player(2, "testPlayer2", "testUrl2", {x: 0, z: 0}, {
-          "speed": 0.45,
-          "shoot": false,
-          "bombs": 2
-        }, true, 0, GameMock.assets, GameMock.blockDim);
+      it('Peut récupérer deux bombes de deux players', () => {
+        var player2 = new Player(2, 'testPlayer2', 'testUrl2', {x: 0, z: 0}, {
+          'speed': 0.45,
+          'shoot': false,
+          'bombs': 2
+        }, true, 0);
 
         maps.addObject(player2);
-        var bombeP2_1 = new Bombe(utils.guid(), player2, player2.roundPosition(), GameMock.assets, GameMock.scene);
+        var bombeP2_1 = new Bombe(utils.guid(), player2, player2.roundPosition() );
         player2.addBomb(bombeP2_1);
 
-        var bombeP1_2 = new Bombe(utils.guid(), player, player.roundPosition(), GameMock.assets, GameMock.scene);
+        var bombeP1_2 = new Bombe(utils.guid(), player, player.roundPosition() );
         player2.addBomb(bombeP1_2);
 
         player.position.x = 32;
         player2.position.x = 8;
 
-        var bombeP2_2 = new Bombe(utils.guid(), player2, player2.roundPosition(), GameMock.assets, GameMock.scene);
+        var bombeP2_2 = new Bombe(utils.guid(), player2, player2.roundPosition() );
         player2.addBomb(bombeP2_2);
 
         expect(maps.getBombs().length).toEqual(4);
 
       });
 
-      it("Peut récupérer une bombe avec son ID", () => {
+      it('Peut récupérer une bombe avec son ID', () => {
 
         expect(maps.getBombsById(player.listBombs[0].id)).toEqual(player.listBombs[0]);
 
@@ -454,13 +465,13 @@ describe("Maps", () => {
 
     });
 
-    describe("Set", () => {
+    describe('Set', () => {
 
-      it("Une bombe est présente à la position", () => {
+      it('Une bombe est présente à la position', () => {
 
         maps.addObject(player);
 
-        var bombeP1_1 = new Bombe(utils.guid(), player, player.roundPosition(), GameMock.assets, GameMock.scene);
+        var bombeP1_1 = new Bombe(utils.guid(), player, player.roundPosition() );
 
         player.addBomb(bombeP1_1);
 
@@ -468,7 +479,7 @@ describe("Maps", () => {
 
       });
 
-      it("Ne peut pas poser de bombe si il est mort", () => {
+      it('Ne peut pas poser de bombe si il est mort', () => {
 
         maps.addObject(player);
 
@@ -482,7 +493,7 @@ describe("Maps", () => {
 
   });
 
-  //describe( "PowerUp methods", () => {
+  //describe( 'PowerUp methods', () => {
   //
   //    beforeEach ( () => {
   //
@@ -490,13 +501,13 @@ describe("Maps", () => {
   //
   //    });
   //
-  //    it ( "Peut remplir la maps de quelques powerUp", () => {
+  //    it ( 'Peut remplir la maps de quelques powerUp', () => {
   //
   //        expect(maps.getPowerUps().length).toEqual(cfg.nbPowerUp);
   //
   //    });
   //
-  //    it ( "Evite la création de 2 powerUp à la même position", () => {
+  //    it ( 'Evite la création de 2 powerUp à la même position', () => {
   //
   //        var tab1 = maps.getPowerUps();
   //
@@ -508,7 +519,7 @@ describe("Maps", () => {
   //
   //    });
   //
-  //    it ( "Peut trouver les PowerUps visibles", () => {
+  //    it ( 'Peut trouver les PowerUps visibles', () => {
   //
   //        var block = maps.getBlockByPosition( { x: -24, y: 0, z: -64 } );
   //
@@ -520,7 +531,7 @@ describe("Maps", () => {
   //
   //    });
   //
-  //    it ( "Peut retrouver un PowerUp par son ID", () => {
+  //    it ( 'Peut retrouver un PowerUp par son ID', () => {
   //
   //        var powerUps = maps.getPowerUps();
   //
@@ -528,7 +539,7 @@ describe("Maps", () => {
   //
   //    });
   //
-  //    it ( "Peut supprimer un powerUps par son ID", () => {
+  //    it ( 'Peut supprimer un powerUps par son ID', () => {
   //
   //        var powerUps = maps.getPowerUps();
   //

@@ -1,13 +1,13 @@
 "use strict";/*jshint -W083, latedef: nofunc*/
 
-const config = require('config.es6');
+//const config = require('config.es6');
 const Bombe = require("bomb/bomb.es6");
 const CameraSwitcher = require("camera/cameraSwitcher");
 const Connectors = require("connectors/connectors.es6");
 const CursorCapture = require("cursorCapture/cursorCapture");
 const EndGame = require("endGame/endGame");
 const KeyBinder = require("keyBinder/keyBinder");
-const Maps = require("maps/maps");
+const Maps = require("maps/maps.es6");
 const MenuPlayers = require("menuPlayers/menuPlayers");
 const MyPlayer = require("player/myPlayer");
 const Player = require("player/player.es6");
@@ -83,7 +83,7 @@ class Game {
 
       this._scene.unregisterBeforeRender(() => { this._standingStartAnimation(); });
 
-      this._cameraSwitcher.playerView(this._myPlayer.player.position,() => {
+      this._cameraSwitcher.playerView(this._myPlayer.player.position, () => {
         this._isInParty = true;
 
         this._cursorCapture.autoRequestCapture();
@@ -98,9 +98,9 @@ class Game {
 
         if (this._myPlayer.player.shouldSetBomb() && !this._map.getBombByPosition(this._myPlayer.player.roundPosition())) {
 
-          var bombTempId = utils.guid();
+          let bombTempId = utils.guid();
 
-          var bombe = new Bombe(bombTempId, this._myPlayer.player, this._myPlayer.player.roundPosition(), this._assets, this._scene);
+          let bombe = new Bombe(bombTempId, this._myPlayer.player, this._myPlayer.player.roundPosition(), this._scene);
 
           this._myPlayer.player.addBomb(bombe);
           Connectors.setBomb(bombe.id);
@@ -113,7 +113,7 @@ class Game {
 
   _render() {
 
-    this._map = this._map || new Maps(this._assets, __BLOCK_DIM, this._scene, this._menuPlayers);
+    this._map = this._map || new Maps( this._scene, this._menuPlayers);
 
     this._timer = this._timer || new Timer(this._map);
     this._timer.timeToStartParty = this._mapJson.timerToStart;
@@ -238,7 +238,7 @@ class Game {
     Connectors.onPlayerSetBomb((playerId, bombeId, position) => {
 
       var player = this._map.getPlayerById(playerId);
-      var bombe = new Bombe(bombeId, player, position, this._assets, this._scene);
+      let bombe = new Bombe(bombeId, player, position, this._scene);
       player.addBomb(bombe);
 
     });
@@ -249,9 +249,9 @@ class Game {
 
       for (var i = 0; i < playersIdKilled.length; i++) {
 
-        var playerKilledId = playersIdKilled[i];
+        let playerKilledId = playersIdKilled[i];
 
-        var isKamiCat = false;
+        let isKamiCat = false;
 
         if (playerOwner.id === playerKilledId) {
           isKamiCat = true;
@@ -275,15 +275,15 @@ class Game {
 
       for (var j = 0; j < blocksIdDestroy.length; j++) {
 
-        var blockIdDestroy = blocksIdDestroy[j];
+        let blockIdDestroy = blocksIdDestroy[j];
         this._map.delBlockById(blockIdDestroy);
         playerOwner.nbBlocksDestroy++;
       }
 
       for (var k = 0; k < bombesExplodedId.length; k++) {
 
-        var bombeExplodedId = bombesExplodedId[k];
-        var bombe = this._map.getBombsById(bombeExplodedId);
+        let bombeExplodedId = bombesExplodedId[k];
+        let bombe = this._map.getBombsById(bombeExplodedId);
         bombe.destroy();
         bombe.owner.delBombById(bombe.id);
 
@@ -295,7 +295,7 @@ class Game {
 
     Connectors.onNewPlayer( (id, name, picture, position, powerUp, alive, kills) => {
 
-      var player = new Player(id, name, picture, position, powerUp, alive, kills, this._assets, __BLOCK_DIM);
+      let player = new Player(id, name, picture, position, powerUp, alive, kills);
 
       this._menuPlayers.addPlayer(player);
 
@@ -318,7 +318,7 @@ class Game {
 
     Connectors.setPermanentBombId( (tempBombId, bombId) => {
 
-      var bomb = this._map.getBombsById(tempBombId);
+      let bomb = this._map.getBombsById(tempBombId);
       bomb.id = bombId;
 
     });

@@ -7,7 +7,7 @@ class Assets {
   }
   static get (name){
     if (_assets[name] === void 0) {
-      throw new Error('Mesh ' + name + 'is not preload');
+      throw new Error('Mesh ' + name + ' is not preload');
     }
 
     return _assets[name];
