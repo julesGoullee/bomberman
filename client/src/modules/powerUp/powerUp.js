@@ -1,6 +1,6 @@
 "use strict";
 
-define(["config/config", "utils/utils"], function(cfg, utils) {
+define(["config.es6", "utils/utils"], function(cfg, utils) {
   return function PowerUp(position, pouvoir, valeur, assets) {
 
     var self = this;

@@ -1,5 +1,5 @@
 "use strict";
-var cfg = require("config/config");
+var cfg = require("config.es6");
 
 class Block {
 

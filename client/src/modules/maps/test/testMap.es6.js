@@ -1,6 +1,6 @@
 "use strict";
 
-const cfg = require('config/config');
+const cfg = require('config.js');
 const Block = require('block/block.es6');
 const Bombe = require('bomb/bomb.es6');
 const Player = require('player/player.es6');

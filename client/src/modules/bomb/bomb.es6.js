@@ -1,6 +1,6 @@
 "use strict";
 
-define(["config/config", "utils/utils"], function( cfg, utils ) {
+define(["config.es6", "utils/utils"], function( cfg, utils ) {
   return function Bombe( id, owner, position, assets, scene ) {
 
     var self = this;

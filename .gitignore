@@ -1,7 +1,7 @@
+/client/src/config/config.es6.js
 node_modules/
 bower_components/
 /serve/config/
-/client/src/modules/config/config.js
 /client/dist/*
 /config/nginx/ssl/*
 !/config/nginx/ssl/.gitkeep

@@ -1,5 +1,6 @@
 "use strict";/*jshint -W083, latedef: nofunc*/
 
+const config = require('config.es6');
 const Bombe = require("bomb/bomb.es6");
 const CameraSwitcher = require("camera/cameraSwitcher");
 const Connectors = require("connectors/connectors.es6");

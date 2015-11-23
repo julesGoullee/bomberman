@@ -1,6 +1,6 @@
 "use strict";
 
-const cfg = require('config/config');
+const cfg = require('config.js');
 //cfg.timerToStartParty = 5000;
 //cfg.limitToCheckNumberPlayer = 4000;
 //cfg.nbPlayersToStart = 2;

@@ -1,5 +1,5 @@
 "use strict";
-const cfg = require('config/config');
+const cfg = require('config.es6');
 
 class Player{
   constructor(id, name, picture, spawnPoint, powerUp, alive, kills, assets, blockDim){
