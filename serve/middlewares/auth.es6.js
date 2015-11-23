@@ -54,7 +54,7 @@ passport.use(new FacebookTokenStrategy({
                 url: Array.isArray(profile.photos) && profile.photos[0].value
               }
             }
-          },function(err, user){
+          }, (err, user) => {
             done(err, user.toObject());
           });
 
@@ -74,9 +74,9 @@ module.exports = {
     app.use(passport.session());
   },
   check: (req, res, cb) => {
-    sessionMiddleware(req, res, function(){
-      passport.initialize()(req, res, function(){
-        passport.session()(req, res, function(){
+    sessionMiddleware(req, res, () => {
+      passport.initialize()(req, res, () => {
+        passport.session()(req, res, () => {
           authLog.info("Check cookie: " + req.isAuthenticated());
           cb( req.isAuthenticated());
         });
