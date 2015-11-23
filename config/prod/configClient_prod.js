@@ -1,11 +1,10 @@
-"use strict";
+'use strict';
 
-define(function () {
-  return {
-    showBlockColision: false,
-    destroyPlayerTimer: 500,
-    timeBetweenTwoBombe: 500,
-    pasToSendPosition: 0.6,
-    analitics: true
-  };
-});
+module.exports =  {
+  showBlockColision: false,
+  destroyPlayerTimer: 500,
+  timeBetweenTwoBombe: 500,
+  pasToSendPosition: 0.6,
+  blockDim: 8,
+  analitics: true
+};

@@ -1,6 +1,6 @@
 'use strict';
 
-const Maps = require('maps/maps');
+const Maps = require('maps/maps.es6');
 const MenuPlayers = require('menuPlayers/menuPlayers');
 const GameMock = require('testConfig/gameMock.es6');
 

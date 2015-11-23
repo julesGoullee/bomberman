@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-var cfg = require("config/config");
+const cfg = require('config.es6');
 
 class Analitics {
 
-  constructor(){
+  constructor () {
     if (cfg.analitics) {
 
       /* jshint ignore:start */

@@ -1,77 +1,85 @@
 "use strict";
 /*jshint -W083 */
 
-define(function() {
-  return function Preloader(scene, meshList, assets) {
+const Assets = require('assets/assets.es6');
 
-    var self = this;
+const meshPreload = [
+  "ground",
+  "permanentBlocks",
+  "permanentBlocksColision",
+  "tempBlock",
+  "tempBlockColision",
+  "tour",
+  "bomb",
+  //"explosionFlammes",
+  //"animBombTest",
+  "bombColision",
+  "powerUpBallon",
+  "persocourse",
+  "personnageColision",
+  "tourColision"
+];
 
-    var _onFinishCallbacks = [];
+class Preloader {
+  
+  constructor (scene) {
+    
+    this._loader = null;
+    this._scene = scene;
+    this._onFinishCallbacks = [];
+    
+    this._loader = new BABYLON.AssetsManager(this._scene);
+    this._loader.useDefaultLoadingScreen = false;
 
-    var _loader;
+    this._scene._engine.loadingUIBackgroundColor = "#271204";
+    this._scene._engine.loadingUIText = "Loading 0%";
+    this._loopInitMeshs();
 
+    this._loader.load();
 
-    /*PUBLIC METHODS*/
-
-    self.onFinish = function (callback) {
-      _onFinishCallbacks.push(callback);
+    this._loader.onFinish = () => {
+      //scene._engine.loadingUIText = "Loading 100%";
+      for (var i = 0; i < this._onFinishCallbacks.length; i++) {
+        this._onFinishCallbacks[i]();
+      }
     };
+  }
+  
+  onFinish (cb) {
+    this._onFinishCallbacks.push(cb);
+  }
 
+  _loopInitMeshs() {
+       
+    for (var iMesh = 0; iMesh < meshPreload.length; iMesh++) {
+      var currentMeshs = this._loader.addMeshTask(meshPreload[iMesh], "", "/assets/", meshPreload[iMesh] + ".babylon");
 
-    /*PRIVATE METHODS*/
-
-    function init() {
-
-      _loader = new BABYLON.AssetsManager(scene);
-      _loader.useDefaultLoadingScreen = false;
-
-      scene._engine.loadingUIBackgroundColor = "#271204";
-      scene._engine.loadingUIText = "Loading 0%";
-      loopInitMeshs();
-
-      _loader.load();
-
-      _loader.onFinish = function () {
-        //scene._engine.loadingUIText = "Loading 100%";
-        for (var i = 0; i < _onFinishCallbacks.length; i++) {
-          _onFinishCallbacks[i]();
-        }
+      currentMeshs.onSuccess = (task) => {
+        var progression = 100 - ( ( this._loader._waitingTasksCount / meshPreload.length ) * 100);
+        this._scene._engine.loadingUIText = "Loading " + Math.round(progression) + "%";
+        Preloader._initMesh(task);
       };
 
+      currentMeshs.onError = (task) => {
+        throw new Error("Mesh " + task.name + " as error on preloading.");
+      };
     }
+  }
+  
+  static _initMesh(task) {
+    Assets.add(task.name, task.loadedMeshes);
 
-    function loopInitMeshs() {
+    for (var i = 0; i < task.loadedMeshes.length; i++) {
 
-      function initMesh(task) {
-        assets[task.name] = task.loadedMeshes;
+      var mesh = task.loadedMeshes[i];
 
-        for (var i = 0; i < task.loadedMeshes.length; i++) {
+      mesh.useOctreeForCollisions = true;
 
-          var mesh = task.loadedMeshes[i];
+      mesh.checkCollisions = false;
 
-          mesh.useOctreeForCollisions = true;
-
-          mesh.checkCollisions = false;
-
-          mesh.isVisible = false;
-        }
-      }
-
-      for (var iMesh = 0; iMesh < meshList.length; iMesh++) {
-        var currentMeshs = _loader.addMeshTask(meshList[iMesh], "", "/assets/", meshList[iMesh] + ".babylon");
-
-        currentMeshs.onSuccess = function (task) {
-          var progression = 100 - ( ( _loader._waitingTasksCount / meshList.length ) * 100);
-          scene._engine.loadingUIText = "Loading " + Math.round(progression) + "%";
-          initMesh(task);
-        };
-
-        currentMeshs.onError = function (task) {
-          throw new Error("Mesh " + task.name + " as error on preloading.");
-        };
-      }
+      mesh.isVisible = false;
     }
+  }
+}
 
-    init();
-  };
-});
+module.exports = Preloader;

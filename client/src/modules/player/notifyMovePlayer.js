@@ -1,6 +1,6 @@
 "use strict";
 
-define(["config/config"], function( cfg ) {
+define(["config.es6"], function( cfg ) {
     return function NotifyMovePlayer(connector, spawnPoint) {
 
 

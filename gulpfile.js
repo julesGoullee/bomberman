@@ -15,7 +15,7 @@ var paths = {
   },
   accountSrc: production ? "config/prod/accountProd.json" : "config/dev/accountDev.json",
   manifest: production ? "config/prod/commonProd.babylon.manifest" : "config/dev/commonDev.babylon.manifest",
-  configFront: "client/src/modules/config",
+  configFront: "client/src/config",
   configBack: "serve/config",
   index: "client/index.html",
   externals: {
@@ -32,7 +32,7 @@ var paths = {
     ]
   },
   webpack:{
-    rootDir: ["./client/src/modules", "./client/bower_components", "./node_modules"]
+    rootDir: ["./client/src/modules", "./client/bower_components", "./client/src/config","./node_modules"]
   },
   assets: "client/assets/**",
   css: "client/css/app.css"
@@ -102,7 +102,7 @@ gulp.task("karma", function(cb){
 gulp.task("clean", function() {
   return gulp.src([
     paths.configBack + "/config.js",
-    paths.configFront + "/config.js",
+    paths.configFront + "/config.es6.js",
     paths.dist,
     "./client/src/assets/common.manifest"
   ]).pipe($.rimraf());
@@ -113,7 +113,7 @@ gulp.task("copyConfig", function() {
   return merge(
     //FRONT
     gulp.src(paths.configSrc.front)
-      .pipe($.rename("config.js"))
+      .pipe($.rename("config.es6.js"))
       .pipe(gulp.dest(paths.configFront)),
 
     gulp.src(paths.manifest)

@@ -1,17 +1,16 @@
-"use strict";
-var cfg = require("config/config");
+'use strict';
+const cfg = require('config.es6');
+const Assets = require('assets/assets.es6');
 
 class Block {
 
-  constructor( id, positionSpawn, assets) {
+  constructor( id, positionSpawn) {
 
     this.id = id;
 
-    this._assets = assets;
-
     this._positionSpawn = positionSpawn;
 
-    this.type = "block";
+    this.type = 'block';
 
     this.position = {x: 0, y: 0, z: 0};
 
@@ -33,7 +32,7 @@ class Block {
 
   _createMesh () {
 
-    const meshTemp = this._assets.tempBlock[0].clone();
+    const meshTemp = Assets.get('tempBlock')[0].clone();
 
     meshTemp.isVisible = true;
 
@@ -53,7 +52,7 @@ class Block {
 
   _createMeshColision() {
 
-    const meshTempColision = this._assets.tempBlockColision[0].clone();
+    const meshTempColision = Assets.get('tempBlockColision')[0].clone();
 
     meshTempColision.isVisible = cfg.showBlockColision;
 
