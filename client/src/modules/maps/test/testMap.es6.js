@@ -7,6 +7,7 @@ const MenuPlayers = require('menuPlayers/menuPlayers');
 const GameMock = require('testConfig/gameMock.es6');
 
 const AssetsMock = require('testConfig/assetsMock.es6');
+const Obj = require('inject!object/object.es6')({'assets/assets.es6': AssetsMock});
 
 const Block = require('inject!block/block.es6')({'assets/assets.es6': AssetsMock});
 
@@ -17,7 +18,7 @@ const Maps = require('inject!maps/maps.es6')({
 
 const Player = require('inject!player/player.es6')({'assets/assets.es6': AssetsMock});
 
-const Bombe = require('inject!bomb/bomb.es6')({'assets/assets.es6': AssetsMock});
+const Bombe = require('inject!bomb/bomb.es6')({'object/object.es6': Obj});
 
 
 describe('Maps', () => {
