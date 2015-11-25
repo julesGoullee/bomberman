@@ -7,10 +7,10 @@ Web Game bomberman brain wave, in First person shoot, multiplayers, 3D ( with ba
 [![dev dependencies Status](https://david-dm.org/julesGoullee/bomberman/dev-status.svg)](https://david-dm.org/julesGoullee/bomberman#info=devDependencies&view=table)
 
 ##Pré requis:
-```bash
-sudo apt-get install openssl nginx
-```
-node@5 (use nvm [https://github.com/creationix/nvm](https://github.com/creationix/nvm))
+- Openssl
+- Nginx
+- MongoDb
+- node@5 (use nvm [https://github.com/creationix/nvm](https://github.com/creationix/nvm))
 
 ##Config ssl cert for Nginx:
 - Generate ssl cert :
@@ -27,14 +27,16 @@ npm run deploy-nginx-local-crt
 ```bash
 npm run deploy-nginx-config
 ```
+## Config App
+In /config/{dev|prod}/:
+- account.json: facebook app login
+- config{client|Serve}: params game
 
-##INSTALL:
+##Developpement
 - Npm Dependencies:
 ```bash
 npm install
 ```
-
-##Developpement
 - Watch task ( jshint, config, mocha, karma, webpack bundle)
 ```bash 
 gulp
