@@ -1,107 +1,62 @@
 'use strict';
-const Assets = require('assets/assets.es6');
+
 const cfg = require('config.es6');
-const utils = require("utils/utils");
+const Obj = require('object/object.es6');
 
-module.exports =  function Bombe( id, owner, position, scene ) {
+class Bomb extends Obj{
 
-  var self = this;
+  constructor ( id, owner, position, scene ) {
 
+    super(id, 'bomb', position);
 
-  //PUBLIC METHODS//
+    this.power = 2;
 
-  self.id = id;
+    this._scene = scene;
 
-  self.power = 2;
+    this.countDown = cfg.bombCountDown;
 
-  self.type = 'bombs';
+    this.exploded = false;
 
-  self.countDown = cfg.bombCountDown;
+    this.duration = 800;
 
-  self.exploded = false;
+    this.owner = owner;
 
-  self.duration = 800;
+    this.meshs = {};
 
-  self.owner = owner;
+    this._createMeshColision('bombColision');
 
-  self.position = {x: 0, y: 0, z: 0};
+    this._createMesh('bomb');
 
-  self.meshs = {};
+  }
 
-  self.destroy = function () {
-    self.meshs.shape.dispose();
+  destroy () {
 
-    launchExplosion(function () {
-      self.meshs.colisionBlock.dispose();
+    this.meshs.shape.dispose();
+
+    this._launchExplosion( () => {
+      this.meshs.colisionBlock.dispose();
     });
 
-    self.exploded = true;
-
-  };
-
-  self.deleted = function () {
-
-    self.meshs.shape.dispose();
-
-    self.meshs.colisionBlock.dispose();
-  };
-
-
-  //PRIVATE METHODS//
-
-  function init() {
-
-    createMeshColision();
-
-    createMesh();
-
+    this.exploded = true;
   }
 
-  function createMesh() {
+  deleted () {
 
-    var meshBomb = Assets.get('bomb')[0].clone();
+    this.meshs.shape.dispose();
 
-    meshBomb.position = {x: position.x, y: 0, z: position.z};
-
-    meshBomb.isVisible = true;
-
-    meshBomb.checkCollisions = false;
-
-    //meshBomb.setPhysicsState({ impostor : BABYLON.PhysicsEngine.SphereImpostor,move:true, mass:1, friction:0.5, restitution:0.5});
-
-    self.meshs.shape = meshBomb;
+    this.meshs.colisionBlock.dispose();
   }
 
-  function createMeshColision() {
-
-
-    var meshBombColision = Assets.get('bombColision')[0].clone();
-
-    meshBombColision.position = {
-      x: position.x,
-      y: 0,
-      z: position.z
-    };
-
-    meshBombColision.isVisible = cfg.showBlockColision;
-    utils.onMeshsExitIntersect(meshBombColision, self.owner.meshs.colisionBlock, scene);
-
-    self.meshs.colisionBlock = meshBombColision;
-
-    self.position = meshBombColision.position;
-
-  }
-
-  var launchExplosion = function (callback) {
+  _launchExplosion (cb) {
 
     // Create a particle system
-    var particleSystem = new BABYLON.ParticleSystem('particles', 50, scene);
+    var particleSystem = new BABYLON.ParticleSystem('particles', 50, this._scene);
 
     //Texture of each particle
-    particleSystem.particleTexture = new BABYLON.Texture('assets/particule.png', scene);
+    particleSystem.particleTexture = new BABYLON.Texture('assets/particule.png', this._scene);
 
     // Where the particles come from
-    particleSystem.emitter = self.meshs.shape; // the starting object, the emitter
+    particleSystem.emitter = this.meshs.shape; // the starting object, the emitter
     particleSystem.minEmitBox = new BABYLON.Vector3(-4, 0, 4); // Starting all from
     particleSystem.maxEmitBox = new BABYLON.Vector3(4, 8, -4); // To...
 
@@ -156,8 +111,8 @@ module.exports =  function Bombe( id, owner, position, scene ) {
 
     particleSystem.disposeOnStop = true;
 
-    setTimeout(function () {
-      callback();
+    setTimeout( () =>{
+      cb();
     }, 1500);
     //var i = 0;
     //scene.registerBeforeRender(function () {
@@ -170,7 +125,7 @@ module.exports =  function Bombe( id, owner, position, scene ) {
     //    particleSystem.stop();
     //    callback();
     //},10000)
-  };
+  }
+}
 
-  init();
-};
+module.exports = Bomb;

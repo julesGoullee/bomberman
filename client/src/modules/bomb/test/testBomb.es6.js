@@ -1,23 +1,27 @@
 'use strict';
 
+require('testConfig/babylonMock.es6');
+
 const utils = require('utils/utils');
 const AssetsMock = require('testConfig/assetsMock.es6');
 
 const Player = require('inject!player/player.es6')({'assets/assets.es6': AssetsMock});
+const Obj = require('inject!object/object.es6')({'assets/assets.es6': AssetsMock});
+const Bombe = require('inject!bomb/bomb.es6')({'object/object.es6': Obj});
 
-const Bombe = require('inject!bomb/bomb.es6')({'assets/assets.es6': AssetsMock});
+const _sceneMock = {};
 
 describe( 'Bombe', () => {
 
-  var player;
-  var spawnPoint = {x :50, z:-65};
-  var bombe;
+  let player;
+  const spawnPoint = {x :50, z:-65};
+  let bombe;
 
   beforeEach( () =>  {
 
     player = new Player(0, 'testPlayer', 'testUrl', spawnPoint, {'speed':0.45,'shoot':false,'bombs':2}, true, 0);
 
-    bombe = new Bombe( utils.guid(), player, player.position);
+    bombe = new Bombe( utils.guid(), player, player.position, _sceneMock);
   });
 
   it( 'Peut creer une bombe a la bonne position', () =>  {
