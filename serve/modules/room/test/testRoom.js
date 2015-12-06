@@ -100,7 +100,7 @@ describe( 'Room', () => {
 
       expect( _room.timerToStart ).to.equal( config.limitToCheckNumberPlayer );
 
-      _room.addPlayer( _socket2 );
+      _room.addPlayer( (new MockSocket('3')) );
 
       clock.tick( config.timerToStartParty );
 
@@ -146,7 +146,7 @@ describe( 'Room', () => {
 
   });
 
-  describe( 'deuxieme player', () => {
+  describe( 'In game', () => {
   
     beforeEach(() => {
   
@@ -242,7 +242,7 @@ describe( 'Room', () => {
   
     });
   
-    it('Peut ajouter deux player, deconnecter le premier et ajouter un troisieme 3', () => {
+    it('Peut ajouter deux player, deconnecter le premier et ajouter un troisieme 3 a la place du 1', () => {
   
       _socket1.callbackDisconnect();
   
@@ -253,8 +253,8 @@ describe( 'Room', () => {
   
       expect( _room.players[2].name ).to.equal( 'testPlayer_3');
   
-      expect( _room.players[2].position.x ).to.equal( _room.playersSpawnPoint[2].x );
-      expect( _room.players[2].position.z ).to.equal( _room.playersSpawnPoint[2].z );
+      expect( _room.players[2].position.x ).to.equal( _room.playersSpawnPoint[0].x );
+      expect( _room.players[2].position.z ).to.equal( _room.playersSpawnPoint[0].z );
   
       expect( _room.player);
     });

@@ -219,17 +219,18 @@ function Room() {
   }
 
   function listenPlayerPosition( player ){
-
-    player.socket.on( "myPosition" , function ( position ) {
-
+    
+    player._myPosition  = function ( position ) {
       player.move( position );
       broadcastWithoutMe( player, "onPlayerMove", { id: player.id, position: position } );
-    });
+    };
+    
+    player.socket.on( "myPosition" , player._myPosition);
   }
 
   function listenDisconnect( player ){
-
-    player.socket.on( "disconnect", function() {
+    
+    player._disconnect = function() {
 
       //log( "Player disconnect: " + player.id + " on room: " + self.id, "info" );
 
@@ -247,8 +248,11 @@ function Room() {
         _map.killPlayerById( player.id );
         checkPlayersAlive();
       }
+      self.playersSpawnPoint.liberatePlayerPosition(player.id);
 
-    });
+    };
+    
+    player.socket.on( "disconnect", player._disconnect);
 
   }
 
@@ -285,8 +289,8 @@ function Room() {
 
       checkPlayersAlive();
     }
-
-    player.socket.on( "setBomb", function( tempId ){
+    
+    player._setBomb = function( tempId ){
 
       var bombe = _map.setBomb( player , onExplosion );
 
@@ -308,16 +312,25 @@ function Room() {
         //log("peut pas poser " + tempId, "err");
       }
 
-    });
+    };
+    
+    player.socket.on( "setBomb", player._setBomb);
 
   }
 
   function removeAllListener( player ){
-    player.socket.removeAllListeners("connection");
-    //player.socket.removeAllListeners("ready");
-    player.socket.removeAllListeners("setUser");
-    player.socket.removeAllListeners("myPosition");
-    player.socket.removeAllListeners("setBomb");
+    
+    if(player._disconnect){
+      player.socket.removeListener('disconnect', player._disconnect);
+    }
+    
+    if(player._myPosition){
+      player.socket.removeListener("myPosition", player._myPosition);
+    }
+    
+    if(player._setBomb) {
+      player.socket.removeListener("setBomb", player._setBomb);
+    }
   }
 
   function startTimer( callback ){

@@ -78,7 +78,23 @@ describe('Game', () => {
     expect( _game.getRoomList().length ).to.equal( 2 );
     clock.restore();
   });
+  
+  it('Peux deconnecter P2 puis revenir dans la partie', () => {
+    var clock = sinon.useFakeTimers();
 
+    MockSocketHandler.onConnectCallbacks[0]( _socket1 );
+
+    MockSocketHandler.onConnectCallbacks[0]( _socket2 );
+
+    clock.tick( config.timerToStartParty-5 );
+    expect( _game.getRoomList().length ).to.equal( 1 );
+    _socket2.callbackDisconnect();
+    MockSocketHandler.onConnectCallbacks[0]( _socket2 );
+    expect( _game.getRoomList()[0].players.length ).to.equal( 2 );
+    
+    clock.restore();
+  });
+  
   it('Peux supprimer une room si onDestroy callback', () => {
 
     var clock = sinon.useFakeTimers();

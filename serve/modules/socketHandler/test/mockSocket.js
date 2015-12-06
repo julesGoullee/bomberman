@@ -38,8 +38,8 @@ class MockSocket {
       this.callbackSetBomb = cb;
     }
   }
-  
-  removeAllListeners (){
+
+  removeListener (){
     
   }
 }
