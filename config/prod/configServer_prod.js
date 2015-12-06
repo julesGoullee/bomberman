@@ -14,5 +14,11 @@ module.exports = {
   bombCountDown : 3000,
   showPowerUp : false,
   nbPowerUp : 50,
-  analitics: true
+  analitics: true,
+  storage:{
+    mongo:{
+      base:"bombercat",
+      ip:"127.0.0.1"
+    }
+  }
 };
