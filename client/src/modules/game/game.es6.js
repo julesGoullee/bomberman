@@ -326,10 +326,10 @@ class Game {
     Connectors.onEnd( () => {
 
       this._isInParty = false;
+      this._cursorCapture.stopCapture();
 
       if (this._myPlayer.player.alive) {
 
-        this._cursorCapture.stopCapture();
         this._cameraSwitcher.deadView();
       }
 
