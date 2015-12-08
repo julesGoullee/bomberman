@@ -5,7 +5,6 @@ bower_components/
 /client/dist/*
 /config/nginx/ssl/*
 !/config/nginx/ssl/.gitkeep
-log/out.log
-log/err.log
+log/
 /npm-debug.log
 .idea/
