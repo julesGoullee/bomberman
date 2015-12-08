@@ -49,22 +49,49 @@ class AuthFb {
   connect (cb) {
     FB.getLoginStatus( (res) => {
       if (res.status === 'connected') {
-        cb(res.authResponse);
+        this._checkPermision(cb, res.authResponse);
       } else {
         this._showLogin(cb);
       }
-    });
+    }, {scope: 'user_friends, email'});
   }
 
   _showLogin (cb) {
     FB.login( (res) => {
       if (res.status === 'connected') {
-        cb(res.authResponse);
+        this._checkPermision(cb, res.authResponse);
       }
       else{
         this._showLogin(cb);
       }
     }, {scope: 'user_friends, email'});
+  }
+  
+  
+  _checkPermision (cb, authResponse) {
+    FB.api('/me/permissions', (res) => {
+      if(Array.isArray(res.data) && !res.data.find( perm => perm.status !== "granted" )){
+        cb(authResponse);
+      }else{
+        this._rerequest(cb);
+      }
+    });
+  }
+  
+  _rerequest (cb){
+    FB.login( (res) => {
+        if (res.status === 'connected') {
+          this._checkPermision(cb, res.authResponse);
+        }
+        else{
+          this._rerequest(cb);
+        }
+      },
+      {
+        scope: 'user_friends, email',
+        auth_type: 'rerequest'
+      }
+    );
   }
 }
 
