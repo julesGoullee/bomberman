@@ -39,14 +39,14 @@ class Connectors {
     });
 
     req.fail((res) =>{
+      clearTimeout(ttlReq);
       if(res.statusText === 'abort'){
         Popup.setContent('Error', 'Failed to connect API authentification Facebook, please try later').show();
       }
-      if (res.status === 500 ) {
-        clearTimeout(ttlReq);
+      else if (res.status === 500 ) {
         Popup.setContent('Error', 'API authentification Facebook not available, please try later').show();
       }
-      console.error('[Auth] ' + JSON.stringify(res));
+      console.warn('[Auth] ' + JSON.stringify(res));
     });
   }
 
@@ -59,10 +59,18 @@ class Connectors {
     });
 
     req.fail( (res) => {
-      Popup.setContent('Error', 'API authentification not available, please try later').show();
-      console.info('[Auth] ' + JSON.stringify(res));
-      Cookies.remove('token');
-      callback(false);
+      clearTimeout(ttlReq);
+      if(res.statusText === 'abort'){
+        Popup.setContent('Error', 'Failed to connect API authentification Facebook, please try later').show();
+      }
+      else if (res.status === 500 ) {
+        clearTimeout(ttlReq);
+        Popup.setContent('Error', 'API authentification not available, please try later').show();
+      }else {
+        Cookies.remove('token');
+        callback(false);
+      }
+      console.warn('[Auth] ' + JSON.stringify(res));
     });
   }
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 now=$(date +%Y'-'%m'-'%d'-'%H':'%M':'%S)
 forever stop serve/index.js &&
 mkdir -p log/$now && 
